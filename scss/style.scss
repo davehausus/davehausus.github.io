@@ -396,7 +396,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 			&:hover:before { width: 100%; background: $color-dark; transition: width .25s ease;}
 			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}
 		&.selected {padding-bottom: 80px;}
-		&.selected h3{font-size: 4vw; font-weight: 600;}
+		&.selected h3{font-size: 6vw; font-weight: 600;}
 		small{opacity: 0.5; margin-bottom: 10px;}
 		h3{display: block; margin-bottom: 20px; padding-bottom: 20px;
 			a{display: block;
