@@ -4,3 +4,5 @@ videos/._.DS_Store
 *.DS_Store
 ._blog-single.html
 ._blog.html
+.vscode/settings.json
+scss/dist/style.css
