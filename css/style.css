@@ -1899,8 +1899,20 @@ img {
 }
 
 .recent-news .content-box.selected h3 {
-  font-size: 5.5vw;
+  font-size: 30px;
   font-weight: 600;
+}
+
+@media only screen and (min-width: 480px) {
+  .recent-news .content-box.selected h3 {
+    font-size: calc( 30px + 42 * (100vw - 480px) / (1500 - 480));
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .recent-news .content-box.selected h3 {
+    font-size: 72px;
+  }
 }
 
 .recent-news .content-box small {

@@ -49,6 +49,25 @@
 $color-dark : #282828;
 
 
+// fluidly resize type
+@mixin fluid-type($font-min, $font-max, $screen-min, $screen-max) {
+	font-size: #{$font-min}px;
+  
+	@media only screen and (min-width: #{$screen-min}px) {
+	  font-size: calc(
+		#{$font-min}px + #{($font-max - $font-min)} * (100vw - #{$screen-min}px) / (#{$screen-max} - #{$screen-min})
+	  );
+	}
+  
+	@media only screen and (min-width: #{$screen-max}px) {
+	  font-size: #{$font-max}px;
+	}
+}
+
+
+
+
+
 /* BODY */
 *{outline: none !important;}
 body{margin: 0; padding-left:150px; padding-right: 50px; font-family: 'Mont'; font-size: 17px; color:$color-dark;  @include transition-bg; @include font-render;}
@@ -396,7 +415,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 			&:hover:before { width: 100%; background: $color-dark; transition: width .25s ease;}
 			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}
 		&.selected {padding-bottom: 80px;}
-		&.selected h3{font-size: 5.5vw; font-weight: 600;}
+		&.selected h3{@include fluid-type(30, 72, 480, 1500); font-weight: 600;}
 		small{opacity: 0.5; margin-bottom: 10px;}
 		h3{display: block; margin-bottom: 20px; padding-bottom: 20px;
 			a{display: block;
