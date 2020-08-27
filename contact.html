@@ -41,14 +41,7 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
 
-<script src="js/jquery.min.js"></script>
-<script type="text/javascript">var submitted=false;</script>
-<script type="text/javascript">
-$('#gform').on('submit', function(e) {
-  $('#gform *').fadeOut(2000);
-  $('#gform').prepend('Your submission has been processed...');
-  });
-</script>
+
 </head>
 <body>
 	<div class="preloader">
@@ -180,7 +173,7 @@ Kiev, Ukraine 78692
 		<div class="col-lg-7 wow fadeInUp">
 		 <div class="contact-form">
 			 <h5>CONTACT FORM</h5>
-			 <form id="gform" name="gform" method="post" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSe8VbRKOZonNTDYy3VnkzT_fn4cSvYBKPe0NfJLZk4A3zpyUQ/formResponse" target="hidden_iframe" onsubmit="submitted=true;">
+			 <form action="https://docs.google.com/forms/d/e/1FAIpQLSe8VbRKOZonNTDYy3VnkzT_fn4cSvYBKPe0NfJLZk4A3zpyUQ/formResponse" method="post">
           <div class="form-group">
             <span>Your name</span>
             <input type="text" name="entry.2005620554" required>
@@ -188,7 +181,7 @@ Kiev, Ukraine 78692
           <!-- end form-group -->
           <div class="form-group">
             <span>Your e-mail</span>
-            <input type="email" name="entry.1045781291" required>
+            <input type="text" name="entry.1045781291" required>
           </div>
           <!-- end form-group -->
           <div class="form-group">
