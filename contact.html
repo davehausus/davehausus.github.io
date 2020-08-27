@@ -40,6 +40,15 @@
 <link rel="stylesheet" href="css/swiper.min.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
+
+<script src="assets/js/jquery.min.js"></script>
+<script type="text/javascript">var submitted=false;</script>
+<script type="text/javascript">
+$('#gform').on('submit', function(e) {
+  $('#gform *').fadeOut(2000);
+  $('#gform').prepend('Your submission has been processed...');
+  });
+</script>
 </head>
 <body>
 	<div class="preloader">
@@ -171,24 +180,24 @@ Kiev, Ukraine 78692
 		<div class="col-lg-7 wow fadeInUp">
 		 <div class="contact-form">
 			 <h5>CONTACT FORM</h5>
-			 <form id="contact" name="contact" method="post">
+			 <form id="gform" name="gform" method="post" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSfR61SGBI_Zb_MBNH7NrY67FUUozb-kGsiOVTiugGuUQvT0CA/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
           <div class="form-group">
-            <input type="text" name="name" id="name" autocomplete="off" required>
+            <input type="text" name="entry.2054439525" id="entry.2054439525" autocomplete="off" required>
              <span>Your name</span>
           </div>
           <!-- end form-group -->
           <div class="form-group"> 
-            <input type="text" name="email" id="email" autocomplete="off" required>
+            <input type="text" name="entry.1479863090" id="entry.1479863090" autocomplete="off" required>
             <span>Your e-mail</span>
           </div>
           <!-- end form-group -->
           <div class="form-group"> 
-            <input type="text" name="subject" id="subject" autocomplete="off" required>
+            <input type="text" name="entry.825047116" id="entry.825047116" autocomplete="off">
             <span>Subject</span>
           </div>
           <!-- end form-group -->
           <div class="form-group"> 
-            <textarea name="message" id="message" autocomplete="off" required></textarea>
+            <textarea name="entry.831146771" id="entry.831146771" autocomplete="off" required></textarea>
             <span>Your message</span>
           </div>
           <!-- end form-group -->
@@ -199,6 +208,7 @@ Kiev, Ukraine 78692
           </div>
           <!-- end form-group -->
         </form>
+        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
         <!-- end form --> 
          <div class="form-group">
           <div id="success" class="alert alert-success wow fadeInUp" role="alert"> Your message was sent successfully! We will be in touch as soon as we can. </div>
