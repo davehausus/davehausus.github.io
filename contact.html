@@ -180,34 +180,41 @@ Kiev, Ukraine 78692
 		<div class="col-lg-7 wow fadeInUp">
 		 <div class="contact-form">
 			 <h5>CONTACT FORM</h5>
-			 <form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSfR61SGBI_Zb_MBNH7NrY67FUUozb-kGsiOVTiugGuUQvT0CA/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
+			 <form id="gform" name="gform" method="post" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSe8VbRKOZonNTDYy3VnkzT_fn4cSvYBKPe0NfJLZk4A3zpyUQ/formResponse" target="hidden_iframe" onsubmit="submitted=true;">
           <div class="form-group">
-            <input type="text" name="entry.2054439525" id="entry.2054439525">
-             <span>Your name</span>
+            <span>Your name</span>
+            <input type="text" name="entry.2005620554" required>
           </div>
           <!-- end form-group -->
-          <div class="form-group"> 
-            <input type="text" name="entry.1479863090" id="entry.1479863090">
+          <div class="form-group">
             <span>Your e-mail</span>
-          </div>
-          <!-- end form-group -->
-          <div class="form-group"> 
-            <input type="text" name="entry.825047116" id="entry.825047116">
-            <span>Subject</span>
-          </div>
-          <!-- end form-group -->
-          <div class="form-group"> 
-            <textarea name="entry.831146771" id="entry.831146771"></textarea>
-            <span>Your message</span>
+            <input type="email" name="entry.1045781291" required>
           </div>
           <!-- end form-group -->
           <div class="form-group">
-            <input type="submit" value="Submit">
+            <span>Subject</span>
+            <input type="text" name="entry.1166974658">
+          </div>
+          <!-- end form-group -->
+          <div class="form-group">
+            <span>Your message</span>
+            <textarea name="entry.839337160" required></textarea>
+          </div>
+          <!-- end form-group -->
+          <div class="form-group">
+            <button type="submit">
+<strong>Submit Now<b></b> <i></i></strong>
+         </button>
           </div>
           <!-- end form-group -->
         </form>
         <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
-        <!-- end form -->
+        <!-- end form --> 
+         <div class="form-group">
+          <div id="success" class="alert alert-success wow fadeInUp" role="alert"> Your message was sent successfully! We will be in touch as soon as we can. </div>
+        <!-- end success -->
+        <div id="error" class="alert alert-danger wow fadeInUp" role="alert"> Something went wrong, try refreshing and submitting the form again. </div>
+        <!-- end error --> 
         </div>
         <!-- end form-group -->
         </div>
