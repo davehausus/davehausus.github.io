@@ -974,19 +974,43 @@ moe
 }
 
 .header .headlines h1 {
-  font-size: 8vw;
+  font-size: 45px;
+  font-weight: 800;
+  line-height: 1;
+  margin: 0;
+  padding-bottom: 0px;
+}
+
+@media only screen and (min-width: 480px) {
+  .header .headlines h1 {
+    font-size: calc( 45px + 75 * (100vw - 480px) / (1500 - 480));
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .header .headlines h1 {
+    font-size: 120px;
+  }
+}
+
+.header .headlines h3 {
+  font-size: 25px;
   font-weight: 800;
   line-height: 1;
   margin: 0;
   padding-bottom: 5px;
 }
 
-.header .headlines h3 {
-  font-size: 4vw;
-  font-weight: 800;
-  line-height: 1;
-  margin: 0;
-  padding-bottom: 5px;
+@media only screen and (min-width: 480px) {
+  .header .headlines h3 {
+    font-size: calc( 25px + 47 * (100vw - 480px) / (1500 - 480));
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .header .headlines h3 {
+    font-size: 72px;
+  }
 }
 
 /* NAVBAR */
