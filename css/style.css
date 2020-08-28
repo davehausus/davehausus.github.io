@@ -981,6 +981,14 @@ moe
   padding-bottom: 5px;
 }
 
+.header .headlines h3 {
+  font-size: 4vw;
+  font-weight: 800;
+  line-height: 1;
+  margin: 0;
+  padding-bottom: 5px;
+}
+
 /* NAVBAR */
 .navbar {
   width: 100%;
