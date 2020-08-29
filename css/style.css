@@ -2080,6 +2080,28 @@ img {
   float: left;
 }
 
+.showreel .video .wrapper {
+  display: table;
+  width: auto;
+  position: relative;
+  width: 50%;
+}
+
+.showreel .video .playpause {
+  background-image: url(http://png-4.findicons.com/files/icons/2315/default_icon/256/media_play_pause_resume.png);
+  background-repeat: no-repeat;
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  top: 0%;
+  bottom: 0%;
+  margin: auto;
+  background-size: contain;
+  background-position: center;
+}
+
 /* TEAM */
 .team {
   width: 100%;
