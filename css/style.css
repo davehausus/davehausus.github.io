@@ -252,13 +252,13 @@ moe
 }
 
 .color-dark .left-side .logo img {
-  -webkit-filter: invert(100%);
-  filter: invert(100%);
+  -webkit-filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);
+  filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);
 }
 
 .color-dark .left-side .gotop img {
-  -webkit-filter: invert(100%);
-  filter: invert(100%);
+  -webkit-filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);
+  filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);
 }
 
 .color-light {

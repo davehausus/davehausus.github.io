@@ -111,8 +111,8 @@ button[type="submit"]{ height: 58px; display: -ms-flexbox; display: flex; -ms-fl
 			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 6px; height: 1px; width: 0; background: #fff; transition: width .25s ease;}
 			&:hover:before { width: 100%; background: #fff; transition: width .25s ease;}
 			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}}}}
-	.left-side .logo img{-webkit-filter: invert(100%); filter: invert(100%);}
-	.left-side .gotop img{-webkit-filter: invert(100%); filter: invert(100%);}}
+	.left-side .logo img{-webkit-filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%); filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);}
+	.left-side .gotop img{-webkit-filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%); filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);}}
 .color-light { background-color: #fff;}
 .color-undefined{background-color: transparent;}
 .overflow{overflow: hidden;}
