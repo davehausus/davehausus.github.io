@@ -2929,6 +2929,64 @@ img {
   margin-bottom: 20px;
 }
 
+.footer .extra {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.footer .extra a {
+  display: block;
+  position: relative;
+}
+
+.footer .extra a:hover {
+  text-decoration: none;
+}
+
+.footer .extra a:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 11px;
+  height: 1px;
+  width: 0;
+  -webkit-transition: width 0s ease, background .25s ease;
+  transition: width 0s ease, background .25s ease;
+}
+
+.footer .extra a:after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 11px;
+  height: 1px;
+  width: 0;
+  background: #152230;
+  -webkit-transition: width .25s ease;
+  transition: width .25s ease;
+}
+
+.footer .extra a:hover:before {
+  width: 100%;
+  background: #152230;
+  -webkit-transition: width .25s ease;
+  transition: width .25s ease;
+}
+
+.footer .extra a:hover:after {
+  width: 100%;
+  background: transparent;
+  -webkit-transition: all 0s ease;
+  transition: all 0s ease;
+}
+
 .footer .sub-footer {
   width: 100%;
   display: -webkit-box;

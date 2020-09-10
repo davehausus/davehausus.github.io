@@ -599,6 +599,13 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.logo{display: block; margin: 0;
 		img{height: 42px;}}
 	h5{font-size: 15px; font-weight: 600; margin-bottom: 20px;}
+	.extra{ width: 100%; display: flex; flex-wrap: wrap; margin-bottom:1rem;
+		a{display: block; position: relative;
+				&:hover{ text-decoration: none;}
+			&:before { content: ''; display: block; position: absolute; left: 0; bottom: 11px; height: 1px; width: 0; transition: width 0s ease, background .25s ease;}
+			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 11px; height: 1px; width: 0; background: $color-dark; transition: width .25s ease;}
+			&:hover:before { width: 100%; background: $color-dark; transition: width .25s ease;}
+			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}}}
 	.sub-footer{ width: 100%; display: flex; flex-wrap: wrap; margin-top: 100px; font-size: 13px;
 		ul{display: inline-block;  margin-left: 0; margin-right: auto; margin-bottom: 0; padding: 0;
 			li{display: inline-block; margin-right: 20px; padding: 0; list-style: none;
