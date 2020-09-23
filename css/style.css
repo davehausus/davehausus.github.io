@@ -451,13 +451,13 @@ moe
   font-size: 70vh;
   line-height: 1;
   font-weight: 800;
-  color: #fff;
+  color: #F95738;
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
   text-align: center;
-  opacity: 0.05;
+  opacity: 0.15;
   -webkit-transition-delay: 0.10s;
           transition-delay: 0.10s;
 }
@@ -750,7 +750,7 @@ moe
 }
 
 .reveal-effect.masker:after {
-  background-color: #eee;
+  background-color: #F3A712;
 }
 
 .reveal-effect.animated:after {
