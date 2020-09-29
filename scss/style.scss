@@ -246,7 +246,8 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		h4{ padding-right: 40%; line-height: 1.7;}}
 	.headlines{ width: 100%; margin-bottom: 50px; margin-top: 50px;
 		h1{@include fluid-type(45, 120, 480, 1500); font-weight: 800; line-height: 1; margin: 0; padding-bottom:0px; }
-		h3{@include fluid-type(25, 72, 480, 1500); font-weight: 800; line-height: 1; margin: 0; padding-bottom:5px; }}}
+		h3{@include fluid-type(25, 72, 480, 1500); font-weight: 800; line-height: 1; margin: 0; padding-bottom:5px; }
+		h4{@include fluid-type(20, 48, 480, 1500); font-weight: 400; line-height: 1; margin: 0; padding-bottom:5px; }}}
 
 
 /* NAVBAR */
@@ -445,7 +446,33 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		video{width: 100%; min-width: 100%; min-height: 100%; float: left;}
 		.wrapper{display:table; width:auto; position:relative; width:50%;}
 		.playpause {background-image:url(../../images/play.png); background-repeat:no-repeat; width:50%; height:50%; position:absolute; left:0%; right:0%; top:0%; bottom:0%; margin:auto; background-size:contain; background-position: center;}}}
+
+
+/* YOUTUBE */		
+		.embed-youtube {
+			position: relative;
+			padding-bottom: 56.25%;
+			/* padding-bottom: 56.25%; - 16:9 aspect ratio (most common) */
+			/* padding-bottom: 62.5%; - 16:10 aspect ratio */
+			/* padding-bottom: 75%; - 4:3 aspect ratio */
+			padding-top: 30px;
+			height: 0;
+			overflow: hidden;
+		}
 		
+		.embed-youtube iframe,
+		.embed-youtube object,
+		.embed-youtube embed {
+			border: 0;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+
+
 /* TEAM */
 .team{width: 100%; display: flex; flex-wrap: wrap; padding: 150px 0; color: #fff;
 	figure{display: block; margin: 0;

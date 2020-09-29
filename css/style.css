@@ -1011,6 +1011,26 @@ moe
   }
 }
 
+.header .headlines h4 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1;
+  margin: 0;
+  padding-bottom: 5px;
+}
+
+@media only screen and (min-width: 480px) {
+  .header .headlines h4 {
+    font-size: calc( 20px + 28 * (100vw - 480px) / (1500 - 480));
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .header .headlines h4 {
+    font-size: 48px;
+  }
+}
+
 /* NAVBAR */
 .navbar {
   width: 100%;
@@ -2104,6 +2124,29 @@ img {
   margin: auto;
   background-size: contain;
   background-position: center;
+}
+
+/* YOUTUBE */
+.embed-youtube {
+  position: relative;
+  padding-bottom: 56.25%;
+  /* padding-bottom: 56.25%; - 16:9 aspect ratio (most common) */
+  /* padding-bottom: 62.5%; - 16:10 aspect ratio */
+  /* padding-bottom: 75%; - 4:3 aspect ratio */
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+}
+
+.embed-youtube iframe,
+.embed-youtube object,
+.embed-youtube embed {
+  border: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* TEAM */
