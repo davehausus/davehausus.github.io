@@ -993,7 +993,7 @@ moe
 
 .header .headlines h3 {
   font-size: 25px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1;
   margin: 0;
   padding-bottom: 5px;
@@ -1012,22 +1012,44 @@ moe
 }
 
 .header .headlines h4 {
-  font-size: 20px;
-  font-weight: 400;
+  font-size: 38px;
+  font-weight: 800;
   line-height: 1;
   margin: 0;
-  padding-bottom: 5px;
+  padding-bottom: 80px;
+  color: #152230;
 }
 
 @media only screen and (min-width: 480px) {
   .header .headlines h4 {
-    font-size: calc( 20px + 28 * (100vw - 480px) / (1500 - 480));
+    font-size: calc( 38px + 14 * (100vw - 480px) / (1500 - 480));
   }
 }
 
 @media only screen and (min-width: 1500px) {
   .header .headlines h4 {
-    font-size: 48px;
+    font-size: 52px;
+  }
+}
+
+.header .headlines h6 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+  padding-bottom: 20px;
+  color: #F3A712;
+}
+
+@media only screen and (min-width: 480px) {
+  .header .headlines h6 {
+    font-size: calc( 20px + 5 * (100vw - 480px) / (1500 - 480));
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .header .headlines h6 {
+    font-size: 25px;
   }
 }
 
@@ -1770,6 +1792,7 @@ img {
 .case-detail p {
   display: block;
   margin-bottom: 50px;
+  padding-right: 35px;
 }
 
 /* FEATURED SERVICES */
