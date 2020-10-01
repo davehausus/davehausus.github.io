@@ -974,9 +974,16 @@ moe
 .header .headlines h1 {
   font-size: 45px;
   font-weight: 800;
-  line-height: 1;
+  line-height: 1.1;
   margin: 0;
   padding-bottom: 0px;
+  background-color: #152230;
+  background-image: linear-gradient(45deg, #152230, #5386E4);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 }
 
 @media only screen and (min-width: 480px) {
