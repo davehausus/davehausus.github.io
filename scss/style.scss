@@ -244,7 +244,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.page-title{ width: 100%; margin-bottom: 100px; margin-top: 50px;
 		h2{font-weight: 700; font-size: 8vw; margin-bottom: 20px;}
 		h4{ padding-right: 40%; line-height: 1.7;}}
-	.headlines{ width: 100%; margin-bottom: 50px; margin-top: 50px;
+	.headlines{ width: 100%; margin-bottom: 50px; margin-top: 80px;
 		h1{@include fluid-type(45, 120, 480, 1500); font-weight: 800; line-height: 1.1; margin: 0; padding-bottom:0px;
 			background-color: #152230;
 			background-image: linear-gradient(45deg, #152230, #5386E4);
@@ -256,7 +256,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		}
 		h2{@include fluid-type(25, 72, 480, 1500); font-weight: 600; line-height: 1; margin: 0; padding-bottom:5px; }
 		h3{@include fluid-type(25, 72, 480, 1500); font-weight: 400; line-height: 1; margin: 0; padding-bottom:5px; }
-		h4{@include fluid-type(38, 52, 480, 1500); font-weight: 800; line-height: 1; margin: 0; padding-bottom:1em; color:#152230;}
+		h4{@include fluid-type(38, 52, 480, 1500); font-weight: 800; line-height: 1; margin: 0; padding-bottom:0; color:#152230;}
 		h6{@include fluid-type(20, 25, 480, 1500); font-weight: 600; line-height: 1; margin: 0; padding-bottom:20px;
 			background-color: #F3A712;
 			background-image: linear-gradient(45deg, #F3A712, #F95738);

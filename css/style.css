@@ -968,7 +968,7 @@ moe
 .header .headlines {
   width: 100%;
   margin-bottom: 50px;
-  margin-top: 50px;
+  margin-top: 80px;
 }
 
 .header .headlines h1 {
@@ -1043,7 +1043,7 @@ moe
   font-weight: 800;
   line-height: 1;
   margin: 0;
-  padding-bottom: 1em;
+  padding-bottom: 0;
   color: #152230;
 }
 
