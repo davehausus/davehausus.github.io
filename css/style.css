@@ -998,9 +998,29 @@ moe
   }
 }
 
-.header .headlines h3 {
+.header .headlines h2 {
   font-size: 25px;
   font-weight: 600;
+  line-height: 1;
+  margin: 0;
+  padding-bottom: 5px;
+}
+
+@media only screen and (min-width: 480px) {
+  .header .headlines h2 {
+    font-size: calc( 25px + 47 * (100vw - 480px) / (1500 - 480));
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .header .headlines h2 {
+    font-size: 72px;
+  }
+}
+
+.header .headlines h3 {
+  font-size: 25px;
+  font-weight: 400;
   line-height: 1;
   margin: 0;
   padding-bottom: 5px;
@@ -1045,7 +1065,13 @@ moe
   line-height: 1;
   margin: 0;
   padding-bottom: 20px;
-  color: #F3A712;
+  background-color: #F3A712;
+  background-image: linear-gradient(45deg, #F3A712, #F95738);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 }
 
 @media only screen and (min-width: 480px) {

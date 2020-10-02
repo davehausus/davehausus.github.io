@@ -254,9 +254,18 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 			-webkit-text-fill-color: transparent; 
 			-moz-text-fill-color: transparent;
 		}
-		h3{@include fluid-type(25, 72, 480, 1500); font-weight: 600; line-height: 1; margin: 0; padding-bottom:5px; }
+		h2{@include fluid-type(25, 72, 480, 1500); font-weight: 600; line-height: 1; margin: 0; padding-bottom:5px; }
+		h3{@include fluid-type(25, 72, 480, 1500); font-weight: 400; line-height: 1; margin: 0; padding-bottom:5px; }
 		h4{@include fluid-type(38, 52, 480, 1500); font-weight: 800; line-height: 1; margin: 0; padding-bottom:80px; color:#152230;}
-		h6{@include fluid-type(20, 25, 480, 1500); font-weight: 600; line-height: 1; margin: 0; padding-bottom:20px; color:#F3A712;}}}
+		h6{@include fluid-type(20, 25, 480, 1500); font-weight: 600; line-height: 1; margin: 0; padding-bottom:20px;
+			background-color: #F3A712;
+			background-image: linear-gradient(45deg, #F3A712, #F95738);
+			background-size: 100%;
+			-webkit-background-clip: text;
+			-moz-background-clip: text;
+			-webkit-text-fill-color: transparent; 
+			-moz-text-fill-color: transparent;
+		}}}
 
 		
 
