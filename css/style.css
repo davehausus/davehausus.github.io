@@ -981,7 +981,7 @@ moe
   background-image: linear-gradient(45deg, #152230, #5386E4);
   background-size: 100%;
   -webkit-background-clip: text;
-  -moz-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
 }
@@ -1069,7 +1069,7 @@ moe
   background-image: linear-gradient(45deg, #F3A712, #F95738);
   background-size: 100%;
   -webkit-background-clip: text;
-  -moz-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
 }
@@ -1751,6 +1751,8 @@ moe
 .project-box .project-image {
   width: 100%;
   display: block;
+  -webkit-filter: brightness(100%);
+  filter: brightness(100%);
 }
 
 .project-box .project-image a {
@@ -1760,6 +1762,13 @@ moe
 .project-box .project-image a
 img {
   width: 100%;
+}
+
+.project-box img:hover {
+  -webkit-filter: brightness(60%);
+  filter: brightness(60%);
+  -webkit-transition: all 0.10s ease;
+  transition: all 0.10s ease;
 }
 
 .project-box .project-content {
@@ -1777,7 +1786,8 @@ img {
 }
 
 .project-box .project-content h3 a:hover {
-  text-decoration: none;
+  -webkit-text-decoration-color: #F3A712;
+          text-decoration-color: #F3A712;
 }
 
 .project-box .project-content small {

@@ -251,6 +251,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 			background-size: 100%;
 			-webkit-background-clip: text;
 			-moz-background-clip: text;
+			background-clip: text;
 			-webkit-text-fill-color: transparent; 
 			-moz-text-fill-color: transparent;
 		}
@@ -263,6 +264,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 			background-size: 100%;
 			-webkit-background-clip: text;
 			-moz-background-clip: text;
+			background-clip: text;
 			-webkit-text-fill-color: transparent; 
 			-moz-text-fill-color: transparent;
 		}}}
@@ -392,11 +394,23 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 .project-box{width: 100%; display: block;
 	.project-image{width: 100%; display: block;
 		a{display: block;}a
-		img{width: 100%;}}
+		img{width: 100%;}
+		-webkit-filter: brightness(100%);
+		filter: brightness(100%);}
+		img:hover {
+		-webkit-filter: brightness(60%);
+		filter: brightness(60%);
+		-webkit-transition: all 0.10s ease;
+		-moz-transition: all 0.10s ease;
+		-o-transition: all 0.10s ease;
+		-ms-transition: all 0.10s ease;
+		transition: all 0.10s ease;
+	}
 	.project-content{width: 100%; display: block;
 		h3{font-size: 27px; display: block;
 			a{display: block;
-				&:hover{text-decoration: none;}}}
+				&:hover{
+				text-decoration-color: #F3A712;}}}
 		small{display: block;}}}
 
 
