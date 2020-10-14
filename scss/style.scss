@@ -694,6 +694,11 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.works .titles{padding-right: 0;}
 }
 
+@media (min-width: 992px) {
+	.hamburger-menu{display: none;}
+}
+
+
 
 /* RESPONSIVE TABLET FIXES */
 @media only screen and (max-width: 991px), only screen and (max-device-width: 991px) {
