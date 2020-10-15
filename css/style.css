@@ -1019,7 +1019,7 @@ moe
 }
 
 .header .headlines h3 {
-  font-size: 25px;
+  font-size: 28px;
   font-weight: 400;
   line-height: 1;
   margin: 0;
@@ -1028,13 +1028,13 @@ moe
 
 @media only screen and (min-width: 480px) {
   .header .headlines h3 {
-    font-size: calc( 25px + 47 * (100vw - 480px) / (1500 - 480));
+    font-size: calc( 28px + 34 * (100vw - 480px) / (1500 - 480));
   }
 }
 
 @media only screen and (min-width: 1500px) {
   .header .headlines h3 {
-    font-size: 72px;
+    font-size: 62px;
   }
 }
 
