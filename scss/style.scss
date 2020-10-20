@@ -409,8 +409,9 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.project-content{width: 100%; display: block;
 		h3{font-size: 27px; display: block;
 			a{display: block;
+			  transition: none;
 				&:hover{
-				text-decoration-color: #F3A712;}}}
+				text-decoration-color: #bbd3ff;}}}
 		small{display: block;}}}
 
 

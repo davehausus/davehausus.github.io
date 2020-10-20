@@ -1783,11 +1783,13 @@ img {
 
 .project-box .project-content h3 a {
   display: block;
+  -webkit-transition: none;
+  transition: none;
 }
 
 .project-box .project-content h3 a:hover {
-  -webkit-text-decoration-color: #F3A712;
-          text-decoration-color: #F3A712;
+  -webkit-text-decoration-color: #bbd3ff;
+          text-decoration-color: #bbd3ff;
 }
 
 .project-box .project-content small {
