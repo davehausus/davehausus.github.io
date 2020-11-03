@@ -2341,6 +2341,32 @@ img {
   width: 100%;
 }
 
+.case-dark {
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+.case-dark blockquote {
+  display: inline-block;
+  padding: 40px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  background: #00583C;
+  position: relative;
+  color: #fff;
+  background-size: contain;
+}
+
+.case-dark blockquote p {
+  display: block;
+  margin-bottom: 0px;
+}
+
+.case-dark blockquote h5 {
+  font-weight: 600;
+  margin: 0;
+}
+
 .post-body {
   width: 100%;
   margin-bottom: 50px;

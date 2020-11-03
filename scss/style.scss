@@ -533,6 +533,10 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 .post-header{width: 100%; display: flex; flex-wrap: wrap;
 	.post-image{width: 100%; margin: 0;
 		img{width: 100%;}}}
+.case-dark{width: 100%; margin-bottom: 0px;
+	blockquote{    display: inline-block; padding: 40px; margin-top: 20px; margin-bottom: 0px; background: #00583C; position: relative; color: #fff; background-size: contain;
+		p{display: block; margin-bottom: 0px;}
+		h5{font-weight: 600; margin: 0;}}}
 .post-body{width: 100%; margin-bottom: 50px;
 			.avatar{width: 100%; margin-bottom: 20px; font-size: 13px;
 				img{ height: 60px; margin-right: 20px; border-radius: 50%;}
