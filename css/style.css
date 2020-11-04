@@ -2351,9 +2351,9 @@ img {
   padding: 40px;
   margin-top: 20px;
   margin-bottom: 0px;
-  background: #00583C;
+  background: #A9EBD0;
   position: relative;
-  color: #fff;
+  color: #000;
   background-size: contain;
 }
 
@@ -2365,6 +2365,7 @@ img {
 .case-dark blockquote h5 {
   font-weight: 600;
   margin: 0;
+  margin-bottom: 15px;
 }
 
 .post-body {
