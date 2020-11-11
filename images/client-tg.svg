@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120px" height="60px" viewBox="0 0 120 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>client-tg</title>
+    <g id="client-tg" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Raleway-Regular, Raleway" font-size="15" font-weight="normal" letter-spacing="0.154184192" line-spacing="13">
+        <text id="logo" fill="#FFFFFF">
+            <tspan x="0" y="44">SCOTTS VALLEY</tspan>
+            <tspan x="0.405" y="57.0148773" font-family="Raleway-Black, Raleway" font-weight="700" letter-spacing="-0.363461538">TOWN GREEN</tspan>
+        </text>
+    </g>
+</svg>
