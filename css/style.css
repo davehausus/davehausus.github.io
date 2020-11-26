@@ -1059,6 +1059,30 @@ moe
   }
 }
 
+.header .headlines h5 {
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1;
+  margin: 50px 0 0;
+  padding-bottom: 5px;
+}
+
+@media only screen and (min-width: 480px) {
+  .header .headlines h5 {
+    font-size: calc( 21px + 13 * (100vw - 480px) / (1500 - 480));
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .header .headlines h5 {
+    font-size: 34px;
+  }
+}
+
+.header .headlines h5 p {
+  margin: 0 0 50px;
+}
+
 .header .headlines h6 {
   font-size: 20px;
   font-weight: 600;
