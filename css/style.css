@@ -1834,10 +1834,24 @@ img {
 .case-detail figure {
   display: block;
   margin-bottom: 50px;
+  -webkit-filter: brightness(100%);
+  filter: brightness(100%);
 }
 
-.case-detail figure img {
+.case-detail figure a {
+  display: block;
+}
+
+.case-detail figure a
+img {
   width: 100%;
+}
+
+.case-detail a:hover {
+  -webkit-filter: brightness(90%);
+  filter: brightness(90%);
+  -webkit-transition: all 0.10s ease;
+  transition: all 0.10s ease;
 }
 
 .case-detail h6 {
@@ -1874,6 +1888,10 @@ img {
       flex-wrap: wrap;
   padding: 150px 0;
   color: #fff;
+}
+
+.featured-services .titles {
+  padding-right: 20%;
 }
 
 .featured-services .col-lg-3:nth-child(2n+2) {

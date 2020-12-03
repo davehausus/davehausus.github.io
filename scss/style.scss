@@ -421,7 +421,19 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 /* CASE DETAIL */
 .case-detail{width: 100%; display: flex; flex-wrap: wrap; padding: 120px 0;
 	figure{display: block; margin-bottom: 50px;
-		img{width: 100%;}}
+		a{display: block;}a
+		img{width: 100%;}
+		-webkit-filter: brightness(100%);
+		filter: brightness(100%);}
+		a:hover {
+		-webkit-filter: brightness(90%);
+		filter: brightness(90%);
+		-webkit-transition: all 0.10s ease;
+		-moz-transition: all 0.10s ease;
+		-o-transition: all 0.10s ease;
+		-ms-transition: all 0.10s ease;
+		transition: all 0.10s ease;
+		}
 	h6{font-size: 16px; font-weight: 600; margin-bottom: 5px;}
 	h5{font-size: 20px; font-weight: 600; margin-bottom: 15px;}
 	h3{font-size: 50px; font-weight: 800; margin-top: 100px;}
@@ -430,6 +442,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 
 /* FEATURED SERVICES */
 .featured-services{width: 100%; display: flex; flex-wrap: wrap; padding: 150px 0; color: #fff;
+	.titles{padding-right: 20%;}
 	.col-lg-3:nth-child(2n+2){margin-top: 134px;}
 	figure{width: 100%; display: flex; flex-wrap: wrap; flex-direction: column; position: relative; margin: 15px 0; border: 1px solid rgba(255,255,255,0.05);
 		&:hover{ background: #fff;
