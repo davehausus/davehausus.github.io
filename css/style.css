@@ -2949,7 +2949,7 @@ img {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  padding-top: 150px;
+  padding-top: 0px;
 }
 
 .contact h5 {
