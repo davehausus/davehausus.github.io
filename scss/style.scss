@@ -703,6 +703,22 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 @keyframes countdown { from { stroke-dashoffset: 113px; } to { stroke-dashoffset: 0; } }
 
 
+/* MOUSE SCROLL */
+.icon-scroll{text-align: center; margin: 15px -50px 0px 0px;
+}
+
+#mouse-button {
+	animation: mouse-button .8s ease-in-out infinite alternate;
+	transform-origin: top;
+}
+
+@keyframes mouse-button{
+	from{transform: translateY(0%);}
+	to{transform: translateY(35%);}
+}
+
+
+
 
 /* MEDIUM FIXES */
 @media only screen and (max-width: 1199px), only screen and (max-device-width: 1199px) {
@@ -712,8 +728,10 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.slider{ width:100%; margin-right: 0;}
 	.slider .swiper-container .slide-inner{padding: 0 60px;}
 	.works .titles{padding-right: 0;}
+	.icon-scroll{text-align: center; margin: 15px 0px 0px;}
 }
 
+/* NO HAMBURGER MENU IN DESKTOP */
 @media (min-width: 992px) {
 	.hamburger-menu{display: none;}
 }
@@ -749,6 +767,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.footer .career h2 { font-size: 6vw;}
 	input[type="text"]{border-radius: 0 !important; -webkit-appearance: none;}
 	textarea{border-radius: 0 !important; -webkit-appearance: none;}
+	.icon-scroll{text-align: center; margin: 15px 0px 0px;}
 }
 
 
@@ -781,6 +800,5 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.main-services .titles{padding: 0;}
 	.footer .career h2 {font-size: 9vw;}
 	.footer .sub-footer ul{margin-bottom: 15px;}
+	.icon-scroll{text-align: center; margin: 15px 0px 0px;}
 }
-
-
