@@ -3439,6 +3439,9 @@ img {
   .navbar .phone {
     display: none;
   }
+  .slider {
+    height: 490px;
+  }
   .slider .swiper-container .slide-inner {
     padding: 0 30px;
   }
@@ -3520,6 +3523,13 @@ img {
   .icon-scroll {
     text-align: center;
     margin: 15px 0px 0px;
+  }
+  .header .headlines {
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+  .featured-services .col-lg-3:nth-child(2n+2) {
+    margin-top: 0px;
   }
 }
 /*# sourceMappingURL=style.css.map */
