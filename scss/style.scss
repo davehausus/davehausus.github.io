@@ -94,6 +94,23 @@ button[type="submit"]{ height: 58px; display: -ms-flexbox; display: flex; -ms-fl
 		i{width: 0; height: 0; display: inline-block; margin-left: 0; margin-right: auto; border-style: solid; border-width: 4px 0 4px 4px; border-color: transparent transparent transparent #fff; opacity: 1; margin-top: 5px;}
 	&:hover b{width:50px; margin-left: 20px;}
 &:hover i{ opacity: 0;}}
+button[type="contact"]{ background-color: #F95738;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+	padding: 0 8px 3px;
+	border: 0;
+    text-align: center;
+    height: 32px;
+    padding: 0 .5rem .125rem .5625rem;
+	display: block;
+	transition: all 0.50s ease;
+	&:hover{background-color: #F3A712;}
+	strong{justify-content: center; align-content: center; font-size: 15px; font-weight: 600; padding: 0 30px; color: #fff;
+		&:hover{text-decoration: none;}}}
+
 
 
 
@@ -330,8 +347,8 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		h2{ font-size: 52px; font-weight: 600; color: #fff; margin-left: -3px;}
 		.link{display: block; margin-top: 50px;
 			a{display: inline-block; font-weight: 600; color: #fff; font-size: 13px; position: relative;
-				&:before{content: ""; width: 100%; height: 6px; background: #fff; position: absolute; left: 0; bottom: 0; opacity: 0.3;}
-				&:after{content: ""; width: 0; height: 6px; background: #fff; position: absolute; right: 0; bottom: 0; @include transition;}
+				&:before{content: ""; width: 100%; height: 6px; background: #F3A712; position: absolute; left: 0; bottom: 0; opacity: 0.4;}
+				&:after{content: ""; width: 0; height: 6px; background: #F3A712; position: absolute; right: 0; bottom: 0; @include transition;}
 				&:hover{text-decoration: none;}
 				&:hover:after{width: 100%;}}}}}}
 
@@ -790,8 +807,8 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.logos ul li:nth-child(9){display: none;}
 	.post-sticky .post-content{padding: 20px 30px;}
 	.post-sticky .post-content .post-link{display: none;}
-	.blog .post .post-content .post-title{font-size: 6vw;}
-	.post-body .post-title{font-size: 6vw;}
+	.blog .post .post-content .post-title{font-size: 8vw;}
+	.post-body .post-title{font-size: 8vw;}
 	.post-navigation a:nth-child(1){width: 100%; border-right: 0; border-bottom: 1px solid #eee;}
 	.post-navigation a:nth-child(2){width: 100%;}
 	.work-with-us h2 { font-size: 9vw;}

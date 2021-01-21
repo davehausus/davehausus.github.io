@@ -131,8 +131,11 @@ Mexico<br>
       <ul>
         <li><a href="about.html">About me</a></li>
         <li><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
-
-        <li><a href="contact.html">Contact</a></li>
+        <li>
+          <button type="contact" onclick="location.href='contact.html'">
+              <strong>Contact</strong>
+          </button>
+        </li>
       </ul>
     </div>
     <!-- end main-menu -->
@@ -169,21 +172,21 @@ Mexico<br>
 		<h5>MAIL</h5>
 			<address>
         <a href="#">davehausus@gmail.com</a>
-</address>
+      </address>
 		</div>
 		<!-- end col-6 -->
 		<div class="col-md-6 wow fadeInUp">
 		<h5>PHONE</h5>
 			<address>+52 1 331 600 6116<br>
-</address>
+      </address>
 		</div>
 		<!-- end col-6 -->
 		<div class="col-lg-7 wow fadeInUp">
 		 <div class="contact-form">
        <h5>CONTACT FORM</h5>
        <script type="text/javascript">var submitted=false;</script>
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
-onload="if(submitted) {window.location='thankyou.html';}"></iframe>
+        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
+        onload="if(submitted) {window.location='thankyou.html';}"></iframe>
 			 <form action="https://docs.google.com/forms/d/e/1FAIpQLSe8VbRKOZonNTDYy3VnkzT_fn4cSvYBKPe0NfJLZk4A3zpyUQ/formResponse" method="post" target="hidden_iframe" onsubmit="submitted=true;">
           <div class="form-group">
             <span>Your name *</span>
@@ -207,8 +210,8 @@ onload="if(submitted) {window.location='thankyou.html';}"></iframe>
           <!-- end form-group -->
           <div class="form-group">
             <button type="submit">
-<strong>Submit Now<b></b> <i></i></strong>
-         </button>
+              <strong>Submit Now<b></b> <i></i></strong>
+            </button>
           </div>
           <!-- end form-group -->
         </form>
