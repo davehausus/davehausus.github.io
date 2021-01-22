@@ -671,7 +671,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	address{display: block; margin-bottom: 50px;
 		p{margin: 0;}
 		a{text-decoration: underline;}}
-	.contact-form{display: block; margin-top: 50px;
+	.contact-form{display: block; margin-top: 0px;
 		h5{margin-bottom: 40px;}
 	#contact{display: block; 
 		.form-group{display: block; position: relative; margin-bottom: 35px;
@@ -685,7 +685,8 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		#success,  #error {display:none; float:left;}
 		#error {background: red; color: #fff;}
 		#success{background: green; color: #fff;} 
-		.alert{border: none; border-radius: 0; padding: 20px 30px; }}}
+		.alert{border: none; border-radius: 0; padding: 20px 30px; }}
+	.contact-info{padding-left: 70px;}}
 
 
 /* FOOTER */
@@ -821,4 +822,6 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.icon-scroll{text-align: center; margin: 15px 0px 0px;}
 	.header .headlines {margin-bottom: 30px; margin-top: 20px;}
 	.featured-services .col-lg-3:nth-child(2n+2) {margin-top: 0px;}
+	.featured-services .titles {padding-right: 0%;}
+	.contact .contact-info{padding-top: 80px; padding-left: 15px;}
 }

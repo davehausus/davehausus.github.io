@@ -3010,7 +3010,7 @@ img {
 
 .contact .contact-form {
   display: block;
-  margin-top: 50px;
+  margin-top: 0px;
 }
 
 .contact .contact-form h5 {
@@ -3099,6 +3099,10 @@ img {
   border: none;
   border-radius: 0;
   padding: 20px 30px;
+}
+
+.contact .contact-info {
+  padding-left: 70px;
 }
 
 /* FOOTER */
@@ -3567,6 +3571,13 @@ img {
   }
   .featured-services .col-lg-3:nth-child(2n+2) {
     margin-top: 0px;
+  }
+  .featured-services .titles {
+    padding-right: 0%;
+  }
+  .contact .contact-info {
+    padding-top: 80px;
+    padding-left: 15px;
   }
 }
 /*# sourceMappingURL=style.css.map */
