@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Emergency Animation</title>
+  <script src="https://unpkg.com/@rive-app/canvas@2.13.2"></script>
+</head>
+<body>
+  <canvas id="riveCanvas" width="500" height="500"></canvas>
+  <script>
+    new rive.Rive({
+      src: "emergency_v3.riv",
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+    });
+  </script>
+</body>
+</html>
