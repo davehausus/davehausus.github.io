@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Satellite Animation</title>
+  <script src="https://unpkg.com/@rive-app/webgl2"></script>
+</head>
+<body>
+  <canvas id="riveCanvas" width="500" height="500"></canvas>
+  <script>
+    new rive.Rive({
+      src: "transparency.riv",
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+    });
+  </script>
+</body>
+</html>
