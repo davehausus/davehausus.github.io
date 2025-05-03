@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Emergency Animation</title>
+  <script src="https://unpkg.com/@rive-app/webgl2"></script>
+  <style>
+    body {
+      background-color: #2E3F92;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="riveCanvas" width="428" height="926"></canvas>
+  <script>
+    const riveInstance = new rive.Rive({
+      src: "emergency_devices.riv", // Replace with the actual path to your .riv file
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+      stateMachines: ["State Machine 1"],
+      onLoad: () => {
+        // Get inputs from the state machine
+        const inputs = riveInstance.stateMachineInputs("State Machine 1");
+  
+        // Find the trigger inputs for each timeline
+        const timeline1Trigger = inputs.find(input => input.name === "Timeline 1");
+        const timeline2Trigger = inputs.find(input => input.name === "Timeline 2");
+  
+        // Fire Timeline 1 trigger
+        if (timeline1Trigger && timeline1Trigger.type === "trigger") {
+          timeline1Trigger.fire();
+        }
+  
+        // Fire Timeline 2 after 1000 ms
+        setTimeout(() => {
+          if (timeline2Trigger && timeline2Trigger.type === "trigger") {
+            timeline2Trigger.fire();
+          }
+        }, 1000);
+      }
+    });
+  </script>
+</body>
+</html>
