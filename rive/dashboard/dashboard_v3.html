@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard v1</title>
+  <script src="https://unpkg.com/@rive-app/webgl2"></script>
+</head>
+<body>
+  <canvas id="riveCanvas" width="428" height="926"></canvas>
+  <script>
+    new rive.Rive({
+      src: "dashboard_v3.riv",
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+    });
+  </script>
+</body>
+</html>
