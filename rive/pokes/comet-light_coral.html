@@ -8,10 +8,10 @@
   <style>
     body {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
       height: 100vh;
-      background: #f9f9f9;
+      background: #f5f5f5;
     }
     canvas {
       border: 1px solid #ccc;
@@ -20,43 +20,44 @@
   </style>
 </head>
 <body>
-  <!-- Two canvases, one for each artboard -->
-  <canvas id="rive1" width="380" height="380"></canvas>
+  <canvas id="riveCanvas" width="400" height="400"></canvas>
 
   <script>
-    // Load first artboard
-    const rive1 = new rive.Rive({
-      src: "comet-light_coral.riv", // Your Rive file
-      canvas: document.getElementById("rive1"),
+    let riveInstance;
+
+    // Load the "Artboard" artboard and "State Machine 1"
+    riveInstance = new rive.Rive({
+      src: "comet-light_coral.riv", // Replace with your .riv file path
+      canvas: document.getElementById("riveCanvas"),
       autoplay: true,
-      artboard: "Artboard", // First artboard
-      stateMachines: ["State Machine 1"], // State machine in Artboard1
+      artboard: "Artboard", // Explicitly set the artboard
+      stateMachines: ["State Machine 1"], // The single state machine
       onLoad: () => {
-        console.log("Artboard loaded");
+        console.log("Rive file loaded: Artboard + State Machine 1");
       }
     });
 
-
-    // Function to randomize exits
+    // Randomize exits by triggering the "exit" input in State Machine 1
     function randomizeExit() {
-      const pick = Math.random() < 0.5 ? rive1 ;
-      const sm = pick.stateMachineInputs(
-        pick.artboard === "Artboard" ? "State Machine 1"
-      );
+      if (!riveInstance) return;
 
-      // Look for an input named "exit" or trigger one
-      const exitInput = sm.find(input => input.name.toLowerCase().includes("exit"));
+      const inputs = riveInstance.stateMachineInputs("State Machine 1");
+      const exitInput = inputs.find(input =>
+        input.name.toLowerCase().includes("exit")
+      );
 
       if (exitInput) {
         if (exitInput.type === "trigger") {
           exitInput.fire();
+          console.log("Exit trigger fired");
         } else if (exitInput.type === "boolean") {
           exitInput.value = !exitInput.value;
+          console.log("Exit boolean toggled");
         }
       }
     }
 
-    // Trigger random exit every 3s
+    // Call randomizeExit every 3 seconds
     setInterval(randomizeExit, 3000);
   </script>
 </body>
