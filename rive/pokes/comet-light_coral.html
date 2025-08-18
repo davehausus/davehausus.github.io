@@ -2,17 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Light Coral Poke</title>
-  <script src="https://unpkg.com/@rive-app/webgl2"></script>
+  <script src="https://unpkg.com/@rive-app/canvas@latest"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 100vh;
+      background: #f9f9f9;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      border-radius: 12px;
+    }
+  </style>
 </head>
 <body>
-  <canvas id="riveCanvas" width="380" height="380"></canvas>
+  <!-- Two canvases, one for each artboard -->
+  <canvas id="rive1" width="380" height="380"></canvas>
+  <canvas id="rive2" width="380" height="380"></canvas>
+
   <script>
-    new rive.Rive({
-      src: "comet-light_coral.riv",
-      canvas: document.getElementById("riveCanvas"),
+    // Load first artboard
+    const rive1 = new rive.Rive({
+      src: "comet-light_coral.riv", // Your Rive file
+      canvas: document.getElementById("rive1"),
       autoplay: true,
+      artboard: "Artboard", // First artboard
+      stateMachines: ["StateMachine1"], // State machine in Artboard1
+      onLoad: () => {
+        console.log("Artboard1 loaded");
+      }
     });
+
+
+    // Function to randomize exits
+    function randomizeExit() {
+      const pick = Math.random() < 0.5 ? rive1 : rive2;
+      const sm = pick.stateMachineInputs(
+        pick.artboard === "Artboard1" ? "StateMachine1"
+      );
+
+      // Look for an input named "exit" or trigger one
+      const exitInput = sm.find(input => input.name.toLowerCase().includes("exit"));
+
+      if (exitInput) {
+        if (exitInput.type === "trigger") {
+          exitInput.fire();
+        } else if (exitInput.type === "boolean") {
+          exitInput.value = !exitInput.value;
+        }
+      }
+    }
+
+    // Trigger random exit every 3s
+    setInterval(randomizeExit, 3000);
   </script>
 </body>
 </html>
