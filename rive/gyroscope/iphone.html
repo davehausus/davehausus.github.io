@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rive + Gyroscope</title>
+  <script src="https://unpkg.com/@rive-app/canvas@latest"></script>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    canvas { width: 500vw; height: 500vh; display: block; }
+  </style>
+</head>
+<body>
+  <canvas id="riveCanvas"></canvas>
+  <script>
+    const riveFile = new rive.Rive({
+      src: "tag_gyro.riv",
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+      stateMachines: ["StateMachine1"],
+      onLoad: () => {
+        console.log("Rive loaded");
+      },
+    });
+
+    // Request permission for iOS 13+ (required)
+    function requestPermission() {
+      if (typeof DeviceOrientationEvent.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === "granted") {
+              window.addEventListener("deviceorientation", handleOrientation);
+            }
+          })
+          .catch(console.error);
+      } else {
+        window.addEventListener("deviceorientation", handleOrientation);
+      }
+    }
+
+    // Example mapping
+    function handleOrientation(event) {
+      const { alpha, beta, gamma } = event; // rotation around z, x, y
+      const smInputs = riveFile.stateMachineInputs("StateMachine1");
+
+      const tiltX = smInputs.find(i => i.name === "tiltX");
+      const tiltY = smInputs.find(i => i.name === "tiltY");
+
+      if (tiltX) tiltX.value = gamma / 90; // normalize [-1, 1]
+      if (tiltY) tiltY.value = beta / 90;
+    }
+
+    // Call it once the user taps
+    document.body.addEventListener("click", requestPermission);
+  </script>
+</body>
+</html>
