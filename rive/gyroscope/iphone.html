@@ -2,55 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Rive + Gyroscope</title>
-  <script src="https://unpkg.com/@rive-app/webgl2"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rive Gyroscope Control</title>
+  <script src="https://unpkg.com/@rive-app/canvas@2.21.7"></script>
   <style>
-    body { margin: 0; overflow: hidden; }
-    canvas { width: 500vw; height: 500vh; display: block; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #101010;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    canvas {
+      width: 500px;
+      height: 500px;
+      display: block;
+      background: radial-gradient(circle at 50% 50%, #1e1e1e 0%, #0d0d0d 100%);
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    }
+    #permissionBtn {
+      position: absolute;
+      bottom: 2rem;
+      background: #fff;
+      border: none;
+      font-size: 1.1rem;
+      padding: 0.8rem 1.2rem;
+      border-radius: 0.8rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <canvas id="riveCanvas"></canvas>
+  <canvas id="riveCanvas" width="500" height="500"></canvas>
+  <button id="permissionBtn" style="display:none;">Enable Motion</button>
+
   <script>
-    const riveFile = new rive.Rive({
-      src: "tag_gyro.riv",
-      canvas: document.getElementById("riveCanvas"),
+    const riveFile = "tag_gyro.riv"; // your 500×500 artboard file
+    const stateMachineName = "State Machine 1";
+
+    const canvas = document.getElementById("riveCanvas");
+    const button = document.getElementById("permissionBtn");
+
+    // Load the Rive animation
+    const riveInstance = new rive.Rive({
+      src: riveFile,
+      canvas: canvas,
       autoplay: true,
-      stateMachines: ["StateMachine1"],
-      onLoad: () => {
-        console.log("Rive loaded");
-      },
+      stateMachines: stateMachineName,
+      fit: rive.Fit.CONTAIN,
+      onLoad: () => console.log("✅ Rive loaded:", riveFile),
     });
 
-    // Request permission for iOS 13+ (required)
-    function requestPermission() {
+    // Update function for tiltX (and optional tiltY)
+    function updateTilt(beta, gamma) {
+      // Normalize device tilt to -1..1
+      const normalizedX = Math.max(-1, Math.min(1, gamma / 45)); // left/right
+      const normalizedY = Math.max(-1, Math.min(1, beta / 45));  // forward/back
+
+      const inputs = riveInstance.stateMachineInputs(stateMachineName);
+      const tiltX = inputs.find(i => i.name === "tiltX");
+      const tiltY = inputs.find(i => i.name === "tiltY");
+
+      if (tiltX) tiltX.value = normalizedX;
+      if (tiltY) tiltY.value = normalizedY;
+    }
+
+    // --- Request and handle motion permissions (for iPhone) ---
+    function setupMotion() {
       if (typeof DeviceOrientationEvent.requestPermission === "function") {
-        DeviceOrientationEvent.requestPermission()
-          .then(permissionState => {
-            if (permissionState === "granted") {
+        button.style.display = "block";
+        button.onclick = () => {
+          DeviceOrientationEvent.requestPermission().then(state => {
+            if (state === "granted") {
+              button.style.display = "none";
               window.addEventListener("deviceorientation", handleOrientation);
             }
-          })
-          .catch(console.error);
+          }).catch(console.error);
+        };
       } else {
         window.addEventListener("deviceorientation", handleOrientation);
       }
     }
 
-    // Example mapping
     function handleOrientation(event) {
-      const { alpha, beta, gamma } = event; // rotation around z, x, y
-      const smInputs = riveFile.stateMachineInputs("StateMachine1");
-
-      const tiltX = smInputs.find(i => i.name === "tiltX");
-      const tiltY = smInputs.find(i => i.name === "tiltY");
-
-      if (tiltX) tiltX.value = gamma / 90; // normalize [-1, 1]
-      if (tiltY) tiltY.value = beta / 90;
+      const { beta, gamma } = event;
+      updateTilt(beta, gamma);
     }
 
-    // Call it once the user taps
-    document.body.addEventListener("click", requestPermission);
+    setupMotion();
   </script>
 </body>
 </html>
