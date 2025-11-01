@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>v1.1 Data Binding</title>
+  <title>v1.2 Data Binding</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -31,54 +31,49 @@
   <canvas id="riveCanvas" width="428" height="926"></canvas>
   <div class="status" id="statusText">Loading Bitcoin price…</div>
 
-  <script type="module">
-  import Rive from "https://unpkg.com/@rive-app/canvas@2.15.0";
-
-  const riveFileUrl = "data_bind.riv"; // 👈 update path
+  <script src="https://unpkg.com/@rive-app/canvas@2.15.0"></script>
+<script>
+  const riveFileUrl = "data_bind.riv";
   const status = document.getElementById("statusText");
 
-  const riveInstance = new Rive({
+  const riveInstance = new rive.Rive({
     src: riveFileUrl,
     canvas: document.getElementById("riveCanvas"),
     autoplay: true,
-    onLoad: (_) => {
+    onLoad: () => {
       console.log("✅ Rive loaded");
-      status.textContent = "Fetching live data…";
       updateNumber();
       setInterval(updateNumber, 10000);
     },
     onLoadError: (err) => {
-      console.error("❌ Rive failed to load:", err);
-      status.textContent = "⚠️ Failed to load .riv file (check path or MIME type)";
+      console.error("❌ Failed to load:", err);
+      status.textContent = "⚠️ Couldn't load .riv file";
     }
   });
 
   async function fetchBitcoinPrice() {
-    const response = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json");
-    const data = await response.json();
+    const res = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json");
+    const data = await res.json();
     return data.bpi.USD.rate_float;
   }
 
   async function updateNumber() {
     try {
-      const value = await fetchBitcoinPrice();
+      const val = await fetchBitcoinPrice();
       const viewModel = riveInstance.viewModel("View Model 1");
-
       if (viewModel && viewModel.has("num")) {
-        viewModel.setNumber("num", value);
-        console.log("💹 Updated 'num' =", value);
-        status.textContent = `Bitcoin: $${value.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
+        viewModel.setNumber("num", val);
+        console.log("💹 Updated num:", val);
+        status.textContent = `Bitcoin: $${val.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
       } else {
-        console.warn("⚠️ ViewModel or property not found");
-        status.textContent = "⚠️ Missing ViewModel 'View Model 1' or property 'num'";
+        status.textContent = "⚠️ Missing ViewModel or property";
       }
     } catch (err) {
-      console.error("Error fetching data:", err);
-      status.textContent = "⚠️ Error fetching data";
+      console.error("Fetch error:", err);
+      status.textContent = "⚠️ Failed to fetch data";
     }
   }
 </script>
-
 
 </body>
 </html>
