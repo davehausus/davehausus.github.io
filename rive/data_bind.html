@@ -1,57 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>v1.5 Rive ViewModel Live Data</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v1.6 Rive ViewModel Live Data</title>
   <style>
     body {
-      background: #0d1117;
-      color: #c9d1d9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      font-family: sans-serif;
+      background:#0d1117;
+      color:#c9d1d9;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      height:100vh;
+      margin:0;
+      font-family:sans-serif;
     }
-    #riveCanvas {
-      width: 428px;
-      height: 926px;
-    }
-    .status {
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #8b949e;
-    }
+    #riveCanvas {width:428px;height:926px;}
+    .status {margin-top:1rem;color:#8b949e;}
   </style>
 </head>
 <body>
   <canvas id="riveCanvas" width="428" height="926"></canvas>
   <div class="status" id="statusText">Loading Bitcoin price…</div>
 
-  <script type="module">
-    import { Rive } from "https://cdn.jsdelivr.net/npm/@rive-app/canvas@2.21.4/+esm";
-
-    const canvas = document.getElementById("riveCanvas");
+  <!-- ✅ UMD build, attaches global `rive` -->
+  <script src="https://unpkg.com/@rive-app/canvas@2.21.4"></script>
+  <script>
     const status = document.getElementById("statusText");
+    const canvas = document.getElementById("riveCanvas");
 
-    const riveInstance = new Rive({
-      src: "data_bind.riv", // 👈 replace with your real path
+    // Create the Rive instance
+    const riveInstance = new rive.Rive({
+      src: "data_bind.riv", // <-- adjust path
       canvas,
       autoplay: true,
       onLoad: () => {
-        console.log("✅ Rive file loaded");
+        console.log("✅ Rive loaded");
         updateNumber();
         setInterval(updateNumber, 10000);
       },
       onLoadError: (err) => {
-        console.error("❌ Rive failed:", err);
+        console.error("❌ Could not load Rive file:", err);
         status.textContent = "⚠️ Could not load Rive file";
       }
     });
 
+    // CORS-friendly API
     async function fetchBitcoinPrice() {
       const res = await fetch("https://api.coincap.io/v2/assets/bitcoin");
       const data = await res.json();
@@ -64,7 +59,7 @@
         const viewModel = riveInstance.viewModel("View Model 1");
         if (viewModel && viewModel.has("num")) {
           viewModel.setNumber("num", price);
-          status.textContent = `Bitcoin: $${price.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
+          status.textContent = `Bitcoin: $${price.toLocaleString(undefined,{maximumFractionDigits:2})}`;
           console.log("💹 Updated num:", price);
         } else {
           status.textContent = "⚠️ Missing ViewModel or property 'num'";
