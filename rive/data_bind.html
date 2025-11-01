@@ -3,12 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- CSS FILES -->
-<link rel="stylesheet" href="../../css/animate.min.css">
-<link rel="stylesheet" href="../../css/swiper.min.css">
-<link rel="stylesheet" href="../../css/bootstrap.min.css">
-<link rel="stylesheet" href="../../css/style.css">
-  <title>v1.17 Data Bind</title>
+  <title>v1.18 Rive Data Binding (UMD + GitHub)</title>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
   <style>
     body {
@@ -16,57 +11,64 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      flex-direction: column;
       background-color: #212E44;
+      margin: 0;
+      flex-direction: column;
     }
+    canvas { border: 1px solid #fff; }
   </style>
 </head>
-
 <body>
   <canvas id="riveCanvas" width="428" height="926"></canvas>
 
   <script>
-    let riveInstance;
+    // Check if Rive UMD is loaded
+    if (typeof rive === 'undefined') {
+      console.error("Rive UMD not loaded!");
+    } else {
+      console.log("Rive UMD loaded!");
 
-    // Load the "Artboard" artboard and "State Machine 1"
-    riveInstance = new rive.Rive({
-      src: "downloading_updates.riv", // Replace with your .riv file path
-      canvas: document.getElementById("riveCanvas"),
-      autoplay: true,
-      artboard: "Artboard", // Explicitly set the artboard
-      stateMachines: ["State Machine 1"], // The single state machine
-      onLoad: () => {
-        console.log("Rive file loaded: Artboard + State Machine 1");
-      }
-    });
+      const riveInstance = new rive.Rive({
+        src: "https://davehausus.github.io/rive/data_binding.riv", // Absolute URL
+        canvas: document.getElementById("riveCanvas"),
+        autoplay: true,
+        artboard: "Artboard",
+        stateMachines: ["State Machine 1"],
+        crossorigin: "anonymous", // Important for GitHub-hosted files
+        onLoad: () => {
+          console.log("Rive file loaded successfully!");
 
-          const inputs = riveInstance.stateMachineInputs('View Model 1');
-          const numProp = inputs.find(i => i.name === 'num');
+          // Get state machine inputs
+          const inputs = riveInstance.stateMachineInputs("View Model 1");
+          const numProp = inputs.find(i => i.name === "num");
 
+          // Fetch Bitcoin price from CORS-friendly API
           async function fetchBitcoinPrice() {
             try {
               const response = await fetch('https://api.coindesk.com/v1/bpi/currentprice/USD.json');
               const data = await response.json();
               return parseFloat(data.bpi.USD.rate.replace(',', ''));
             } catch (err) {
-              console.error('Fetch error:', err);
+              console.error("Fetch error:", err);
               return null;
             }
           }
 
+          // Update the Rive input
           async function updateNumber() {
             const price = await fetchBitcoinPrice();
             if (price !== null && numProp) {
               numProp.value = price;
-              console.log('Updated Rive num:', price);
+              console.log("Updated Rive num:", price);
             }
           }
 
+          // Initial update + interval
           updateNumber();
           setInterval(updateNumber, 10000);
         },
         onLoadError: (err) => {
-          console.error('Failed to load Rive file:', err);
+          console.error("Failed to load Rive file:", err);
         }
       });
     }
