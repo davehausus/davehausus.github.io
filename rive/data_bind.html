@@ -3,27 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>v1.12 Rive Data Binding (UMD)</title>
+  <title>v1.13 Rive Data Binding (UMD)</title>
   <style>
     body {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: #111;
       margin: 0;
+      background: #f0f0f0;
     }
     canvas {
-      width: 428px;
-      height: 926px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
   <canvas id="riveCanvas" width="428" height="926"></canvas>
+ 
+<!-- UMD Rive Script -->
+<script src="https://unpkg.com/@rive-app/canvas@2.21.4"></script>
+  <script>
+  // Make sure Rive is loaded via UMD
+  if (typeof Rive === 'undefined') {
+    console.error('Rive UMD script not loaded!');
+  } else {
+    console.log('Rive UMD loaded!');
 
-  <!-- UMD Build of Rive -->
-  <script src="https://unpkg.com/@rive-app/webgl2"></script>
+    const rive = new Rive({
+      src: 'https://davehausus.github.io/rive/data_binding.riv', // your GitHub-hosted file
+      canvas: document.getElementById('riveCanvas'),
+      autoplay: true,
+      // Enable cross-origin fetching
+      crossorigin: 'anonymous',
+      onLoad: () => {
+        console.log('Rive animation loaded and ready!');
+      },
+      onLoadError: (err) => {
+        console.error('Failed to load Rive file:', err);
+      }
+    });
+  }
+</script>
+  
   <script>
     // Create the Rive instance
     const riveInstance = new rive.Rive({
