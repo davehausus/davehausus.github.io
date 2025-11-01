@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rive Live Data Test — Bitcoin Price</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #0d1117;
+      color: #c9d1d9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: sans-serif;
+    }
+    #riveCanvas {
+      width: 400px;
+      height: 400px;
+    }
+    .status {
+      margin-top: 12px;
+      color: #8b949e;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="riveCanvas" width="428" height="926"></canvas>
+  <div class="status" id="statusText">Loading live Bitcoin price…</div>
+
+  <script type="module">
+    import Rive from "https://unpkg.com/@rive-app/canvas@2.15.0";
+
+    const riveFileUrl = "data_bind.riv"; // Replace with your .riv file
+    const status = document.getElementById("statusText");
+
+    const riveInstance = new Rive({
+      src: riveFileUrl,
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+      onLoad: (_) => {
+        console.log("✅ Rive animation loaded");
+        updatePrice();
+        setInterval(updatePrice, 10000); // every 10 seconds
+      },
+    });
+
+    async function fetchBitcoinPrice() {
+      const response = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json");
+      const data = await response.json();
+      return data.bpi.USD.rate_float;
+    }
+
+    async function updatePrice() {
+      try {
+        const price = await fetchBitcoinPrice();
+        if (price && riveInstance) {
+          const inputs = riveInstance.stateMachineInputs("View Model 1");
+          const numInput = inputs?.find(i => i.name === "num");
+          if (numInput) numInput.value = price;
+          console.log("💰 Updated BTC price:", price);
+          status.textContent = `Bitcoin price: $${price.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
+        }
+      } catch (err) {
+        console.error("Error fetching BTC price:", err);
+        status.textContent = "⚠️ Could not fetch data";
+      }
+    }
+  </script>
+
+</body>
+</html>
