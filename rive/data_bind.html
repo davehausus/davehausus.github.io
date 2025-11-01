@@ -1,79 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>v1.2 Data Binding</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>v1.4 Rive Data Binding Test</title>
   <style>
     body {
-      background: #0d1117;
-      color: #c9d1d9;
+      background: #111;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      margin: 0;
+      color: #ccc;
       font-family: sans-serif;
     }
-    #riveCanvas {
+    canvas {
       width: 428px;
       height: 926px;
-    }
-    .status {
-      margin-top: 10px;
-      color: #8b949e;
-      font-size: 14px;
     }
   </style>
 </head>
 <body>
+  <canvas id="riveCanvas"></canvas>
+  <script type="module">
+    import Rive from 'https://unpkg.com/@rive-app/canvas@2.21.4';
 
-  <canvas id="riveCanvas" width="428" height="926"></canvas>
-  <div class="status" id="statusText">Loading Bitcoin price…</div>
+    const canvas = document.getElementById('riveCanvas');
 
-  <script src="https://unpkg.com/@rive-app/canvas@2.15.0"></script>
-<script>
-  const riveFileUrl = "data_bind.riv";
-  const status = document.getElementById("statusText");
+    // Load your Rive file (ensure this path is correct)
+    const rive = new Rive({
+      src: 'data_bind.riv',
+      canvas,
+      autoplay: true,
+      onLoad: () => {
+        console.log('✅ Rive file loaded.');
 
-  const riveInstance = new rive.Rive({
-    src: riveFileUrl,
-    canvas: document.getElementById("riveCanvas"),
-    autoplay: true,
-    onLoad: () => {
-      console.log("✅ Rive loaded");
-      updateNumber();
-      setInterval(updateNumber, 10000);
-    },
-    onLoadError: (err) => {
-      console.error("❌ Failed to load:", err);
-      status.textContent = "⚠️ Couldn't load .riv file";
-    }
-  });
+        // Fetch and update data every 10 seconds
+        updateNumber();
+        setInterval(updateNumber, 10000);
+      },
+    });
 
-  async function fetchBitcoinPrice() {
-    const res = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json");
-    const data = await res.json();
-    return data.bpi.USD.rate_float;
-  }
-
-  async function updateNumber() {
-    try {
-      const val = await fetchBitcoinPrice();
-      const viewModel = riveInstance.viewModel("View Model 1");
-      if (viewModel && viewModel.has("num")) {
-        viewModel.setNumber("num", val);
-        console.log("💹 Updated num:", val);
-        status.textContent = `Bitcoin: $${val.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
-      } else {
-        status.textContent = "⚠️ Missing ViewModel or property";
+    async function fetchCryptoPrice() {
+      try {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        const data = await res.json();
+        return data.bitcoin.usd;
+      } catch (err) {
+        console.error('❌ Fetch error:', err);
+        return null;
       }
-    } catch (err) {
-      console.error("Fetch error:", err);
-      status.textContent = "⚠️ Failed to fetch data";
     }
-  }
-</script>
 
+    async function updateNumber() {
+      const price = await fetchCryptoPrice();
+      if (price && rive?.viewModelInputs) {
+        const vm = rive.viewModelInputs('View Model 1');
+        if (vm && vm.num) {
+          vm.num.value = price;
+          console.log('💰 Updated Rive number to:', price);
+        } else {
+          console.warn('⚠️ Could not find ViewModel or num property.');
+        }
+      }
+    }
+  </script>
 </body>
 </html>
