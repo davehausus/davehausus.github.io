@@ -17,14 +17,6 @@
       align-items: center;
     }
 
-    canvas {
-      display: block;
-      width: 100vw;
-      height: 100vh;
-      object-fit: contain;
-    }
-
-
     #permissionBtn {
       position: absolute;
       bottom: 2rem;
@@ -39,7 +31,7 @@
   </style>
 </head>
 <body>
-  <canvas id="riveCanvas"></canvas>
+  <canvas id="riveCanvas" width="500" height="500"></canvas>
   <button id="permissionBtn" style="display:none;">Enable Motion</button>
 
   <script>
@@ -63,17 +55,6 @@
         resizeCanvas(); // make sure it’s scaled correctly
       },
     });
-
-    // --- Dynamically match the canvas to screen resolution ---
-    function resizeCanvas() {
-      const dpr = window.devicePixelRatio || 1;
-      const { innerWidth, innerHeight } = window;
-      canvas.width = innerWidth * dpr;
-      canvas.height = innerHeight * dpr;
-    }
-
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
 
     // --- Map gyroscope data to tiltX (-45..45) ---
     function updateTilt(gamma) {
