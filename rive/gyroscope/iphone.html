@@ -3,24 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rive Gyroscope (TiltX)</title>
+  <title>Rive Gyroscope (500x500)</title>
   <script src="https://unpkg.com/@rive-app/canvas@2.21.7"></script>
   <style>
     html, body {
       margin: 0;
-      height: 100%;
+      padding: 0;
       width: 100%;
-      overflow: hidden;
+      height: 100%;
       background: radial-gradient(circle at center, #1a1a1a 0%, #0d0d0d 100%);
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
+    }
+
+    /* Fixed-size Rive canvas */
+    canvas {
+      width: 500px;
+      height: 500px;
+      display: block;
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
     }
 
     #permissionBtn {
       position: absolute;
       bottom: 2rem;
-      background: #ffffff;
+      background: #fff;
       border: none;
       font-size: 1.1rem;
       padding: 0.8rem 1.4rem;
@@ -42,7 +52,7 @@
     const canvas = document.getElementById("riveCanvas");
     const button = document.getElementById("permissionBtn");
 
-    // --- Create and load Rive ---
+    // --- Initialize Rive ---
     const riveInstance = new rive.Rive({
       src: riveFile,
       canvas: canvas,
@@ -51,12 +61,11 @@
       fit: rive.Fit.CONTAIN,
       alignment: rive.Alignment.CENTER,
       onLoad: () => {
-        console.log("✅ Rive loaded");
-        resizeCanvas(); // make sure it’s scaled correctly
+        console.log("✅ Rive 500x500 loaded");
       },
     });
 
-    // --- Map gyroscope data to tiltX (-45..45) ---
+    // --- Update Rive input based on gyroscope ---
     function updateTilt(gamma) {
       const clampedTilt = Math.max(-45, Math.min(45, gamma));
       const inputs = riveInstance.stateMachineInputs(stateMachineName);
@@ -64,7 +73,7 @@
       if (tiltX) tiltX.value = clampedTilt;
     }
 
-    // --- Request permission for motion sensors (iOS) ---
+    // --- Handle motion permission (iOS) ---
     function setupMotion() {
       if (typeof DeviceOrientationEvent.requestPermission === "function") {
         button.style.display = "block";
