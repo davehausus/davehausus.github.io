@@ -1,42 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>v1.16 Rive Data Binding (UMD)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- CSS FILES -->
+<link rel="stylesheet" href="../../css/animate.min.css">
+<link rel="stylesheet" href="../../css/swiper.min.css">
+<link rel="stylesheet" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/style.css">
+  <title>v1.17 Data Bind</title>
+  <script src="https://unpkg.com/@rive-app/webgl2"></script>
   <style>
     body {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
-      background: #f0f0f0;
-    }
-    canvas {
-      border: 1px solid #ccc;
+      flex-direction: column;
+      background-color: #212E44;
     }
   </style>
 </head>
+
 <body>
   <canvas id="riveCanvas" width="428" height="926"></canvas>
 
-  <!-- Correct UMD Rive Script -->
-  <script src="https://unpkg.com/@rive-app/canvas@2.21.4/dist/rive.umd.min.js"></script>
-
   <script>
-    if (typeof Rive === 'undefined') {
-      console.error('Rive UMD script not loaded!');
-    } else {
-      console.log('Rive UMD loaded!');
+    let riveInstance;
 
-      const riveInstance = new Rive({
-        src: 'https://davehausus.github.io/rive/data_binding.riv', 
-        canvas: document.getElementById('riveCanvas'),
-        autoplay: true,
-        crossorigin: 'anonymous',
-        onLoad: () => {
-          console.log('Rive animation loaded!');
+    // Load the "Artboard" artboard and "State Machine 1"
+    riveInstance = new rive.Rive({
+      src: "downloading_updates.riv", // Replace with your .riv file path
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+      artboard: "Artboard", // Explicitly set the artboard
+      stateMachines: ["State Machine 1"], // The single state machine
+      onLoad: () => {
+        console.log("Rive file loaded: Artboard + State Machine 1");
+      }
+    });
 
           const inputs = riveInstance.stateMachineInputs('View Model 1');
           const numProp = inputs.find(i => i.name === 'num');
