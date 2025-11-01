@@ -3,31 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rive Gyroscope (tiltX)</title>
+  <title>Rive Gyroscope (Fullscreen TiltX)</title>
   <script src="https://unpkg.com/@rive-app/canvas@2.21.7"></script>
   <style>
     html, body {
       margin: 0;
       height: 100%;
       width: 100%;
-      background: radial-gradient(circle at center, #1a1a1a 0%, #0d0d0d 100%);
       overflow: hidden;
+      background: radial-gradient(circle at center, #1a1a1a 0%, #0d0d0d 100%);
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
     canvas {
-      width: 100%;
-      height: 100%;
       display: block;
+      width: 100vw;
+      height: 100vh;
       object-fit: contain;
     }
 
     #permissionBtn {
       position: absolute;
       bottom: 2rem;
-      background: #fff;
+      background: #ffffff;
       border: none;
       font-size: 1.1rem;
       padding: 0.8rem 1.4rem;
@@ -42,14 +42,14 @@
   <button id="permissionBtn" style="display:none;">Enable Motion</button>
 
   <script>
-    const riveFile = "tag_gyro.riv"; // Your Rive file (500x500 artboard)
+    const riveFile = "tag_gyro.riv";
     const stateMachineName = "State Machine 1";
-    const inputName = "tiltX"; // Only one input
+    const inputName = "tiltX";
 
     const canvas = document.getElementById("riveCanvas");
     const button = document.getElementById("permissionBtn");
 
-    // --- Initialize Rive ---
+    // --- Create and load Rive ---
     const riveInstance = new rive.Rive({
       src: riveFile,
       canvas: canvas,
@@ -58,43 +58,45 @@
       fit: rive.Fit.CONTAIN,
       alignment: rive.Alignment.CENTER,
       onLoad: () => {
-        console.log("✅ Rive file loaded:", riveFile);
-        resizeCanvas();
+        console.log("✅ Rive loaded");
+        resizeCanvas(); // make sure it’s scaled correctly
       },
     });
 
-    // --- Ensure crisp rendering on Retina/high-DPI screens ---
+    // --- Dynamically match the canvas to screen resolution ---
     function resizeCanvas() {
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = canvas.clientWidth * dpr;
-      canvas.height = canvas.clientHeight * dpr;
+      const { innerWidth, innerHeight } = window;
+      canvas.width = innerWidth * dpr;
+      canvas.height = innerHeight * dpr;
     }
+
     window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
 
-    // --- Map gyroscope to tiltX (degrees) ---
+    // --- Map gyroscope data to tiltX (-45..45) ---
     function updateTilt(gamma) {
-      // gamma = left/right tilt, range ≈ -90 to +90
-      // Clamp to -45..45 for your Rive input
       const clampedTilt = Math.max(-45, Math.min(45, gamma));
-
       const inputs = riveInstance.stateMachineInputs(stateMachineName);
       const tiltX = inputs.find(i => i.name === inputName);
       if (tiltX) tiltX.value = clampedTilt;
     }
 
-    // --- iPhone motion permissions ---
+    // --- Request permission for motion sensors (iOS) ---
     function setupMotion() {
       if (typeof DeviceOrientationEvent.requestPermission === "function") {
         button.style.display = "block";
         button.onclick = () => {
-          DeviceOrientationEvent.requestPermission().then(state => {
-            if (state === "granted") {
-              button.style.display = "none";
-              window.addEventListener("deviceorientation", handleOrientation);
-            } else {
-              alert("Motion access denied");
-            }
-          }).catch(console.error);
+          DeviceOrientationEvent.requestPermission()
+            .then(state => {
+              if (state === "granted") {
+                button.style.display = "none";
+                window.addEventListener("deviceorientation", handleOrientation);
+              } else {
+                alert("Motion access denied");
+              }
+            })
+            .catch(console.error);
         };
       } else {
         window.addEventListener("deviceorientation", handleOrientation);
@@ -102,7 +104,7 @@
     }
 
     function handleOrientation(event) {
-      const { gamma } = event; // left/right tilt
+      const { gamma } = event;
       if (gamma !== null) updateTilt(gamma);
     }
 
