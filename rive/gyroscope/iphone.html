@@ -17,6 +17,14 @@
       align-items: center;
     }
 
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+    }
+
+
     #permissionBtn {
       position: absolute;
       bottom: 2rem;
@@ -31,7 +39,7 @@
   </style>
 </head>
 <body>
-  <canvas id="riveCanvas" width="500" height="500"></canvas>
+  <canvas id="riveCanvas"></canvas>
   <button id="permissionBtn" style="display:none;">Enable Motion</button>
 
   <script>
