@@ -3,66 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>v1.4 Rive Data Binding Test</title>
+  <title>v1.5 Rive ViewModel Live Data</title>
   <style>
     body {
-      background: #111;
+      background: #0d1117;
+      color: #c9d1d9;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
       margin: 0;
-      color: #ccc;
       font-family: sans-serif;
     }
-    canvas {
+    #riveCanvas {
       width: 428px;
       height: 926px;
+    }
+    .status {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #8b949e;
     }
   </style>
 </head>
 <body>
-  <canvas id="riveCanvas"></canvas>
+  <canvas id="riveCanvas" width="428" height="926"></canvas>
+  <div class="status" id="statusText">Loading Bitcoin price…</div>
+
   <script type="module">
-    import Rive from 'https://unpkg.com/@rive-app/canvas@2.21.4';
+    import { Rive } from "https://cdn.jsdelivr.net/npm/@rive-app/canvas@2.21.4/+esm";
 
-    const canvas = document.getElementById('riveCanvas');
+    const canvas = document.getElementById("riveCanvas");
+    const status = document.getElementById("statusText");
 
-    // Load your Rive file (ensure this path is correct)
-    const rive = new Rive({
-      src: 'data_bind.riv',
+    const riveInstance = new Rive({
+      src: "data_bind.riv", // 👈 replace with your real path
       canvas,
       autoplay: true,
       onLoad: () => {
-        console.log('✅ Rive file loaded.');
-
-        // Fetch and update data every 10 seconds
+        console.log("✅ Rive file loaded");
         updateNumber();
         setInterval(updateNumber, 10000);
       },
+      onLoadError: (err) => {
+        console.error("❌ Rive failed:", err);
+        status.textContent = "⚠️ Could not load Rive file";
+      }
     });
 
-    async function fetchCryptoPrice() {
-      try {
-        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-        const data = await res.json();
-        return data.bitcoin.usd;
-      } catch (err) {
-        console.error('❌ Fetch error:', err);
-        return null;
-      }
+    async function fetchBitcoinPrice() {
+      const res = await fetch("https://api.coincap.io/v2/assets/bitcoin");
+      const data = await res.json();
+      return parseFloat(data.data.priceUsd);
     }
 
     async function updateNumber() {
-      const price = await fetchCryptoPrice();
-      if (price && rive?.viewModelInputs) {
-        const vm = rive.viewModelInputs('View Model 1');
-        if (vm && vm.num) {
-          vm.num.value = price;
-          console.log('💰 Updated Rive number to:', price);
+      try {
+        const price = await fetchBitcoinPrice();
+        const viewModel = riveInstance.viewModel("View Model 1");
+        if (viewModel && viewModel.has("num")) {
+          viewModel.setNumber("num", price);
+          status.textContent = `Bitcoin: $${price.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
+          console.log("💹 Updated num:", price);
         } else {
-          console.warn('⚠️ Could not find ViewModel or num property.');
+          status.textContent = "⚠️ Missing ViewModel or property 'num'";
         }
+      } catch (err) {
+        console.error("Fetch error:", err);
+        status.textContent = "⚠️ Failed to fetch data";
       }
     }
   </script>
