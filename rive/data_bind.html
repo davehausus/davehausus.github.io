@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>v1.5 Bitcoin Live Data Bind</title>
+  <title>v1.6 Bitcoin Live Data Bind</title>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
   <style>
     body {
@@ -23,28 +23,18 @@
   <canvas id="riveCanvas" width="428" height="926"></canvas>
 
   <script>
-    const riveCanvas = document.getElementById("riveCanvas");
-
-    const riveInstance = new rive.Rive({
+    const r = new rive.Rive({
       src: "data_bind.riv",
-      canvas: riveCanvas,
+      canvas: document.getElementById("rive-canvas"),
       autoplay: true,
+      autoBind: true,
+      artboard: 'Artboard',
+      stateMachines: 'State Machine 1',
       onLoad: async () => {
         console.log("✅ Rive file loaded successfully!");
 
-        // ✅ Correct API call
-        const viewModel = riveInstance.dataBindings.viewModel("View Model 1");
-        if (!viewModel) {
-          console.error("❌ View Model 'View Model 1' not found!");
-          return;
-        }
+        const vmi = r.viewModelInstance
 
-        // ✅ Correct way to access the number input
-        const numProperty = viewModel.input("num");
-        if (!numProperty) {
-          console.error("❌ Property 'num' not found in View Model 1!");
-          return;
-        }
 
         console.log("🔗 Bound to property 'num' successfully!");
 
@@ -55,7 +45,7 @@
             const price = data.bpi.USD.rate_float;
 
             console.log("💰 BTC Price:", price);
-            numProperty.value = price; // Update the number input in Rive
+            vmi.number('num').value = 'price'; // Update the number input in Rive
           } catch (error) {
             console.error("⚠️ Error fetching Bitcoin data:", error);
           }
