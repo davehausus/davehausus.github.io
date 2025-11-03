@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>v1.6 Bitcoin Live Data Bind</title>
+  <title>v1.7 Bitcoin Live Data Bind</title>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
   <style>
     body {
@@ -25,16 +25,30 @@
   <script>
     const r = new rive.Rive({
       src: "data_bind.riv",
-      canvas: document.getElementById("rive-canvas"),
+      canvas: document.getElementById("riveCanvas"), // ✅ FIXED ID (you had rive-canvas)
       autoplay: true,
       autoBind: true,
-      artboard: 'Artboard',
-      stateMachines: 'State Machine 1',
+      artboard: "Artboard", // ✅ only include if your Rive has multiple artboards
+      stateMachines: "State Machine 1", // ✅ optional, helps autoBind link View Model to correct state machine
       onLoad: async () => {
         console.log("✅ Rive file loaded successfully!");
 
-        const vmi = r.viewModelInstance
+        // Wait a bit to ensure data binding completes
+        await new Promise((rslv) => setTimeout(rslv, 500));
 
+        const vmi = r.viewModelInstance;
+        if (!vmi) {
+          console.error("❌ No ViewModelInstance found — check autoBind and artboard/state machine names!");
+          return;
+        }
+
+        // Check that the 'num' property exists
+        const numProp = vmi.number("num");
+        if (!numProp) {
+          console.error("❌ Number property 'num' not found in ViewModelInstance!");
+          console.log("Available properties:", vmi);
+          return;
+        }
 
         console.log("🔗 Bound to property 'num' successfully!");
 
@@ -45,7 +59,9 @@
             const price = data.bpi.USD.rate_float;
 
             console.log("💰 BTC Price:", price);
-            vmi.number('num').value = 'price'; // Update the number input in Rive
+
+            // ✅ Correct: no quotes around `price`
+            numProp.value = price;
           } catch (error) {
             console.error("⚠️ Error fetching Bitcoin data:", error);
           }
@@ -55,7 +71,7 @@
         await updateBitcoinPrice();
         // Refresh every 10 seconds
         setInterval(updateBitcoinPrice, 10000);
-      }
+      },
     });
   </script>
 </body>
