@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>v1.2 Bitcoin Live Data Bind</title>
+  <title>v1.3 Bitcoin Live Data Bind</title>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
   <style>
     body {
@@ -32,22 +32,43 @@
       onLoad: async () => {
         console.log("✅ Rive file loaded successfully!");
 
-        // ✅ Correct API call
-        const viewModel = riveInstance.dataBindings.viewModel("View Model 1");
+        // Grab the active artboard
+        const artboard = riveInstance.contents?.[0];
+        if (!artboard) {
+          console.error("❌ Could not access artboard contents!");
+          return;
+        }
+
+        // Try to locate data bindings from the artboard
+        const dataBindings = artboard.dataBindings || artboard.dataBind;
+        if (!dataBindings) {
+          console.error("❌ This Rive runtime or file has no data binding interface available.");
+          return;
+        }
+
+        // Try to get the view model
+        const viewModel =
+          dataBindings.viewModel?.("View Model 1") ||
+          dataBindings.getViewModel?.("View Model 1");
+
         if (!viewModel) {
           console.error("❌ View Model 'View Model 1' not found!");
           return;
         }
 
-        // ✅ Correct way to access the number input
-        const numProperty = viewModel.input("num");
+        // Try to get the property
+        const numProperty =
+          viewModel.input?.("num") ||
+          viewModel.getNumber?.("num");
+
         if (!numProperty) {
           console.error("❌ Property 'num' not found in View Model 1!");
           return;
         }
 
-        console.log("🔗 Bound to property 'num' successfully!");
+        console.log("🔗 Bound successfully to 'View Model 1.num'!");
 
+        // Fetch live Bitcoin price
         async function updateBitcoinPrice() {
           try {
             const response = await fetch("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
@@ -55,17 +76,15 @@
             const price = data.bpi.USD.rate_float;
 
             console.log("💰 BTC Price:", price);
-            numProperty.value = price; // Update the number input in Rive
-          } catch (error) {
-            console.error("⚠️ Error fetching Bitcoin data:", error);
+            numProperty.value = price;
+          } catch (err) {
+            console.error("⚠️ Error fetching BTC data:", err);
           }
         }
 
-        // Initial fetch
         await updateBitcoinPrice();
-        // Refresh every 10 seconds
         setInterval(updateBitcoinPrice, 10000);
-      }
+      },
     });
   </script>
 </body>
