@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>v1.7 Bitcoin Live Data Bind</title>
+  <title>v1.8 Bitcoin Live Data Bind</title>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
   <style>
     body {
@@ -54,14 +54,12 @@
 
         async function updateBitcoinPrice() {
           try {
-            const response = await fetch("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
+            const response = await fetch("https://api.coinbase.com/v2/prices/spot?currency=USD");
             const data = await response.json();
-            const price = data.bpi.USD.rate_float;
+            const price = parseFloat(data.data.amount);
 
             console.log("💰 BTC Price:", price);
-
-            // ✅ Correct: no quotes around `price`
-            numProp.value = price;
+            numProp.value = price; // updates Rive
           } catch (error) {
             console.error("⚠️ Error fetching Bitcoin data:", error);
           }
