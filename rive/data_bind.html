@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>v2.1 Bitcoin Live Data Bind</title>
+  <title>Bitcoin Live Data Bind</title>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
   <style>
     body {
@@ -35,7 +35,7 @@
         console.log("✅ Rive file loaded successfully!");
 
         // Wait a bit to ensure data binding completes
-        await new Promise((rslv) => setTimeout(rslv, 500));
+        await new Promise((rslv) => setTimeout(rslv, 300));
 
         const vmi = r.viewModelInstance;
         if (!vmi) {
