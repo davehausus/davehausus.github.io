@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Popbot</title>
+  <script src="https://unpkg.com/@rive-app/webgl2"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #010e19;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+      width: 720px;
+      height: 1100px;
+    }
+
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      image-rendering: pixelated; /* keeps edges crisp */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <video autoplay muted loop playsinline>
+      <source src="bg.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <canvas id="riveCanvas"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("riveCanvas");
+    let riveInstance;
+
+    function resizeCanvas() {
+      const ratio = window.devicePixelRatio || 1;
+      const width = 720;
+      const height = 1100;
+
+      // Set the canvas resolution based on device pixel ratio
+      canvas.width = width * ratio;
+      canvas.height = height * ratio;
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+
+      if (riveInstance) {
+        riveInstance.resizeDrawingSurfaceToCanvas();
+      }
+    }
+
+    // Load the Rive animation
+    riveInstance = new rive.Rive({
+      src: "popbot.riv",
+      canvas: canvas,
+      autoplay: true,
+      stateMachines: "State Machine 1",
+      fit: rive.Fit.CONTAIN,
+      alignment: rive.Alignment.CENTER,
+      onLoad: () => {
+        resizeCanvas(); // ensures crisp rendering once loaded
+      },
+    });
+
+    // Handle device pixel ratio or window resize changes
+    window.addEventListener("resize", resizeCanvas);
+  </script>
+</body>
+</html>
