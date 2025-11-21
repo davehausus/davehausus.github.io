@@ -4,8 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bitcoin Live Data Bind</title>
-  <script src="https://unpkg.com/@rive-app/webgl2"></script>
   <style>
+    /* Run 1 → RobotoCondensed-Italic (400 italic) */
+    @font-face {
+      font-family: "RobotoCondensed-Italic";
+      src: url("https://fonts.gstatic.com/s/robotocondensed/v35/pxiRyp8kv8JHgFVrJJLmE4tC.woff2")
+           format("woff2");
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    /* Run 2 → RobotoCondensed-ExtraBoldItalic (800 italic) */
+    @font-face {
+      font-family: "RobotoCondensed-ExtraBoldItalic";
+      src: url("https://fonts.gstatic.com/s/robotocondensed/v35/pxiZyp8kv8JHgFVrJJLmE0tNKaMX.woff2")
+           format("woff2");
+      font-weight: 800;
+      font-style: italic;
+    }
+
     body {
       display: flex;
       justify-content: center;
@@ -14,27 +31,31 @@
       flex-direction: column;
       background: #011029;
     }
+
     canvas {
       border-radius: 16px;
       box-shadow: 0 0 20px rgba(0, 64, 255, 0.3);
     }
   </style>
+
+  <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
+
 <body>
   <canvas id="riveCanvas" width="428" height="926"></canvas>
 
   <script>
     const r = new rive.Rive({
       src: "data_bind.riv",
-      canvas: document.getElementById("riveCanvas"), // ✅ FIXED ID (you had rive-canvas)
+      canvas: document.getElementById("riveCanvas"),
       autoplay: true,
       autoBind: true,
-      artboard: "Artboard", // ✅ only include if your Rive has multiple artboards
-      stateMachines: "State Machine 1", // ✅ optional, helps autoBind link View Model to correct state machine
+      artboard: "Artboard",
+      stateMachines: "State Machine 1",
+
       onLoad: async () => {
         console.log("✅ Rive file loaded successfully!");
 
-        // Wait a bit to ensure data binding completes
         await new Promise((rslv) => setTimeout(rslv, 300));
 
         const vmi = r.viewModelInstance;
@@ -43,7 +64,6 @@
           return;
         }
 
-        // Check that the 'num' property exists
         const numProp = vmi.number("num");
         if (!numProp) {
           console.error("❌ Number property 'num' not found in ViewModelInstance!");
@@ -60,15 +80,13 @@
             const price = parseFloat(data.data.amount);
 
             console.log("💰 BTC Price:", price);
-            numProp.value = price; // updates Rive
+            numProp.value = price;
           } catch (error) {
             console.error("⚠️ Error fetching Bitcoin data:", error);
           }
         }
 
-        // Initial fetch
         await updateBitcoinPrice();
-        // Refresh every 10 seconds
         setInterval(updateBitcoinPrice, 2000);
       },
     });
