@@ -5,21 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bitcoin Live Data Bind</title>
   <style>
-    /* Run 1 → RobotoCondensed-Italic (400 italic) */
     @font-face {
-      font-family: "RobotoCondensed-Italic";
-      src: url("https://fonts.gstatic.com/s/robotocondensed/v35/pxiRyp8kv8JHgFVrJJLmE4tC.woff2")
-           format("woff2");
-      font-weight: 400;
+      font-family: "Roboto Condensed";
+      src: url("./RobotoCondensed-Italic-VariableFont_wght.ttf") format("truetype");
+      font-weight: 100 900;
       font-style: italic;
     }
-
-    /* Run 2 → RobotoCondensed-ExtraBoldItalic (800 italic) */
+    
     @font-face {
-      font-family: "RobotoCondensed-ExtraBoldItalic";
-      src: url("https://fonts.gstatic.com/s/robotocondensed/v35/pxiZyp8kv8JHgFVrJJLmE0tNKaMX.woff2")
-           format("woff2");
-      font-weight: 800;
+      font-family: "RobotoCondensed";
+      src: url("./RobotoCondensed-Italic-VariableFont_wght.ttf") format("truetype");
+      font-weight: 100 900;
       font-style: italic;
     }
 
@@ -45,51 +41,74 @@
   <canvas id="riveCanvas" width="428" height="926"></canvas>
 
   <script>
-    const r = new rive.Rive({
-      src: "data_bind.riv",
-      canvas: document.getElementById("riveCanvas"),
-      autoplay: true,
-      autoBind: true,
-      artboard: "Artboard",
-      stateMachines: "State Machine 1",
+    // Wait for fonts to load BEFORE initializing Rive
+    async function initRive() {
+      // Force font loading
+      await document.fonts.load('400 1em "Roboto Condensed"');
+      await document.fonts.load('800 1em "Roboto Condensed"');
+      await document.fonts.load('400 1em "RobotoCondensed"');
+      await document.fonts.load('800 1em "RobotoCondensed"');
+      
+      await document.fonts.ready;
+      
+      console.log("🔤 Fonts loaded and ready:");
+      document.fonts.forEach(font => {
+        console.log(`  - ${font.family} (weight: ${font.weight}, style: ${font.style})`);
+      });
 
-      onLoad: async () => {
-        console.log("✅ Rive file loaded successfully!");
+      // NOW create the Rive instance
+      const r = new rive.Rive({
+        src: "data_bind.riv",
+        canvas: document.getElementById("riveCanvas"),
+        autoplay: true,
+        autoBind: true,
+        artboard: "Artboard",
+        stateMachines: "State Machine 1",
 
-        await new Promise((rslv) => setTimeout(rslv, 300));
+        onLoad: async () => {
+          console.log("✅ Rive file loaded successfully!");
 
-        const vmi = r.viewModelInstance;
-        if (!vmi) {
-          console.error("❌ No ViewModelInstance found — check autoBind and artboard/state machine names!");
-          return;
-        }
+          await new Promise((rslv) => setTimeout(rslv, 300));
 
-        const numProp = vmi.number("num");
-        if (!numProp) {
-          console.error("❌ Number property 'num' not found in ViewModelInstance!");
-          console.log("Available properties:", vmi);
-          return;
-        }
-
-        console.log("🔗 Bound to property 'num' successfully!");
-
-        async function updateBitcoinPrice() {
-          try {
-            const response = await fetch("https://api.coinbase.com/v2/prices/spot?currency=USD");
-            const data = await response.json();
-            const price = parseFloat(data.data.amount);
-
-            console.log("💰 BTC Price:", price);
-            numProp.value = price;
-          } catch (error) {
-            console.error("⚠️ Error fetching Bitcoin data:", error);
+          const vmi = r.viewModelInstance;
+          if (!vmi) {
+            console.error("❌ No ViewModelInstance found!");
+            return;
           }
-        }
 
-        await updateBitcoinPrice();
-        setInterval(updateBitcoinPrice, 2000);
-      },
-    });
+          const numProp = vmi.number("num");
+          if (!numProp) {
+            console.error("❌ Number property 'num' not found!");
+            return;
+          }
+
+          console.log("🔗 Bound to property 'num' successfully!");
+
+          async function updateBitcoinPrice() {
+            try {
+              const response = await fetch("https://api.coinbase.com/v2/prices/spot?currency=USD");
+              const data = await response.json();
+              const price = parseFloat(data.data.amount);
+
+              console.log("💰 BTC Price:", price);
+              numProp.value = price;
+            } catch (error) {
+              console.error("⚠️ Error fetching Bitcoin data:", error);
+            }
+          }
+
+          await updateBitcoinPrice();
+          setInterval(updateBitcoinPrice, 2000);
+        },
+      });
+    }
+
+    // Initialize when page is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initRive);
+    } else {
+      initRive();
+    }
   </script>
 </body>
 </html>
