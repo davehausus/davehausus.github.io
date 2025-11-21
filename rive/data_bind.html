@@ -72,9 +72,6 @@
       onLoad: async () => {
         console.log("✅ Rive file loaded successfully!");
         
-        // Resize canvas to prevent blurry rendering
-        r.resizeDrawingSurfaceToCanvas();
-
         await new Promise((rslv) => setTimeout(rslv, 300));
 
         const vmi = r.viewModelInstance;
