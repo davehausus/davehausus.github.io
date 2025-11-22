@@ -71,7 +71,8 @@
 
       onLoad: async () => {
         console.log("✅ Rive file loaded successfully!");
-        
+        r.resizeDrawingSurfaceToCanvas();
+
         await new Promise((rslv) => setTimeout(rslv, 300));
 
         const vmi = r.viewModelInstance;
@@ -81,12 +82,21 @@
         }
 
         const numProp = vmi.number("num");
+        const diffProp = vmi.string("priceDiff"); // Get the string property
+        
         if (!numProp) {
           console.error("❌ Number property 'num' not found!");
           return;
         }
+        
+        if (!diffProp) {
+          console.error("❌ String property 'priceDiff' not found!");
+          return;
+        }
 
-        console.log("🔗 Bound to property 'num' successfully!");
+        console.log("🔗 Bound to properties successfully!");
+
+        let previousPrice = null; // Track previous price
 
         async function updateBitcoinPrice() {
           try {
@@ -95,7 +105,24 @@
             const price = parseFloat(data.data.amount);
 
             console.log("💰 BTC Price:", price);
+            
+            // Calculate difference if we have a previous price
+            if (previousPrice !== null) {
+              const diff = price - previousPrice;
+              const diffFormatted = diff >= 0 
+                ? `+$${diff.toFixed(2)}` 
+                : `-$${Math.abs(diff).toFixed(2)}`;
+              
+              console.log("📊 Price Change:", diffFormatted);
+              diffProp.value = diffFormatted; // Update the difference text
+            } else {
+              diffProp.value = "$0.00"; // Initial state
+            }
+            
+            // Update current price
             numProp.value = price;
+            previousPrice = price; // Store for next comparison
+            
           } catch (error) {
             console.error("⚠️ Error fetching Bitcoin data:", error);
           }
