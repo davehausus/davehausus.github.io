@@ -28,7 +28,7 @@
 
   <script>
     const r = new rive.Rive({
-      src: "data_bind.riv",
+      src: "data_binding.riv",
       canvas: document.getElementById("riveCanvas"),
       autoplay: true,
       autoBind: true,
@@ -81,7 +81,15 @@
         }
 
         const numProp = vmi.number("num");
-        const diffProp = vmi.string("priceDiff"); // Get the string property
+        const diffProp = vmi.string("priceDiff");
+        
+        // Get all 12 bar properties
+        const bars = [
+          vmi.number("bar1"), vmi.number("bar2"), vmi.number("bar3"),
+          vmi.number("bar4"), vmi.number("bar5"), vmi.number("bar6"),
+          vmi.number("bar7"), vmi.number("bar8"), vmi.number("bar9"),
+          vmi.number("bar10"), vmi.number("bar11"), vmi.number("bar12")
+        ];
         
         if (!numProp) {
           console.error("❌ Number property 'num' not found!");
@@ -93,10 +101,59 @@
           return;
         }
 
-        console.log("🔗 Bound to properties successfully!");
+        // Check if all bar properties exist
+        const missingBars = bars.filter((bar, index) => !bar);
+        if (missingBars.length > 0) {
+          console.error("❌ Some bar properties not found!");
+          return;
+        }
 
-        let previousPrice = null; // Track previous price
+        console.log("🔗 Bound to all properties successfully!");
 
+        let previousPrice = null;
+
+        // Function to fetch last 12 hours of Bitcoin prices
+        async function fetchHourlyData() {
+          try {
+            console.log("📊 Fetching last 12 hours of Bitcoin data...");
+            
+            const end = new Date();
+            const start = new Date();
+            start.setHours(start.getHours() - 12);
+            
+            const startISO = start.toISOString();
+            const endISO = end.toISOString();
+            
+            // Coinbase Exchange API with 1 hour granularity (3600 seconds)
+            const url = `https://api.exchange.coinbase.com/products/BTC-USD/candles?start=${startISO}&end=${endISO}&granularity=3600`;
+            
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            // Data format: [timestamp, low, high, open, close, volume]
+            const hourlyPrices = data.map(candle => ({
+              timestamp: new Date(candle[0] * 1000),
+              close: candle[4] // Closing price for that hour
+            })).reverse(); // Reverse to get chronological order (oldest to newest)
+            
+            console.log(`📊 Fetched ${hourlyPrices.length} hours of data`);
+            
+            // Update each bar with the corresponding hour's closing price
+            bars.forEach((bar, index) => {
+              if (bar && hourlyPrices[index]) {
+                bar.value = hourlyPrices[index].close;
+                console.log(`  Bar ${index + 1}: $${hourlyPrices[index].close.toFixed(2)}`);
+              }
+            });
+            
+            console.log("✅ Chart updated successfully!");
+            
+          } catch (error) {
+            console.error("⚠️ Error fetching hourly data:", error);
+          }
+        }
+
+        // Function to update current Bitcoin price
         async function updateBitcoinPrice() {
           try {
             const response = await fetch("https://api.coinbase.com/v2/prices/spot?currency=USD");
@@ -113,22 +170,44 @@
                 : `-$${Math.abs(diff).toFixed(2)}`;
               
               console.log("📊 Price Change:", diffFormatted);
-              diffProp.value = diffFormatted; // Update the difference text
+              diffProp.value = diffFormatted;
             } else {
-              diffProp.value = "$0.00"; // Initial state
+              diffProp.value = "";
             }
             
             // Update current price
             numProp.value = price;
-            previousPrice = price; // Store for next comparison
+            previousPrice = price;
             
           } catch (error) {
             console.error("⚠️ Error fetching Bitcoin data:", error);
           }
         }
 
+        // Calculate milliseconds until the next full hour
+        function msUntilNextHour() {
+          const now = new Date();
+          const nextHour = new Date(now);
+          nextHour.setHours(now.getHours() + 1, 0, 0, 0); // Next hour at :00:00
+          return nextHour - now;
+        }
+
+        // Initial load: fetch historical data and current price
+        await fetchHourlyData();
         await updateBitcoinPrice();
+
+        // Update current price every 2 seconds
         setInterval(updateBitcoinPrice, 2000);
+
+        // Schedule the first hourly update at the top of the next hour
+        setTimeout(() => {
+          fetchHourlyData(); // Update immediately at the top of the hour
+          
+          // Then update every hour (3600000 ms = 1 hour)
+          setInterval(fetchHourlyData, 3600000);
+        }, msUntilNextHour());
+
+        console.log(`⏰ Next chart update in ${Math.round(msUntilNextHour() / 1000 / 60)} minutes`);
       },
     });
   </script>
