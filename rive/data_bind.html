@@ -124,13 +124,19 @@
           vmi.number("bar10"), vmi.number("bar11"), vmi.number("bar12")
         ];
         
+        // Better error checking
         if (!numProp) {
           console.error("❌ Number property 'num' not found!");
           return;
         }
         
-        if (!diffProp || !showDiffProp) {
-          console.error("❌ String property 'priceDiff' or 'showDiff' not found!");
+        if (!diffProp) {
+          console.error("❌ String property 'priceDiff' not found! Make sure it exists in View Model 1");
+          return;
+        }
+        
+        if (!showDiffProp) {
+          console. error("❌ Boolean property 'showDiff' not found! Make sure it exists in View Model 1");
           return;
         }
 
