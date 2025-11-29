@@ -325,7 +325,7 @@ Mexico<br>
       </div>
       <!-- end col-4 -->
       <div class="col-lg-3 col-md-6 wow fadeInUp">
-        <h5>Emojis accepted</h5>
+        <h5 id="emoji-text">Emojis accepted.</h5>
         <address>
         davehausus@gmail.com <br>
         <div class="extra">
@@ -333,6 +333,20 @@ Mexico<br>
         </div>
       </address>
       </div>
+      <script>
+        const emojiLines = [
+          "Motion or no motion — even your emojis tell a story.",
+          "Static email, animated energy. Emojis totally allowed.",
+          "If emojis had easing curves, I’d accept those too.",
+          "You can write me a full paragraph or just drop a 😎.",
+          "Questions, ideas, or just a random emoji — send it my way.",
+          "No need to be formal. Emojis are perfectly acceptable.",
+          "Short message? Long message? Emoji-only message? All good."
+        ];
+
+        const randomLine = emojiLines[Math.floor(Math.random() * emojiLines.length)];
+        document.getElementById("emoji-text").textContent = randomLine;
+      </script>
       <!-- end col-3 -->
       <div class="col-12 wow fadeInUp">
         <div class="sub-footer">
