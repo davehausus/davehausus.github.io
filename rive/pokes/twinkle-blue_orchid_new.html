@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- CSS FILES -->
-<link rel="stylesheet" href="../../css/animate.min.css">
-<link rel="stylesheet" href="../../css/swiper.min.css">
-<link rel="stylesheet" href="../../css/bootstrap.min.css">
-<link rel="stylesheet" href="../../css/style.css">
+  <!-- CSS FILES -->
+  <link rel="stylesheet" href="../../css/animate.min.css">
+  <link rel="stylesheet" href="../../css/swiper.min.css">
+  <link rel="stylesheet" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
   <title>Blue Orchid Twinkle Poke</title>
   <style>
     body {
@@ -24,288 +24,45 @@
 <body>
   <canvas id="riveCanvas" width="380" height="380"></canvas>
 
-  <script type="module">
-    import rive from 'https://unpkg.com/@rive-app/canvas-advanced@2.23.6/dist/rive.mjs';
-
-    let riveInstance;
-
-    // IMPORTANT: Register the script BEFORE loading the Rive file
-    rive.registerRiveScript({
-      name: 'LEDRandomRotation',
-      script: `
--- LED Random Rotation Controller
--- Controls rotation divided into 12 equal parts (30 degrees each)
--- Randomizes both initial angle and timing between transitions
--- Animates opacity from 0% to random target (10% to 100%) over the interval time
--- Supports multiple LED instances
-
-type LEDState = {
-  artboard: Artboard<Data.Rotation>,
-  currentSegment: number,
-  timeUntilNextChange: number,
-  currentOpacity: number, -- Current opacity value
-  targetOpacity: number, -- Target opacity to reach
-  intervalDuration: number, -- Total duration of current interval
-}
-
-type LEDRandomRotation = {
-  -- Reference to 6 LED artboards
-  led1: Input<Artboard<Data.Rotation>>,
-  led2: Input<Artboard<Data.Rotation>>,
-  led3: Input<Artboard<Data.Rotation>>,
-  led4: Input<Artboard<Data.Rotation>>,
-  led5: Input<Artboard<Data.Rotation>>,
-  led6: Input<Artboard<Data.Rotation>>,
-
-  -- Internal state
-  _leds: { LEDState }, -- Array to store all LED states
-  _minInterval: number, -- 35ms = 0.035 seconds
-  _maxInterval: number, -- 170ms = 0.170 seconds
-  _minOpacity: number, -- 10% = 0.1
-  _maxOpacity: number, -- 100% = 1.0
-}
-
--- The 12 rotation angles (30 degrees apart)
-local ANGLES: { number } = {
-  0, -- Segment 0
-  30, -- Segment 1
-  60, -- Segment 2
-  90, -- Segment 3
-  120, -- Segment 4
-  150, -- Segment 5
-  180, -- Segment 6
-  210, -- Segment 7
-  240, -- Segment 8
-  270, -- Segment 9
-  300, -- Segment 10
-  330, -- Segment 11
-}
-
--- Generate random interval between min and max (in seconds)
-local function randomInterval(min: number, max: number): number
-  return min + (math.random() * (max - min))
-end
-
--- Generate random opacity between min and max (0.0 to 1.0)
-local function randomOpacity(min: number, max: number): number
-  return min + (math.random() * (max - min))
-end
-
--- Pick a random segment (0-11)
-local function randomSegment(): number
-  return math.random(0, 11)
-end
-
-function init(self: LEDRandomRotation, context: Context): boolean
-  print('LEDRandomRotation: init() called')
-
-  -- Collect all LED artboards into an array
-  local ledInputs = {
-    self.led1,
-    self.led2,
-    self.led3,
-    self.led4,
-    self.led5,
-    self.led6,
-  }
-
-  self._leds = {}
-
-  -- Initialize each LED
-  for i, ledInput in ipairs(ledInputs) do
-    if ledInput and ledInput.data and ledInput.data.angle then
-      -- Set random initial segment
-      local segment = randomSegment()
-      local angle = ANGLES[segment + 1]
-
-      -- Set random target opacity
-      local targetOpacity = randomOpacity(self._minOpacity, self._maxOpacity)
-
-      -- Set random interval duration
-      local intervalDuration =
-        randomInterval(self._minInterval, self._maxInterval)
-
-      -- Update view model - angle
-      ledInput.data.angle.value = angle
-
-      -- Update view model - opacity starts at 0%
-      if ledInput.data.opacity then
-        ledInput.data.opacity.value = 0
-        print(
-          'LEDRandomRotation: LED #'
-            .. i
-            .. ' opacity starting at 0%, target: '
-            .. tostring(math.floor(targetOpacity * 100))
-            .. '%'
-        )
-      else
-        print(
-          'LEDRandomRotation: WARNING - LED #'
-            .. i
-            .. ' missing \\'opacity\\' property in view model'
-        )
-      end
-
-      -- Advance once to apply the changes
-      ledInput:advance(0)
-
-      -- Store LED state
-      table.insert(self._leds, {
-        artboard = ledInput,
-        currentSegment = segment,
-        timeUntilNextChange = intervalDuration,
-        currentOpacity = 0,
-        targetOpacity = targetOpacity,
-        intervalDuration = intervalDuration,
-      })
-
-      print(
-        'LEDRandomRotation: LED #'
-          .. i
-          .. ' initialized at '
-          .. tostring(angle)
-          .. ' degrees'
-      )
-      print('  Fade duration: ' .. tostring(intervalDuration) .. ' seconds')
-    else
-      print(
-        'LEDRandomRotation: WARNING - LED #'
-          .. i
-          .. ' not connected or missing view model'
-      )
-    end
-  end
-
-  print(
-    'LEDRandomRotation: Successfully initialized '
-      .. tostring(#self._leds)
-      .. ' LEDs'
-  )
-
-  -- Request advance calls
-  return true
-end
-
-function advance(self: LEDRandomRotation, seconds: number): boolean
-  -- Update each LED independently
-  for i, led in ipairs(self._leds) do
-    -- Calculate elapsed time in this interval
-    local elapsedTime = led.intervalDuration - led.timeUntilNextChange
-
-    -- Calculate opacity based on linear interpolation from 0 to target
-    local progress = math.min(elapsedTime / led.intervalDuration, 1.0) -- Clamp to 1.0
-    led.currentOpacity = progress * led.targetOpacity
-
-    -- Update the opacity in the view model
-    if led.artboard and led.artboard.data and led.artboard.data.opacity then
-      led.artboard.data.opacity.value = led.currentOpacity
-    end
-
-    -- Count down to next change
-    led.timeUntilNextChange = led.timeUntilNextChange - seconds
-
-    -- Check if it's time to change rotation and reset opacity
-    if led.timeUntilNextChange <= 0 then
-      -- Pick a new random segment
-      led.currentSegment = randomSegment()
-      local angle = ANGLES[led.currentSegment + 1]
-
-      -- Pick a new random target opacity
-      local targetOpacity = randomOpacity(self._minOpacity, self._maxOpacity)
-
-      -- Pick a new random interval
-      local intervalDuration =
-        randomInterval(self._minInterval, self._maxInterval)
-
-      -- Update view model
-      if led.artboard and led.artboard.data and led.artboard.data.angle then
-        led.artboard.data.angle.value = angle
-
-        -- Reset opacity to 0 for new cycle
-        if led.artboard.data.opacity then
-          led.artboard.data.opacity.value = 0
-        end
-
-        -- Advance the artboard to process the changes
-        led.artboard:advance(seconds)
-
-        print(
-          'LED #'
-            .. i
-            .. ' changed to: '
-            .. tostring(angle)
-            .. ' degrees, new target opacity: '
-            .. tostring(math.floor(targetOpacity * 100))
-            .. '% over '
-            .. tostring(intervalDuration)
-            .. 's'
-        )
-      end
-
-      -- Update state for new interval
-      led.currentOpacity = 0
-      led.targetOpacity = targetOpacity
-      led.intervalDuration = intervalDuration
-      led.timeUntilNextChange = intervalDuration
-    else
-      -- Normal advance
-      if led.artboard then
-        led.artboard:advance(seconds)
-      end
-    end
-  end
-
-  -- Continue receiving advance calls
-  return true
-end
-
-function draw(self: LEDRandomRotation, renderer: Renderer)
-  -- Draw all LED artboards
-  for _, led in ipairs(self._leds) do
-    if led.artboard then
-      led.artboard:draw(renderer)
-    end
-  end
-end
-
-return function(): Node<LEDRandomRotation>
-  return {
-    led1 = late(),
-    led2 = late(),
-    led3 = late(),
-    led4 = late(),
-    led5 = late(),
-    led6 = late(),
-    _leds = {},
-    _minInterval = 0.035, -- 35ms
-    _maxInterval = 0.170, -- 170ms
-    _minOpacity = 0.1, -- 10%
-    _maxOpacity = 1.0, -- 100%
-    init = init,
-    advance = advance,
-    draw = draw,
-  }
-end
-      `
-    });
-
-    // NOW load the Rive file after the script is registered
-    riveInstance = new rive.Rive({
-      src: "twinkle-script.riv", // Replace with your .riv file path
-      canvas: document.getElementById("riveCanvas"),
-      autoplay: true,
-      artboard: "Artboard", // Explicitly set the artboard
-      stateMachines: ["State Machine 1"], // The single state machine
-      onLoad: () => {
-        console.log("Rive file loaded: Artboard + State Machine 1");
+  <script src="https://unpkg.com/@rive-app/canvas-advanced@2.23.6/rive.js"></script>
+  <script>
+    console.log('Loading Rive...');
+    console.log('Global rive:', window.rive);
+    
+    // Use the global rive variable exposed by the UMD build
+    window.rive({
+      locateFile: (file) => {
+        console.log('Looking for file:', file);
+        return `https://unpkg.com/@rive-app/canvas-advanced@2.23.6/${file}`;
       }
+    }).then((module) => {
+      console.log('✅ Rive module loaded with scripting support');
+      console.log('Module:', module);
+      
+      // Create the Rive instance - scripts embedded in the .riv file will be executed automatically
+      const riveInstance = new module.Rive({
+        src: "twinkle-script.riv",
+        canvas: document.getElementById("riveCanvas"),
+        autoplay: true,
+        artboard: "Artboard",
+        stateMachines: ["State Machine 1"],
+        onLoad: () => {
+          console.log("✅ Rive file loaded: Artboard + State Machine 1");
+          console.log("🎨 Embedded script should now be running!");
+        },
+        onLoadError: (err) => {
+          console.error("❌ Error loading Rive file:", err);
+        }
+      });
+    }).catch((err) => {
+      console.error("❌ Failed to load Rive module:", err);
     });
-
   </script>
-<p>
-<button type="contact" onclick="location.href='/rive/pokes/'">
-              <strong>Back</strong>
-</button>
-</p>
+
+  <p>
+    <button type="button" onclick="location.href='/rive/pokes/'">
+      <strong>Back</strong>
+    </button>
+  </p>
 </body>
 </html>
