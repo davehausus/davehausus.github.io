@@ -100,7 +100,6 @@ button[type="contact"]{ background-color: #F95738;
     font-size: 1.0625rem;
     font-weight: 600;
     letter-spacing: 1.4px;
-	padding: 0 8px 3px;
 	border: 0;
     text-align: center;
     height: 32px;
@@ -122,7 +121,7 @@ button[type="contact"]{ background-color: #F95738;
 .color-dark { background-color: $color-dark;
 	.left-side ul{ width: 100vh; line-height: 1; display: block; margin: 0; margin-top:50vh; margin-left: -9px; padding: 0; transform: rotate(-90deg); transform-origin: 0 0; position: absolute; left: 50%; top: 50%; text-align: center;
 		li{display: inline-block; margin: 0 10px; padding: 0; list-style: none;
-			a{display: block; font-size: 13px; font-weight: 600; position: relative; padding: 0 2px; color: #fff;moe
+			a{display: block; font-size: 13px; font-weight: 600; position: relative; padding: 0 2px; color: #fff;
 				&:hover{ text-decoration: none;}
 			&:before { content: ''; display: block; position: absolute; left: 0; bottom: 6px; height: 1px; width: 0; transition: width 0s ease, background .25s ease;}
 			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 6px; height: 1px; width: 0; background: #fff; transition: width .25s ease;}
@@ -261,8 +260,8 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.page-title{ width: 100%; margin-bottom: 100px; margin-top: 50px;
 		h2{font-weight: 700; font-size: 8vw; margin-bottom: 20px;}
 		h4{ padding-right: 40%; line-height: 1.7;}}
-	.headlines{ width: 100%; margin-bottom: 50px; margin-top: 80px;
-		h1{@include fluid-type(45, 120, 480, 1500); font-weight: 800; line-height: 1.1; margin: 0; padding-bottom:0px;
+	.headlines{ width: 100%; margin-bottom: 50px; margin-top: 40px;
+		h1{@include fluid-type(45, 120, 480, 1500); font-weight: 800; line-height: 1.05; margin: 0; padding-bottom:7px;
 			background-color: #152230;
 			background-image: linear-gradient(45deg, #152230, #5386E4);
 			background-size: 100%;
@@ -273,7 +272,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 			-moz-text-fill-color: transparent;
 		}
 		h2{@include fluid-type(25, 72, 480, 1500); font-weight: 600; line-height: 1; margin: 0; padding-bottom:5px; }
-		h3{@include fluid-type(28, 62, 480, 1500); font-weight: 400; line-height: 1; margin: 0; padding-bottom:5px; }
+		h3{@include fluid-type(28, 62, 480, 1500); font-weight: 400; line-height: 1.15; margin: 0; padding-bottom:5px; }
 		h4{@include fluid-type(38, 52, 480, 1500); font-weight: 800; line-height: 1; margin: 0; padding-bottom:0; color:#152230;}
 		h5{@include fluid-type(21, 34, 480, 1500); font-weight: 400; line-height: 1; margin: 50px 0 0; padding-bottom:5px;
 			p{ margin: 0 0 50px;}}
@@ -783,8 +782,8 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.swiper-button-next{display: none;}
 	.footer .logo{ margin-bottom: 40px;}
 	.footer .career h2 { font-size: 6vw;}
-	input[type="text"]{border-radius: 0 !important; -webkit-appearance: none;}
-	textarea{border-radius: 0 !important; -webkit-appearance: none;}
+	input[type="text"]{border-radius: 0 !important; appearance: none; -webkit-appearance: none;}
+	textarea{border-radius: 0 !important; appearance: none; -webkit-appearance: none;}
 	.icon-scroll{text-align: center; margin: 15px 0px 0px;}
 }
 
@@ -794,7 +793,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.preloader .inner .percentage{font-size: 30vh;}
 	.navbar{padding: 30px 15px;}
 	.navbar .phone{display: none;}
-	.slider {height: 490px;}
+	.slider {height: 420px;}
 	.slider .swiper-container .slide-inner{padding: 0 30px;}
 	.slider .swiper-container .slide-inner h2 { font-size: 35px;}
 	.recent-news .row{margin-left: -15px; margin-right: -15px;}
