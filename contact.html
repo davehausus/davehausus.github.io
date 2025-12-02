@@ -171,19 +171,18 @@ Mexico<br>
 
 		<div class="col-md-8 wow fadeInUp">
       <div class="contact-form">
-        <h5>CONTACT FORM</h5>
         <script type="text/javascript">var submitted=false;</script>
          <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
          onload="if(submitted) {window.location='thankyou.html';}"></iframe>
         <form action="https://docs.google.com/forms/d/e/1FAIpQLSe8VbRKOZonNTDYy3VnkzT_fn4cSvYBKPe0NfJLZk4A3zpyUQ/formResponse" method="post" target="hidden_iframe" onsubmit="submitted=true;">
            <div class="form-group">
              <span>Your name *</span>
-             <input type="text" name="entry.2005620554" required>
+             <input type="text" id="name" name="entry.2005620554" required placeholder="Your Name">
            </div>
            <!-- end form-group -->
            <div class="form-group">
              <span>Your e-mail *</span>
-             <input type="text" name="entry.1045781291" required>
+             <input type="email" id="email" name="entry.1045781291" required placeholder="Email Address">
            </div>
            <!-- end form-group -->
            <div class="form-group">
@@ -193,22 +192,54 @@ Mexico<br>
            <!-- end form-group -->
            <div class="form-group">
              <span>Your message *</span>
-             <textarea name="entry.839337160" required></textarea>
+             <textarea id="message" name="entry.839337160" required placeholder="Message"></textarea>
            </div>
            <!-- end form-group -->
            <div class="form-group">
              <button type="submit">
-               <strong>Submit Now<b></b> <i></i></strong>
+               <strong>Send<b></b> <i></i></strong>
              </button>
            </div>
            <!-- end form-group -->
          </form>
-         <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("contactForm");
+
+            const customMessages = {
+              name: "Please tell me your name — I like knowing who I'm talking to!",
+              email: "I need a valid email so I can get back to you.",
+              message: "Feel free to write something small or long — but I need something to send!"
+            };
+
+            // Apply custom messages
+            Object.keys(customMessages).forEach((fieldId) => {
+              const field = document.getElementById(fieldId);
+
+              field.addEventListener("invalid", function (e) {
+                e.target.setCustomValidity(customMessages[fieldId]);
+              });
+
+              field.addEventListener("input", function (e) {
+                // Reset message when user corrects input
+                e.target.setCustomValidity("");
+              });
+            });
+
+            // Optional: Prevent "default tooltip" in some browsers
+            form.addEventListener("submit", function (e) {
+              if (!form.checkValidity()) {
+                e.preventDefault();
+              }
+            });
+          });
+        </script>
+        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
          <!-- end form --> 
           <div class="form-group">
-           <div id="success" class="alert alert-success wow fadeInUp" role="alert"> Your message was sent successfully! We will be in touch as soon as we can. </div>
+           <div id="success" class="alert alert-success wow fadeInUp" role="alert"> All good! Your message made it through and is now doing a little victory animation on my end.</div>
          <!-- end success -->
-         <div id="error" class="alert alert-danger wow fadeInUp" role="alert"> Something went wrong, try refreshing and submitting the form again. </div>
+         <div id="error" class="alert alert-danger wow fadeInUp" role="alert"> Hmm, that glitched. The form hit a snag mid-motion. Refresh and give it another go. </div>
          <!-- end error --> 
          </div>
          <!-- end form-group -->
