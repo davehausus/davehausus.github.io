@@ -1185,7 +1185,7 @@ button[type=contact] strong:hover {
 }
 .slider .swiper-container .slide-inner .link {
   display: block;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 .slider .swiper-container .slide-inner .link a {
   display: inline-block;
