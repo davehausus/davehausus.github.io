@@ -77,6 +77,19 @@
 <link rel="stylesheet" href="css/style.css">
     
 
+<script src="https://unpkg.com/@rive-app/webgl2"></script>
+
+
+<style>
+  #riveCanvas {
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+    max-width: 1200px;
+    min-width: 375px;
+  }
+</style>
+
+
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -168,14 +181,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- end hamburger-menu --> 
   </nav>
   <!-- end navbar -->
-  <div class="headlines">
-    <div class="container">
-      <h1>Sr. UI & Motion Designer</h1>
-      <h3>Turning interactions into stories. Powered by Rive & Lottie.</h3>
-    </div>
-    <!-- end container --> 
-  </div>
-  <!-- end headlines --> 
+
+
+<canvas id="riveCanvas"></canvas>
+
 </header>
 <!-- end header -->
 <section class="slider">
@@ -430,6 +439,79 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src='js/fancybox.min.js'></script> 
 <script src='js/wow.min.js'></script> 
 <script src='js/scripts.js'></script> 
+
+<!-- Add this script at the bottom of your HTML, before the closing </body> tag, 
+     after your existing scripts -->
+
+<script>
+  const canvas = document.getElementById("riveCanvas");
+
+  const r = new rive.Rive({
+    src: "rive/header.riv",
+    canvas: canvas,
+    autoplay: true,
+    autoBind: true,
+    loadRiveFile: true, // ← REQUIRED FOR WebGL2 + View Model
+    artboard: "Artboard",
+    stateMachines: "State Machine 1",
+    useDataBinding: true,
+    
+    // Add layout configuration
+    layout: new rive.Layout({
+      fit: rive.Fit.Layout,
+      alignment: rive.Alignment.CenterLeft,
+    }),
+
+    onLoad: () => {
+      console.log("Rive animation loaded successfully");
+
+      const vmi = r.viewModelInstance;
+      if (!vmi) {
+        console.error("❌ ViewModelInstance is NULL");
+        return;
+      }
+
+      const numProp = vmi.number("num");
+      if (!numProp) {
+        console.error("❌ View Model property 'num' not found");
+        return;
+      }
+
+      const canvasParent = canvas.parentElement;
+      let isResizing = false;
+
+      function updateCanvasWidth() {
+        if (isResizing) return;
+        isResizing = true;
+
+        const currentWidth = canvasParent ? canvasParent.clientWidth : canvas.clientWidth;
+        
+        canvas.style.width = currentWidth + 'px';
+        
+        numProp.value = currentWidth;
+        console.log(`Canvas width bound to View Model: ${currentWidth}`);
+        
+        requestAnimationFrame(() => {
+          r.resizeDrawingSurfaceToCanvas();
+          isResizing = false;
+        });
+      }
+
+      updateCanvasWidth();
+
+      let resizeTimeout = null;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          updateCanvasWidth();
+        }, 120);
+      });
+    }
+  });
+</script>
+
+
+
 
 
 </body>
