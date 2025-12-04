@@ -82,7 +82,7 @@
 
 <style>
   #riveCanvas {
-    border: 2px solid #000000;
+    border: none;
     border-radius: 8px;
     max-width: 1200px;
     min-width: 375px;
@@ -458,6 +458,51 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     stateMachines: "State Machine 1", // State machine to run
     useDataBinding: true, // Enable data binding for View Model
     
+  // CRITICAL: Asset loader to handle referenced fonts
+  assetLoader: async (asset, bytes) => {
+    console.log("🔍 Asset detected:", asset.name, "Type:", asset.isFont ? "Font" : "Other");
+    
+    if (bytes.length > 0 || asset.cdnUuid.length > 0) {
+      console.log("  ↳ Letting Rive handle this asset");
+      return false;
+    }
+    
+    if (asset.isFont) {
+      console.log("  ↳ Loading referenced font:", asset.name);
+      
+      try {
+        // Determine which font file to load based on the asset name
+        let fontPath;
+        if (asset.name.includes("Heavy")) {
+          fontPath = "./fonts/Mont-Heavy.ttf";
+        } else if (asset.name.includes("Regular")) {
+          fontPath = "./fonts/Mont-Regular.ttf";
+        } else {
+          // Fallback or default font
+          console.warn("  ⚠️ Unknown font name, using Regular as fallback");
+          fontPath = "./fonts/Mont-Regular.ttf";
+        }
+        
+        const fontResponse = await fetch(fontPath);
+        const fontData = await fontResponse.arrayBuffer();
+        
+        const font = await rive.decodeFont(new Uint8Array(fontData));
+        asset.setFont(font);
+        
+        console.log(`  ✅ Font loaded successfully: ${fontPath}`);
+        return true;
+      } catch (error) {
+        console.error("  ❌ Error loading font:", error);
+        return false;
+      }
+    }
+    
+    return false;
+  },
+
+
+
+
     // Configure how the animation fits within the canvas
     layout: new rive.Layout({
       fit: rive.Fit.Contain, // Fit entire animation within canvas while maintaining aspect ratio
@@ -500,12 +545,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         
         // Determine aspect ratio based on window width breakpoint
         let aspectRatio;
-        if (window.innerWidth >= 501) {
+        if (window.innerWidth >= 531) {
           // Desktop: use 1110 x 450 aspect ratio
           aspectRatio = 1110 / 450;
         } else {
-          // Mobile: use 500 x 500 aspect ratio (square)
-          aspectRatio = 500 / 400; // = 1
+          // Mobile: use 500 x 400 aspect ratio (square)
+          aspectRatio = 500 / 400;
         }
 
         // Set canvas width to match container
