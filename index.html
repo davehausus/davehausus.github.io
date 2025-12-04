@@ -42,26 +42,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#282828"/>
-<title>David de Jesús | Portfolio</title>
-<meta name="title" content="David de Jesús | Portfolio">
+<title>David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist</title>
+<meta name="title" content="David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist">
 <meta name="author" content="David de Jesús">
-<meta name="description" content="Sr. UI & Motion Designer specializing in Rive and Lottie animations, State Machines, Data Bind, and interactive product animation for web and mobile." />
+<meta name="description" content="I design interfaces that move with purpose., combining UI, motion, and product thinking. From micro-interactions to Rive State Machines and Data Binding workflows, I create web and mobile experiences that feel clear, intuitive, and alive." />
 <meta name="keywords" content="David de Jesús, davehausus, UI Design, Art direction, web design, Visual Design, designer, creative, works, showcase, portfolio, highlight, projects, modern, digital, css, animation, transition, freelancers, diseñador, página web, creativo">
 <meta name="google-site-verification" content="Ff2D8q3yGA0OtWq4AAFc0tNCskC_cDfSt7a_bUeGFoo" />
 
 <!-- SOCIAL MEDIA META -->
-<meta property="og:description" content="Sr. UI & Motion Designer • Rive & Lottie Specialist">
+<meta property="og:description" content="I design interfaces that move with purpose by combining UI, motion, and product thinking. From micro-interactions to Rive State Machines and Data Binding workflows, I create web and mobile experiences that feel clear, intuitive, and alive.">
 <meta property="og:image" content="https://davehausus.github.io/images/meta.jpg">
 <meta property="og:site_name" content="David de Jesús">
-<meta property="og:title" content="David de Jesús | Portfolio">
+<meta property="og:title" content="David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://davehausus.github.io">
 
 <!-- TWITTER -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://davehausus.github.io/">
-<meta property="twitter:title" content="David de Jesús | Portfolio">
-<meta property="twitter:description" content="Sr. UI & Motion Designer • Rive & Lottie Specialist">
+<meta property="twitter:title" content="David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist">
+<meta property="twitter:description" content="I design interfaces that move with purpose by combining UI, motion, and product thinking. From micro-interactions to Rive State Machines and Data Binding workflows, I create web and mobile experiences that feel clear, intuitive, and alive.">
 <meta property="twitter:image" content="https://davehausus.github.io/images/meta.jpg">
 
 <!-- FAVICON FILES -->
@@ -76,6 +76,31 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
     
+
+<script src="https://unpkg.com/@rive-app/webgl2"></script>
+
+
+<style>
+  #riveCanvas {
+    border: none;
+    border-radius: 8px;
+    max-width: 1200px;
+    min-width: 375px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
 
 </head>
 <body>
@@ -133,6 +158,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="#top" class="gotop"><img src="images/icon-gotop.svg" alt="Image"></a> 
 </aside>
 <!-- end left-side -->
+
 <header class="header">
   <nav class="navbar">
     <div class="logo"> <a href="index.html"><img src="images/logo.svg" alt="Image"></a> </div>
@@ -168,16 +194,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- end hamburger-menu --> 
   </nav>
   <!-- end navbar -->
-  <div class="headlines">
-    <div class="container">
-      <h1>Sr. UI & Motion Designer</h1>
-      <h3>Turning interactions into stories. Powered by Rive & Lottie.</h3>
-    </div>
-    <!-- end container --> 
-  </div>
-  <!-- end headlines --> 
+
+<canvas id="riveCanvas"></canvas>
+<h1 class="visually-hidden">Sr. UI & Motion Designer Specializing in Rive, Lottie & Product Animation</h1>
 </header>
 <!-- end header -->
+
 <section class="slider">
   <div class="swiper-container"> 
     <div class="swiper-wrapper"> 
@@ -430,6 +452,157 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src='js/fancybox.min.js'></script> 
 <script src='js/wow.min.js'></script> 
 <script src='js/scripts.js'></script> 
+
+<!-- Add this script at the bottom of your HTML, before the closing </body> tag, 
+     after your existing scripts -->
+
+<script>
+  // Get reference to the canvas element where Rive animation will render
+  const canvas = document.getElementById("riveCanvas");
+
+  // Initialize a new Rive instance with configuration
+  const r = new rive.Rive({
+    src: "rive/header.riv", // Path to the Rive animation file
+    canvas: canvas, // Target canvas element for rendering
+    autoplay: true, // Start animation automatically on load
+    autoBind: true, // Automatically bind to canvas
+    loadRiveFile: true, // Required for WebGL2 + View Model support
+    artboard: "Artboard", // Name of the artboard to display
+    stateMachines: "State Machine 1", // State machine to run
+    useDataBinding: true, // Enable data binding for View Model
+    
+  // CRITICAL: Asset loader to handle referenced fonts
+  assetLoader: async (asset, bytes) => {
+    console.log("🔍 Asset detected:", asset.name, "Type:", asset.isFont ? "Font" : "Other");
+    
+    if (bytes.length > 0 || asset.cdnUuid.length > 0) {
+      console.log("  ↳ Letting Rive handle this asset");
+      return false;
+    }
+    
+    if (asset.isFont) {
+      console.log("  ↳ Loading referenced font:", asset.name);
+      
+      try {
+        // Determine which font file to load based on the asset name
+        let fontPath;
+        if (asset.name.includes("Heavy")) {
+          fontPath = "./fonts/Mont-Heavy.ttf";
+        } else if (asset.name.includes("Regular")) {
+          fontPath = "./fonts/Mont-Regular.ttf";
+        } else {
+          // Fallback or default font
+          console.warn("  ⚠️ Unknown font name, using Regular as fallback");
+          fontPath = "./fonts/Mont-Regular.ttf";
+        }
+        
+        const fontResponse = await fetch(fontPath);
+        const fontData = await fontResponse.arrayBuffer();
+        
+        const font = await rive.decodeFont(new Uint8Array(fontData));
+        asset.setFont(font);
+        
+        console.log(`  ✅ Font loaded successfully: ${fontPath}`);
+        return true;
+      } catch (error) {
+        console.error("  ❌ Error loading font:", error);
+        return false;
+      }
+    }
+    
+    return false;
+  },
+
+
+
+
+    // Configure how the animation fits within the canvas
+    layout: new rive.Layout({
+      fit: rive.Fit.Contain, // Fit entire animation within canvas while maintaining aspect ratio
+      alignment: rive.Alignment.CenterLeft, // Align animation to center-left of canvas
+    }),
+
+    // Callback function that runs when Rive file is fully loaded
+    onLoad: () => {
+      console.log("Rive animation loaded successfully");
+
+      // Get the View Model instance to access data-bound properties
+      const vmi = r.viewModelInstance;
+      if (!vmi) {
+        console.error("❌ ViewModelInstance is NULL");
+        return;
+      }
+
+      // Get reference to the "num" property in the View Model
+      // This property will be used to pass canvas width to the Rive animation
+      const numProp = vmi.number("num");
+      if (!numProp) {
+        console.error("❌ View Model property 'num' not found");
+        return;
+      }
+
+      // Store reference to canvas parent element for width calculations
+      const canvasParent = canvas.parentElement;
+      // Flag to prevent multiple simultaneous resize operations
+      let isResizing = false;
+
+      // Main function to update canvas dimensions and pass width to Rive
+      function updateCanvasWidth() {
+        // Prevent overlapping resize operations
+        if (isResizing) return;
+        isResizing = true;
+
+        // Get current width from parent container or canvas itself
+        const currentWidth = canvasParent ? canvasParent.clientWidth : canvas.clientWidth;
+        
+        
+        // Determine aspect ratio based on window width breakpoint
+        let aspectRatio;
+        if (window.innerWidth >= 531) {
+          // Desktop: use 1110 x 450 aspect ratio
+          aspectRatio = 1110 / 450;
+        } else {
+          // Mobile: use 500 x 400 aspect ratio (square)
+          aspectRatio = 500 / 400;
+        }
+
+        // Set canvas width to match container
+        canvas.style.width = currentWidth + 'px';
+        // Calculate and set height to maintain artboard aspect ratio
+        canvas.style.height = (currentWidth / aspectRatio) + 'px';
+        
+        // Pass the width value to Rive's View Model for data binding
+        numProp.value = currentWidth;
+        console.log(`Canvas width bound to View Model: ${currentWidth}`);
+        
+        // Use requestAnimationFrame to ensure smooth rendering
+        requestAnimationFrame(() => {
+          // Tell Rive to update its internal rendering surface to match new canvas size
+          r.resizeDrawingSurfaceToCanvas();
+          // Reset flag to allow future resize operations
+          isResizing = false;
+        });
+      }
+
+      // Run updateCanvasWidth immediately on load to set initial size
+      updateCanvasWidth();
+
+      // Store timeout ID for debouncing resize events
+      let resizeTimeout = null;
+      // Listen for window resize events
+      window.addEventListener("resize", () => {
+        // Clear any pending resize timeout to debounce rapid resize events
+        clearTimeout(resizeTimeout);
+        // Wait 120ms after last resize event before updating canvas
+        // This prevents excessive calculations during active resizing
+        resizeTimeout = setTimeout(() => {
+          updateCanvasWidth();
+        }, 120);
+      });
+    }
+  });
+</script>
+
 
 
 </body>
