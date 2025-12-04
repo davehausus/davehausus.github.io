@@ -444,64 +444,99 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      after your existing scripts -->
 
 <script>
+  // Get reference to the canvas element where Rive animation will render
   const canvas = document.getElementById("riveCanvas");
 
+  // Initialize a new Rive instance with configuration
   const r = new rive.Rive({
-    src: "rive/header.riv",
-    canvas: canvas,
-    autoplay: true,
-    autoBind: true,
-    loadRiveFile: true, // ← REQUIRED FOR WebGL2 + View Model
-    artboard: "Artboard",
-    stateMachines: "State Machine 1",
-    useDataBinding: true,
+    src: "rive/header.riv", // Path to the Rive animation file
+    canvas: canvas, // Target canvas element for rendering
+    autoplay: true, // Start animation automatically on load
+    autoBind: true, // Automatically bind to canvas
+    loadRiveFile: true, // Required for WebGL2 + View Model support
+    artboard: "Artboard", // Name of the artboard to display
+    stateMachines: "State Machine 1", // State machine to run
+    useDataBinding: true, // Enable data binding for View Model
     
-    // Add layout configuration
+    // Configure how the animation fits within the canvas
     layout: new rive.Layout({
-      fit: rive.Fit.FitWidth,
-      alignment: rive.Alignment.CenterLeft,
+      fit: rive.Fit.Contain, // Fit entire animation within canvas while maintaining aspect ratio
+      alignment: rive.Alignment.CenterLeft, // Align animation to center-left of canvas
     }),
 
+    // Callback function that runs when Rive file is fully loaded
     onLoad: () => {
       console.log("Rive animation loaded successfully");
 
+      // Get the View Model instance to access data-bound properties
       const vmi = r.viewModelInstance;
       if (!vmi) {
         console.error("❌ ViewModelInstance is NULL");
         return;
       }
 
+      // Get reference to the "num" property in the View Model
+      // This property will be used to pass canvas width to the Rive animation
       const numProp = vmi.number("num");
       if (!numProp) {
         console.error("❌ View Model property 'num' not found");
         return;
       }
 
+      // Store reference to canvas parent element for width calculations
       const canvasParent = canvas.parentElement;
+      // Flag to prevent multiple simultaneous resize operations
       let isResizing = false;
 
+      // Main function to update canvas dimensions and pass width to Rive
       function updateCanvasWidth() {
+        // Prevent overlapping resize operations
         if (isResizing) return;
         isResizing = true;
 
+        // Get current width from parent container or canvas itself
         const currentWidth = canvasParent ? canvasParent.clientWidth : canvas.clientWidth;
         
-        canvas.style.width = currentWidth + 'px';
         
+        // Determine aspect ratio based on window width breakpoint
+        let aspectRatio;
+        if (window.innerWidth >= 501) {
+          // Desktop: use 1110 x 450 aspect ratio
+          aspectRatio = 1110 / 450;
+        } else {
+          // Mobile: use 500 x 500 aspect ratio (square)
+          aspectRatio = 500 / 400; // = 1
+        }
+
+        // Set canvas width to match container
+        canvas.style.width = currentWidth + 'px';
+        // Calculate and set height to maintain artboard aspect ratio
+        canvas.style.height = (currentWidth / aspectRatio) + 'px';
+        
+        // Pass the width value to Rive's View Model for data binding
         numProp.value = currentWidth;
         console.log(`Canvas width bound to View Model: ${currentWidth}`);
         
+        // Use requestAnimationFrame to ensure smooth rendering
         requestAnimationFrame(() => {
+          // Tell Rive to update its internal rendering surface to match new canvas size
           r.resizeDrawingSurfaceToCanvas();
+          // Reset flag to allow future resize operations
           isResizing = false;
         });
       }
 
+      // Run updateCanvasWidth immediately on load to set initial size
       updateCanvasWidth();
 
+      // Store timeout ID for debouncing resize events
       let resizeTimeout = null;
+      // Listen for window resize events
       window.addEventListener("resize", () => {
+        // Clear any pending resize timeout to debounce rapid resize events
         clearTimeout(resizeTimeout);
+        // Wait 120ms after last resize event before updating canvas
+        // This prevents excessive calculations during active resizing
         resizeTimeout = setTimeout(() => {
           updateCanvasWidth();
         }, 120);
@@ -509,8 +544,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
   });
 </script>
-
-
 
 
 
