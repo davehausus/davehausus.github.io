@@ -2000,6 +2000,12 @@ button[type=contact] strong:hover {
 .post-body .image-full img {
   width: 100%;
 }
+.post-body h3 {
+  font-size: 50px;
+  font-weight: 800;
+  margin-top: 100px;
+  margin-bottom: 15px;
+}
 .post-body h5 {
   font-weight: 600;
   margin-top: 15px;
@@ -2017,20 +2023,24 @@ button[type=contact] strong:hover {
   padding: 40px;
   margin-top: 20px;
   margin-bottom: 40px;
-  background: #010e19;
+  background: #F9F9F9;
   position: relative;
-  color: #fff;
-  background: url(../images/quote-bg.svg) left top no-repeat #010e19;
+  color: #000;
   background-size: contain;
 }
 .post-body blockquote p {
   display: block;
+  margin-bottom: 0px;
 }
 .post-body blockquote h5 {
   font-weight: 600;
   margin: 0;
+  margin-bottom: 15px;
 }
 
+/*OLD blockquote{    display: inline-block; padding: 40px; margin-top: 20px; margin-bottom: 40px; background: $color-dark; position: relative; color: #fff; background: url(../images/quote-bg.svg) left top no-repeat $color-dark; background-size: contain;
+	p{display: block;}
+	h5{font-weight: 600; margin: 0;}}}*/
 .post-navigation {
   width: 100%;
   display: flex;

@@ -582,12 +582,17 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		img{width: 100%;}}
 	.image-full{ width: 100%; display: inline-block; margin: 30px 0;
 		img{width: 100%;}}
+	h3{font-size: 50px; font-weight: 800; margin-top: 100px; margin-bottom: 15px;}
 	h5{font-weight: 600; margin-top: 15px; margin-bottom: 15px;}
 	ul{ padding-left: 20px; margin-bottom: 30px;
 		li{margin-bottom: 5px;}}
-	blockquote{    display: inline-block; padding: 40px; margin-top: 20px; margin-bottom: 40px; background: $color-dark; position: relative; color: #fff; background: url(../images/quote-bg.svg) left top no-repeat $color-dark; background-size: contain;
+	blockquote{    display: inline-block; padding: 40px; margin-top: 20px; margin-bottom: 40px; background: #F9F9F9; position: relative; color: #000; background-size: contain;
+		p{display: block; margin-bottom: 0px;}
+		h5{font-weight: 600; margin: 0; margin-bottom: 15px;}}}
+		
+	/*OLD blockquote{    display: inline-block; padding: 40px; margin-top: 20px; margin-bottom: 40px; background: $color-dark; position: relative; color: #fff; background: url(../images/quote-bg.svg) left top no-repeat $color-dark; background-size: contain;
 		p{display: block;}
-		h5{font-weight: 600; margin: 0;}}}
+		h5{font-weight: 600; margin: 0;}}}*/
 
 .post-navigation{width: 100%; display: flex; flex-wrap: wrap; background: #f9f9f9; 
 	a{ font-weight: 600; font-size: 18px; padding: 40px 25px;
