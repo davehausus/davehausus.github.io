@@ -254,7 +254,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🏥 ADL Simulator - Optimized Version</h1>
+      <h1>🏥 ADL Simulator</h1>
       <p class="subtitle">Realistic Activities of Daily Living simulation with advanced scheduling and Rive animation integration</p>
     </div>
 
@@ -328,7 +328,7 @@
     class ADLSimulator {
       constructor() {
         this.activities = {
-          sleeping: { name: 'Sleeping', icon: '😴', type: 0, avgDuration: 480, variance: 60, priority: 10, category: 'sleep' },
+          sleeping: { name: 'Sleeping', icon: '😴', type: 0, avgDuration: 420, variance: 60, priority: 10, category: 'sleep' },
           wakeup: { name: 'Waking Up', icon: '🌅', type: 6, avgDuration: 5, variance: 2, priority: 9, category: 'transition', sequence: ['bathroom', 'shower'] },
           bathroom: { name: 'Using Bathroom', icon: '🚽', type: 3, avgDuration: 10, variance: 5, priority: 8, category: 'hygiene', minInterval: 120 },
           shower: { name: 'Showering', icon: '🚿', type: 2, avgDuration: 20, variance: 5, priority: 7, category: 'hygiene', sequence: ['breakfast'] },
@@ -378,7 +378,6 @@
         const isWeekend = this.currentDay % 7 >= 5;
         
         return {
-          6: { activities: ['sleeping'], probability: 0.8 },
           7: { activities: ['wakeup'], probability: 0.9, required: true },
           8: { activities: ['breakfast'], probability: 0.95 },
           9: { activities: ['social', 'exercise'], probability: 0.4 },
@@ -515,17 +514,50 @@
 
       handleDayTransition() {
         this.currentDay++;
-        this.completedToday.clear();
+        
+        // Don't clear 'sleeping' from completedToday if we slept in the last 12 hours
+        // This prevents sleeping twice when crossing midnight
+        const lastSleep = this.lastActivityTime['sleeping'];
+        const hoursSinceLastSleep = lastSleep ? (this.simulatedTime - lastSleep) / 1000 / 60 / 60 : 999;
+        
+        if (hoursSinceLastSleep < 12) {
+          // Keep sleeping in the completed set
+          const hadSlept = this.completedToday.has('sleeping');
+          this.completedToday.clear();
+          if (hadSlept) {
+            this.completedToday.add('sleeping');
+          }
+        } else {
+          this.completedToday.clear();
+        }
+        
         this.dailySchedule = this.generateDailySchedule();
         console.log(`📅 Day ${this.currentDay + 1} started`);
       }
 
       canDoActivity(activityKey) {
         const activity = this.activities[activityKey];
+        const hour = this.simulatedTime.getHours();
         
         // Check if already completed today (for once-per-day activities)
         if (activity.category === 'meal' && this.completedToday.has(activityKey)) {
           return false;
+        }
+        
+        // Special handling for sleeping - only once per night cycle
+        if (activityKey === 'sleeping') {
+          // Don't allow sleeping during daytime (7am-10pm)
+          if (hour >= 7 && hour < 22) {
+            return false;
+          }
+          // If we already slept today/tonight, don't sleep again
+          if (this.completedToday.has('sleeping')) {
+            return false;
+          }
+          // ALSO check if currently sleeping - don't start another sleep session
+          if (this.currentActivity && this.currentActivity.key === 'sleeping') {
+            return false;
+          }
         }
         
         // Check minimum interval
@@ -537,12 +569,6 @@
               return false;
             }
           }
-        }
-        
-        // Check if it's a reasonable time for sleeping
-        const hour = this.simulatedTime.getHours();
-        if (activityKey === 'sleeping' && hour >= 7 && hour < 22) {
-          return false;
         }
         
         return true;
@@ -636,7 +662,7 @@
         
         // If no activities available, default to idle or sleeping
         if (availableActivities.length === 0) {
-          if (hour >= 22 || hour < 7) {
+          if ((hour >= 22 || hour < 7) && this.canDoActivity('sleeping')) {
             availableActivities.push({ key: 'sleeping', ...this.activities.sleeping });
           } else {
             availableActivities.push({ key: 'idle', ...this.activities.idle });
@@ -770,6 +796,8 @@
           minute: '2-digit',
           second: '2-digit'
         });
+
+        
         
         document.getElementById('currentTime').textContent = timeStr;
         document.getElementById('dayCounter').textContent = `Day ${this.currentDay + 1}`;
@@ -785,7 +813,19 @@
         document.getElementById('bathroomCount').textContent = this.stats.bathroom;
         document.getElementById('medCount').textContent = this.stats.medication;
         document.getElementById('socialCount').textContent = this.stats.social;
-      }
+// ----- Rive sync: Only update when HOUR changes -----
+  const currentHour = this.simulatedTime.getHours();
+
+  if (this._lastSimulatedHour !== currentHour) {
+    this._lastSimulatedHour = currentHour;
+
+    if (window.riveInstance?.view) {
+      window.riveInstance.view.setNumber("dayTime", currentHour);
+    }
+  }
+}
+        
+
 
       getCurrentActivity() {
         return this.currentActivity;
@@ -841,32 +881,49 @@ const riveInstance = new rive.Rive({
       return;
     }
 
-    console.log("🔍 View Model Instance:", vmi);
-
     // Configure how the animation fits within the canvas
     layout: new rive.Layout({
       fit: rive.Fit.Contain, // Fit entire animation within canvas while maintaining aspect ratio
       alignment: rive.Alignment.CenterLeft, // Align animation to center-left of canvas
     });
 
+    console.log("🔍 View Model Instance:", vmi);
 
     // Get Rive properties
     const activityNameProp = vmi.string("activityName");
     const activityTypeProp = vmi.number("activityType");
     const activityIconProp = vmi.string("activityIcon");
+    const dayTimeProp = vmi.number("dayTime");
 
     console.log("🔍 Properties:", {
       activityName: activityNameProp,
       activityType: activityTypeProp,
-      activityIcon: activityIconProp
+      activityIcon: activityIconProp,
+      dayTime: dayTimeProp
     });
 
-    if (!activityNameProp || !activityTypeProp || !activityIconProp) {
+    if (!activityNameProp || !activityTypeProp || !activityIconProp || !dayTimeProp) {
       console.error("❌ Required properties not found in View Model!");
+      console.log("Make sure you have: activityName (string), activityType (number), activityIcon (string), dayTime (number)");
       return;
     }
 
     console.log("🔗 Connected to Rive properties!");
+
+    // Update function to sync time continuously
+    const updateRiveTime = () => {
+      if (window.ADLSimulator.isRunning) {
+        const currentHour = window.ADLSimulator.simulatedTime.getHours();
+        dayTimeProp.value = currentHour;
+      }
+    };
+
+    // Update time every animation frame for smooth transitions
+    const timeUpdateLoop = () => {
+      updateRiveTime();
+      requestAnimationFrame(timeUpdateLoop);
+    };
+    timeUpdateLoop();
 
     window.ADLSimulator.onActivityChange((activity) => {
       console.log("🔄 Activity changed:", activity.name, `(type: ${activity.type})`);
@@ -874,6 +931,11 @@ const riveInstance = new rive.Rive({
       activityNameProp.value = activity.name;
       activityTypeProp.value = activity.type;
       activityIconProp.value = activity.icon;
+
+      // Also update time when activity changes
+      const currentHour = window.ADLSimulator.simulatedTime.getHours();
+      dayTimeProp.value = currentHour;
+      console.log("🕐 Hour updated:", currentHour);
     });
 
     const currentActivity = window.ADLSimulator.getCurrentActivity();
@@ -894,8 +956,6 @@ const riveInstance = new rive.Rive({
     console.error("❌ Rive play error:", error);
   }
 });
-
-// Also make sure to import the WebGL2 runtime at the top of your HTML
   </script>
 </body>
 </html>
