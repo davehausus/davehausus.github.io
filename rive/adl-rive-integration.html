@@ -296,7 +296,7 @@
     }
   </style>
 
-  <script src="https://unpkg.com/@rive-app/canvas@2.7.0"></script>
+  <script src="https://unpkg.com/@rive-app/webgl2@latest"></script>
 </head>
 <body>
   <div class="container">
@@ -310,15 +310,7 @@
         <h2>🎨 Rive Animation</h2>
         
         <!-- Placeholder until you add your Rive file -->
-        <div class="rive-placeholder" id="rivePlaceholder">
-          <h3>📄 Add Your Rive File</h3>
-          <p>Replace the placeholder with your .riv file to see the animation. The simulator is already integrated and ready to send data!</p>
-          <p style="margin-top: 20px; font-weight: bold;">Activity Type: <span id="placeholderType">0</span></p>
-          <p style="font-weight: bold;">Activity: <span id="placeholderName">Waiting...</span></p>
-        </div>
-        
-        <!-- Uncomment this when you have your Rive file -->
-        <!-- <canvas id="riveCanvas" width="400" height="400"></canvas> -->
+        <canvas id="riveCanvas" width="400" height="400"></canvas>
       </div>
 
       <div class="info-section">
@@ -658,9 +650,9 @@
           document.getElementById('currentIcon').textContent = this.currentActivity.icon;
           document.getElementById('currentActivity').textContent = this.currentActivity.name;
           
-          // Update placeholder
-          document.getElementById('placeholderType').textContent = this.currentActivity.type;
-          document.getElementById('placeholderName').textContent = this.currentActivity.name + ' ' + this.currentActivity.icon;
+          // REMOVE THESE TWO LINES - they reference deleted elements:
+          // document.getElementById('placeholderType').textContent = this.currentActivity.type;
+          // document.getElementById('placeholderName').textContent = this.currentActivity.name + ' ' + this.currentActivity.icon;
         }
 
         document.getElementById('sleepCount').textContent = Math.round(this.stats.sleeping * 10) / 10;
@@ -701,62 +693,78 @@
     console.log('✅ ADL Simulator initialized!');
     console.log('📡 Integration API ready at window.ADLSimulator');
 
-    // RIVE INTEGRATION CODE
-    // Uncomment this section when you add your Rive file
-    /*
-    const riveInstance = new rive.Rive({
-      src: "your-adl-animation.riv", // Replace with your .riv file name
-      canvas: document.getElementById("riveCanvas"),
-      autoplay: true,
-      autoBind: true,
-      artboard: "Artboard", // Replace with your artboard name
-      stateMachines: "State Machine 1", // Replace with your state machine name
-      
-      onLoad: () => {
-        console.log("✅ Rive animation loaded!");
-        
-        const vmi = riveInstance.viewModelInstance;
-        if (!vmi) {
-          console.error("❌ No ViewModelInstance found!");
-          return;
-        }
+// RIVE INTEGRATION CODE - WebGL2 Renderer
+console.log('🔍 Attempting to load Rive file with WebGL2 renderer...');
 
-        // Get Rive properties
-        const activityNameProp = vmi.string("activityName");
-        const activityTypeProp = vmi.number("activityType");
-        const activityIconProp = vmi.string("activityIcon");
+const riveInstance = new rive.Rive({
+  src: "adl.riv",
+  canvas: document.getElementById("riveCanvas"),
+  autoplay: true,
+  autoBind: true,
+  artboard: "Artboard",
+  stateMachines: "State Machine 1",
+  useOffscreenRenderer: true, // Enable for better performance with WebGL2
+  
+  onLoad: () => {
+    console.log("✅ Rive animation loaded with WebGL2!");
+    
+    // Resize the canvas for better quality
+    riveInstance.resizeDrawingSurfaceToCanvas();
+    
+    const vmi = riveInstance.viewModelInstance;
+    if (!vmi) {
+      console.error("❌ No ViewModelInstance found!");
+      return;
+    }
 
-        // Validate properties exist
-        if (!activityNameProp || !activityTypeProp || !activityIconProp) {
-          console.error("❌ Required properties not found in View Model!");
-          console.log("Make sure you have: activityName (string), activityType (number), activityIcon (string)");
-          return;
-        }
+    console.log("🔍 View Model Instance:", vmi);
 
-        console.log("🔗 Connected to Rive properties!");
+    // Get Rive properties
+    const activityNameProp = vmi.string("activityName");
+    const activityTypeProp = vmi.number("activityType");
+    const activityIconProp = vmi.string("activityIcon");
 
-        // Subscribe to activity changes
-        window.ADLSimulator.onActivityChange((activity) => {
-          console.log("🔄 Activity changed:", activity.name, `(type: ${activity.type})`);
-          
-          // Update Rive animation
-          activityNameProp.value = activity.name;
-          activityTypeProp.value = activity.type;
-          activityIconProp.value = activity.icon;
-        });
-
-        // Set initial activity if one exists
-        const currentActivity = window.ADLSimulator.getCurrentActivity();
-        if (currentActivity) {
-          activityNameProp.value = currentActivity.name;
-          activityTypeProp.value = currentActivity.type;
-          activityIconProp.value = currentActivity.icon;
-        }
-
-        console.log("✅ Rive integration complete! Start the simulation to see it in action.");
-      }
+    console.log("🔍 Properties:", {
+      activityName: activityNameProp,
+      activityType: activityTypeProp,
+      activityIcon: activityIconProp
     });
-    */
+
+    if (!activityNameProp || !activityTypeProp || !activityIconProp) {
+      console.error("❌ Required properties not found in View Model!");
+      return;
+    }
+
+    console.log("🔗 Connected to Rive properties!");
+
+    window.ADLSimulator.onActivityChange((activity) => {
+      console.log("🔄 Activity changed:", activity.name, `(type: ${activity.type})`);
+      
+      activityNameProp.value = activity.name;
+      activityTypeProp.value = activity.type;
+      activityIconProp.value = activity.icon;
+    });
+
+    const currentActivity = window.ADLSimulator.getCurrentActivity();
+    if (currentActivity) {
+      activityNameProp.value = currentActivity.name;
+      activityTypeProp.value = currentActivity.type;
+      activityIconProp.value = currentActivity.icon;
+    }
+
+    console.log("✅ Rive integration complete!");
+  },
+  
+  onLoadError: (error) => {
+    console.error("❌ Rive load error:", error);
+  },
+  
+  onPlayError: (error) => {
+    console.error("❌ Rive play error:", error);
+  }
+});
+
+// Also make sure to import the WebGL2 runtime at the top of your HTML
   </script>
 </body>
 </html>
