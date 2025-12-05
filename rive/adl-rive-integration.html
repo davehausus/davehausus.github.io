@@ -204,79 +204,14 @@
       font-size: 12px;
     }
 
-    .setup-instructions {
-      background: white;
-      padding: 25px;
-      border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-      margin-top: 20px;
-    }
-
-    .setup-instructions h2 {
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    .instruction-step {
+    .day-counter {
       background: #f8f9fa;
-      padding: 20px;
+      padding: 10px 20px;
       border-radius: 8px;
-      margin-bottom: 15px;
-      border-left: 4px solid #667eea;
-    }
-
-    .instruction-step h3 {
-      color: #667eea;
-      margin-bottom: 10px;
-      font-size: 16px;
-    }
-
-    .instruction-step p {
-      color: #666;
-      line-height: 1.6;
-      margin-bottom: 10px;
-    }
-
-    .instruction-step ul {
-      margin-left: 20px;
-      color: #666;
-      line-height: 1.8;
-    }
-
-    .code-block {
-      background: #2d3748;
-      color: #e2e8f0;
-      padding: 15px;
-      border-radius: 6px;
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-      overflow-x: auto;
-      margin-top: 10px;
-    }
-
-    .rive-placeholder {
-      width: 400px;
-      height: 400px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
       text-align: center;
-      padding: 40px;
-    }
-
-    .rive-placeholder h3 {
-      font-size: 24px;
-      margin-bottom: 15px;
-    }
-
-    .rive-placeholder p {
-      font-size: 14px;
-      opacity: 0.9;
-      line-height: 1.6;
+      margin-top: 15px;
+      font-weight: 600;
+      color: #667eea;
     }
 
     @media (max-width: 1200px) {
@@ -301,15 +236,13 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🏥 ADL Simulator - Rive Integration Demo</h1>
-      <p class="subtitle">Real-time Activities of Daily Living visualization with Rive animation support</p>
+      <h1>🏥 ADL Simulator - Optimized Version</h1>
+      <p class="subtitle">Realistic Activities of Daily Living simulation with advanced scheduling and Rive animation integration</p>
     </div>
 
     <div class="main-layout">
       <div class="rive-section">
         <h2>🎨 Rive Animation</h2>
-        
-        <!-- Placeholder until you add your Rive file -->
         <canvas id="riveCanvas" width="400" height="400"></canvas>
       </div>
 
@@ -327,6 +260,8 @@
             <input type="range" id="speedSlider" min="1" max="3600" value="60">
             <span class="speed-value" id="speedValue">1 min/sec</span>
           </div>
+
+          <div class="day-counter" id="dayCounter">Day 1</div>
         </div>
 
         <div class="card">
@@ -369,96 +304,45 @@
         </div>
       </div>
     </div>
-
-    <div class="setup-instructions">
-      <h2>🔧 How to Set Up Your Rive Animation</h2>
-      
-      <div class="instruction-step">
-        <h3>Step 1: Create Properties in Rive View Model</h3>
-        <p>In your Rive file, create a View Model with these properties:</p>
-        <ul>
-          <li><strong>activityName</strong> (String) - The name of the current activity</li>
-          <li><strong>activityType</strong> (Number) - Activity type code (0-6)</li>
-          <li><strong>activityIcon</strong> (String) - Emoji icon for the activity</li>
-        </ul>
-        <p style="margin-top: 10px;"><strong>Activity Type Codes:</strong></p>
-        <ul>
-          <li>0 = Sleeping 😴</li>
-          <li>1 = Eating 🍽️</li>
-          <li>2 = Showering 🚿</li>
-          <li>3 = Bathroom 🚽</li>
-          <li>4 = Medication 💊</li>
-          <li>5 = Social 👥</li>
-          <li>6 = Resting 🪑</li>
-        </ul>
-      </div>
-
-      <div class="instruction-step">
-        <h3>Step 2: Create State Machine Conditions</h3>
-        <p>In your State Machine, create different states/animations for each activity type:</p>
-        <ul>
-          <li>When <code>activityType == 0</code> → Show sleeping animation</li>
-          <li>When <code>activityType == 1</code> → Show eating animation</li>
-          <li>When <code>activityType == 2</code> → Show showering animation</li>
-          <li>And so on...</li>
-        </ul>
-      </div>
-
-      <div class="instruction-step">
-        <h3>Step 3: Add Your Rive File</h3>
-        <p>Replace the placeholder section in the HTML with:</p>
-        <div class="code-block">&lt;canvas id="riveCanvas" width="400" height="400"&gt;&lt;/canvas&gt;</div>
-        <p style="margin-top: 10px;">Then uncomment the Rive initialization code at the bottom of the script section.</p>
-      </div>
-
-      <div class="instruction-step">
-        <h3>Step 4: Test the Integration</h3>
-        <p>Once your Rive file is added:</p>
-        <ul>
-          <li>Click "Start Simulation"</li>
-          <li>Watch as activities change throughout the day</li>
-          <li>Your Rive animation should respond to each activity change</li>
-          <li>Adjust the speed slider to test faster</li>
-        </ul>
-      </div>
-
-      <div class="instruction-step">
-        <h3>Step 5: Deploy to GitHub Pages</h3>
-        <p>This is a static HTML file - just:</p>
-        <ul>
-          <li>Create a GitHub repository</li>
-          <li>Upload this HTML file and your .riv file</li>
-          <li>Enable GitHub Pages in repository settings</li>
-          <li>Your simulation will be live with zero hosting costs!</li>
-        </ul>
-      </div>
-    </div>
   </div>
 
   <script>
     class ADLSimulator {
       constructor() {
         this.activities = {
-          sleeping: { name: 'Sleeping', icon: '😴', type: 0, avgDuration: 480, variance: 60, schedule: [22, 23, 0, 1, 2, 3, 4, 5, 6] },
-          breakfast: { name: 'Eating Breakfast', icon: '🍳', type: 1, avgDuration: 30, variance: 10, schedule: [7, 8] },
-          shower: { name: 'Showering', icon: '🚿', type: 2, avgDuration: 20, variance: 5, schedule: [7, 8, 9] },
-          bathroom: { name: 'Using Bathroom', icon: '🚽', type: 3, avgDuration: 10, variance: 5, schedule: 'frequent' },
-          medication_morning: { name: 'Taking Medication', icon: '💊', type: 4, avgDuration: 5, variance: 2, schedule: [8, 9] },
-          lunch: { name: 'Eating Lunch', icon: '🍽️', type: 1, avgDuration: 40, variance: 10, schedule: [12, 13] },
-          social: { name: 'Social Interaction', icon: '👥', type: 5, avgDuration: 60, variance: 20, schedule: [10, 11, 14, 15, 16] },
-          dinner: { name: 'Eating Dinner', icon: '🍲', type: 1, avgDuration: 45, variance: 10, schedule: [18, 19] },
-          medication_evening: { name: 'Taking Medication', icon: '💊', type: 4, avgDuration: 5, variance: 2, schedule: [20, 21] },
-          idle: { name: 'Resting', icon: '🪑', type: 6, avgDuration: 60, variance: 30, schedule: 'filler' }
+          sleeping: { name: 'Sleeping', icon: '😴', type: 0, avgDuration: 480, variance: 60, priority: 10, category: 'sleep' },
+          wakeup: { name: 'Waking Up', icon: '🌅', type: 6, avgDuration: 5, variance: 2, priority: 9, category: 'transition', sequence: ['bathroom', 'shower'] },
+          bathroom: { name: 'Using Bathroom', icon: '🚽', type: 3, avgDuration: 10, variance: 5, priority: 8, category: 'hygiene', minInterval: 120 },
+          shower: { name: 'Showering', icon: '🚿', type: 2, avgDuration: 20, variance: 5, priority: 7, category: 'hygiene', sequence: ['breakfast'] },
+          breakfast: { name: 'Eating Breakfast', icon: '🍳', type: 1, avgDuration: 30, variance: 10, priority: 6, category: 'meal', sequence: ['medication_morning'] },
+          medication_morning: { name: 'Taking Medication', icon: '💊', type: 4, avgDuration: 5, variance: 2, priority: 5, category: 'medication' },
+          lunch: { name: 'Eating Lunch', icon: '🍽️', type: 1, avgDuration: 40, variance: 10, priority: 6, category: 'meal' },
+          dinner: { name: 'Eating Dinner', icon: '🍲', type: 1, avgDuration: 45, variance: 10, priority: 6, category: 'meal', sequence: ['medication_evening'] },
+          medication_evening: { name: 'Taking Medication', icon: '💊', type: 4, avgDuration: 5, variance: 2, priority: 5, category: 'medication' },
+          social: { name: 'Social Interaction', icon: '👥', type: 5, avgDuration: 60, variance: 20, priority: 3, category: 'social' },
+          exercise: { name: 'Light Exercise', icon: '🚶', type: 6, avgDuration: 30, variance: 15, priority: 4, category: 'activity' },
+          idle: { name: 'Resting', icon: '🪑', type: 6, avgDuration: 60, variance: 30, priority: 1, category: 'rest' }
         };
 
+        // Tracking state
         this.currentActivity = null;
         this.activityLog = [];
+        this.completedToday = new Set();
+        this.lastActivityTime = {};
+        this.sequenceQueue = [];
+        this.dailySchedule = this.generateDailySchedule();
+        
+        // Time management
         this.simulatedTime = new Date();
         this.simulatedTime.setHours(0, 0, 0, 0);
+        this.currentDay = 0;
         this.isRunning = false;
         this.speed = 60;
-        this.intervalId = null;
+        this.animationFrameId = null;
+        this.lastUpdateTime = null;
         this.activityStartTime = null;
+        
+        // Callbacks and stats
         this.activityChangeCallbacks = [];
         this.stats = {
           sleeping: 0,
@@ -470,6 +354,31 @@
         };
 
         this.initializeUI();
+      }
+
+      generateDailySchedule() {
+        const isWeekend = this.currentDay % 7 >= 5;
+        
+        return {
+          6: { activities: ['sleeping'], probability: 0.8 },
+          7: { activities: ['wakeup'], probability: 0.9, required: true },
+          8: { activities: ['breakfast'], probability: 0.95 },
+          9: { activities: ['social', 'exercise'], probability: 0.4 },
+          10: { activities: ['social', 'exercise'], probability: 0.5 },
+          11: { activities: ['bathroom', 'social'], probability: 0.4 },
+          12: { activities: ['lunch'], probability: 0.9, required: true },
+          13: { activities: ['idle'], probability: 0.6 },
+          14: { activities: ['social', 'exercise'], probability: isWeekend ? 0.7 : 0.5 },
+          15: { activities: ['social', 'bathroom'], probability: 0.5 },
+          16: { activities: ['social'], probability: isWeekend ? 0.8 : 0.4 },
+          17: { activities: ['idle'], probability: 0.5 },
+          18: { activities: ['dinner'], probability: 0.9, required: true },
+          19: { activities: ['social', 'idle'], probability: 0.6 },
+          20: { activities: ['medication_evening'], probability: 0.95 },
+          21: { activities: ['social', 'idle'], probability: 0.7 },
+          22: { activities: ['sleeping'], probability: 0.8, required: true },
+          23: { activities: ['sleeping'], probability: 1.0 }
+        };
       }
 
       initializeUI() {
@@ -502,22 +411,34 @@
         if (this.isRunning) return;
         
         this.isRunning = true;
+        this.lastUpdateTime = performance.now();
         
         if (!this.currentActivity) {
           this.selectNextActivity();
         }
         
-        this.intervalId = setInterval(() => this.tick(), 1000);
+        this.animate();
         
         document.getElementById('startBtn').textContent = '▶️ Running...';
         document.getElementById('startBtn').style.background = '#28a745';
       }
 
+      animate() {
+        if (!this.isRunning) return;
+        
+        const currentTime = performance.now();
+        const deltaTime = (currentTime - this.lastUpdateTime) / 1000;
+        this.lastUpdateTime = currentTime;
+        
+        this.tick(deltaTime);
+        this.animationFrameId = requestAnimationFrame(() => this.animate());
+      }
+
       pause() {
         this.isRunning = false;
-        if (this.intervalId) {
-          clearInterval(this.intervalId);
-          this.intervalId = null;
+        if (this.animationFrameId) {
+          cancelAnimationFrame(this.animationFrameId);
+          this.animationFrameId = null;
         }
         
         document.getElementById('startBtn').textContent = '▶️ Start Simulation';
@@ -528,8 +449,13 @@
         this.pause();
         this.simulatedTime = new Date();
         this.simulatedTime.setHours(0, 0, 0, 0);
+        this.currentDay = 0;
         this.currentActivity = null;
         this.activityLog = [];
+        this.completedToday = new Set();
+        this.lastActivityTime = {};
+        this.sequenceQueue = [];
+        this.dailySchedule = this.generateDailySchedule();
         this.activityStartTime = null;
         this.stats = {
           sleeping: 0,
@@ -545,8 +471,17 @@
         document.getElementById('currentIcon').textContent = '💤';
       }
 
-      tick() {
-        this.simulatedTime = new Date(this.simulatedTime.getTime() + (this.speed * 1000));
+      tick(deltaTime) {
+        // Advance simulated time
+        const timeAdvance = this.speed * deltaTime * 1000;
+        const oldHour = this.simulatedTime.getHours();
+        this.simulatedTime = new Date(this.simulatedTime.getTime() + timeAdvance);
+        const newHour = this.simulatedTime.getHours();
+        
+        // Check if we crossed midnight
+        if (oldHour > newHour) {
+          this.handleDayTransition();
+        }
         
         if (this.currentActivity) {
           const elapsed = (this.simulatedTime - this.activityStartTime) / 1000 / 60;
@@ -560,46 +495,218 @@
         this.updateUI();
       }
 
-      selectNextActivity() {
-        const hour = this.simulatedTime.getHours();
-        const availableActivities = [];
+      handleDayTransition() {
+        this.currentDay++;
+        this.completedToday.clear();
+        this.dailySchedule = this.generateDailySchedule();
+        console.log(`📅 Day ${this.currentDay + 1} started`);
+      }
 
-        for (const [key, activity] of Object.entries(this.activities)) {
-          if (activity.schedule === 'frequent') {
-            if (Math.random() < 0.1) {
-              availableActivities.push({ key, ...activity });
+      canDoActivity(activityKey) {
+        const activity = this.activities[activityKey];
+        
+        // Check if already completed today (for once-per-day activities)
+        if (activity.category === 'meal' && this.completedToday.has(activityKey)) {
+          return false;
+        }
+        
+        // Check minimum interval
+        if (activity.minInterval) {
+          const lastTime = this.lastActivityTime[activityKey];
+          if (lastTime) {
+            const minutesSince = (this.simulatedTime - lastTime) / 1000 / 60;
+            if (minutesSince < activity.minInterval) {
+              return false;
             }
-          } else if (activity.schedule === 'filler') {
-            availableActivities.push({ key, ...activity });
-          } else if (activity.schedule.includes(hour)) {
-            availableActivities.push({ key, ...activity });
           }
         }
-
-        if (availableActivities.length === 0) {
-          availableActivities.push({ key: 'idle', ...this.activities.idle });
+        
+        // Check if it's a reasonable time for sleeping
+        const hour = this.simulatedTime.getHours();
+        if (activityKey === 'sleeping' && hour >= 7 && hour < 22) {
+          return false;
         }
+        
+        return true;
+      }
 
-        const selected = availableActivities[Math.floor(Math.random() * availableActivities.length)];
-        const duration = selected.avgDuration + (Math.random() * selected.variance * 2 - selected.variance);
+      getActivityProbability(activityKey) {
+        const activity = this.activities[activityKey];
+        const hour = this.simulatedTime.getHours();
+        
+        let baseProbability = 0.3;
+        
+        // Time-based modifiers
+        if (activityKey === 'bathroom') {
+          // Increase after meals
+          const minutesSinceLastMeal = Math.min(
+            ...['breakfast', 'lunch', 'dinner']
+              .filter(meal => this.lastActivityTime[meal])
+              .map(meal => (this.simulatedTime - this.lastActivityTime[meal]) / 1000 / 60)
+          );
+          if (minutesSinceLastMeal < 60) {
+            baseProbability = 0.6;
+          } else {
+            baseProbability = 0.2;
+          }
+        } else if (activityKey === 'shower') {
+          // More likely in morning
+          if (hour >= 7 && hour <= 9) {
+            baseProbability = 0.8;
+          } else if (hour >= 20 && hour <= 22) {
+            baseProbability = 0.4;
+          }
+        } else if (activityKey === 'social') {
+          // Less likely early morning or late night
+          if (hour < 9 || hour > 21) {
+            baseProbability = 0.1;
+          } else {
+            baseProbability = 0.5;
+          }
+        }
+        
+        return baseProbability;
+      }
+
+      selectNextActivity() {
+        const hour = this.simulatedTime.getHours();
+        
+        // First, check if we have a queued sequence activity
+        if (this.sequenceQueue.length > 0) {
+          const nextKey = this.sequenceQueue.shift();
+          if (this.canDoActivity(nextKey)) {
+            this.startActivity(nextKey);
+            return;
+          }
+        }
+        
+        // Check for scheduled activities this hour
+        const schedule = this.dailySchedule[hour];
+        const availableActivities = [];
+        
+        if (schedule) {
+          for (const activityKey of schedule.activities) {
+            if (this.canDoActivity(activityKey)) {
+              const activity = this.activities[activityKey];
+              const probability = this.getActivityProbability(activityKey);
+              
+              if (schedule.required || Math.random() < probability) {
+                availableActivities.push({
+                  key: activityKey,
+                  ...activity,
+                  priority: activity.priority + (schedule.required ? 10 : 0)
+                });
+              }
+            }
+          }
+        }
+        
+        // Add bathroom as a possibility if enough time has passed
+        if (this.canDoActivity('bathroom')) {
+          const lastBathroom = this.lastActivityTime['bathroom'];
+          if (!lastBathroom || (this.simulatedTime - lastBathroom) / 1000 / 60 > 120) {
+            const probability = this.getActivityProbability('bathroom');
+            if (Math.random() < probability) {
+              availableActivities.push({
+                key: 'bathroom',
+                ...this.activities.bathroom,
+                priority: this.activities.bathroom.priority + 2
+              });
+            }
+          }
+        }
+        
+        // If no activities available, default to idle or sleeping
+        if (availableActivities.length === 0) {
+          if (hour >= 22 || hour < 7) {
+            availableActivities.push({ key: 'sleeping', ...this.activities.sleeping });
+          } else {
+            availableActivities.push({ key: 'idle', ...this.activities.idle });
+          }
+        }
+        
+        // Sort by priority (higher = more important)
+        availableActivities.sort((a, b) => b.priority - a.priority);
+        
+        // Select based on weighted probability favoring higher priority
+        let selected;
+        if (availableActivities.length === 1) {
+          selected = availableActivities[0];
+        } else {
+          const totalWeight = availableActivities.reduce((sum, act, idx) => 
+            sum + (availableActivities.length - idx), 0);
+          let random = Math.random() * totalWeight;
+          
+          for (let i = 0; i < availableActivities.length; i++) {
+            random -= (availableActivities.length - i);
+            if (random <= 0) {
+              selected = availableActivities[i];
+              break;
+            }
+          }
+          selected = selected || availableActivities[0];
+        }
+        
+        this.startActivity(selected.key);
+      }
+
+      startActivity(activityKey) {
+        const activity = this.activities[activityKey];
+        const variance = activity.variance;
+        const duration = activity.avgDuration + (Math.random() * variance * 2 - variance);
+        
+        // Adjust duration based on time of day
+        let adjustedDuration = duration;
+        const hour = this.simulatedTime.getHours();
+        
+        if (activityKey === 'shower') {
+          // Morning showers are quicker
+          if (hour >= 7 && hour <= 9) {
+            adjustedDuration *= 0.8;
+          } else {
+            adjustedDuration *= 1.2;
+          }
+        } else if (activity.category === 'meal') {
+          // Evening meals take longer
+          if (hour >= 18) {
+            adjustedDuration *= 1.2;
+          }
+        } else if (activityKey === 'social') {
+          // Weekend social activities last longer
+          const isWeekend = this.currentDay % 7 >= 5;
+          if (isWeekend) {
+            adjustedDuration *= 1.5;
+          }
+        }
         
         this.currentActivity = {
-          key: selected.key,
-          name: selected.name,
-          icon: selected.icon,
-          type: selected.type,
-          duration: Math.max(5, duration),
+          key: activityKey,
+          name: activity.name,
+          icon: activity.icon,
+          type: activity.type,
+          duration: Math.max(5, adjustedDuration),
           startTime: new Date(this.simulatedTime)
         };
 
         this.activityStartTime = new Date(this.simulatedTime);
+        this.lastActivityTime[activityKey] = new Date(this.simulatedTime);
+        
+        // Add to sequence queue if this activity has a sequence
+        if (activity.sequence) {
+          this.sequenceQueue.push(...activity.sequence);
+        }
         
         this.activityLog.unshift({
           ...this.currentActivity,
           timestamp: new Date(this.simulatedTime)
         });
 
-        // Notify all callbacks (including Rive)
+        // Keep log manageable
+        if (this.activityLog.length > 100) {
+          this.activityLog.pop();
+        }
+
+        // Notify callbacks
         this.activityChangeCallbacks.forEach(callback => {
           try {
             callback(this.currentActivity);
@@ -613,7 +720,9 @@
       }
 
       completeActivity() {
-        // Activity completed
+        if (this.currentActivity) {
+          this.completedToday.add(this.currentActivity.key);
+        }
       }
 
       updateStats() {
@@ -645,14 +754,11 @@
         });
         
         document.getElementById('currentTime').textContent = timeStr;
+        document.getElementById('dayCounter').textContent = `Day ${this.currentDay + 1}`;
 
         if (this.currentActivity) {
           document.getElementById('currentIcon').textContent = this.currentActivity.icon;
           document.getElementById('currentActivity').textContent = this.currentActivity.name;
-          
-          // REMOVE THESE TWO LINES - they reference deleted elements:
-          // document.getElementById('placeholderType').textContent = this.currentActivity.type;
-          // document.getElementById('placeholderName').textContent = this.currentActivity.name + ' ' + this.currentActivity.icon;
         }
 
         document.getElementById('sleepCount').textContent = Math.round(this.stats.sleeping * 10) / 10;
