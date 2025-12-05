@@ -23,11 +23,11 @@
 <meta name="theme-color" content="#282828"/>
 <title>David de Jesús | UI Designer</title>
 <meta name="author" content="David de Jesús">
-<meta name="description" content="Sr. UI & Motion Designer • Rive & Lottie Specialist">
+<meta name="description" content="Learn how to create responsive text in Rive using canvas resizing and data binding. A clear, designer-friendly guide with working code and real examples.">
 <meta name="keywords" content="UI Design, Visual Design, designer, creative, works, showcase, portfolio, highlight, projects, modern, digital, css, animation, transition, freelancers">
 
 <!-- SOCIAL MEDIA META -->
-<meta property="og:description" content="I design interfaces that move with purpose by combining UI, motion, and product thinking. From micro-interactions to Rive State Machines and Data Binding workflows, I create web and mobile experiences that feel clear, intuitive, and alive.">
+<meta property="og:description" content="Learn how to create responsive text in Rive using canvas resizing and data binding. A clear, designer-friendly guide with working code and real examples.">
 <meta property="og:image" content="https://davehausus.github.io/images/meta.jpg">
 <meta property="og:site_name" content="David de Jesús">
 <meta property="og:title" content="David de Jesús | Sr. UI Designer">
@@ -39,7 +39,7 @@
 <meta name="twitter:site" content="@davehausus">
 <meta name="twitter:creator" content="@davehausus">
 <meta name="twitter:title" content="David de Jesús">
-<meta name="twitter:description" content="David de Jesús | UI designer">
+<meta name="twitter:description" content="Learn how to create responsive text in Rive using canvas resizing and data binding. A clear, designer-friendly guide with working code and real examples.">
 <meta name="twitter:image" content="http://www.themezinho.net/agensy/preview.png">
 
 <!-- FAVICON FILES -->
@@ -80,30 +80,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	<div class="side-menu">
       <ul>
         <li><a href="about.html">About me</a></li>
-        <li><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
+        <li style="display: none;"><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
 
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </div>
     <!-- end side-menu -->
-	<div class="sides">
-	<div id="map">
-	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59726.312831427305!2d-103.37051840617129!3d20.673868602425465!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428b18cb52fd39b%3A0xd63d9302bf865750!2sGuadalajara%2C%20Jalisco!5e0!3m2!1sen!2smx!4v1594951967849!5m2!1sen!2smx" width="600" height="450" style="border:0" allowfullscreen></iframe>
-	</div>
-	<!-- end map -->
-		<figure><img src="images/office01.jpg" alt="Image">
-		<a href="#map" data-fancybox><img src="images/icon-map-marker.svg" alt="Image"></a>
-		</figure>
-	</div>
-	<!-- end sides -->
-	<div class="sides"><h2>I'm a <strong>UI designer</strong> with over 10 years of experience, my portfolio includes user interface design, brand & identity design.</h2>
-	<address>Guadalajara, Jalisco<br>
-Mexico<br>
-<a href="mailto:davehausus@gmail.com?subject=Hi%20David!">davehausus@gmail.com </a>
-+52 1 331 600 6116
-</address>
-	</div>
-	<!-- end sides -->
 	</div>
 	<!-- end inner -->
 </div>
@@ -127,7 +109,8 @@ Mexico<br>
     <div class="main-menu">
       <ul>
         <li><a href="about.html">About me</a></li>
-        <li><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li style="display: none;"><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
         <li>
           <button type="contact" onclick="location.href='contact.html'">
               <strong>Contact</strong>
@@ -153,25 +136,37 @@ Mexico<br>
     <!-- end hamburger-menu --> 
   </nav>
   <!-- end navbar -->
-</header>
-<!-- end header -->
-
-<section class="blog">
-	<div class="container">
-	<div class="row">
-		<div class="col-12">
-					
-					<div class="post-body wow fadeIn">
+  <section class="blog">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+  
+          <div class="headlines">
+            <div class="container">
+              <h6>MOTION VIEWPOINT</h6>
               <small class="post-date">November 3, 2025</small>
-          <h3 class="post-title">Why Motion Isn’t a “Nice-to-Have” in Modern UX Anymore.</h3>
+              <h4>Why Motion Isn’t a “Nice-to-Have” in Modern UX Anymore.</h4></br>
               <p class="post-intro">Motion stopped being decoration a long time ago. When it is thoughtful, motion helps people
                 understand, move, and feel comfortable inside a product.</p>
-              						<figure class="image-full"><img src="images/slide01.jpg" alt="Image"></figure>
-                  <div class="avatar">
-                  <img src="images/avatar.jpg" alt="Image">by
-                  <a href="#">David de Jesús</a>
-                  </div>
-            <p>Once upon a time interfaces were mostly plain text and static widgets, useful but blunt. Then came the era of
+            </div>
+            <!-- end container -->
+          </div>
+          <!-- end page-title -->
+          </header>
+          <!-- end header -->
+  
+  
+  
+          <div class="post-body wow fadeIn">
+            <figure class="image-full"><img src="images/blog/responsiveness.png" alt="Image"></figure>
+            <div class="avatar">
+              <img src="images/avatar.jpg" alt="Image">by
+              <a href="#">David de Jesús</a>
+            </div>
+          
+            <div class="col-8">
+              <div class="post-body wow fadeIn">
+                <p>Once upon a time interfaces were mostly plain text and static widgets, useful but blunt. Then came the era of
               skeuomorphism, when designers tried to make digital things look like physical ones. The launch of the first iPhone
               pushed everything forward: suddenly pixels tried to feel tactile, shadows hinted at depth, and animations were used to
               sell familiarity. That period made motion visible to everyone, and it taught teams that movement could communicate
@@ -180,8 +175,13 @@ Mexico<br>
               Designers began using subtle transitions, easing, and micro-interactions to guide attention without mimicking
               real-world objects. Motion became quieter, more purposeful, and more scalable. The shift was less about looking real,
               and more about making interfaces intelligible and humane.</p>
-						<figure class="image-left"><img src="images/office01.jpg" alt="Image"></figure>
-            <p>Today, products are a lot more complex. We build nested lists, dynamic feeds, real-time updates, and tools that
+              </div>
+              <!-- end post-body -->
+            </div>
+          
+          
+            <div class="col-8">
+             <p>Today, products are a lot more complex. We build nested lists, dynamic feeds, real-time updates, and tools that
               rearrange themselves. In that context, motion is not flair, it is grammar. It tells users what changed, where to look,
               and what to expect next. Well-designed animation explains transitions faster than text can, and it keeps interactions
               from feeling abrupt or jarring.</p>
@@ -197,6 +197,8 @@ Mexico<br>
               <p>Great animation does not shout for attention; it quietly points the way and earns trust. The moment you notice the
                 motion, it has probably failed its job.</p>
             </blockquote>
+            </div>
+            <div class="col-8">
             <p>There are practical mistakes people still make. Too many animations, too slow transitions, or inconsistent timing
               create noise rather than clarity. Likewise, using motion purely to delight without solving a problem makes
               interactions feel like empty gestures. The best motion supports an action, clarifies hierarchy, or reduces surprise.
@@ -216,12 +218,18 @@ Mexico<br>
             <p>Interfaces will keep getting more dynamic, personalized, and interactive. Motion is the tool that keeps those
               experiences legible. It helps users form a mental model of how the product moves, and that model is the foundation of
               confidence and speed when interacting with software.</p>
-						<figure class="image-full"><img src="images/slide01.jpg" alt="Image"></figure>
-            <p>So if you are tempted to treat motion like an afterthought, try pushing it closer to the start of your design
+          
+              <div class="post-body wow fadeIn">
+                      <p>So if you are tempted to treat motion like an afterthought, try pushing it closer to the start of your design
               process. You will find fewer surprises, clearer decisions, and an experience that feels deliberate rather than
               accidental. In the long run, motion is not a luxury; it is part of how modern interfaces speak, guide, and behave.</p>
-					</div>
-					<!-- end post-body -->
+
+
+              </div>
+              <!-- end post-body -->
+
+
+
 					<div class="post-navigation">
 						<a href="#">Using Motion to Make App Onboarding Clear, Fast, and Actually Enjoyable.</a>
 						<a href="#">A Friendly, No-Stress Guide to Building State Machines in Rive.</a>
@@ -264,9 +272,7 @@ Mexico<br>
         <h5 id="emoji-text">Emojis accepted.</h5>
         <address>
         davehausus@gmail.com <br>
-        <div class="extra">
-        <a href="#" onclick='window.open("https://api.whatsapp.com/send?phone=523316006116");return false;'>+52 1 331 600 6116</a>
-        </div>
+
       </address>
       </div>
       <script>

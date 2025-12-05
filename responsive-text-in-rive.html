@@ -80,7 +80,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	<div class="side-menu">
       <ul>
         <li><a href="about.html">About me</a></li>
-        <li><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
+        <li style="display: none;"><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
 
         <li><a href="contact.html">Contact</a></li>
       </ul>
@@ -109,7 +109,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="main-menu">
       <ul>
         <li><a href="about.html">About me</a></li>
-        <li><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li style="display: none;"><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
         <li>
           <button type="contact" onclick="location.href='contact.html'">
               <strong>Contact</strong>
@@ -137,140 +138,312 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- end navbar -->
   <section class="blog">
     <div class="container">
-    <div class="row">
-      <div class="col-12">
-            
-   <div class="headlines">
-     <div class="container">
-      <h6>MOTION BREAKDOWN</h6>
-      <small class="post-date">December 4, 2025</small>
-      <h4>Rive Responsive Text: How to Scale Typography Across Breakpoints</h4></br>
-      <p class="post-intro">Designing dynamic motion shouldn’t require being a JavaScript wizard. Here is how I got responsive
-        text working in Rive: what I learned, what broke, and how it finally came together.</p>
-    </div>
-  <!-- end container -->
-  </div>
-  <!-- end page-title -->
-</header>
-<!-- end header -->
-
-
-
-    <div class="post-body wow fadeIn">
-                    <figure class="image-full"><img src="images/blog/responsiveness.png" alt="Image"></figure>
-            <div class="avatar">
-            <img src="images/avatar.jpg" alt="Image">by
-            <a href="#">David de Jesús</a>
+      <div class="row">
+        <div class="col-12">
+  
+          <div class="headlines">
+            <div class="container">
+              <h6>MOTION BREAKDOWN</h6>
+              <small class="post-date">December 4, 2025</small>
+              <h4>Rive Responsive Text: How to Scale Typography Across Breakpoints</h4></br>
+              <p class="post-intro">Designing dynamic motion shouldn’t require being a JavaScript wizard. Here is how I
+                got responsive
+                text working in Rive: what I learned, what broke, and how it finally came together.</p>
             </div>
-
-    <div class="col-8">
-      <div class="post-body wow fadeIn">
-        <p>Motion on the web has changed dramatically. We are no longer shipping heavy videos or grainy GIFs. Tools like Rive
-          bring app-level motion to any website with tiny file sizes, real-time animation, and even dynamic text, as long as you
-          know how to connect everything.</p>
-        
-        <p>As a designer, that last part was the challenge. I did not know how to connect everything.
-          Responsive text inside a Rive animation sounded simple enough, until I actually tried to build it.</p>
-        
-        <p>This article breaks down the setup I ended up using. It is written in human language, not developer language, so you
-          can understand it even if you do not write code every day.</p>
-      </div>
-      <!-- end post-body -->
-    </div>
-            
-                  
-    <div class="col-8">
-            <h3>Why Responsive Text in Rive Is Tricky</h3>
-            <p>Rive animations live inside a canvas element. The canvas does not automatically know the size of the page around it,
-              and Rive does not detect layout changes the way CSS does.</p>
-            
-              <p>So when your layout gets narrower on mobile or wider on desktop, the animation stays the same unless you manually tell
-              it two things:</p>
-            <ol>
-              <li>How big the canvas is.</li>
-              <li>How big the text inside Rive should be.</li>
-            </ol>
-              <p>To bridge that gap, Rive uses something called a View Model. You can think of it as a small communication channel
-              where you send values from JavaScript into your Rive file.</p>
-            
+            <!-- end container -->
+          </div>
+          <!-- end page-title -->
+          </header>
+          <!-- end header -->
+  
+  
+  
+          <div class="post-body wow fadeIn">
+            <figure class="image-full"><img src="images/blog/responsiveness.png" alt="Image"></figure>
+            <div class="avatar">
+              <img src="images/avatar.jpg" alt="Image">by
+              <a href="#">David de Jesús</a>
+            </div>
+          
+            <div class="col-8">
+              <div class="post-body wow fadeIn">
+                <p>Motion on the web has changed dramatically. We are no longer shipping heavy videos or grainy GIFs.
+                  Tools like Rive
+                  bring app-level motion to any website with tiny file sizes, real-time animation, and even dynamic text,
+                  as long as you
+                  know how to connect everything.</p>
+          
+                <p>As a designer, that last part was the challenge. I did not know how to connect everything.
+                  Responsive text inside a Rive animation sounded simple enough, until I actually tried to build it.</p>
+          
+                <p>This article breaks down the setup I ended up using. It is written in human language, not developer
+                  language, so you
+                  can understand it even if you do not write code every day.</p>
+              </div>
+              <!-- end post-body -->
+            </div>
+          
+          
+            <div class="col-8">
+              <h3>Why Responsive Text in Rive Is Tricky</h3>
+              <p>Rive animations live inside a canvas element. The canvas does not automatically know the size of the page
+                around it,
+                and Rive does not detect layout changes the way CSS does.</p>
+          
+              <p>So when your layout gets narrower on mobile or wider on desktop, the animation stays the same unless you
+                manually tell
+                it two things:</p>
+              <ol>
+                <li>How big the canvas is.</li>
+                <li>How big the text inside Rive should be.</li>
+              </ol>
+              <p>To bridge that gap, Rive uses something called a View Model. You can think of it as a small communication
+                channel
+                where you send values from JavaScript into your Rive file.</p>
+          
               <p>If we pass the canvas width into Rive, we can tell the text how big it should be.</p>
-            
+          
               That was the breakthrough.</p>
-    </div>
-    <div class="col-8">
-      <h3>The Setup: Passing Real Page Width into Rive</h3>
-      <p>Let us look at the important parts of the code. Instead of explaining what each line does on a technical level, I
-        will explain what the code means in plain language from the perspective of a designer trying to make dynamic text
-        work.</p>
-      <h5>1. We start by grabbing the canvas</h5>
-      <blockquote>
-        <pre><code>const canvas = document.getElementById("riveCanvas");</code></pre>
-      </blockquote>
-      <p>This tells the animation where it will live on the page.</p>
-      <h5>2. We initialize Rive with the settings we need</h5>
-      <blockquote>
-        <pre><code>
-      const r = new rive.Rive({
-        src: "your_rive_file_name.riv",
-        canvas: canvas,
-        autoplay: true,
-        autoBind: true,
-        loadRiveFile: true,
-        artboard: "Artboard",
-        stateMachines: "State Machine 1",
-        useDataBinding: true,
-        layout: new rive.Layout({
-          fit: rive.Fit.Contain,
-          alignment: rive.Alignment.CenterLeft,
-        }),
-      });
-    </code></pre>
-      </blockquote>
-    
-      <p>Here is the human explanation:</p>
-      <ul>
-        <li><b>autoplay</b> starts the animation automatically</li>
-        <li><b>useDataBinding</b> allows you to send values into Rive</li>
-        <li><b>layout.fit</b> and <b>alignment</b> define how the animation scales in the canvas</li>
-        <li><b>loadRiveFile: true</b> is required if you want WebGL and View Models to work together</li>
-      </ul>
-      This block is the connection point between your website and your Rive file.
-      <h5>3. When the Rive file loads, we grab the View Model</h5>
-      <blockquote>
-        <pre><code>onLoad: () => {
-  const vmi = r.viewModelInstance;
-</code></pre>
-      </blockquote>
-      <p>The View Model is like the control panel inside your Rive file.</br>
-If this does not load, none of the dynamic parts will work.</p>
-      <h5>4. We get the View Model number property in Rive called "num"</h5>
-      <p>Inside the Rive file, I created a number property named <b>num</b>.</br>
-This property receives the width of the canvas.
-      </p>
-      <blockquote>
-<pre><code>
-const numProp = vmi.number("num");
-</code></pre>
-      </blockquote>
-<p>Inside Rive, the num value drives text size.</br>
-Outside Rive, JavaScript updates that value whenever the layout changes.</p>
+            </div>
+            <div class="col-8">
+              <h3>The Setup: Passing Real Page Width into Rive</h3>
+              <p>Let us look at the important parts of the code. Instead of explaining what each line does on a technical
+                level, I
+                will explain what the code means in plain language from the perspective of a designer trying to make
+                dynamic text
+                work.</p>
+              <h5>1. We start by grabbing the canvas</h5>
+              <blockquote>
+                <pre><code>const canvas = document.getElementById("riveCanvas");</code></pre>
+              </blockquote>
+              <p>This tells the animation where it will live on the page.</p>
+              <h5>2. We initialize Rive with the settings we need</h5>
+              <blockquote>
+                <pre><code>
+                  const r = new rive.Rive({
+                    src: "your_rive_file_name.riv",
+                    canvas: canvas,
+                    autoplay: true,
+                    autoBind: true,
+                    loadRiveFile: true,
+                    artboard: "Artboard",
+                    stateMachines: "State Machine 1",
+                    useDataBinding: true,
+                    layout: new rive.Layout({
+                      fit: rive.Fit.Contain,
+                      alignment: rive.Alignment.CenterLeft,
+                    }),
+                  });
+                </code></pre>
+              </blockquote>
+          
+              <p>Here is the human explanation:</p>
+              <ul>
+                <li><b>autoplay</b> starts the animation automatically</li>
+                <li><b>useDataBinding</b> allows you to send values into Rive</li>
+                <li><b>layout.fit</b> and <b>alignment</b> define how the animation scales in the canvas</li>
+                <li><b>loadRiveFile: true</b> is required if you want WebGL and View Models to work together</li>
+              </ul>
+              This block is the connection point between your website and your Rive file.
+              <h5>3. When the Rive file loads, we grab the View Model</h5>
+              <blockquote>
+                <pre><code>onLoad: () => {
+              const vmi = r.viewModelInstance;
+            </code></pre>
+              </blockquote>
+              <p>The View Model is like the control panel inside your Rive file.</br>
+                If this does not load, none of the dynamic parts will work.</p>
+              <h5>4. We get the View Model number property in Rive called "num"</h5>
+              <p>Inside the Rive file, I created a number property named <b>num</b>.</br>
+                This property receives the width of the canvas.
+              </p>
+              <blockquote>
+                <pre><code>
+            const numProp = vmi.number("num");
+            </code></pre>
+              </blockquote>
+              <p>Inside Rive, the num value drives text size.</br>
+                Outside Rive, JavaScript updates that value whenever the layout changes.</p>
+          
+              <p>This is the entire idea behind data binding.</p>
+              <h3>Making It Responsive</h3>
+              <p>Here is where everything comes together. We update the size of the canvas and send that size into Rive so
+                the text
+                can scale based on the layout.
+              </p>
+          
+          
+              <div class="post-body wow fadeIn">
 
-<p>This is the entire idea behind data binding.</p>
-<h3>Making It Responsive</h3>
-<p>Here is where everything comes together. We update the size of the canvas and send that size into Rive so the text
-  can scale based on the layout.
-</p>
+          
+                  <h5>5. We calculate the canvas size and send it into Rive</h5>
+                  <p>This function measures the real width of the container on the page, resizes the canvas, and then passes that
+                    width into the Rive View Model.</p>
+          
+                  <blockquote>
+                    <pre><code>
+          function updateCanvasWidth() {
+            if (isResizing) return;
+            isResizing = true;
+          
+            const currentWidth = canvasParent 
+              ? canvasParent.clientWidth 
+              : canvas.clientWidth;
+          
+            const aspectRatio = 1110 / 450;
+          
+            canvas.style.width = currentWidth + "px";
+            canvas.style.height = (currentWidth / aspectRatio) + "px";
+          
+            numProp.value = currentWidth;
+          
+            requestAnimationFrame(() => {
+              r.resizeDrawingSurfaceToCanvas();
+              isResizing = false;
+            });
+          }
+                </code></pre>
+                  </blockquote>
+          
+                  <p>This part felt like magic when I finally understood it. The canvas is resized according to the layout, and
+                    the new width is sent into the <b>num</b> property inside Rive. Now the text reacts to the design around it.
+                  </p>
+          
+                  <h5>6. We run the function once on load</h5>
+          
+                  <blockquote>
+                    <pre><code>updateCanvasWidth();</code></pre>
+                  </blockquote>
+          
+                  <p>This ensures your animation looks correct the moment the page loads.</p>
+          
+                  <h5>7. We listen for window resizing</h5>
+                  <p>If the user resizes the browser or rotates their phone, we update the canvas and tell Rive about the new
+                    width.</p>
+          
+                  <blockquote>
+                    <pre><code>
+          let resizeTimeout = null;
+          
+          window.addEventListener("resize", () => {
+            clearTimeout(resizeTimeout);
+          
+            resizeTimeout = setTimeout(() => {
+              updateCanvasWidth();
+            }, 120);
+          });
+                </code></pre>
+                  </blockquote>
+          
+                  <p>The delay prevents the browser from running hundreds of updates per second. This keeps everything smooth and
+                    stable.</p>
+          
+                
+              </div>
+          
+              <div class="post-body wow fadeIn">
+          
+                  <h3>What Happens Inside Rive</h3>
+                  <p>Once the width value arrives in Rive, you can connect it to a text size or a blend state. This means your
+                    animation is no longer static. It becomes responsive and adjusts to the space it lives in.</p>
+          
+                  <p>You can use the incoming number in many ways:</p>
+                  <ul>
+                    <li>Change text size as the screen gets smaller</li>
+                    <li>Scale elements that need to remain legible on mobile</li>
+                    <li>Drive animation states based on layout conditions</li>
+                  </ul>
+          
+                  <p>This approach gives you full control over how typography behaves in your motion design, something that
+                    traditional video formats can never do.</p>
+          
+                  <h3>A Designer’s Takeaway</h3>
+                  <p>I went into this wanting something simple. I wanted the text inside my Rive animation to adjust naturally
+                    when the layout changed. What I did not expect was to learn how canvas sizing works, how Rive reads data, and
+                    how JavaScript can connect both worlds.</p>
+          
+                  <p>The good news is that once you set this up, it becomes a reusable pattern. You can build responsive
+                    animations, dynamic typography, and motion that adapts to any viewport size.</p>
+          
+                  <p>If you design interfaces with motion, this unlocks a new level of flexibility. It lets your animations feel
+                    like part of the product, not something pasted on top.</p>
+          
+                  <h3>Final Code Block</h3>
+                  <p>Here is the complete script ready to paste into your project.</p>
+          
+                  <blockquote>
+                    <pre><code>
+          &lt;script&gt;
+            const canvas = document.getElementById("riveCanvas");
+          
+            const r = new rive.Rive({
+              src: "rive/header.riv",
+              canvas: canvas,
+              autoplay: true,
+              autoBind: true,
+              loadRiveFile: true,
+              artboard: "Artboard",
+              stateMachines: "State Machine 1",
+              useDataBinding: true,
+              layout: new rive.Layout({
+                fit: rive.Fit.Contain,
+                alignment: rive.Alignment.CenterLeft
+              }),
+          
+              onLoad: () => {
+                const vmi = r.viewModelInstance;
+                if (!vmi) return;
+          
+                const numProp = vmi.number("num");
+                if (!numProp) return;
+          
+                const canvasParent = canvas.parentElement;
+                let isResizing = false;
+          
+                function updateCanvasWidth() {
+                  if (isResizing) return;
+                  isResizing = true;
+          
+                  const currentWidth = canvasParent 
+                    ? canvasParent.clientWidth 
+                    : canvas.clientWidth;
+          
+                  const aspectRatio = 1110 / 450;
+          
+                  canvas.style.width = currentWidth + "px";
+                  canvas.style.height = (currentWidth / aspectRatio) + "px";
+          
+                  numProp.value = currentWidth;
+          
+                  requestAnimationFrame(() => {
+                    r.resizeDrawingSurfaceToCanvas();
+                    isResizing = false;
+                  });
+                }
+          
+                updateCanvasWidth();
+          
+                let resizeTimeout = null;
+                window.addEventListener("resize", () => {
+                  clearTimeout(resizeTimeout);
+                  resizeTimeout = setTimeout(() => {
+                    updateCanvasWidth();
+                  }, 120);
+                });
+              }
+            });
+          &lt;/script&gt;
+                </code></pre>
+                  </blockquote>
+          
+                  <h3>Closing Thoughts</h3>
+                  <p>Responsive motion is no longer optional. Interfaces now need to feel alive across every screen size, and that
+                    includes typography inside your animations. This method allows you to design motion that breathes with the
+                    layout, adapts with the user, and stays connected to the system it belongs to.</p>
+          
 
-
-
-      <p>So if you are tempted to treat motion like an afterthought, try pushing it closer to the start of your design
-        process. You will find fewer surprises, clearer decisions, and an experience that feels deliberate rather than
-        accidental. In the long run, motion is not a luxury; it is part of how modern interfaces speak, guide, and behave.
-      </p>
-    </div>
-  </div>
-  <figure class="image-full"><img src="images/slide01.jpg" alt="Image"></figure>
-  <!-- end post-body -->
+              </div>
+              <!-- end post-body -->
 
 
 
@@ -316,9 +489,7 @@ Outside Rive, JavaScript updates that value whenever the layout changes.</p>
         <h5 id="emoji-text">Emojis accepted.</h5>
         <address>
         davehausus@gmail.com <br>
-        <div class="extra">
-        <a href="#" onclick='window.open("https://api.whatsapp.com/send?phone=523316006116");return false;'>+52 1 331 600 6116</a>
-        </div>
+
       </address>
       </div>
       <script>
