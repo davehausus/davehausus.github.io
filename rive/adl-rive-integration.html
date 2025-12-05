@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Analytics 4 (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5M5R22S8EB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5M5R22S8EB');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    page_title: 'David de Jesús | Sr. UI & Motion Designer',
+    page_path: '/',
+  });
+</script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ADL Simulator - Rive Integration</title>
@@ -13,7 +29,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #1a2538 0%, #131c2b 100%);
       min-height: 100vh;
       padding: 20px;
     }
@@ -24,7 +40,7 @@
     }
 
     .header {
-      background: white;
+      background: #212e44;
       padding: 30px;
       border-radius: 16px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.1);
@@ -32,12 +48,12 @@
     }
 
     h1 {
-      color: #333;
+      color: #ffffff;
       margin-bottom: 10px;
     }
 
     .subtitle {
-      color: #666;
+      color: #ffffff;
       font-size: 14px;
     }
 
@@ -49,7 +65,7 @@
     }
 
     .rive-section {
-      background: white;
+      background: #212e44;
       padding: 30px;
       border-radius: 16px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.1);
@@ -59,15 +75,15 @@
     }
 
     .rive-section h2 {
-      color: #333;
+      color: #ffffff;
       margin-bottom: 20px;
       align-self: flex-start;
     }
 
     #riveCanvas {
       border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      background: #f8f9fa;
+      box-shadow: none;
+      background: #212e44;
     }
 
     .info-section {
@@ -77,14 +93,14 @@
     }
 
     .card {
-      background: white;
+      background: #212e44;
       padding: 25px;
       border-radius: 16px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.1);
     }
 
     .card h2 {
-      color: #333;
+      color: #ffffff;
       margin-bottom: 20px;
       font-size: 20px;
     }
@@ -120,7 +136,7 @@
     }
 
     .stat-box {
-      background: #f8f9fa;
+      background: #1a2538;
       padding: 20px;
       border-radius: 12px;
       text-align: center;
@@ -129,13 +145,13 @@
     .stat-value {
       font-size: 28px;
       font-weight: bold;
-      color: #667eea;
+      color: #ffffff;
       margin-bottom: 5px;
     }
 
     .stat-label {
       font-size: 11px;
-      color: #666;
+      color: #4d7c9c;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
@@ -157,23 +173,23 @@
     }
 
     .btn-primary {
-      background: #667eea;
+      background: #6a41ed;
       color: white;
     }
 
     .btn-primary:hover {
-      background: #5568d3;
+      background: #734df0;
       transform: translateY(-2px);
-      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 5px 20px #382184;;
     }
 
     .btn-secondary {
-      background: #6c757d;
+      background: #03a6ff;
       color: white;
     }
 
     .btn-secondary:hover {
-      background: #5a6268;
+      background: #52b8ef;
     }
 
     .speed-control {
@@ -824,6 +840,13 @@ const riveInstance = new rive.Rive({
     }
 
     console.log("🔍 View Model Instance:", vmi);
+
+    // Configure how the animation fits within the canvas
+    layout: new rive.Layout({
+      fit: rive.Fit.Layout, // Fit entire animation within canvas while maintaining aspect ratio
+      alignment: rive.Alignment.CenterLeft, // Align animation to center-left of canvas
+    });
+
 
     // Get Rive properties
     const activityNameProp = vmi.string("activityName");
