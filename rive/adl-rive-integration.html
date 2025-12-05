@@ -83,6 +83,8 @@
     #riveCanvas {
       border-radius: 12px;
       box-shadow: none;
+      width: 400px;
+      height: 400px;
       background: #212e44;
     }
 
@@ -247,7 +249,7 @@
     }
   </style>
 
-  <script src="https://unpkg.com/@rive-app/webgl2@latest"></script>
+<script src="https://unpkg.com/@rive-app/webgl2@latest"></script>
 </head>
 <body>
   <div class="container">
@@ -259,7 +261,7 @@
     <div class="main-layout">
       <div class="rive-section">
         <h2>🎨 Rive Animation</h2>
-        <canvas id="riveCanvas" width="400" height="400"></canvas>
+        <canvas id="riveCanvas"></canvas>
       </div>
 
       <div class="info-section">
@@ -843,7 +845,7 @@ const riveInstance = new rive.Rive({
 
     // Configure how the animation fits within the canvas
     layout: new rive.Layout({
-      fit: rive.Fit.Layout, // Fit entire animation within canvas while maintaining aspect ratio
+      fit: rive.Fit.Contain, // Fit entire animation within canvas while maintaining aspect ratio
       alignment: rive.Alignment.CenterLeft, // Align animation to center-left of canvas
     });
 
