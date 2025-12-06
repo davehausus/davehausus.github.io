@@ -56,6 +56,7 @@
 <link rel="stylesheet" href="../css/swiper.min.css">
 <link rel="stylesheet" href="../css/bootstrap.min.css">
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
 
 
 </head>
@@ -214,21 +215,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 dynamic text
                 work.</p>
               <h5>1. We start by grabbing the canvas</h5>
-<blockquote>
-<pre><code>const canvas = document.getElementById("riveCanvas");</code></pre>
-</blockquote>
+
+<pre><code class="language-javascript">const canvas = document.getElementById(&quot;riveCanvas&quot;);</code></pre>
+
               <p>This tells the animation where it will live on the page.</p>
               <h5>2. We initialize Rive with the settings we need</h5>
-<blockquote>
-<pre><code>
+
+<pre><code class="language-javascript">
 const r = new rive.Rive({
-  src: "your_rive_file_name.riv",
+  src: &quot;your_rive_file_name.riv&quot;,
   canvas: canvas,
   autoplay: true,
   autoBind: true,
   loadRiveFile: true,
-  artboard: "Artboard",
-  stateMachines: "State Machine 1",
+  artboard: &quot;Artboard&quot;,
+  stateMachines: &quot;State Machine 1&quot;,
   useDataBinding: true,
   layout: new rive.Layout({
     fit: rive.Fit.Contain,
@@ -236,7 +237,7 @@ const r = new rive.Rive({
   }),
 });
 </code></pre>
-</blockquote>
+
           
               <p>Here is the human explanation:</p>
               <ul>
@@ -249,12 +250,12 @@ const r = new rive.Rive({
           
 
                 <h5>3. When the Rive file loads, we grab the View Model</h5>
-<blockquote>
-<pre><code>
-onLoad: () => {
+
+<pre><code class="language-javascript">
+onLoad: () =&gt; {
   const vmi = r.viewModelInstance;
 </code></pre>
-</blockquote>
+
                 <p>The View Model is like the control panel inside your Rive file.</br>
                   If this does not load, none of the dynamic parts will work.</p>
           
@@ -266,11 +267,11 @@ onLoad: () => {
                 <p>Inside the Rive file, I created a number property named <b>num</b>.</br>
                   This property receives the width of the canvas.
                 </p>
-<blockquote>
-<pre><code>
-const numProp = vmi.number("num");
+
+<pre><code class="language-javascript">
+const numProp = vmi.number(&quot;num&quot;);
 </code></pre>
-</blockquote>
+
                 <p>Inside Rive, the num value drives text size.</br>
                   Outside Rive, JavaScript updates that value whenever the layout changes.</p>
           
@@ -295,8 +296,8 @@ const numProp = vmi.number("num");
                   that
                   width into the Rive View Model.</p>
           
-<blockquote>
-<pre><code>
+
+<pre><code class="language-javascript">
 function updateCanvasWidth() {
   if (isResizing) return;
   isResizing = true;
@@ -307,18 +308,18 @@ function updateCanvasWidth() {
 
   const aspectRatio = 1110 / 450;
 
-  canvas.style.width = currentWidth + "px";
-  canvas.style.height = (currentWidth / aspectRatio) + "px";
+  canvas.style.width = currentWidth + &quot;px&quot;;
+  canvas.style.height = (currentWidth / aspectRatio) + &quot;px&quot;;
 
   numProp.value = currentWidth;
 
-  requestAnimationFrame(() => {
+  requestAnimationFrame(() =&gt; {
     r.resizeDrawingSurfaceToCanvas();
     isResizing = false;
   });
 }
 </code></pre>
-</blockquote>
+
           
                 <p>This part felt like magic when I finally understood it. The canvas is resized according to the layout,
                   and
@@ -329,9 +330,9 @@ function updateCanvasWidth() {
           
                 <h5>6. We run the function once on load</h5>
           
-<blockquote>
-<pre><code>updateCanvasWidth();</code></pre>
-</blockquote>
+
+<pre><code class="language-javascript">updateCanvasWidth();</code></pre>
+
           
                 <p>This ensures your animation looks correct the moment the page loads.</p>
 
@@ -341,19 +342,19 @@ function updateCanvasWidth() {
                   new
                   width.</p>
           
-<blockquote>
-<pre><code>
+
+<pre><code class="language-javascript">
 let resizeTimeout = null;
 
-window.addEventListener("resize", () => {
+window.addEventListener(&quot;resize&quot;, () =&gt; {
   clearTimeout(resizeTimeout);
 
-  resizeTimeout = setTimeout(() => {
+  resizeTimeout = setTimeout(() =&gt; {
     updateCanvasWidth();
   }, 120);
 });
 </code></pre>
-</blockquote>
+
           
                 <p>The delay prevents the browser from running hundreds of updates per second. This keeps everything
                   smooth and
@@ -390,31 +391,30 @@ window.addEventListener("resize", () => {
           
                 <h3>Final Code Block</h3>
                 <p>Here is the complete script ready to paste into your project.</p>
-          
-<blockquote>
-<pre><code>
+
+<pre><code class="language-javascript">
 &lt;script&gt;
-  const canvas = document.getElementById("riveCanvas");
+  const canvas = document.getElementById(&quot;riveCanvas&quot;);
 
   const r = new rive.Rive({
-    src: "your_rive_file.riv",
+    src: &quot;your_rive_file.riv&quot;,
     canvas: canvas,
     autoplay: true,
     autoBind: true,
     loadRiveFile: true,
-    artboard: "Artboard",
-    stateMachines: "State Machine 1",
+    artboard: &quot;Artboard&quot;,
+    stateMachines: &quot;State Machine 1&quot;,
     useDataBinding: true,
     layout: new rive.Layout({
       fit: rive.Fit.Contain,
       alignment: rive.Alignment.CenterLeft
     }),
 
-    onLoad: () => {
+    onLoad: () =&gt; {
       const vmi = r.viewModelInstance;
       if (!vmi) return;
 
-      const numProp = vmi.number("num");
+      const numProp = vmi.number(&quot;num&quot;);
       if (!numProp) return;
 
       const canvasParent = canvas.parentElement;
@@ -430,12 +430,12 @@ window.addEventListener("resize", () => {
 
         const aspectRatio = 1110 / 450;
 
-        canvas.style.width = currentWidth + "px";
-        canvas.style.height = (currentWidth / aspectRatio) + "px";
+        canvas.style.width = currentWidth + &quot;px&quot;;
+        canvas.style.height = (currentWidth / aspectRatio) + &quot;px&quot;;
 
         numProp.value = currentWidth;
 
-        requestAnimationFrame(() => {
+        requestAnimationFrame(() =&gt; {
           r.resizeDrawingSurfaceToCanvas();
           isResizing = false;
         });
@@ -444,9 +444,9 @@ window.addEventListener("resize", () => {
       updateCanvasWidth();
 
       let resizeTimeout = null;
-      window.addEventListener("resize", () => {
+      window.addEventListener(&quot;resize&quot;, () =&gt; {
         clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
+        resizeTimeout = setTimeout(() =&gt; {
           updateCanvasWidth();
         }, 120);
       });
@@ -454,7 +454,7 @@ window.addEventListener("resize", () => {
   });
 &lt;/script&gt;
 </code></pre>
-</blockquote>
+
           
                 <h3>Closing Thoughts</h3>
                 <p>Responsive motion is no longer optional. Interfaces now need to feel alive across every screen size,
@@ -542,16 +542,19 @@ window.addEventListener("resize", () => {
 <!-- end footer --> 
 <audio id="hamburger-hover" src="../audio/link.mp3" preload="auto"></audio>
 
-<!-- JS FILES --> <script src="../js/jquery.min.js"></script> 
+<!-- JS FILES -->
+<script src="../js/jquery.min.js"></script> 
 <script src="../js/bootstrap.min.js"></script> 
 <script src="../js/imagesloaded.pkgd.min.js"></script> 
 <script src="../js/isotope.min.js"></script> 
 <script src="../js/swiper.min.js"></script> 
-<script src='../js/TweenMax.min.js'></script> 
-<script src='../js/odometer.min.js'></script> 
-<script src='../js/fancybox.min.js'></script> 
-<script src='../js/wow.min.js'></script> 
-<script src='../js/scripts.js'></script> 
+<script src="../js/TweenMax.min.js"></script> 
+<script src="../js/odometer.min.js"></script> 
+<script src="../js/fancybox.min.js"></script> 
+<script src="../js/wow.min.js"></script> 
+<script src="../js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
 
 
 </body>
