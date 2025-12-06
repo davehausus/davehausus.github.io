@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head> 
+<!-- Google Analytics 4 (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5M5R22S8EB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5M5R22S8EB');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    page_title: 'David de Jesús | Sr. UI & Motion Designer',
+    page_path: '/',
+  });
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#282828"/>
+<title>David de Jesús | UI Designer</title>
+<meta name="author" content="David de Jesús">
+<meta name="description" content="Learn how to create responsive text in Rive using canvas resizing and data binding. A clear, designer-friendly guide with working code and real examples.">
+<meta name="keywords" content="UI Design, Visual Design, designer, creative, works, showcase, portfolio, highlight, projects, modern, digital, css, animation, transition, freelancers">
+
+<!-- SOCIAL MEDIA META -->
+<meta property="og:description" content="Learn how to create responsive text in Rive using canvas resizing and data binding. A clear, designer-friendly guide with working code and real examples.">
+<meta property="og:image" content="https://davehausus.github.io/images/meta.jpg">
+<meta property="og:site_name" content="David de Jesús">
+<meta property="og:title" content="David de Jesús | Sr. UI Designer">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://davehausus.github.io">
+
+<!-- TWITTER META -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@davehausus">
+<meta name="twitter:creator" content="@davehausus">
+<meta name="twitter:title" content="David de Jesús">
+<meta name="twitter:description" content="Learn how to create responsive text in Rive using canvas resizing and data binding. A clear, designer-friendly guide with working code and real examples.">
+<meta name="twitter:image" content="http://www.themezinho.net/agensy/preview.png">
+
+<!-- FAVICON FILES -->
+<link href="../ico/apple-touch-icon-144-precomposed.png" rel="apple-touch-icon" sizes="144x144">
+<link href="../ico/apple-touch-icon-114-precomposed.png" rel="apple-touch-icon" sizes="114x114">
+<link href="../ico/apple-touch-icon-72-precomposed.png" rel="apple-touch-icon" sizes="72x72">
+<link href="../ico/apple-touch-icon-57-precomposed.png" rel="apple-touch-icon">
+<link href="../ico/favicon.png" rel="shortcut icon">
+
+<!-- CSS FILES -->
+<link rel="stylesheet" href="../css/animate.min.css">
+<link rel="stylesheet" href="../css/odometer.min.css">
+<link rel="stylesheet" href="../css/fancybox.min.css">
+<link rel="stylesheet" href="../css/swiper.min.css">
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+
+
+<style>
+	/* Wrapper prevents overflow issues on mobile */
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+/* Main clean table style */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.02);  /* subtle card feel */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Header */
+.comparison-table thead th {
+  text-align: left;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Rows */
+.comparison-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Remove border on last row */
+.comparison-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Optional: soft hover effect for each row */
+.comparison-table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+}
+</style>
+
+
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P39NBK2"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+	<div class="preloader">
+  <div class="inner">
+  <figure class="logo"><img src="../images/logo-light.png" alt="Image"></figure>
+  	<span class="percentage"></span>
+  </div>
+  <!-- end inner -->
+</div>
+<!-- end preloader -->
+<div class="transition-overlay"></div>
+<!-- end transition-overlay -->
+<div class="navigation-menu">
+  <div class="inner">
+    <div class="side-menu">
+      <ul>
+        <li><a href="../about.html">About me</a></li>
+        <li style="display: none;"><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <!-- end side-menu -->
+  </div>
+  <!-- end inner -->
+</div>
+<!-- end navigation-menu -->
+<aside class="left-side">
+ <div class="logo">
+ 	<img src="../images/logo-symbol.png" alt="Image">
+ </div>
+  <ul>
+    <li><a href="#" onclick='window.open("https://www.linkedin.com/in/davesigner");return false;'>LINKEDIN</a></li>
+
+  </ul>
+  <a href="#top" class="gotop"><img src="../images/icon-gotop.svg" alt="Image"></a>
+</aside>
+<!-- end left-side -->
+<header class="header">
+  <nav class="navbar">
+    <div class="logo"> <a href="../index.html"><img src="../images/logo.png" alt="Image"></a> </div>
+    <!-- end logo -->
+
+    <div class="main-menu">
+      <ul>
+        <li><a href="../about.html">About me</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li style="display: none;"><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
+        <li>
+          <button type="contact" onclick="location.href='../contact.html'">
+              <strong>Contact</strong>
+          </button>
+        </li>
+      </ul>
+    </div>
+    <!-- end main-menu -->
+    <div class="hamburger-menu" id="hamburger-menu">
+      <div class="burger">
+        <svg id="burger-svg" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+          <title>Show / Hide Navigation</title>
+          <rect class="burger-svg__base" width="50" height="50"/>
+          <g class="burger-svg__bars">
+            <rect class="burger-svg__bar burger-svg__bar-1" x="14" y="18" width="22" height="2"/>
+            <rect class="burger-svg__bar burger-svg__bar-2" x="14" y="24" width="22" height="2"/>
+            <rect class="burger-svg__bar burger-svg__bar-3" x="14" y="30" width="22" height="2"/>
+          </g>
+        </svg>
+      </div>
+      <!-- end burger --> 
+    </div>
+    <!-- end hamburger-menu --> 
+  </nav>
+  <!-- end navbar -->
+<section class="blog">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+  
+          <div class="headlines">
+            <div class="container">
+              <h6>MOTION FIELD GUIDE</h6>
+              <small class="post-date">December 4, 2025</small>
+              <h4>Using Referenced Fonts in Rive (A Guide for Designers)</h4></br>
+              <p class="post-intro">How to keep your Rive files tiny, fast, and consistent across multiple animations.</p>
+            </div>
+            <!-- end container -->
+          </div>
+          <!-- end page-title -->
+        </div>
+          </header>
+          <!-- end header -->
+  
+  
+  
+          <div class="post-body wow fadeIn">
+            <figure class="image-full"><img src="../images/blog/responsiveness.png" alt="Image"></figure>
+            <div class="avatar">
+              <img src="../images/avatar.jpg" alt="Image">by
+              <a href="#">David de Jesús</a>
+            </div>
+          
+            <div class="col-lg-8">
+            
+              <p>When you work with Rive, one of the biggest advantages is how lightweight the files are. A full animation with
+                vectors, interpolation, states, and interactions can easily stay under <b>5 KB</b>. That is one of the reasons Rive feels
+                perfect for web-based motion systems.</p>
+            
+              <p>But the moment you embed a font, everything changes.
+                A single embedded font can take a Rive file from 3 KB to 800 KB or more.</p>
+            
+              <p>That’s not a typo.</p>
+            
+              <p>In this article, I’ll show you a better approach: <b>using referenced fonts</b> instead of embedded ones.
+								This lets you share the same font across multiple Rive animations without increasing file sizes.</p>
+            
+              <!-- end post-body -->
+            </div>
+          
+          
+            <div class="col-lg-8">
+              <h3>Why Embedded Fonts Become a Problem</h3>
+              <p>When you embed a font inside a Rive file, you are literally packing the entire .ttf file inside the .riv file. Even a very optimized variable font can easily be hundreds of kilobytes.</p>
+          
+              <p>If your project uses:</p>
+              <ul>
+                <li><b>One animation file</b>, that might be acceptable.</li>
+                <li><b>Ten animation files</b>, and suddenly you are loading 8 to 10 MB of extra weight.</li>
+              </ul>
+              <p>Design systems with motion quickly feel heavy, and this goes against what Rive is designed for.</p>
+            </div>
+            <div class="col-lg-8">
+              <h3>The Referenced Font Approach</h3>
+							<p>A referenced font means the font is not included inside the .riv file.
+							Instead, Rive stores a reference to it.</p>
+              
+                <p>This keeps the .riv file tiny, usually around 3 KB, even when text nodes are used.</p>
+              
+                <b>But there’s a catch:</b>
+                <p>The web version of Rive needs to know where the font file is located so it can load it.</p>
+              
+                <p>The good news is that Rive provides a simple hook for that using WebGL2. Developers can load the font file once, and every .riv file that references that font can use it.</p>
+              
+                <p>You do not need to write the code.</p>
+                <p>This article is about understanding the workflow as a designer so you can prepare your Rive files correctly.</p></p>
+              
+							
+								<h5>How the Font Loading Works (Designer-Friendly Explanation)</h5>
+
+								<p>When a Rive animation loads on a webpage, it checks whether any external assets are required.</p>
+
+								<p>If there is a referenced font:</p>
+								<ul>
+									<li>Rive detects that the font is missing.</li>
+
+									<li>It asks the webpage if the font is available.</li>
+
+									<li>The webpage loads the .ttf or .otf file.</li>
+
+									<li>Rive injects the font into the animation at runtime.</li>
+								</ul>
+
+								<p>It works like this:</p>
+
+								<blockquote>“I know which font I need. I just do not have it with me.</br>Can someone provide it?”</blockquote>
+
+								<p>Because the font is not inside each animation, your .riv files remain extremely small.</p>
+
+								<h3>What Designers Need To Do in Rive</h3>
+								<p>Here is everything you need to prepare on the design side:</p>
+
+								<h5>1. Add your font to Rive as usual</h5>
+
+								Import it into the Fonts panel.
+
+								<h5>2. Use the font in your text nodes</h5>
+
+								Style your typography normally.
+
+								<h5>3. Do not embed the font</h5>
+
+								This is the most important step.
+
+          
+              <p>When exporting:</p>
+              <ul>
+                <li>Make sure the font is shown as “Referenced” instead of “Embedded”.</li>
+
+								<li>Rive will warn you that your file depends on an external font.</li>
+
+								<li>This is the correct behavior for this workflow.</li>
+              </ul>
+
+							<h5>4. Use the same font across all your Rive animations</h5>
+              <p>This allows developers to load one shared font file for the entire site or app.</p>
+          
+							<h3>How Developers Load the Referenced Font</h3>
+
+<p>You do not need to write this, but it helps to understand how simple it is.</p>
+
+<p>This is the essential part of the code:</p>
+
+<pre><code class="language-javascript">
+assetLoader: async (asset) =&gt; {
+  if (asset.isFont) {
+    const response = await fetch(&quot;RobotoCondensed-Italic.ttf&quot;);
+    const data = await response.arrayBuffer();
+    const font = await rive.decodeFont(new Uint8Array(data));
+    asset.setFont(font);
+    return true;
+  }
+  return false;
+}
+</code></pre>
+
+<p>This tells Rive to load the font file and attach it to the animation whenever a referenced font is detected.</p>
+
+<p>Once this is in place, all your Rive files that use the same font will work automatically.</p>
+
+<h3>Why This Workflow Is Better</h3>
+<h5>1. Huge file size reduction</h5>
+
+Here is a real comparison:</br>
+
+<div class="table-wrapper">
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Rive File</th>
+        <th>With Embedded Font</th>
+        <th>With Referenced Font</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Single animation</td>
+        <td>Around 800 KB</td>
+        <td><strong>3 KB</strong></td>
+      </tr>
+
+      <tr>
+        <td>Ten animations</td>
+        <td>Around 8 MB</td>
+        <td><strong>30 KB</strong></td>
+      </tr>
+
+      <tr>
+        <td>Fifty animations</td>
+        <td>Around 40 MB</td>
+        <td><strong>150 KB</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>This matters when:</p>
+
+<ul>
+	<li>Your site needs to load instantly.</li>
+	
+	<li>Animations appear frequently in user interfaces.</li>
+	
+	<li>You are building a complete motion system.</li>
+</ul>
+
+<h5>2. Fonts stay consistent across all animations</h5>
+
+If the font is updated, you only replace one .ttf file instead of updating every .riv file.
+
+<h5>3. Faster design workflow</h5>
+
+Your Rive files stay extremely small, which makes previewing and exporting almost instant.
+
+<h5>4. Better developer handoff</h5>
+
+Developers load the font once, and it works everywhere.
+          
+          
+
+<h3>When You Should Still Embed a Font</h3>
+
+<p>There are some situations where embedding a font is the better option:</p>
+
+<ul>
+	<li>Offline apps</li>
+	
+	<li>Kiosk installations</li>
+	
+	<li>Native mobile apps with packaged assets</li>
+	
+	<li>Projects with no shared font usage</li>
+</ul>
+
+<p>For anything web-based, referenced fonts are almost always the best choice.</p>
+
+<h5>A Simple Way To Understand It</h5>
+
+<p>Think of embedded fonts as placing a full copy of the font inside each animation.</p>
+
+<p>Think of referenced fonts as pointing all animations to a single shared font file.</p>
+
+<p>
+	One approach is heavy and repetitive.
+	The other is lightweight and scalable.
+</p>
+
+<h3>Final Thoughts</h3>
+
+<p>Rive gives you very powerful motion tools, but many of the improvements in performance come from workflow decisions rather than animation techniques.</p>
+
+<p>Using referenced fonts keeps your files small, your typography consistent, and your animations fast to load. It is a small technical choice that makes a meaningful difference across an entire product.</p>
+
+
+
+
+          
+              <!-- end post-body -->
+  
+  
+  
+              <div class="post-navigation">
+                <a href="#">Using Motion to Make App Onboarding Clear, Fast, and Actually Enjoyable.</a>
+                <a href="#">A Friendly, No-Stress Guide to Building State Machines in Rive.</a>
+              </div>
+              <!-- end post-navigation -->
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- end container -->
+</section>
+<!-- end blog -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="career wow fadeInUp">
+          <h6>LET'S COLLABORATE</h6>
+          <h2>If you’re building something that needs motion with purpose, I’d love to chat.</h2>
+          <div class="custom-link"><a href="../contact.html">Start Here</a> <span></span> <i></i>
+          </div>
+          <!-- end custom-link -->
+          </div>
+        <!-- end career --> 
+      </div>
+      <!-- end col-12 -->
+      <div class="col-lg-5 wow fadeInUp">
+        <figure class="logo"> <a href="../index.html"><img src="../images/logo.svg" alt="Image"></a> </figure>
+      </div>
+      <!-- end col-5 -->
+      <div class="col-lg-4 col-md-6 wow fadeInUp">
+        <h5 style="visibility: hidden !important;">Extra Stuff</h5>
+        <div class="extra" style="visibility: hidden !important;">
+        <a href="#">The Lost Cases</a>
+        </div>
+      </div>
+      <!-- end col-4 -->
+      <div class="col-lg-3 col-md-6 wow fadeInUp">
+        <h5 id="emoji-text">Emojis accepted.</h5>
+        <address>
+        davehausus@gmail.com <br>
+
+      </address>
+      </div>
+      <script>
+        const emojiLines = [
+          "Motion or no motion — even your emojis tell a story.",
+          "Static email, animated energy. Emojis totally allowed.",
+          "If emojis had easing curves, I’d accept those too.",
+          "You can write me a full paragraph or just drop a 😎.",
+          "Questions, ideas, or just a random emoji — send it my way.",
+          "No need to be formal. Emojis are perfectly acceptable.",
+          "Short message? Long message? Emoji-only message? All good."
+        ];
+
+        const randomLine = emojiLines[Math.floor(Math.random() * emojiLines.length)];
+        document.getElementById("emoji-text").textContent = randomLine;
+      </script>
+      <!-- end col-3 -->
+      <div class="col-12 wow fadeInUp">
+        <div class="sub-footer">
+          <ul>
+            <li><a href="#">Terms & Conditions</a></li>
+          </ul>
+          <span>© 2025 David de Jesus - All rights Reserved</span> </div>
+        <!-- end sub-footer --> 
+      </div>
+      <!-- end col-12 --> 
+    </div>
+    <!-- end row --> 
+  </div>
+  <!-- end container --> 
+</footer>
+<!-- end footer --> 
+<audio id="hamburger-hover" src="../audio/link.mp3" preload="auto"></audio>
+
+<!-- JS FILES -->
+<script src="../js/jquery.min.js"></script> 
+<script src="../js/bootstrap.min.js"></script> 
+<script src="../js/imagesloaded.pkgd.min.js"></script> 
+<script src="../js/isotope.min.js"></script> 
+<script src="../js/swiper.min.js"></script> 
+<script src="../js/TweenMax.min.js"></script> 
+<script src="../js/odometer.min.js"></script> 
+<script src="../js/fancybox.min.js"></script> 
+<script src="../js/wow.min.js"></script> 
+<script src="../js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+
+
+</body>
+</html>
