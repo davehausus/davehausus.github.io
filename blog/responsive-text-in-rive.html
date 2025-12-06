@@ -136,7 +136,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- end hamburger-menu --> 
   </nav>
   <!-- end navbar -->
-  <section class="blog">
+<section class="blog">
     <div class="container">
       <div class="row">
         <div class="col-12">
@@ -167,7 +167,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
           
             <div class="col-lg-8">
-              <div class="post-body wow fadeIn">
+
                 <p>Motion on the web has changed dramatically. We are no longer shipping heavy videos or grainy GIFs.
                   Tools like Rive
                   bring app-level motion to any website with tiny file sizes, real-time animation, and even dynamic text,
@@ -180,7 +180,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <p>This article breaks down the setup I ended up using. It is written in human language, not developer
                   language, so you
                   can understand it even if you do not write code every day.</p>
-              </div>
+
               <!-- end post-body -->
             </div>
           
@@ -247,7 +247,7 @@ const r = new rive.Rive({
               </ul>
               <p>This block is the connection point between your website and your Rive file.</p>
           
-              <div class="post-body wow fadeIn">
+
                 <h5>3. When the Rive file loads, we grab the View Model</h5>
 <blockquote>
 <pre><code>
@@ -259,9 +259,9 @@ onLoad: () => {
                   If this does not load, none of the dynamic parts will work.</p>
           
           
-              </div>
+
           
-              <div class="post-body wow fadeIn">
+
                 <h5>4. We get the View Model number property in Rive called "num"</h5>
                 <p>Inside the Rive file, I created a number property named <b>num</b>.</br>
                   This property receives the width of the canvas.
@@ -276,10 +276,10 @@ const numProp = vmi.number("num");
           
                 <p>This is the entire idea behind data binding.</p>
           
-              </div>
+
           
           
-              <div class="post-body wow fadeIn">
+
                 <h3>Making It Responsive</h3>
                 <p>Here is where everything comes together. We update the size of the canvas and send that size into Rive so
                   the text
@@ -287,9 +287,9 @@ const numProp = vmi.number("num");
                 </p>
           
           
-              </div>
+
           
-              <div class="post-body wow fadeIn">
+
                 <h5>5. We calculate the canvas size and send it into Rive</h5>
                 <p>This function measures the real width of the container on the page, resizes the canvas, and then passes
                   that
@@ -325,10 +325,7 @@ function updateCanvasWidth() {
                   the new width is sent into the <b>num</b> property inside Rive. Now the text reacts to the design around
                   it.
                 </p>
-          
-          
-              </div>
-              <div class="post-body wow fadeIn">
+
           
                 <h5>6. We run the function once on load</h5>
           
@@ -337,9 +334,7 @@ function updateCanvasWidth() {
 </blockquote>
           
                 <p>This ensures your animation looks correct the moment the page loads.</p>
-          
-              </div>
-              <div class="post-body wow fadeIn">
+
           
                 <h5>7. We listen for window resizing</h5>
                 <p>If the user resizes the browser or rotates their phone, we update the canvas and tell Rive about the
@@ -364,8 +359,6 @@ window.addEventListener("resize", () => {
                   smooth and
                   stable.</p>
           
-              </div>
-              <div class="post-body wow fadeIn">
                 <h3>What Happens Inside Rive</h3>
                 <p>Once the width value arrives in Rive, you can connect it to a text size or a blend state. This means
                   your
@@ -381,9 +374,6 @@ window.addEventListener("resize", () => {
                 <p>This approach gives you full control over how typography behaves in your motion design, something that
                   traditional video formats can never do.</p>
           
-          
-              </div>
-              <div class="post-body wow fadeIn">
                 <h3>A Designer’s Takeaway</h3>
                 <p>I went into this wanting something simple. I wanted the text inside my Rive animation to adjust
                   naturally
@@ -397,12 +387,6 @@ window.addEventListener("resize", () => {
                 <p>If you design interfaces with motion, this unlocks a new level of flexibility. It lets your animations
                   feel
                   like part of the product, not something pasted on top.</p>
-          
-          
-              </div>
-          
-          
-              <div class="post-body wow fadeIn">
           
                 <h3>Final Code Block</h3>
                 <p>Here is the complete script ready to paste into your project.</p>
@@ -472,20 +456,12 @@ window.addEventListener("resize", () => {
 </code></pre>
 </blockquote>
           
-              </div>
-          
-              <div class="post-body wow fadeIn">
                 <h3>Closing Thoughts</h3>
                 <p>Responsive motion is no longer optional. Interfaces now need to feel alive across every screen size,
                   and that
                   includes typography inside your animations. This method allows you to design motion that breathes with
                   the
                   layout, adapts with the user, and stays connected to the system it belongs to.</p>
-          
-          
-              </div>
-          
-          
           
               <!-- end post-body -->
   
@@ -496,13 +472,11 @@ window.addEventListener("resize", () => {
                 <a href="#">A Friendly, No-Stress Guide to Building State Machines in Rive.</a>
               </div>
               <!-- end post-navigation -->
-            </div>
-            <!-- end col-8 -->
-          </div>
-          <!-- end row -->
-        </div>
-        <!-- end container -->
-  </section>
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- end container -->
+</section>
 <!-- end blog -->
 <footer class="footer">
   <div class="container">
