@@ -78,7 +78,7 @@
     
 
 <script src="https://unpkg.com/@rive-app/webgl2"></script>
-
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script> 
 
 <style>
   #riveCanvas {
@@ -584,65 +584,170 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 </script>
 
-<!-- SECOND RIVE CANVAS - Showreel with different properties -->
+<!-- Add this script AFTER your existing Rive scripts -->
+<!-- Load Lenis -->
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+
+<!-- SECOND RIVE CANVAS - Showreel with Scroll Animation Controller -->
 <script>
+  // Only initialize if canvas2 exists on the page
   const canvas2 = document.getElementById("riveCanvas2");
   
-  const r2 = new rive.Rive({
-    src: "rive/showreel.riv",
-    canvas: canvas2,
-    autoplay: true, // Start animation automatically on load
-    autoBind: true, // Automatically bind to canvas
-    loadRiveFile: true, // Required for WebGL2 + View Model support
-    artboard: "Artboard", // Name of the artboard to display
-    stateMachines: "State Machine 1", // State machine to run
-    useDataBinding: true, // Enable data binding for View Model
-    
-    // Different layout settings for second canvas
-    layout: new rive.Layout({
-      fit: rive.Fit.FitWidth,  // Different fit mode
-      alignment: rive.Alignment.Center,  // Different alignment
-    }),
-
-    onLoad: () => {
-      console.log("Canvas 2: Rive animation loaded successfully");
+  if (canvas2) {
+    const r2 = new rive.Rive({
+      src: "rive/showreel.riv",
+      canvas: canvas2,
+      autoplay: true,
+      autoBind: true,
+      loadRiveFile: true,
+      artboard: "Artboard",
+      stateMachines: "ScrollController",
+      useDataBinding: true,
       
-      // Handle responsive sizing for second canvas
-      const canvas2Parent = canvas2.parentElement;
-      let isResizing2 = false;
+      layout: new rive.Layout({
+        fit: rive.Fit.Cover,
+        alignment: rive.Alignment.Center,
+      }),
 
-      function updateCanvas2Size() {
-        if (isResizing2) return;
-        isResizing2 = true;
+      onLoad: () => {
+        console.log("Canvas 2: Rive animation loaded successfully");
+        
+        const vmi2 = r2.viewModelInstance;
+        if (!vmi2) {
+          console.error("❌ Canvas 2: ViewModelInstance is NULL");
+          return;
+        }
 
-        const currentWidth = canvas2Parent ? canvas2Parent.clientWidth : canvas2.clientWidth;
-        
-        // Different aspect ratio for showreel canvas
-        const aspectRatio = 1200 / 700;  // Widescreen format
+        // CRITICAL FIX: Use .trigger() to get trigger properties, NOT .fire()
+        const scrollSection1 = vmi2.trigger("scroll_section_1");
+        const scrollSection2 = vmi2.trigger("scroll_section_2");
+        const scrollSection3 = vmi2.trigger("scroll_section_3");
 
-        canvas2.style.width = currentWidth + 'px';
-        canvas2.style.height = (currentWidth / aspectRatio) + 'px';
-        
-        console.log(`Canvas 2: Resized to ${currentWidth}px width`);
-        
-        requestAnimationFrame(() => {
-          r2.resizeDrawingSurfaceToCanvas();
-          isResizing2 = false;
+        if (!scrollSection1 || !scrollSection2 || !scrollSection3) {
+          console.error("❌ Canvas 2: One or more scroll trigger properties not found");
+          return;
+        }
+
+        console.log("✅ Canvas 2: Scroll triggers connected successfully");
+
+        // Handle responsive sizing
+        const canvas2Parent = canvas2.parentElement;
+        let isResizing2 = false;
+
+        function updateCanvas2Size() {
+          if (isResizing2) return;
+          isResizing2 = true;
+
+          const currentWidth = canvas2Parent ? canvas2Parent.clientWidth : canvas2.clientWidth;
+          const aspectRatio = 16 / 9;
+
+          canvas2.style.width = currentWidth + 'px';
+          canvas2.style.height = (currentWidth / aspectRatio) + 'px';
+          
+          requestAnimationFrame(() => {
+            r2.resizeDrawingSurfaceToCanvas();
+            isResizing2 = false;
+          });
+        }
+
+        updateCanvas2Size();
+
+        let resizeTimeout2 = null;
+        window.addEventListener("resize", () => {
+          clearTimeout(resizeTimeout2);
+          resizeTimeout2 = setTimeout(() => {
+            updateCanvas2Size();
+          }, 120);
+        });
+
+        // Initialize Lenis smooth scroll
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          wheelMultiplier: 1,
+          touchMultiplier: 2,
+        });
+
+        // Lenis animation loop
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Track which triggers have been fired
+        const triggeredSections = {
+          section1: false,
+          section2: false,
+          section3: false
+        };
+
+        // Calculate scroll progress relative to canvas2 visibility
+        // Returns values > 1.0 when canvas scrolls past viewport (allows 120-130% triggers)
+        function getCanvas2ScrollProgress() {
+          const canvas2Rect = canvas2.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          const canvasHeight = canvas2Rect.height;
+          
+          // Canvas hasn't entered viewport yet
+          if (canvas2Rect.top >= viewportHeight) return 0;
+          
+          // Calculate how far the canvas has scrolled
+          // This includes when it's partially visible AND when it's scrolled past
+          const scrolledAmount = viewportHeight - canvas2Rect.top;
+          
+          // Progress can exceed 1.0 (100%) - goes up to ~2.0 when fully scrolled past
+          const progress = scrolledAmount / canvasHeight;
+          
+          return Math.max(0, progress);
+        }
+
+        // Listen to Lenis scroll events
+        lenis.on('scroll', () => {
+          const canvasProgress = getCanvas2ScrollProgress();
+          const progressPercentage = canvasProgress * 100;
+          
+          // Trigger section 1 when canvas is 25% scrolled into view
+          if (progressPercentage >= 25 && !triggeredSections.section1) {
+            scrollSection1.trigger(); // FIXED: Use .trigger() method
+            triggeredSections.section1 = true;
+            console.log("🎯 Canvas 2: Scroll Section 1 triggered at", progressPercentage.toFixed(2) + "%");
+          }
+          
+          // Trigger section 2 when canvas is 50% scrolled into view
+          if (progressPercentage >= 50 && !triggeredSections.section2) {
+            scrollSection2.trigger(); // FIXED: Use .trigger() method
+            triggeredSections.section2 = true;
+            console.log("🎯 Canvas 2: Scroll Section 2 triggered at", progressPercentage.toFixed(2) + "%");
+          }
+          
+          // Trigger section 3 when canvas is 120% scrolled (going past viewport)
+          if (progressPercentage >= 120 && !triggeredSections.section3) {
+            scrollSection3.trigger(); // FIXED: Use .trigger() method
+            triggeredSections.section3 = true;
+            console.log("🎯 Canvas 2: Scroll Section 3 triggered at", progressPercentage.toFixed(2) + "%");
+          }
+          
+          // Reset triggers when scrolling back up
+          if (progressPercentage < 25) {
+            triggeredSections.section1 = false;
+          }
+          if (progressPercentage < 50) {
+            triggeredSections.section2 = false;
+          }
+          if (progressPercentage < 120) {
+            triggeredSections.section3 = false;
+          }
         });
       }
-
-      updateCanvas2Size();
-
-      let resizeTimeout2 = null;
-      window.addEventListener("resize", () => {
-        clearTimeout(resizeTimeout2);
-        resizeTimeout2 = setTimeout(() => {
-          updateCanvas2Size();
-        }, 120);
-      });
-    }
-  });
+    });
+  } else {
+    console.log("Canvas 2 not found on this page - scroll controller not initialized");
+  }
 </script>
+
+
 
 </body>
 </html>
