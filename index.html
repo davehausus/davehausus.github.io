@@ -88,6 +88,14 @@
     min-width: 375px;
   }
 
+  #riveCanvas2 {
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
   .visually-hidden {
     position: absolute;
     width: 1px;
@@ -345,17 +353,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section class="showreel" data-color="dark">
   <div class="container">
-    <div class="wrapper">
-      <div>
-        <h6>SHOWREEL</h6></div>
-    <div class="video reveal-effect masker wow">
-      <video class="video" src="videos/showreel.mp4"></video>
-      <div class="playpause"></div>
-        <h2></h2>
-        <!-- end content -->
-      </div>
-    </div>
-    <!-- end video --> 
+      <canvas id="riveCanvas2"></canvas>
   </div>
   <!-- end container --> 
 </section>
@@ -586,7 +584,65 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 </script>
 
+<!-- SECOND RIVE CANVAS - Showreel with different properties -->
+<script>
+  const canvas2 = document.getElementById("riveCanvas2");
+  
+  const r2 = new rive.Rive({
+    src: "rive/showreel.riv",
+    canvas: canvas2,
+    autoplay: true, // Start animation automatically on load
+    autoBind: true, // Automatically bind to canvas
+    loadRiveFile: true, // Required for WebGL2 + View Model support
+    artboard: "Artboard", // Name of the artboard to display
+    stateMachines: "State Machine 1", // State machine to run
+    useDataBinding: true, // Enable data binding for View Model
+    
+    // Different layout settings for second canvas
+    layout: new rive.Layout({
+      fit: rive.Fit.FitWidth,  // Different fit mode
+      alignment: rive.Alignment.Center,  // Different alignment
+    }),
 
+    onLoad: () => {
+      console.log("Canvas 2: Rive animation loaded successfully");
+      
+      // Handle responsive sizing for second canvas
+      const canvas2Parent = canvas2.parentElement;
+      let isResizing2 = false;
+
+      function updateCanvas2Size() {
+        if (isResizing2) return;
+        isResizing2 = true;
+
+        const currentWidth = canvas2Parent ? canvas2Parent.clientWidth : canvas2.clientWidth;
+        
+        // Different aspect ratio for showreel canvas
+        const aspectRatio = 1200 / 700;  // Widescreen format
+
+        canvas2.style.width = currentWidth + 'px';
+        canvas2.style.height = (currentWidth / aspectRatio) + 'px';
+        
+        console.log(`Canvas 2: Resized to ${currentWidth}px width`);
+        
+        requestAnimationFrame(() => {
+          r2.resizeDrawingSurfaceToCanvas();
+          isResizing2 = false;
+        });
+      }
+
+      updateCanvas2Size();
+
+      let resizeTimeout2 = null;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimeout2);
+        resizeTimeout2 = setTimeout(() => {
+          updateCanvas2Size();
+        }, 120);
+      });
+    }
+  });
+</script>
 
 </body>
 </html>
