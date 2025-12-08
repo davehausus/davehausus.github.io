@@ -78,7 +78,6 @@
     
 
 <script src="https://unpkg.com/@rive-app/webgl2"></script>
-<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script> 
 
 <style>
   #riveCanvas {
@@ -583,6 +582,193 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
   });
 </script>
+
+<!-- Typing Animation Script -->
+<script>
+  // Wait for the first Rive canvas to load before starting typing animation
+  window.addEventListener('load', () => {
+    // Get the Rive instance from the first canvas (assuming it's named 'r')
+    if (typeof r === 'undefined') {
+      console.error("❌ First Rive instance 'r' not found");
+      return;
+    }
+
+    // Define all text update options
+    const textUpdates = [
+      { // Update 0 (default)
+        run2: "interactions",
+        run4: "stories",
+        run6: "Rive",
+        run8: "Lottie"
+      },
+      { // Update 1
+        run2: "states",
+        run4: "experiences",
+        run6: "Figma",
+        run8: "Sketch"
+      },
+      { // Update 2
+        run2: "micro-interactions",
+        run4: "moments",
+        run6: "Keyframes",
+        run8: "More Keyframes"
+      },
+      { // Update 3
+        run2: "gestures",
+        run4: "emotion",
+        run6: "Graph Editors",
+        run8: "Easings"
+      },
+      { // Update 4
+        run2: "clicks",
+        run4: "clarity",
+        run6: "Dark Mode",
+        run8: "Bright Ideas"
+      },
+      { // Update 5
+        run2: "flows",
+        run4: "living motion",
+        run6: "Bezier Curves",
+        run8: "Keyframes"
+      },
+      { // Update 6
+        run2: "states",
+        run4: "experiences",
+        run6: "Undo",
+        run8: "Redo"
+      }
+    ];
+
+    let currentUpdateIndex = 0;
+    let lastUpdateIndex = 0;
+    let isTyping = false;
+
+    // Get random typing speed (40-100ms for natural fast typing)
+    function getRandomTypingSpeed() {
+      return Math.floor(Math.random() * 60) + 40; // 40-100ms
+    }
+
+    // Get random erasing speed (slightly faster than typing)
+    function getRandomErasingSpeed() {
+      return Math.floor(Math.random() * 40) + 30; // 30-70ms
+    }
+
+    // Type text one character at a time
+    function typeText(textRunObj, targetText, callback) {
+      let currentIndex = 0;
+      
+      function typeNextChar() {
+        if (currentIndex < targetText.length) {
+          textRunObj.value = targetText.substring(0, currentIndex + 1);
+          currentIndex++;
+          setTimeout(typeNextChar, getRandomTypingSpeed());
+        } else {
+          if (callback) callback();
+        }
+      }
+      
+      typeNextChar();
+    }
+
+    // Erase text one character at a time (from end to start)
+    function eraseText(textRunObj, callback) {
+      const currentText = textRunObj.value;
+      let currentLength = currentText.length;
+      
+      function eraseNextChar() {
+        if (currentLength > 0) {
+          textRunObj.value = currentText.substring(0, currentLength - 1);
+          currentLength--;
+          setTimeout(eraseNextChar, getRandomErasingSpeed());
+        } else {
+          if (callback) callback();
+        }
+      }
+      
+      eraseNextChar();
+    }
+
+    // Perform complete update cycle: erase all (8→6→4→2), then type all (2→4→6→8)
+    function performUpdate() {
+      if (isTyping) return;
+      isTyping = true;
+
+      const vmi = r.viewModelInstance;
+      if (!vmi) {
+        console.error("❌ Canvas 1: ViewModelInstance not available for typing");
+        isTyping = false;
+        return;
+      }
+
+      // Get text run references using the string() method
+      const run2 = vmi.string("Run 2");
+      const run4 = vmi.string("Run 4");
+      const run6 = vmi.string("Run 6");
+      const run8 = vmi.string("Run 8");
+
+      if (!run2 || !run4 || !run6 || !run8) {
+        console.error("❌ Canvas 1: One or more text runs not found");
+        console.log("Available View Model:", vmi);
+        isTyping = false;
+        return;
+      }
+
+      // Select random update (never Update 0 on first update, never repeat previous)
+      let newUpdateIndex;
+      do {
+        newUpdateIndex = Math.floor(Math.random() * textUpdates.length);
+      } while (
+        (currentUpdateIndex === 0 && newUpdateIndex === 0) || // Skip Update 0 on first update
+        newUpdateIndex === lastUpdateIndex // Never repeat previous update
+      );
+
+      lastUpdateIndex = currentUpdateIndex;
+      currentUpdateIndex = newUpdateIndex;
+      const newTexts = textUpdates[currentUpdateIndex];
+
+      console.log(`🎯 Canvas 1: Starting text update ${currentUpdateIndex}`);
+
+      // ERASE PHASE: Run 8 → Run 6 → Run 4 → Run 2
+      eraseText(run8, () => {
+        eraseText(run6, () => {
+          eraseText(run4, () => {
+            eraseText(run2, () => {
+              
+              // Small pause between erase and type
+              setTimeout(() => {
+                // TYPE PHASE: Run 2 → Run 4 → Run 6 → Run 8
+                typeText(run2, newTexts.run2, () => {
+                  typeText(run4, newTexts.run4, () => {
+                    typeText(run6, newTexts.run6, () => {
+                      typeText(run8, newTexts.run8, () => {
+                        console.log(`✅ Canvas 1: Text update ${currentUpdateIndex} complete`);
+                        isTyping = false;
+                      });
+                    });
+                  });
+                });
+              }, 300); // 300ms pause between erase and type
+              
+            });
+          });
+        });
+      });
+    }
+
+    // Start first update after 15 seconds
+    console.log("⏳ Canvas 1: Typing animation will start in 15 seconds");
+    setTimeout(() => {
+      performUpdate();
+      
+      // Continue updates every 20 seconds
+      setInterval(() => {
+        performUpdate();
+      }, 20000);
+      
+    }, 15000);
+  });
+</script>
+
 
 <!-- Add this script AFTER your existing Rive scripts -->
 <!-- Load Lenis -->
