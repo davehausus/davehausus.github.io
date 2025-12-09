@@ -12,14 +12,36 @@
 </script>
 <script>
   gtag('event', 'page_view', {
-    page_title: 'David de Jesús | Sr. UI & Motion Designer',
+    page_title: 'ADL Simulator',
     page_path: '/',
   });
 </script>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ADL Simulator - Rive Integration</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#282828"/>
+<title>ADL Simulator</title>
+<meta name="title" content="David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist">
+<meta name="author" content="David de Jesús">
+<meta name="description" content="Realistic Activities of Daily Living simulation with advanced scheduling and Rive animation integration." />
+<meta name="keywords" content="David de Jesús, davehausus, UI Design, Art direction, web design, Visual Design, designer, creative, works, showcase, portfolio, highlight, projects, modern, digital, css, animation, transition, freelancers, diseñador, página web, creativo">
+<meta name="google-site-verification" content="Ff2D8q3yGA0OtWq4AAFc0tNCskC_cDfSt7a_bUeGFoo" />
+
+<!-- SOCIAL MEDIA META -->
+<meta property="og:description" content="I design interfaces that move with purpose by combining UI, motion, and product thinking. From micro-interactions to Rive State Machines and Data Binding workflows, I create web and mobile experiences that feel clear, intuitive, and alive.">
+<meta property="og:image" content="https://davehausus.github.io/images/meta.jpg">
+<meta property="og:site_name" content="David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist">
+<meta property="og:title" content="David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://davehausus.github.io">
+
+<!-- FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
   <style>
     * {
       margin: 0;
@@ -28,7 +50,7 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Poppins", sans-serif;
       background: linear-gradient(135deg, #1a2538 0%, #131c2b 100%);
       min-height: 100vh;
       padding: 20px;
@@ -55,6 +77,7 @@
     .subtitle {
       color: #ffffff;
       font-size: 14px;
+      font-weight: 500;
     }
 
     .main-layout {
@@ -105,6 +128,7 @@
       color: #ffffff;
       margin-bottom: 20px;
       font-size: 20px;
+      font-weight: 600;
     }
 
     .activity-display {
@@ -165,6 +189,7 @@
     }
 
     button {
+      font-family: "Poppins", sans-serif;
       padding: 12px 24px;
       border: none;
       border-radius: 8px;
@@ -254,23 +279,23 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🏥 ADL Simulator</h1>
+      <h1>🛁 ADL Simulator</h1>
       <p class="subtitle">Realistic Activities of Daily Living simulation with advanced scheduling and Rive animation integration</p>
     </div>
 
     <div class="main-layout">
       <div class="rive-section">
-        <h2>🎨 Rive Animation</h2>
+        <h2>🎬 Rive Animation</h2>
         <canvas id="riveCanvas"></canvas>
       </div>
 
       <div class="info-section">
         <div class="card">
-          <h2>🎮 Controls</h2>
+          <h2>🎛 Controls</h2>
           <div class="controls">
-            <button class="btn-primary" id="startBtn">▶️ Start Simulation</button>
-            <button class="btn-secondary" id="pauseBtn">⏸️ Pause</button>
-            <button class="btn-secondary" id="resetBtn">🔄 Reset</button>
+            <button class="btn-primary" id="startBtn">▶ Start Simulation</button>
+            <button class="btn-secondary" id="pauseBtn">Pause</button>
+            <button class="btn-secondary" id="resetBtn">Reset</button>
           </div>
           
           <div class="speed-control">
@@ -283,7 +308,7 @@
         </div>
 
         <div class="card">
-          <h2>📍 Current Activity</h2>
+          <h2>🕐 Current Activity</h2>
           <div class="activity-display">
             <div class="activity-icon" id="currentIcon">💤</div>
             <div class="activity-name" id="currentActivity">Waiting to start</div>
@@ -362,6 +387,7 @@
         
         // Callbacks and stats
         this.activityChangeCallbacks = [];
+        this.activityIntensityCallbacks = [];
         this.stats = {
           sleeping: 0,
           eating: 0,
@@ -372,6 +398,32 @@
         };
 
         this.initializeUI();
+      }
+
+      calculateActivityIntensity() {
+        const twoHoursAgo = new Date(this.simulatedTime.getTime() - (2 * 60 * 60 * 1000));
+        
+        // Count activities in the last 2 hours, excluding Resting and Sleeping
+        const recentActivities = this.activityLog.filter(activity => 
+          activity.timestamp >= twoHoursAgo && 
+          activity.timestamp <= this.simulatedTime &&
+          activity.key !== 'sleeping' &&
+          activity.key !== 'idle'
+        );
+        
+        // Return the actual count of activities
+        return recentActivities.length;
+      }
+
+      notifyActivityIntensityChange() {
+        const intensity = this.calculateActivityIntensity();
+        this.activityIntensityCallbacks.forEach(callback => {
+          try {
+            callback(intensity);
+          } catch (error) {
+            console.error('Error in activity intensity callback:', error);
+          }
+        });
       }
 
       generateDailySchedule() {
@@ -393,8 +445,7 @@
           19: { activities: ['social', 'idle'], probability: 0.6 },
           20: { activities: ['medication_evening'], probability: 0.95 },
           21: { activities: ['social', 'idle'], probability: 0.7 },
-          22: { activities: ['sleeping'], probability: 0.8, required: true },
-          23: { activities: ['sleeping'], probability: 1.0 }
+          22: { activities: ['sleeping'], probability: 1.0, required: true },
         };
       }
 
@@ -514,23 +565,7 @@
 
       handleDayTransition() {
         this.currentDay++;
-        
-        // Don't clear 'sleeping' from completedToday if we slept in the last 12 hours
-        // This prevents sleeping twice when crossing midnight
-        const lastSleep = this.lastActivityTime['sleeping'];
-        const hoursSinceLastSleep = lastSleep ? (this.simulatedTime - lastSleep) / 1000 / 60 / 60 : 999;
-        
-        if (hoursSinceLastSleep < 12) {
-          // Keep sleeping in the completed set
-          const hadSlept = this.completedToday.has('sleeping');
-          this.completedToday.clear();
-          if (hadSlept) {
-            this.completedToday.add('sleeping');
-          }
-        } else {
-          this.completedToday.clear();
-        }
-        
+        this.completedToday.clear();
         this.dailySchedule = this.generateDailySchedule();
         console.log(`📅 Day ${this.currentDay + 1} started`);
       }
@@ -552,10 +587,6 @@
           }
           // If we already slept today/tonight, don't sleep again
           if (this.completedToday.has('sleeping')) {
-            return false;
-          }
-          // ALSO check if currently sleeping - don't start another sleep session
-          if (this.currentActivity && this.currentActivity.key === 'sleeping') {
             return false;
           }
         }
@@ -662,7 +693,7 @@
         
         // If no activities available, default to idle or sleeping
         if (availableActivities.length === 0) {
-          if ((hour >= 22 || hour < 7) && this.canDoActivity('sleeping')) {
+          if (hour >= 22 || hour < 7) {
             availableActivities.push({ key: 'sleeping', ...this.activities.sleeping });
           } else {
             availableActivities.push({ key: 'idle', ...this.activities.idle });
@@ -761,6 +792,9 @@
         
         this.updateStats();
         this.updateUI();
+        
+        // Notify intensity change when new activity starts
+        this.notifyActivityIntensityChange();
       }
 
       completeActivity() {
@@ -796,8 +830,6 @@
           minute: '2-digit',
           second: '2-digit'
         });
-
-        
         
         document.getElementById('currentTime').textContent = timeStr;
         document.getElementById('dayCounter').textContent = `Day ${this.currentDay + 1}`;
@@ -813,19 +845,7 @@
         document.getElementById('bathroomCount').textContent = this.stats.bathroom;
         document.getElementById('medCount').textContent = this.stats.medication;
         document.getElementById('socialCount').textContent = this.stats.social;
-// ----- Rive sync: Only update when HOUR changes -----
-  const currentHour = this.simulatedTime.getHours();
-
-  if (this._lastSimulatedHour !== currentHour) {
-    this._lastSimulatedHour = currentHour;
-
-    if (window.riveInstance?.view) {
-      window.riveInstance.view.setNumber("dayTime", currentHour);
-    }
-  }
-}
-        
-
+      }
 
       getCurrentActivity() {
         return this.currentActivity;
@@ -848,6 +868,16 @@
           }
         };
       }
+
+      onActivityIntensityChange(callback) {
+        this.activityIntensityCallbacks.push(callback);
+        return () => {
+          const index = this.activityIntensityCallbacks.indexOf(callback);
+          if (index > -1) {
+            this.activityIntensityCallbacks.splice(index, 1);
+          }
+        };
+      }
     }
 
     // Initialize simulator
@@ -857,105 +887,110 @@
     console.log('✅ ADL Simulator initialized!');
     console.log('📡 Integration API ready at window.ADLSimulator');
 
-// RIVE INTEGRATION CODE - WebGL2 Renderer
-console.log('🔍 Attempting to load Rive file with WebGL2 renderer...');
+    // RIVE INTEGRATION CODE - WebGL2 Renderer
+    console.log('🔍 Attempting to load Rive file with WebGL2 renderer...');
 
-const riveInstance = new rive.Rive({
-  src: "adl.riv",
-  canvas: document.getElementById("riveCanvas"),
-  autoplay: true,
-  autoBind: true,
-  artboard: "Artboard",
-  stateMachines: "State Machine 1",
-  useOffscreenRenderer: true, // Enable for better performance with WebGL2
-  
-  onLoad: () => {
-    console.log("✅ Rive animation loaded with WebGL2!");
-    
-    // Resize the canvas for better quality
-    riveInstance.resizeDrawingSurfaceToCanvas();
-    
-    const vmi = riveInstance.viewModelInstance;
-    if (!vmi) {
-      console.error("❌ No ViewModelInstance found!");
-      return;
-    }
-
-    // Configure how the animation fits within the canvas
-    layout: new rive.Layout({
-      fit: rive.Fit.Contain, // Fit entire animation within canvas while maintaining aspect ratio
-      alignment: rive.Alignment.CenterLeft, // Align animation to center-left of canvas
-    });
-
-    console.log("🔍 View Model Instance:", vmi);
-
-    // Get Rive properties
-    const activityNameProp = vmi.string("activityName");
-    const activityTypeProp = vmi.number("activityType");
-    const activityIconProp = vmi.string("activityIcon");
-    const dayTimeProp = vmi.number("dayTime");
-
-    console.log("🔍 Properties:", {
-      activityName: activityNameProp,
-      activityType: activityTypeProp,
-      activityIcon: activityIconProp,
-      dayTime: dayTimeProp
-    });
-
-    if (!activityNameProp || !activityTypeProp || !activityIconProp || !dayTimeProp) {
-      console.error("❌ Required properties not found in View Model!");
-      console.log("Make sure you have: activityName (string), activityType (number), activityIcon (string), dayTime (number)");
-      return;
-    }
-
-    console.log("🔗 Connected to Rive properties!");
-
-    // Update function to sync time continuously
-    const updateRiveTime = () => {
-      if (window.ADLSimulator.isRunning) {
-        const currentHour = window.ADLSimulator.simulatedTime.getHours();
-        dayTimeProp.value = currentHour;
-      }
-    };
-
-    // Update time every animation frame for smooth transitions
-    const timeUpdateLoop = () => {
-      updateRiveTime();
-      requestAnimationFrame(timeUpdateLoop);
-    };
-    timeUpdateLoop();
-
-    window.ADLSimulator.onActivityChange((activity) => {
-      console.log("🔄 Activity changed:", activity.name, `(type: ${activity.type})`);
+    const riveInstance = new rive.Rive({
+      src: "adl.riv",
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+      autoBind: true,
+      artboard: "Artboard",
+      stateMachines: "State Machine 1",
+      useOffscreenRenderer: true,
       
-      activityNameProp.value = activity.name;
-      activityTypeProp.value = activity.type;
-      activityIconProp.value = activity.icon;
+      onLoad: () => {
+        console.log("✅ Rive animation loaded with WebGL2!");
+        
+        riveInstance.resizeDrawingSurfaceToCanvas();
+        
+        const vmi = riveInstance.viewModelInstance;
+        if (!vmi) {
+          console.error("❌ No ViewModelInstance found!");
+          return;
+        }
 
-      // Also update time when activity changes
-      const currentHour = window.ADLSimulator.simulatedTime.getHours();
-      dayTimeProp.value = currentHour;
-      console.log("🕐 Hour updated:", currentHour);
+        console.log("🔍 View Model Instance:", vmi);
+
+        const activityNameProp = vmi.string("activityName");
+        const activityTypeProp = vmi.number("activityType");
+        const activityIconProp = vmi.string("activityIcon");
+        const dayTimeProp = vmi.number("dayTime");
+        const activityIntensityProp = vmi.number("activityIntensity");
+
+        console.log("🔍 Properties:", {
+          activityName: activityNameProp,
+          activityType: activityTypeProp,
+          activityIcon: activityIconProp,
+          dayTime: dayTimeProp,
+          activityIntensity: activityIntensityProp
+        });
+
+        if (!activityNameProp || !activityTypeProp || !activityIconProp || !dayTimeProp || !activityIntensityProp) {
+          console.error("❌ Required properties not found in View Model!");
+          console.log("Make sure you have: activityName (string), activityType (number), activityIcon (string), dayTime (number), activityIntensity (number)");
+          return;
+        }
+
+        console.log("🔗 Connected to Rive properties!");
+
+        // Subscribe to activity intensity changes
+        window.ADLSimulator.onActivityIntensityChange((intensity) => {
+          activityIntensityProp.value = intensity;
+          console.log("📊 Activity intensity:", intensity);
+        });
+
+        // Update function to sync time continuously
+        const updateRiveTime = () => {
+          if (window.ADLSimulator.isRunning) {
+            const currentHour = window.ADLSimulator.simulatedTime.getHours();
+            dayTimeProp.value = currentHour;
+          }
+        };
+
+        // Update time every animation frame for smooth transitions
+        const timeUpdateLoop = () => {
+          updateRiveTime();
+          requestAnimationFrame(timeUpdateLoop);
+        };
+        timeUpdateLoop();
+
+        window.ADLSimulator.onActivityChange((activity) => {
+          console.log("🔄 Activity changed:", activity.name, `(type: ${activity.type})`);
+          
+          activityNameProp.value = activity.name;
+          activityTypeProp.value = activity.type;
+          activityIconProp.value = activity.icon;
+          
+          // Also update time when activity changes
+          const currentHour = window.ADLSimulator.simulatedTime.getHours();
+          dayTimeProp.value = currentHour;
+          console.log("🕐 Hour updated:", currentHour);
+        });
+
+        const currentActivity = window.ADLSimulator.getCurrentActivity();
+        if (currentActivity) {
+          activityNameProp.value = currentActivity.name;
+          activityTypeProp.value = currentActivity.type;
+          activityIconProp.value = currentActivity.icon;
+        }
+
+        // Set initial intensity
+        const initialIntensity = window.ADLSimulator.calculateActivityIntensity();
+        activityIntensityProp.value = initialIntensity;
+        console.log("📊 Initial activity intensity:", initialIntensity);
+
+        console.log("✅ Rive integration complete!");
+      },
+      
+      onLoadError: (error) => {
+        console.error("❌ Rive load error:", error);
+      },
+      
+      onPlayError: (error) => {
+        console.error("❌ Rive play error:", error);
+      }
     });
-
-    const currentActivity = window.ADLSimulator.getCurrentActivity();
-    if (currentActivity) {
-      activityNameProp.value = currentActivity.name;
-      activityTypeProp.value = currentActivity.type;
-      activityIconProp.value = currentActivity.icon;
-    }
-
-    console.log("✅ Rive integration complete!");
-  },
-  
-  onLoadError: (error) => {
-    console.error("❌ Rive load error:", error);
-  },
-  
-  onPlayError: (error) => {
-    console.error("❌ Rive play error:", error);
-  }
-});
   </script>
 </body>
 </html>

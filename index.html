@@ -593,64 +593,42 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return;
     }
 
-    // Define all text update options
+    // Define all text update options - full sentences with variable words
     const textUpdates = [
       { // Update 0 (default)
-        run2: "interactions",
-        run4: "stories",
-        run6: "Rive",
-        run8: "Lottie"
+        fullText: "interactions into stories. Powered by Rive & Lottie."
       },
       { // Update 1
-        run2: "states",
-        run4: "experiences",
-        run6: "Figma",
-        run8: "Sketch"
+        fullText: "states into experiences. Powered by Figma & Sketch."
       },
       { // Update 2
-        run2: "micro- interactions",
-        run4: "moments",
-        run6: "Keyframes",
-        run8: "More Keyframes"
+        fullText: "micro-interactions into moments. Powered by Keyframes & More Keyframes."
       },
       { // Update 3
-        run2: "gestures",
-        run4: "emotion",
-        run6: "Graph Editors",
-        run8: "Easings"
+        fullText: "gestures into emotion. Powered by Graph Editors & Easings."
       },
       { // Update 4
-        run2: "clicks",
-        run4: "clarity",
-        run6: "Dark Mode",
-        run8: "Bright Ideas"
+        fullText: "clicks into clarity. Powered by Dark Mode & Bright Ideas."
       },
       { // Update 5
-        run2: "flows",
-        run4: "living motion",
-        run6: "Bezier Curves",
-        run8: "Keyframes"
+        fullText: "flows into living motion. Powered by Bezier Curves & Keyframes."
       },
       { // Update 6
-        run2: "states",
-        run4: "experiences",
-        run6: "Undo",
-        run8: "Redo"
+        fullText: "states into experiences. Powered by Undo & Redo."
       }
     ];
 
-    let currentUpdateIndex = 0;
-    let lastUpdateIndex = 0;
+    let previousUpdateIndex = -1;
     let isTyping = false;
 
     // Get random typing speed (40-100ms for natural fast typing)
     function getRandomTypingSpeed() {
-      return Math.floor(Math.random() * 60) + 40; // 40-100ms
+      return Math.floor(Math.random() * 60) + 40;
     }
 
     // Get random erasing speed (slightly faster than typing)
     function getRandomErasingSpeed() {
-      return Math.floor(Math.random() * 40) + 30; // 30-70ms
+      return Math.floor(Math.random() * 40) + 30;
     }
 
     // Type text one character at a time
@@ -670,15 +648,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       typeNextChar();
     }
 
-    // Erase text one character at a time (from end to start)
+    // Erase text one character at a time (replace with spaces, not delete)
     function eraseText(textRunObj, callback) {
       const currentText = textRunObj.value;
-      let currentLength = currentText.length;
+      const textLength = currentText.length;
+      let currentIndex = 0;
       
       function eraseNextChar() {
-        if (currentLength > 0) {
-          textRunObj.value = currentText.substring(0, currentLength - 1);
-          currentLength--;
+        if (currentIndex < textLength) {
+          const spacesToAdd = currentIndex + 1;
+          const remainingText = currentText.substring(0, textLength - spacesToAdd);
+          textRunObj.value = remainingText + ' '.repeat(spacesToAdd);
+          currentIndex++;
           setTimeout(eraseNextChar, getRandomErasingSpeed());
         } else {
           if (callback) callback();
@@ -688,83 +669,55 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       eraseNextChar();
     }
 
-    // Perform complete update cycle: erase all (8→6→4→2), then type all (2→4→6→8)
+    // Perform complete update cycle
     function performUpdate() {
       if (isTyping) return;
       isTyping = true;
 
       const vmi = r.viewModelInstance;
       if (!vmi) {
-        console.error("❌ Canvas 1: ViewModelInstance not available for typing");
+        console.error("❌ Canvas 1: ViewModelInstance not available");
         isTyping = false;
         return;
       }
 
-      // Get text run references using the string() method
       const run2 = vmi.string("Run 2");
-      const run4 = vmi.string("Run 4");
-      const run6 = vmi.string("Run 6");
-      const run8 = vmi.string("Run 8");
-
-      if (!run2 || !run4 || !run6 || !run8) {
-        console.error("❌ Canvas 1: One or more text runs not found");
-        console.log("Available View Model:", vmi);
+      if (!run2) {
+        console.error("❌ Canvas 1: Run 2 not found");
         isTyping = false;
         return;
       }
 
-      // Select random update (never Update 0 on first update, never repeat previous)
+      // Select random update different from previous
       let newUpdateIndex;
       do {
         newUpdateIndex = Math.floor(Math.random() * textUpdates.length);
       } while (
-        (currentUpdateIndex === 0 && newUpdateIndex === 0) || // Skip Update 0 on first update
-        newUpdateIndex === lastUpdateIndex // Never repeat previous update
+        newUpdateIndex === previousUpdateIndex ||
+        (previousUpdateIndex === -1 && newUpdateIndex === 0)
       );
 
-      lastUpdateIndex = currentUpdateIndex;
-      currentUpdateIndex = newUpdateIndex;
-      const newTexts = textUpdates[currentUpdateIndex];
+      previousUpdateIndex = newUpdateIndex;
+      const newText = textUpdates[newUpdateIndex].fullText;
 
-      console.log(`🎯 Canvas 1: Starting text update ${currentUpdateIndex}`);
+      console.log(`🎯 Canvas 1: Starting text update ${newUpdateIndex}`);
 
-      // ERASE PHASE: Run 8 → Run 6 → Run 4 → Run 2
-      eraseText(run8, () => {
-        eraseText(run6, () => {
-          eraseText(run4, () => {
-            eraseText(run2, () => {
-              
-              // Small pause between erase and type
-              setTimeout(() => {
-                // TYPE PHASE: Run 2 → Run 4 → Run 6 → Run 8
-                typeText(run2, newTexts.run2, () => {
-                  typeText(run4, newTexts.run4, () => {
-                    typeText(run6, newTexts.run6, () => {
-                      typeText(run8, newTexts.run8, () => {
-                        console.log(`✅ Canvas 1: Text update ${currentUpdateIndex} complete`);
-                        isTyping = false;
-                      });
-                    });
-                  });
-                });
-              }, 300); // 300ms pause between erase and type
-              
-            });
+      // Erase then type
+      eraseText(run2, () => {
+        setTimeout(() => {
+          typeText(run2, newText, () => {
+            console.log(`✅ Canvas 1: Text update ${newUpdateIndex} complete`);
+            isTyping = false;
           });
-        });
+        }, 300);
       });
     }
 
-    // Start first update after 15 seconds
+    // Start updates
     console.log("⏳ Canvas 1: Typing animation will start in 15 seconds");
     setTimeout(() => {
       performUpdate();
-      
-      // Continue updates every 20 seconds
-      setInterval(() => {
-        performUpdate();
-      }, 20000);
-      
+      setInterval(performUpdate, 20000);
     }, 15000);
   });
 </script>
