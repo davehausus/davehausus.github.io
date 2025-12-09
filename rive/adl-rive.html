@@ -384,6 +384,8 @@
         this.animationFrameId = null;
         this.lastUpdateTime = null;
         this.activityStartTime = null;
+
+        this.wokeUpToday = false;
         
         // Callbacks and stats
         this.activityChangeCallbacks = [];
@@ -551,14 +553,23 @@
           this.handleDayTransition();
         }
         
-        if (this.currentActivity) {
-          const elapsed = (this.simulatedTime - this.activityStartTime) / 1000 / 60;
-          
-          if (elapsed >= this.currentActivity.duration) {
-            this.completeActivity();
-            this.selectNextActivity();
-          }
+      if (this.currentActivity) {
+        const elapsed = (this.simulatedTime - this.activityStartTime) / 1000 / 60;
+        const hour = this.simulatedTime.getHours();
+        
+        // Force wake up if sleeping past 7am (only once per day)
+        if (this.currentActivity.key === 'sleeping' && hour >= 7 && !this.wokeUpToday) {
+          console.log('⏰ Force wake up at', hour + ':00');
+          this.wokeUpToday = true; // <-- prevents looping
+          this.completeActivity();
+          this.selectNextActivity();
         }
+        // Normal activity completion
+        else if (elapsed >= this.currentActivity.duration) {
+          this.completeActivity();
+          this.selectNextActivity();
+        }
+      }
         
         this.updateUI();
       }
@@ -566,6 +577,7 @@
       handleDayTransition() {
         this.currentDay++;
         this.completedToday.clear();
+        this.wokeUpToday = false;
         this.dailySchedule = this.generateDailySchedule();
         console.log(`📅 Day ${this.currentDay + 1} started`);
       }
@@ -798,19 +810,31 @@
       }
 
       completeActivity() {
-        if (this.currentActivity) {
-          this.completedToday.add(this.currentActivity.key);
+        if (!this.currentActivity) return;
+
+        const key = this.currentActivity.key;
+
+        // If sleeping, record sleep hours
+        if (key === 'sleeping') {
+          const end = this.simulatedTime;
+          const durationMins = (end - this.activityStartTime) / 1000 / 60;
+          this.stats.sleeping += durationMins / 60;
         }
+
+        // rest of existing logic …
+        this.completedToday.add(key);
+        this.currentActivity = null;
+        this.activityStartTime = null;
+        this.updateUI();
       }
 
       updateStats() {
         if (!this.currentActivity) return;
 
-        if (this.currentActivity.key === 'sleeping') {
-          this.stats.sleeping += this.currentActivity.duration / 60;
-        } else if (this.currentActivity.key.includes('breakfast') || 
-                   this.currentActivity.key.includes('lunch') || 
-                   this.currentActivity.key.includes('dinner')) {
+        // Only increment counters for non-sleeping activities when they START
+        if (this.currentActivity.key.includes('breakfast') || 
+            this.currentActivity.key.includes('lunch') || 
+            this.currentActivity.key.includes('dinner')) {
           this.stats.eating++;
         } else if (this.currentActivity.key === 'shower') {
           this.stats.showering++;
@@ -821,6 +845,7 @@
         } else if (this.currentActivity.key === 'social') {
           this.stats.social++;
         }
+        // Don't add sleep duration here - it will be calculated when sleep completes
       }
 
       updateUI() {
