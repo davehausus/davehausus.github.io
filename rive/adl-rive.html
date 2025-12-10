@@ -591,6 +591,11 @@
           return false;
         }
         
+        // Prevent multiple wake-ups per day
+        if (activityKey === 'wakeup' && this.completedToday.has('wakeup')) {
+          return false;
+        }
+        
         // Special handling for sleeping - only once per night cycle
         if (activityKey === 'sleeping') {
           // Don't allow sleeping during daytime (7am-10pm)
@@ -599,6 +604,10 @@
           }
           // If we already slept today/tonight, don't sleep again
           if (this.completedToday.has('sleeping')) {
+            return false;
+          }
+          // ALSO check if currently sleeping - don't start another sleep session
+          if (this.currentActivity && this.currentActivity.key === 'sleeping') {
             return false;
           }
         }
