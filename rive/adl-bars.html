@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Analytics 4 (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5M5R22S8EB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5M5R22S8EB');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    page_title: 'ADL Simulator',
+    page_path: '/',
+  });
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#282828"/>
+<title>ADL Simulator</title>
+<meta name="title" content="ADL Simulator">
+<meta name="author" content="David de Jesús">
+<meta name="description" content="Realistic Activities of Daily Living simulation with advanced scheduling and Rive animation integration." />
+<meta name="keywords" content="David de Jesús, davehausus, UI Design, Art direction, web design, Visual Design, designer, creative, works, showcase, portfolio, highlight, projects, modern, digital, css, animation, transition, freelancers, diseñador, página web, creativo">
+<meta name="google-site-verification" content="Ff2D8q3yGA0OtWq4AAFc0tNCskC_cDfSt7a_bUeGFoo" />
+
+<!-- SOCIAL MEDIA META -->
+<meta property="og:description" content="Realistic Activities of Daily Living simulation with advanced scheduling and Rive animation integration.">
+<meta property="og:image" content="https://davehausus.github.io/images/adl-rive.png">
+<meta property="og:site_name" content="ADL Simulator">
+<meta property="og:title" content="ADL Simulator">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://davehausus.github.io/rive/adl-rive.html">
+
+<!-- FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #1a2538 0%, #131c2b 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: #212e44;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 500px;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .rive-section {
+      background: #212e44;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .rive-section h2 {
+      color: #ffffff;
+      margin-bottom: 20px;
+      align-self: flex-start;
+    }
+
+    #riveCanvas {
+      border-radius: 12px;
+      box-shadow: none;
+      width: 400px;
+      height: 400px;
+      background: #212e44;
+    }
+
+    .info-section {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      background: #212e44;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      color: #ffffff;
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .activity-display {
+      padding: 25px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      color: white;
+      text-align: center;
+    }
+
+    .activity-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .activity-name {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .activity-time {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .stat-box {
+      background: #1a2538;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: #4d7c9c;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      font-family: "Poppins", sans-serif;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #6a41ed;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #734df0;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px #382184;;
+    }
+
+    .btn-secondary {
+      background: #03a6ff;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #52b8ef;
+    }
+
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .speed-control label {
+      font-weight: 600;
+      color: #333;
+      font-size: 13px;
+    }
+
+    .speed-control input {
+      flex: 1;
+    }
+
+    .speed-value {
+      min-width: 100px;
+      text-align: right;
+      font-weight: 600;
+      color: #667eea;
+      font-size: 12px;
+    }
+
+    .day-counter {
+      background: #f8f9fa;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 15px;
+      font-weight: 600;
+      color: #667eea;
+    }
+
+    @media (max-width: 1200px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+
+<script src="https://unpkg.com/@rive-app/webgl2@latest"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🛁 ADL Simulator</h1>
+      <p class="subtitle">Realistic Activities of Daily Living simulation with advanced scheduling and Rive animation integration</p>
+    </div>
+
+    <div class="main-layout">
+      <div class="rive-section">
+        <h2>🎬 Rive Animation</h2>
+        <canvas id="riveCanvas"></canvas>
+      </div>
+
+      <div class="info-section">
+        <div class="card">
+          <h2>🎛 Controls</h2>
+          <div class="controls">
+            <button class="btn-primary" id="startBtn">▶ Start Simulation</button>
+            <button class="btn-secondary" id="pauseBtn">Pause</button>
+            <button class="btn-secondary" id="resetBtn">Reset</button>
+          </div>
+          
+          <div class="speed-control">
+            <label>Speed:</label>
+            <input type="range" id="speedSlider" min="1" max="3600" value="60">
+            <span class="speed-value" id="speedValue">1 min/sec</span>
+          </div>
+
+          <div class="day-counter" id="dayCounter">Day 1</div>
+        </div>
+
+        <div class="card">
+          <h2>🕐 Current Activity</h2>
+          <div class="activity-display">
+            <div class="activity-icon" id="currentIcon">💤</div>
+            <div class="activity-name" id="currentActivity">Waiting to start</div>
+            <div class="activity-time" id="currentTime">00:00:00</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>📊 Today's Statistics</h2>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-value" id="sleepCount">0</div>
+              <div class="stat-label">Sleep (hrs)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="mealCount">0</div>
+              <div class="stat-label">Meals</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="showerCount">0</div>
+              <div class="stat-label">Showers</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="bathroomCount">0</div>
+              <div class="stat-label">Bathroom</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="medCount">0</div>
+              <div class="stat-label">Medications</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="socialCount">0</div>
+              <div class="stat-label">Social</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ADLSimulator {
+      constructor() {
+        this.activities = {
+          sleeping: { name: 'Sleeping', icon: '😴', type: 0, avgDuration: 420, variance: 60, priority: 10, category: 'sleep' },
+          wakeup: { name: 'Waking Up', icon: '🌅', type: 6, avgDuration: 5, variance: 2, priority: 9, category: 'transition', sequence: ['bathroom', 'shower'] },
+          bathroom: { name: 'Using Bathroom', icon: '🚽', type: 3, avgDuration: 10, variance: 5, priority: 8, category: 'hygiene', minInterval: 120 },
+          shower: { name: 'Showering', icon: '🚿', type: 2, avgDuration: 20, variance: 5, priority: 7, category: 'hygiene', sequence: ['breakfast'] },
+          breakfast: { name: 'Eating Breakfast', icon: '🍳', type: 1, avgDuration: 30, variance: 10, priority: 6, category: 'meal', sequence: ['medication_morning'] },
+          medication_morning: { name: 'Taking Medication', icon: '💊', type: 4, avgDuration: 5, variance: 2, priority: 5, category: 'medication' },
+          lunch: { name: 'Eating Lunch', icon: '🍽️', type: 1, avgDuration: 40, variance: 10, priority: 6, category: 'meal' },
+          dinner: { name: 'Eating Dinner', icon: '🍲', type: 1, avgDuration: 45, variance: 10, priority: 6, category: 'meal', sequence: ['medication_evening'] },
+          medication_evening: { name: 'Taking Medication', icon: '💊', type: 4, avgDuration: 5, variance: 2, priority: 5, category: 'medication' },
+          social: { name: 'Social Interaction', icon: '👥', type: 5, avgDuration: 60, variance: 20, priority: 3, category: 'social' },
+          exercise: { name: 'Light Exercise', icon: '🚶', type: 6, avgDuration: 30, variance: 15, priority: 4, category: 'activity' },
+          idle: { name: 'Resting', icon: '🪑', type: 6, avgDuration: 60, variance: 30, priority: 1, category: 'rest' }
+        };
+
+        // Tracking state
+        this.currentActivity = null;
+        this.activityLog = [];
+        this.completedToday = new Set();
+        this.lastActivityTime = {};
+        this.sequenceQueue = [];
+        this.dailySchedule = this.generateDailySchedule();
+        
+        // Time management
+        this.simulatedTime = new Date();
+        this.simulatedTime.setHours(0, 0, 0, 0);
+        this.currentDay = 0;
+        this.isRunning = false;
+        this.speed = 60;
+        this.animationFrameId = null;
+        this.lastUpdateTime = null;
+        this.activityStartTime = null;
+
+        this.wokeUpToday = false;
+        
+        // Callbacks and stats
+        this.activityChangeCallbacks = [];
+        this.activityIntensityCallbacks = [];
+        this.randomPositionCallbacks = [];
+        this.stats = {
+          sleeping: 0,
+          eating: 0,
+          showering: 0,
+          bathroom: 0,
+          medication: 0,
+          social: 0
+        };
+
+        // Random position generator
+        this.randomPositionInterval = null;
+
+        this.initializeUI();
+      }
+
+      generateRandomPositions() {
+        // Generate 3 different random numbers between -200 and 200
+        const positions = [];
+        const usedValues = new Set();
+        
+        while (positions.length < 3) {
+          const randomValue = Math.floor(Math.random() * 401) - 200; // -200 to 200
+          // Ensure values are different (at least 10 units apart)
+          const isTooClose = Array.from(usedValues).some(val => Math.abs(val - randomValue) < 10);
+          if (!isTooClose) {
+            positions.push(randomValue);
+            usedValues.add(randomValue);
+          }
+        }
+        
+        return {
+          xPos: positions[0],
+          xPos2: positions[1],
+          xPos3: positions[2]
+        };
+      }
+
+      notifyRandomPositionChange() {
+        const positions = this.generateRandomPositions();
+        this.randomPositionCallbacks.forEach(callback => {
+          try {
+            callback(positions);
+          } catch (error) {
+            console.error('Error in random position callback:', error);
+          }
+        });
+      }
+
+      startRandomPositionGenerator() {
+        // Generate initial positions
+        this.notifyRandomPositionChange();
+        
+        // Update every 10 seconds
+        this.randomPositionInterval = setInterval(() => {
+          this.notifyRandomPositionChange();
+        }, 10000);
+      }
+
+      stopRandomPositionGenerator() {
+        if (this.randomPositionInterval) {
+          clearInterval(this.randomPositionInterval);
+          this.randomPositionInterval = null;
+        }
+      }     
+      
+      calculateActivityIntensity() {
+        const twoHoursAgo = new Date(this.simulatedTime.getTime() - (2 * 60 * 60 * 1000));
+        
+        // Count activities in the last 2 hours, excluding Resting and Sleeping
+        const recentActivities = this.activityLog.filter(activity => 
+          activity.timestamp >= twoHoursAgo && 
+          activity.timestamp <= this.simulatedTime &&
+          activity.key !== 'sleeping' &&
+          activity.key !== 'idle'
+        );
+        
+        // Return the actual count of activities
+        return recentActivities.length;
+      }
+
+      notifyActivityIntensityChange() {
+        const intensity = this.calculateActivityIntensity();
+        this.activityIntensityCallbacks.forEach(callback => {
+          try {
+            callback(intensity);
+          } catch (error) {
+            console.error('Error in activity intensity callback:', error);
+          }
+        });
+      }
+
+      generateDailySchedule() {
+        const isWeekend = this.currentDay % 7 >= 5;
+        
+        return {
+          7: { activities: ['wakeup'], probability: 0.9, required: true },
+          8: { activities: ['breakfast'], probability: 0.95 },
+          9: { activities: ['social', 'exercise'], probability: 0.4 },
+          10: { activities: ['social', 'exercise'], probability: 0.5 },
+          11: { activities: ['bathroom', 'social'], probability: 0.4 },
+          12: { activities: ['lunch'], probability: 0.9, required: true },
+          13: { activities: ['idle'], probability: 0.6 },
+          14: { activities: ['social', 'exercise'], probability: isWeekend ? 0.7 : 0.5 },
+          15: { activities: ['social', 'bathroom'], probability: 0.5 },
+          16: { activities: ['social'], probability: isWeekend ? 0.8 : 0.4 },
+          17: { activities: ['idle'], probability: 0.5 },
+          18: { activities: ['dinner'], probability: 0.9, required: true },
+          19: { activities: ['social', 'idle'], probability: 0.6 },
+          20: { activities: ['medication_evening'], probability: 0.95 },
+          21: { activities: ['social', 'idle'], probability: 0.7 },
+          22: { activities: ['sleeping'], probability: 1.0, required: true },
+        };
+      }
+
+      initializeUI() {
+        document.getElementById('startBtn').addEventListener('click', () => this.start());
+        document.getElementById('pauseBtn').addEventListener('click', () => this.pause());
+        document.getElementById('resetBtn').addEventListener('click', () => this.reset());
+        
+        const speedSlider = document.getElementById('speedSlider');
+        speedSlider.addEventListener('input', (e) => {
+          this.speed = parseInt(e.target.value);
+          this.updateSpeedDisplay();
+        });
+        
+        this.updateSpeedDisplay();
+      }
+
+      updateSpeedDisplay() {
+        const speedValue = document.getElementById('speedValue');
+        if (this.speed >= 3600) {
+          speedValue.textContent = '1 hr/sec';
+        } else if (this.speed >= 60) {
+          const mins = Math.round(this.speed / 60);
+          speedValue.textContent = `${mins} min/sec`;
+        } else {
+          speedValue.textContent = `${this.speed} sec/sec`;
+        }
+      }
+
+      start() {
+        if (this.isRunning) return;
+        
+        this.isRunning = true;
+        this.lastUpdateTime = performance.now();
+        
+        if (!this.currentActivity) {
+          this.selectNextActivity();
+        }
+        
+        this.animate();
+        this.startRandomPositionGenerator();
+        
+        document.getElementById('startBtn').textContent = '▶️ Running...';
+        document.getElementById('startBtn').style.background = '#28a745';
+      }
+
+      animate() {
+        if (!this.isRunning) return;
+        
+        const currentTime = performance.now();
+        const deltaTime = (currentTime - this.lastUpdateTime) / 1000;
+        this.lastUpdateTime = currentTime;
+        
+        this.tick(deltaTime);
+        this.animationFrameId = requestAnimationFrame(() => this.animate());
+      }
+
+      pause() {
+        this.isRunning = false;
+        if (this.animationFrameId) {
+          cancelAnimationFrame(this.animationFrameId);
+          this.animationFrameId = null;
+        }
+        
+        this.stopRandomPositionGenerator();
+
+        document.getElementById('startBtn').textContent = '▶️ Start Simulation';
+        document.getElementById('startBtn').style.background = '#667eea';
+      }
+
+      reset() {
+        this.pause();
+        this.stopRandomPositionGenerator();
+        this.simulatedTime = new Date();
+        this.simulatedTime.setHours(0, 0, 0, 0);
+        this.currentDay = 0;
+        this.currentActivity = null;
+        this.activityLog = [];
+        this.completedToday = new Set();
+        this.lastActivityTime = {};
+        this.sequenceQueue = [];
+        this.dailySchedule = this.generateDailySchedule();
+        this.activityStartTime = null;
+        this.stats = {
+          sleeping: 0,
+          eating: 0,
+          showering: 0,
+          bathroom: 0,
+          medication: 0,
+          social: 0
+        };
+        
+        this.updateUI();
+        document.getElementById('currentActivity').textContent = 'Waiting to start';
+        document.getElementById('currentIcon').textContent = '💤';
+      }
+
+      tick(deltaTime) {
+        // Advance simulated time
+        const timeAdvance = this.speed * deltaTime * 1000;
+        const oldHour = this.simulatedTime.getHours();
+        this.simulatedTime = new Date(this.simulatedTime.getTime() + timeAdvance);
+        const newHour = this.simulatedTime.getHours();
+        
+        // Check if we crossed midnight
+        if (oldHour > newHour) {
+          this.handleDayTransition();
+        }
+        
+      if (this.currentActivity) {
+        const elapsed = (this.simulatedTime - this.activityStartTime) / 1000 / 60;
+        const hour = this.simulatedTime.getHours();
+        
+        // Force wake up if sleeping past 7am (only once per day)
+        if (this.currentActivity.key === 'sleeping' && hour >= 7 && !this.wokeUpToday) {
+          console.log('⏰ Force wake up at', hour + ':00');
+          this.wokeUpToday = true; // <-- prevents looping
+          this.completeActivity();
+          this.selectNextActivity();
+        }
+        // Normal activity completion
+        else if (elapsed >= this.currentActivity.duration) {
+          this.completeActivity();
+          this.selectNextActivity();
+        }
+      }
+        
+        this.updateUI();
+      }
+
+      handleDayTransition() {
+        this.currentDay++;
+        this.completedToday.clear();
+        this.wokeUpToday = false;
+        this.dailySchedule = this.generateDailySchedule();
+        console.log(`📅 Day ${this.currentDay + 1} started`);
+      }
+
+      canDoActivity(activityKey) {
+        const activity = this.activities[activityKey];
+        const hour = this.simulatedTime.getHours();
+        
+        // Check if already completed today (for once-per-day activities)
+        if (activity.category === 'meal' && this.completedToday.has(activityKey)) {
+          return false;
+        }
+        
+        // Prevent multiple wake-ups per day
+        if (activityKey === 'wakeup' && this.completedToday.has('wakeup')) {
+          return false;
+        }
+        
+        // Special handling for sleeping - only once per night cycle
+        if (activityKey === 'sleeping') {
+          // Don't allow sleeping during daytime (7am-10pm)
+          if (hour >= 7 && hour < 22) {
+            return false;
+          }
+          // If we already slept today/tonight, don't sleep again
+          if (this.completedToday.has('sleeping')) {
+            return false;
+          }
+          // ALSO check if currently sleeping - don't start another sleep session
+          if (this.currentActivity && this.currentActivity.key === 'sleeping') {
+            return false;
+          }
+        }
+        
+        // Check minimum interval
+        if (activity.minInterval) {
+          const lastTime = this.lastActivityTime[activityKey];
+          if (lastTime) {
+            const minutesSince = (this.simulatedTime - lastTime) / 1000 / 60;
+            if (minutesSince < activity.minInterval) {
+              return false;
+            }
+          }
+        }
+        
+        return true;
+      }
+
+      getActivityProbability(activityKey) {
+        const activity = this.activities[activityKey];
+        const hour = this.simulatedTime.getHours();
+        
+        let baseProbability = 0.3;
+        
+        // Time-based modifiers
+        if (activityKey === 'bathroom') {
+          // Increase after meals
+          const minutesSinceLastMeal = Math.min(
+            ...['breakfast', 'lunch', 'dinner']
+              .filter(meal => this.lastActivityTime[meal])
+              .map(meal => (this.simulatedTime - this.lastActivityTime[meal]) / 1000 / 60)
+          );
+          if (minutesSinceLastMeal < 60) {
+            baseProbability = 0.6;
+          } else {
+            baseProbability = 0.2;
+          }
+        } else if (activityKey === 'shower') {
+          // More likely in morning
+          if (hour >= 7 && hour <= 9) {
+            baseProbability = 0.8;
+          } else if (hour >= 20 && hour <= 22) {
+            baseProbability = 0.4;
+          }
+        } else if (activityKey === 'social') {
+          // Less likely early morning or late night
+          if (hour < 9 || hour > 21) {
+            baseProbability = 0.1;
+          } else {
+            baseProbability = 0.5;
+          }
+        }
+        
+        return baseProbability;
+      }
+
+      selectNextActivity() {
+        const hour = this.simulatedTime.getHours();
+        
+        // First, check if we have a queued sequence activity
+        if (this.sequenceQueue.length > 0) {
+          const nextKey = this.sequenceQueue.shift();
+          if (this.canDoActivity(nextKey)) {
+            this.startActivity(nextKey);
+            return;
+          }
+        }
+        
+        // Check for scheduled activities this hour
+        const schedule = this.dailySchedule[hour];
+        const availableActivities = [];
+        
+        if (schedule) {
+          for (const activityKey of schedule.activities) {
+            if (this.canDoActivity(activityKey)) {
+              const activity = this.activities[activityKey];
+              const probability = this.getActivityProbability(activityKey);
+              
+              if (schedule.required || Math.random() < probability) {
+                availableActivities.push({
+                  key: activityKey,
+                  ...activity,
+                  priority: activity.priority + (schedule.required ? 10 : 0)
+                });
+              }
+            }
+          }
+        }
+        
+        // Add bathroom as a possibility if enough time has passed
+        if (this.canDoActivity('bathroom')) {
+          const lastBathroom = this.lastActivityTime['bathroom'];
+          if (!lastBathroom || (this.simulatedTime - lastBathroom) / 1000 / 60 > 120) {
+            const probability = this.getActivityProbability('bathroom');
+            if (Math.random() < probability) {
+              availableActivities.push({
+                key: 'bathroom',
+                ...this.activities.bathroom,
+                priority: this.activities.bathroom.priority + 2
+              });
+            }
+          }
+        }
+        
+        // If no activities available, default to idle or sleeping
+        if (availableActivities.length === 0) {
+          if (hour >= 22 || hour < 7) {
+            availableActivities.push({ key: 'sleeping', ...this.activities.sleeping });
+          } else {
+            availableActivities.push({ key: 'idle', ...this.activities.idle });
+          }
+        }
+        
+        // Sort by priority (higher = more important)
+        availableActivities.sort((a, b) => b.priority - a.priority);
+        
+        // Select based on weighted probability favoring higher priority
+        let selected;
+        if (availableActivities.length === 1) {
+          selected = availableActivities[0];
+        } else {
+          const totalWeight = availableActivities.reduce((sum, act, idx) => 
+            sum + (availableActivities.length - idx), 0);
+          let random = Math.random() * totalWeight;
+          
+          for (let i = 0; i < availableActivities.length; i++) {
+            random -= (availableActivities.length - i);
+            if (random <= 0) {
+              selected = availableActivities[i];
+              break;
+            }
+          }
+          selected = selected || availableActivities[0];
+        }
+        
+        this.startActivity(selected.key);
+      }
+
+      startActivity(activityKey) {
+        const activity = this.activities[activityKey];
+        const variance = activity.variance;
+        const duration = activity.avgDuration + (Math.random() * variance * 2 - variance);
+        
+        // Adjust duration based on time of day
+        let adjustedDuration = duration;
+        const hour = this.simulatedTime.getHours();
+        
+        if (activityKey === 'shower') {
+          // Morning showers are quicker
+          if (hour >= 7 && hour <= 9) {
+            adjustedDuration *= 0.8;
+          } else {
+            adjustedDuration *= 1.2;
+          }
+        } else if (activity.category === 'meal') {
+          // Evening meals take longer
+          if (hour >= 18) {
+            adjustedDuration *= 1.2;
+          }
+        } else if (activityKey === 'social') {
+          // Weekend social activities last longer
+          const isWeekend = this.currentDay % 7 >= 5;
+          if (isWeekend) {
+            adjustedDuration *= 1.5;
+          }
+        }
+        
+        this.currentActivity = {
+          key: activityKey,
+          name: activity.name,
+          icon: activity.icon,
+          type: activity.type,
+          duration: Math.max(5, adjustedDuration),
+          startTime: new Date(this.simulatedTime)
+        };
+
+        this.activityStartTime = new Date(this.simulatedTime);
+        this.lastActivityTime[activityKey] = new Date(this.simulatedTime);
+        
+        // Add to sequence queue if this activity has a sequence
+        if (activity.sequence) {
+          this.sequenceQueue.push(...activity.sequence);
+        }
+        
+        this.activityLog.unshift({
+          ...this.currentActivity,
+          timestamp: new Date(this.simulatedTime)
+        });
+
+        // Keep log manageable
+        if (this.activityLog.length > 100) {
+          this.activityLog.pop();
+        }
+
+        // Notify callbacks
+        this.activityChangeCallbacks.forEach(callback => {
+          try {
+            callback(this.currentActivity);
+          } catch (error) {
+            console.error('Error in activity change callback:', error);
+          }
+        });
+        
+        this.updateStats();
+        this.updateUI();
+        
+        // Notify intensity change when new activity starts
+        this.notifyActivityIntensityChange();
+      }
+
+      completeActivity() {
+        if (!this.currentActivity) return;
+
+        const key = this.currentActivity.key;
+
+        // If sleeping, record sleep hours
+        if (key === 'sleeping') {
+          const end = this.simulatedTime;
+          const durationMins = (end - this.activityStartTime) / 1000 / 60;
+          this.stats.sleeping += durationMins / 60;
+        }
+
+        // rest of existing logic …
+        this.completedToday.add(key);
+        this.currentActivity = null;
+        this.activityStartTime = null;
+        this.updateUI();
+      }
+
+      updateStats() {
+        if (!this.currentActivity) return;
+
+        // Only increment counters for non-sleeping activities when they START
+        if (this.currentActivity.key.includes('breakfast') || 
+            this.currentActivity.key.includes('lunch') || 
+            this.currentActivity.key.includes('dinner')) {
+          this.stats.eating++;
+        } else if (this.currentActivity.key === 'shower') {
+          this.stats.showering++;
+        } else if (this.currentActivity.key === 'bathroom') {
+          this.stats.bathroom++;
+        } else if (this.currentActivity.key.includes('medication')) {
+          this.stats.medication++;
+        } else if (this.currentActivity.key === 'social') {
+          this.stats.social++;
+        }
+        // Don't add sleep duration here - it will be calculated when sleep completes
+      }
+
+      updateUI() {
+        const timeStr = this.simulatedTime.toLocaleTimeString('en-US', { 
+          hour12: false, 
+          hour: '2-digit', 
+          minute: '2-digit',
+          second: '2-digit'
+        });
+        
+        document.getElementById('currentTime').textContent = timeStr;
+        document.getElementById('dayCounter').textContent = `Day ${this.currentDay + 1}`;
+
+        if (this.currentActivity) {
+          document.getElementById('currentIcon').textContent = this.currentActivity.icon;
+          document.getElementById('currentActivity').textContent = this.currentActivity.name;
+        }
+
+        document.getElementById('sleepCount').textContent = Math.round(this.stats.sleeping * 10) / 10;
+        document.getElementById('mealCount').textContent = this.stats.eating;
+        document.getElementById('showerCount').textContent = this.stats.showering;
+        document.getElementById('bathroomCount').textContent = this.stats.bathroom;
+        document.getElementById('medCount').textContent = this.stats.medication;
+        document.getElementById('socialCount').textContent = this.stats.social;
+      }
+
+      getCurrentActivity() {
+        return this.currentActivity;
+      }
+
+      getTodayStats() {
+        return { ...this.stats };
+      }
+
+      getActivityLog() {
+        return [...this.activityLog];
+      }
+
+      onActivityChange(callback) {
+        this.activityChangeCallbacks.push(callback);
+        return () => {
+          const index = this.activityChangeCallbacks.indexOf(callback);
+          if (index > -1) {
+            this.activityChangeCallbacks.splice(index, 1);
+          }
+        };
+      }
+
+      onActivityIntensityChange(callback) {
+        this.activityIntensityCallbacks.push(callback);
+        return () => {
+          const index = this.activityIntensityCallbacks.indexOf(callback);
+          if (index > -1) {
+            this.activityIntensityCallbacks.splice(index, 1);
+          }
+        };
+      }
+
+      onRandomPositionChange(callback) {
+        this.randomPositionCallbacks.push(callback);
+        return () => {
+          const index = this.randomPositionCallbacks.indexOf(callback);
+          if (index > -1) {
+            this.randomPositionCallbacks.splice(index, 1);
+          }
+        };
+      }
+    }
+
+    // Initialize simulator
+    const simulator = new ADLSimulator();
+    window.ADLSimulator = simulator;
+
+    console.log('✅ ADL Simulator initialized!');
+    console.log('📡 Integration API ready at window.ADLSimulator');
+
+    // RIVE INTEGRATION CODE - WebGL2 Renderer
+    console.log('🔍 Attempting to load Rive file with WebGL2 renderer...');
+
+    const riveInstance = new rive.Rive({
+      src: "adl_bars.riv",
+      canvas: document.getElementById("riveCanvas"),
+      autoplay: true,
+      autoBind: true,
+      artboard: "Artboard",
+      stateMachines: "State Machine 1",
+      useOffscreenRenderer: true,
+      
+      onLoad: () => {
+        console.log("✅ Rive animation loaded with WebGL2!");
+        
+        riveInstance.resizeDrawingSurfaceToCanvas();
+        
+        const vmi = riveInstance.viewModelInstance;
+        if (!vmi) {
+          console.error("❌ No ViewModelInstance found!");
+          return;
+        }
+
+        console.log("🔍 View Model Instance:", vmi);
+
+        const activityNameProp = vmi.string("activityName");
+        const activityTypeProp = vmi.number("activityType");
+        const activityIconProp = vmi.string("activityIcon");
+        const dayTimeProp = vmi.number("dayTime");
+        const activityIntensityProp = vmi.number("activityIntensity");
+        const xPosProp = vmi.number("xPos");
+        const xPos2Prop = vmi.number("xPos2");
+        const xPos3Prop = vmi.number("xPos3");
+
+        console.log("🔍 Properties:", {
+          activityName: activityNameProp,
+          activityType: activityTypeProp,
+          activityIcon: activityIconProp,
+          dayTime: dayTimeProp,
+          activityIntensity: activityIntensityProp,
+          xPos: xPosProp,
+          xPos2: xPos2Prop,
+          xPos3: xPos3Prop
+        });
+
+        if (!activityNameProp || !activityTypeProp || !activityIconProp || !dayTimeProp || !activityIntensityProp || !xPosProp || !xPos2Prop || !xPos3Prop) {
+          console.error("❌ Required properties not found in View Model!");
+          console.log("Make sure you have: activityName (string), activityType (number), activityIcon (string), dayTime (number), activityIntensity (number), xPos (number), xPos2 (number), xPos3 (number)");
+          return;
+        }
+
+        console.log("🔗 Connected to Rive properties!");
+
+        // Subscribe to random position changes
+        window.ADLSimulator.onRandomPositionChange((positions) => {
+          xPosProp.value = positions.xPos;
+          xPos2Prop.value = positions.xPos2;
+          xPos3Prop.value = positions.xPos3;
+          console.log("📍 Random positions updated:", positions);
+        });
+        
+        // Subscribe to activity intensity changes
+        window.ADLSimulator.onActivityIntensityChange((intensity) => {
+          activityIntensityProp.value = intensity;
+          console.log("📊 Activity intensity:", intensity);
+        });
+
+        // Update function to sync time continuously
+        const updateRiveTime = () => {
+          if (window.ADLSimulator.isRunning) {
+            const currentHour = window.ADLSimulator.simulatedTime.getHours();
+            dayTimeProp.value = currentHour;
+          }
+        };
+
+        // Update time every animation frame for smooth transitions
+        const timeUpdateLoop = () => {
+          updateRiveTime();
+          requestAnimationFrame(timeUpdateLoop);
+        };
+        timeUpdateLoop();
+
+        window.ADLSimulator.onActivityChange((activity) => {
+          console.log("🔄 Activity changed:", activity.name, `(type: ${activity.type})`);
+          
+          activityNameProp.value = activity.name;
+          activityTypeProp.value = activity.type;
+          activityIconProp.value = activity.icon;
+          
+          // Also update time when activity changes
+          const currentHour = window.ADLSimulator.simulatedTime.getHours();
+          dayTimeProp.value = currentHour;
+          console.log("🕐 Hour updated:", currentHour);
+        });
+
+        const currentActivity = window.ADLSimulator.getCurrentActivity();
+        if (currentActivity) {
+          activityNameProp.value = currentActivity.name;
+          activityTypeProp.value = currentActivity.type;
+          activityIconProp.value = currentActivity.icon;
+        }
+
+        // Set initial intensity
+        const initialIntensity = window.ADLSimulator.calculateActivityIntensity();
+        activityIntensityProp.value = initialIntensity;
+        console.log("📊 Initial activity intensity:", initialIntensity);
+        
+        // Set initial random positions
+        const initialPositions = window.ADLSimulator.generateRandomPositions();
+        xPosProp.value = initialPositions.xPos;
+        xPos2Prop.value = initialPositions.xPos2;
+        xPos3Prop.value = initialPositions.xPos3;
+        console.log("📍 Initial random positions:", initialPositions);
+
+        console.log("✅ Rive integration complete!");
+      },
+      
+      onLoadError: (error) => {
+        console.error("❌ Rive load error:", error);
+      },
+      
+      onPlayError: (error) => {
+        console.error("❌ Rive play error:", error);
+      }
+    });
+  </script>
+</body>
+</html>
