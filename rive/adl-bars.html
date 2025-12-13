@@ -257,6 +257,27 @@
       color: #667eea;
     }
 
+    .gyro-permission {
+      background: #ff9800;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .gyro-permission:hover {
+      background: #f57c00;
+    }
+
+    .gyro-permission.granted {
+      background: #4caf50;
+      cursor: default;
+    }
+
     @media (max-width: 1200px) {
       .main-layout {
         grid-template-columns: 1fr;
@@ -305,6 +326,10 @@
           </div>
 
           <div class="day-counter" id="dayCounter">Day 1</div>
+
+          <div class="gyro-permission" id="gyroPermission" style="display: none;">
+            📱 Tap to enable gyroscope
+          </div>
         </div>
 
         <div class="card">
@@ -403,7 +428,70 @@
         // Random position generator
         this.randomPositionInterval = null;
 
+        // Gyroscope support
+        this.tiltX = 0;
+        this.gyroCallbacks = [];
+        this.gyroPermissionGranted = false;
+
         this.initializeUI();
+        this.checkGyroscopeSupport();
+      }
+
+      checkGyroscopeSupport() {
+        // Check if device supports DeviceOrientation
+        if (window.DeviceOrientationEvent) {
+          // Check if iOS 13+ requires permission
+          if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            // iOS 13+ device
+            const gyroBtn = document.getElementById('gyroPermission');
+            gyroBtn.style.display = 'block';
+            gyroBtn.addEventListener('click', () => this.requestGyroPermission());
+          } else {
+            // Non-iOS or older iOS - permission not required
+            this.startGyroscope();
+          }
+        }
+      }
+
+      async requestGyroPermission() {
+        const gyroBtn = document.getElementById('gyroPermission');
+        try {
+          const permission = await DeviceOrientationEvent.requestPermission();
+          if (permission === 'granted') {
+            this.gyroPermissionGranted = true;
+            gyroBtn.textContent = '✅ Gyroscope enabled';
+            gyroBtn.classList.add('granted');
+            this.startGyroscope();
+          } else {
+            gyroBtn.textContent = '❌ Permission denied';
+          }
+        } catch (error) {
+          console.error('Error requesting gyroscope permission:', error);
+          gyroBtn.textContent = '❌ Error requesting permission';
+        }
+      }
+
+      startGyroscope() {
+        window.addEventListener('deviceorientation', (event) => {
+          // Get beta (tilt forward/backward), clamp to -45 to 45
+          let beta = event.beta || 0;
+          
+          // Clamp between -45 and 45
+          beta = Math.max(-45, Math.min(45, beta));
+          
+          this.tiltX = beta;
+          
+          // Notify callbacks
+          this.gyroCallbacks.forEach(callback => {
+            try {
+              callback(this.tiltX);
+            } catch (error) {
+              console.error('Error in gyro callback:', error);
+            }
+          });
+        });
+        
+        console.log('📱 Gyroscope started');
       }
 
       generateRandomPositions() {
@@ -980,6 +1068,22 @@
           }
         };
       }
+
+      onGyroChange(callback) {
+        this.gyroCallbacks.push(callback);
+        // Immediately call with current value
+        callback(this.tiltX);
+        return () => {
+          const index = this.gyroCallbacks.indexOf(callback);
+          if (index > -1) {
+            this.gyroCallbacks.splice(index, 1);
+          }
+        };
+      }
+
+      getTiltX() {
+        return this.tiltX;
+      }
     }
 
     // Initialize simulator
@@ -1022,6 +1126,7 @@
         const xPosProp = vmi.number("xPos");
         const xPos2Prop = vmi.number("xPos2");
         const xPos3Prop = vmi.number("xPos3");
+        const tiltXProp = vmi.number("tiltX");
 
         console.log("🔍 Properties:", {
           activityName: activityNameProp,
@@ -1031,16 +1136,22 @@
           activityIntensity: activityIntensityProp,
           xPos: xPosProp,
           xPos2: xPos2Prop,
-          xPos3: xPos3Prop
+          xPos3: xPos3Prop,
+          tiltX: tiltXProp
         });
 
-        if (!activityNameProp || !activityTypeProp || !activityIconProp || !dayTimeProp || !activityIntensityProp || !xPosProp || !xPos2Prop || !xPos3Prop) {
+        if (!activityNameProp || !activityTypeProp || !activityIconProp || !dayTimeProp || !activityIntensityProp || !xPosProp || !xPos2Prop || !xPos3Prop || !tiltXProp) {
           console.error("❌ Required properties not found in View Model!");
-          console.log("Make sure you have: activityName (string), activityType (number), activityIcon (string), dayTime (number), activityIntensity (number), xPos (number), xPos2 (number), xPos3 (number)");
+          console.log("Make sure you have: activityName (string), activityType (number), activityIcon (string), dayTime (number), activityIntensity (number), xPos (number), xPos2 (number), xPos3 (number), tiltX (number)");
           return;
         }
 
         console.log("🔗 Connected to Rive properties!");
+
+        // Subscribe to gyroscope changes
+        window.ADLSimulator.onGyroChange((tiltValue) => {
+          tiltXProp.value = tiltValue;
+        });
 
         // Subscribe to random position changes
         window.ADLSimulator.onRandomPositionChange((positions) => {
@@ -1103,6 +1214,10 @@
         xPos3Prop.value = initialPositions.xPos3;
         console.log("📍 Initial random positions:", initialPositions);
 
+        // Set initial tilt
+        tiltXProp.value = window.ADLSimulator.getTiltX();
+        console.log("📱 Initial tilt:", window.ADLSimulator.getTiltX());
+        
         console.log("✅ Rive integration complete!");
       },
       
