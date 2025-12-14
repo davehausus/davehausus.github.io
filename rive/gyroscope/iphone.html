@@ -52,6 +52,117 @@
     const canvas = document.getElementById("riveCanvas");
     const button = document.getElementById("permissionBtn");
 
+    // --- Professional Gyroscope Processing ---
+    class GyroProcessor {
+      constructor() {
+        // Smoothing parameters
+        this.smoothingFactor = 0.15; // Lower = smoother (0.1-0.2 optimal)
+        this.currentValue = 0;
+        this.targetValue = 0;
+        
+        // Calibration
+        this.calibrationSamples = [];
+        this.maxCalibrationSamples = 30;
+        this.isCalibrated = false;
+        this.baselineOffset = 0;
+        
+        // Noise filtering
+        this.noiseThreshold = 0.5; // Ignore tiny movements
+        this.previousRaw = 0;
+        
+        // Range mapping
+        this.inputMin = -45;
+        this.inputMax = 45;
+        this.deadZone = 2; // Center dead zone for stability
+        
+        // Animation loop
+        this.animationFrameId = null;
+        this.startSmoothingLoop();
+      }
+
+      // Exponential moving average for buttery smooth motion
+      smooth(current, target, factor) {
+        return current + (target - current) * factor;
+      }
+
+      // Calibrate device to find neutral position
+      calibrate(rawValue) {
+        if (this.isCalibrated) return;
+        
+        this.calibrationSamples.push(rawValue);
+        
+        if (this.calibrationSamples.length >= this.maxCalibrationSamples) {
+          // Calculate average as baseline
+          const sum = this.calibrationSamples.reduce((a, b) => a + b, 0);
+          this.baselineOffset = sum / this.calibrationSamples.length;
+          this.isCalibrated = true;
+          console.log(`📐 Calibrated. Baseline offset: ${this.baselineOffset.toFixed(2)}°`);
+        }
+      }
+
+      // Process raw gyroscope input
+      processInput(rawGamma) {
+        if (rawGamma === null) return this.currentValue;
+        
+        // Calibration phase
+        if (!this.isCalibrated) {
+          this.calibrate(rawGamma);
+          return 0; // Return neutral during calibration
+        }
+        
+        // Apply baseline offset
+        let adjusted = rawGamma - this.baselineOffset;
+        
+        // Noise filtering - ignore micro-movements
+        const delta = Math.abs(adjusted - this.previousRaw);
+        if (delta < this.noiseThreshold) {
+          adjusted = this.previousRaw;
+        }
+        this.previousRaw = adjusted;
+        
+        // Apply dead zone for center stability
+        if (Math.abs(adjusted) < this.deadZone) {
+          adjusted = 0;
+        }
+        
+        // Clamp to input range
+        adjusted = Math.max(this.inputMin, Math.min(this.inputMax, adjusted));
+        
+        // Set as target for smooth interpolation
+        this.targetValue = adjusted;
+        
+        return this.currentValue;
+      }
+
+      // Animation loop for smooth interpolation
+      startSmoothingLoop() {
+        const animate = () => {
+          // Smooth towards target
+          this.currentValue = this.smooth(
+            this.currentValue,
+            this.targetValue,
+            this.smoothingFactor
+          );
+          
+          this.animationFrameId = requestAnimationFrame(animate);
+        };
+        animate();
+      }
+
+      getValue() {
+        return this.currentValue;
+      }
+
+      destroy() {
+        if (this.animationFrameId) {
+          cancelAnimationFrame(this.animationFrameId);
+        }
+      }
+    }
+
+    // Initialize gyroscope processor
+    const gyroProcessor = new GyroProcessor();
+
     // --- Initialize Rive ---
     const riveInstance = new rive.Rive({
       src: riveFile,
@@ -62,15 +173,25 @@
       alignment: rive.Alignment.CENTER,
       onLoad: () => {
         console.log("✅ Rive 500x500 loaded");
+        startRiveUpdateLoop();
       },
     });
 
-    // --- Update Rive input based on gyroscope ---
-    function updateTilt(gamma) {
-      const clampedTilt = Math.max(-45, Math.min(45, gamma));
-      const inputs = riveInstance.stateMachineInputs(stateMachineName);
-      const tiltX = inputs.find(i => i.name === inputName);
-      if (tiltX) tiltX.value = clampedTilt;
+    // --- Continuous update loop for Rive ---
+    function startRiveUpdateLoop() {
+      function update() {
+        const smoothedValue = gyroProcessor.getValue();
+        
+        const inputs = riveInstance.stateMachineInputs(stateMachineName);
+        const tiltX = inputs.find(i => i.name === inputName);
+        
+        if (tiltX) {
+          tiltX.value = smoothedValue;
+        }
+        
+        requestAnimationFrame(update);
+      }
+      update();
     }
 
     // --- Handle motion permission (iOS) ---
@@ -96,10 +217,15 @@
 
     function handleOrientation(event) {
       const { gamma } = event;
-      if (gamma !== null) updateTilt(gamma);
+      gyroProcessor.processInput(gamma);
     }
 
     setupMotion();
+
+    // Cleanup on page unload
+    window.addEventListener("beforeunload", () => {
+      gyroProcessor.destroy();
+    });
   </script>
 </body>
 </html>
