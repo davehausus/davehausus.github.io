@@ -430,11 +430,74 @@
 
         // Gyroscope support
         this.tiltX = 0;
+        this.rawTiltX = 0;
         this.gyroCallbacks = [];
         this.gyroPermissionGranted = false;
+        this.isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        this.isAndroid = /Android/i.test(navigator.platform);
+        
+        // Gyroscope processing parameters
+        this.deadZone = this.isIOS ? 0.07 : 0.11;
+        this.smoothingFactor = 0.15; // Low-pass filter strength (lower = smoother)
+        this.previousFilteredValue = 0;
 
         this.initializeUI();
         this.checkGyroscopeSupport();
+      }
+
+      // Power curve for natural motion feel
+      applySensitivityCurve(normalizedValue) {
+        // Use power of 1.8 for smooth cinematic ramp
+        // Small tilts move very little, big tilts ramp up smoothly
+        const sign = Math.sign(normalizedValue);
+        const absValue = Math.abs(normalizedValue);
+        return sign * Math.pow(absValue, 1.8);
+      }
+
+      // Dead zone to remove micro-jitter
+      applyDeadZone(value) {
+        if (Math.abs(value) < this.deadZone) {
+          return 0;
+        }
+        // Scale value above dead zone back to full range
+        const sign = Math.sign(value);
+        const absValue = Math.abs(value);
+        return sign * ((absValue - this.deadZone) / (1 - this.deadZone));
+      }
+
+      // Low-pass filter to smooth out spikes
+      applyLowPassFilter(newValue) {
+        // Exponential moving average
+        const filtered = this.previousFilteredValue + 
+                        this.smoothingFactor * (newValue - this.previousFilteredValue);
+        this.previousFilteredValue = filtered;
+        return filtered;
+      }
+
+      // Process raw gyro data through the full pipeline
+      processGyroValue(rawValue) {
+        // 1. Normalize based on platform
+        let normalized;
+        if (this.isIOS) {
+          // iOS gives beta in degrees (typically -90 to 90)
+          // Normalize to -1 to 1
+          normalized = Math.max(-1, Math.min(1, rawValue / 90));
+        } else {
+          // Android is noisier, use tighter clamping
+          normalized = Math.max(-1, Math.min(1, rawValue / 45));
+        }
+
+        // 2. Apply dead zone
+        const afterDeadZone = this.applyDeadZone(normalized);
+
+        // 3. Apply sensitivity curve for natural motion
+        const afterCurve = this.applySensitivityCurve(afterDeadZone);
+
+        // 4. Apply low-pass filter for smoothness
+        const filtered = this.applyLowPassFilter(afterCurve);
+
+        // 5. Scale to output range (-45 to 45)
+        return filtered * 45;
       }
 
       checkGyroscopeSupport() {
@@ -473,15 +536,16 @@
 
       startGyroscope() {
         window.addEventListener('deviceorientation', (event) => {
-          // Get beta (tilt forward/backward), clamp to -45 to 45
-          let beta = event.beta || 0;
+          // Get beta (tilt forward/backward)
+          const beta = event.beta || 0;
           
-          // Clamp between -45 and 45
-          beta = Math.max(-45, Math.min(45, beta));
+          // Store raw value for debugging
+          this.rawTiltX = beta;
           
-          this.tiltX = beta;
+          // Process through full pipeline
+          this.tiltX = this.processGyroValue(beta);
           
-          // Notify callbacks
+          // Notify callbacks with processed value
           this.gyroCallbacks.forEach(callback => {
             try {
               callback(this.tiltX);
@@ -491,7 +555,9 @@
           });
         });
         
-        console.log('📱 Gyroscope started');
+        const platform = this.isIOS ? 'iOS' : this.isAndroid ? 'Android' : 'Desktop';
+        console.log(`📱 Gyroscope started (${platform})`);
+        console.log(`⚙️ Settings: Dead zone: ${this.deadZone}, Smoothing: ${this.smoothingFactor}`);
       }
 
       generateRandomPositions() {
@@ -1217,7 +1283,7 @@
         // Set initial tilt
         tiltXProp.value = window.ADLSimulator.getTiltX();
         console.log("📱 Initial tilt:", window.ADLSimulator.getTiltX());
-        
+
         console.log("✅ Rive integration complete!");
       },
       
