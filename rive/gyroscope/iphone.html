@@ -221,8 +221,15 @@
 
     // --- Continuous update loop for Rive ---
     function startRiveUpdateLoop(vmi, props) {
+      let frameCount = 0;
       function update() {
         const gyroX = gyroProcessor.getValue();
+        
+        // Debug logging every 60 frames (~1 second)
+        if (frameCount % 60 === 0) {
+          console.log(`🎯 gyroX: ${gyroX.toFixed(3)}`);
+        }
+        frameCount++;
         
         // Update gyroX value
         if (props.gyroX) {
@@ -287,6 +294,7 @@
 
     function handleOrientation(event) {
       const { gamma } = event;
+      console.log(`📱 Raw gamma: ${gamma}`);
       gyroProcessor.processInput(gamma);
     }
 
