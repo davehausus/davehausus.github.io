@@ -227,7 +227,14 @@
         
         // Debug logging every 60 frames (~1 second)
         if (frameCount % 60 === 0) {
-          console.log(`🎯 gyroX: ${gyroX.toFixed(3)}`);
+          const weights = {
+            neutral: props.neutralWeight?.value || 0,
+            right22: props.right22Weight?.value || 0,
+            right45: props.right45Weight?.value || 0,
+            left22: props.left22Weight?.value || 0,
+            left45: props.left45Weight?.value || 0
+          };
+          console.log(`🎯 gyroX: ${gyroX.toFixed(3)} | Weights: R45=${weights.right45.toFixed(2)} R22=${weights.right22.toFixed(2)} N=${weights.neutral.toFixed(2)} L22=${weights.left22.toFixed(2)} L45=${weights.left45.toFixed(2)}`);
         }
         frameCount++;
         
@@ -294,7 +301,6 @@
 
     function handleOrientation(event) {
       const { gamma } = event;
-      console.log(`📱 Raw gamma: ${gamma}`);
       gyroProcessor.processInput(gamma);
     }
 
