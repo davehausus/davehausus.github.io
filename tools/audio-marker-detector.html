@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Change Marker Detector</title>
+  <style>
+    body { 
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .controls {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    
+    input[type="file"] {
+      display: block;
+      margin: 10px 0;
+      padding: 8px;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 4px;
+      color: #e0e0e0;
+      cursor: pointer;
+    }
+    
+    input[type="number"] {
+      width: 80px;
+      padding: 6px;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 4px;
+      color: #e0e0e0;
+    }
+    
+    label {
+      margin: 0 15px 0 0;
+      display: inline-block;
+    }
+    
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      margin: 10px 0;
+      transition: transform 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .progress {
+      background: #2a2a2a;
+      height: 4px;
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 15px 0;
+      display: none;
+    }
+    
+    .progress-bar {
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .stat-box {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #667eea;
+      margin-top: 5px;
+    }
+    
+    .format-toggle {
+      margin: 15px 0;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .format-btn {
+      padding: 8px 16px;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 4px;
+      color: #e0e0e0;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .format-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-color: #667eea;
+    }
+    
+    pre {
+      background: #1a1a1a;
+      padding: 20px;
+      overflow: auto;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      font-size: 13px;
+      line-height: 1.6;
+      max-height: 500px;
+    }
+    
+    .marker-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #1a1a1a;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    
+    .type-beat { background: #ff6b6b; }
+    .type-onset { background: #4ecdc4; }
+    .type-drop { background: #ffe66d; }
+    .type-buildup { background: #a8e6cf; }
+    .type-breakdown { background: #ff8b94; }
+    .type-transition { background: #c7ceea; }
+  </style>
+</head>
+<body>
+
+<h1>🎵 Audio Change Marker Detector</h1>
+
+<div class="controls">
+  <input type="file" id="audioFile" accept="audio/*" />
+  
+  <div style="margin: 15px 0;">
+    <label>Start (sec): <input type="number" id="startTime" value="0" step="0.1" min="0"></label>
+    <label>End (sec): <input type="number" id="endTime" value="60" step="0.1" min="0"></label>
+  </div>
+  
+  <div style="margin: 15px 0;">
+    <label>
+      <input type="checkbox" id="detectBeats" checked> Detect Beats
+    </label>
+    <label>
+      <input type="checkbox" id="detectOnsets" checked> Detect Onsets
+    </label>
+    <label>
+      <input type="checkbox" id="detectDrops" checked> Detect Drops
+    </label>
+  </div>
+  
+  <div class="format-toggle">
+    <span style="color: #888; font-size: 14px;">Time Format:</span>
+    <button class="format-btn active" id="formatSeconds">Seconds</button>
+    <button class="format-btn" id="formatFrames">MM:FF (60fps)</button>
+    <button class="format-btn" id="formatBoth">Both</button>
+  </div>
+  
+  <button id="analyze">Analyze Audio</button>
+  
+  <div class="progress" id="progress">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+</div>
+
+<div class="stats" id="stats" style="display: none;">
+  <div class="stat-box">
+    <div class="stat-label">Total Markers</div>
+    <div class="stat-value" id="statTotal">0</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-label">Duration</div>
+    <div class="stat-value" id="statDuration">0s</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-label">Avg BPM</div>
+    <div class="stat-value" id="statBPM">0</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-label">Analysis Time</div>
+    <div class="stat-value" id="statTime">0s</div>
+  </div>
+</div>
+
+<div class="marker-legend">
+  <div class="legend-item"><span class="legend-dot type-beat"></span> Beat</div>
+  <div class="legend-item"><span class="legend-dot type-onset"></span> Onset</div>
+  <div class="legend-item"><span class="legend-dot type-drop"></span> Drop</div>
+  <div class="legend-item"><span class="legend-dot type-buildup"></span> Buildup</div>
+  <div class="legend-item"><span class="legend-dot type-breakdown"></span> Breakdown</div>
+  <div class="legend-item"><span class="legend-dot type-transition"></span> Transition</div>
+</div>
+
+<h3>Markers (JSON)</h3>
+<pre id="output">Upload an audio file and click Analyze to get started...</pre>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const analyzeBtn = document.getElementById("analyze");
+  const output = document.getElementById("output");
+  const progress = document.getElementById("progress");
+  const progressBar = document.getElementById("progressBar");
+  const stats = document.getElementById("stats");
+  
+  let currentMarkers = [];
+  let currentFormat = "seconds";
+  
+  // Format toggle buttons
+  const formatSeconds = document.getElementById("formatSeconds");
+  const formatFrames = document.getElementById("formatFrames");
+  const formatBoth = document.getElementById("formatBoth");
+  
+  formatSeconds.addEventListener("click", () => {
+    setFormat("seconds");
+    updateOutput();
+  });
+  
+  formatFrames.addEventListener("click", () => {
+    setFormat("frames");
+    updateOutput();
+  });
+  
+  formatBoth.addEventListener("click", () => {
+    setFormat("both");
+    updateOutput();
+  });
+  
+  function setFormat(format) {
+    currentFormat = format;
+    document.querySelectorAll(".format-btn").forEach(btn => btn.classList.remove("active"));
+    if (format === "seconds") formatSeconds.classList.add("active");
+    else if (format === "frames") formatFrames.classList.add("active");
+    else formatBoth.classList.add("active");
+  }
+  
+  function secondsToFrames(seconds) {
+    const totalFrames = Math.round(seconds * 60);
+    const minutes = Math.floor(totalFrames / 60);
+    const frames = totalFrames % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(frames).padStart(2, '0')}`;
+  }
+  
+  function formatMarkers(markers, format) {
+    return markers.map(m => {
+      const marker = { ...m };
+      
+      if (format === "frames") {
+        marker.time = secondsToFrames(m.time);
+      } else if (format === "both") {
+        marker.timeFrames = secondsToFrames(m.time);
+        marker.timeSeconds = m.time;
+        delete marker.time;
+      }
+      
+      return marker;
+    });
+  }
+  
+  function updateOutput() {
+    if (currentMarkers.length > 0) {
+      const formatted = formatMarkers(currentMarkers, currentFormat);
+      output.textContent = JSON.stringify(formatted, null, 2);
+    }
+  }
+
+  analyzeBtn.addEventListener("click", async () => {
+    const fileInput = document.getElementById("audioFile");
+    if (!fileInput.files.length) {
+      alert("Please upload an audio file first");
+      return;
+    }
+
+    const start = +document.getElementById("startTime").value;
+    const end = +document.getElementById("endTime").value;
+    const detectBeats = document.getElementById("detectBeats").checked;
+    const detectOnsets = document.getElementById("detectOnsets").checked;
+    const detectDrops = document.getElementById("detectDrops").checked;
+
+    analyzeBtn.disabled = true;
+    output.textContent = "Loading audio...";
+    progress.style.display = "block";
+    progressBar.style.width = "10%";
+
+    const startTime = performance.now();
+
+    try {
+      const ctx = new AudioContext();
+      const buffer = await ctx.decodeAudioData(
+        await fileInput.files[0].arrayBuffer()
+      );
+
+      const data = buffer.getChannelData(0);
+      const sr = buffer.sampleRate;
+      const duration = Math.min(end, buffer.duration) - start;
+
+      progressBar.style.width = "20%";
+      output.textContent = "Analyzing audio features...";
+
+      const markers = await analyzeAudio(data, sr, start, end, {
+        detectBeats,
+        detectOnsets,
+        detectDrops,
+        onProgress: (pct) => {
+          progressBar.style.width = `${20 + pct * 0.7}%`;
+        }
+      });
+
+      progressBar.style.width = "100%";
+      
+      const analysisTime = ((performance.now() - startTime) / 1000).toFixed(2);
+      
+      // Calculate BPM from beat markers
+      const beatMarkers = markers.filter(m => m.type === "beat");
+      let avgBPM = 0;
+      if (beatMarkers.length > 1) {
+        const intervals = [];
+        for (let i = 1; i < beatMarkers.length; i++) {
+          intervals.push(beatMarkers[i].time - beatMarkers[i - 1].time);
+        }
+        const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+        avgBPM = Math.round(60 / avgInterval);
+      }
+
+      // Display stats
+      stats.style.display = "grid";
+      document.getElementById("statTotal").textContent = markers.length;
+      document.getElementById("statDuration").textContent = duration.toFixed(1) + "s";
+      document.getElementById("statBPM").textContent = avgBPM || "N/A";
+      document.getElementById("statTime").textContent = analysisTime + "s";
+
+      currentMarkers = markers;
+      updateOutput();
+      
+      setTimeout(() => {
+        progress.style.display = "none";
+        progressBar.style.width = "0%";
+      }, 1000);
+
+    } catch (err) {
+      output.textContent = "Error: " + err.message;
+      console.error(err);
+    } finally {
+      analyzeBtn.disabled = false;
+    }
+  });
+
+  async function analyzeAudio(data, sr, start, end, options) {
+    const startSample = Math.floor(start * sr);
+    const endSample = Math.min(Math.floor(end * sr), data.length);
+    
+    // Use Web Audio API's built-in FFT for speed
+    const fftSize = 2048;
+    const hopSize = 512;
+    const numFrames = Math.floor((endSample - startSample - fftSize) / hopSize);
+    
+    // Extract features using optimized method
+    const features = [];
+    
+    for (let i = 0; i < numFrames; i++) {
+      const sampleIdx = startSample + i * hopSize;
+      const frame = data.slice(sampleIdx, sampleIdx + fftSize);
+      
+      // Calculate RMS energy (simple and fast)
+      let energy = 0;
+      for (let j = 0; j < frame.length; j++) {
+        energy += frame[j] * frame[j];
+      }
+      energy = Math.sqrt(energy / frame.length);
+      
+      // Simple spectral analysis (low/mid/high)
+      const third = Math.floor(frame.length / 3);
+      let low = 0, mid = 0, high = 0;
+      
+      for (let j = 0; j < third; j++) {
+        const val = frame[j] * frame[j];
+        low += val;
+        mid += frame[j + third] * frame[j + third];
+        high += frame[j + third * 2] * frame[j + third * 2];
+      }
+      
+      features.push({
+        time: sampleIdx / sr,
+        energy: energy,
+        low: Math.sqrt(low / third),
+        mid: Math.sqrt(mid / third),
+        high: Math.sqrt(high / third)
+      });
+      
+      if (i % 50 === 0) {
+        options.onProgress(i / numFrames);
+        await new Promise(r => setTimeout(r, 0));
+      }
+    }
+    
+    const markers = [];
+    
+    // Detect beats using energy flux
+    if (options.detectBeats) {
+      const beatMarkers = detectBeats(features);
+      markers.push(...beatMarkers);
+    }
+    
+    // Detect onsets (sudden changes)
+    if (options.detectOnsets) {
+      const onsetMarkers = detectOnsets(features);
+      markers.push(...onsetMarkers);
+    }
+    
+    // Detect drops and buildups
+    if (options.detectDrops) {
+      const dropMarkers = detectDropsAndBuildups(features);
+      markers.push(...dropMarkers);
+    }
+    
+    // Sort by time and remove duplicates within 0.1s
+    markers.sort((a, b) => a.time - b.time);
+    
+    const filtered = [];
+    for (let i = 0; i < markers.length; i++) {
+      if (i === 0 || markers[i].time - filtered[filtered.length - 1].time > 0.1) {
+        filtered.push(markers[i]);
+      } else if (markers[i].intensity > filtered[filtered.length - 1].intensity) {
+        filtered[filtered.length - 1] = markers[i];
+      }
+    }
+    
+    return filtered;
+  }
+  
+  function detectBeats(features) {
+    const beats = [];
+    const windowSize = 10;
+    
+    for (let i = windowSize; i < features.length - 1; i++) {
+      const current = features[i].energy;
+      
+      // Local average
+      let avg = 0;
+      for (let j = i - windowSize; j < i; j++) {
+        avg += features[j].energy;
+      }
+      avg /= windowSize;
+      
+      // Beat if current significantly above average
+      const threshold = avg * 1.4;
+      if (current > threshold && current > features[i - 1].energy) {
+        beats.push({
+          time: +(features[i].time.toFixed(3)),
+          type: "beat",
+          intensity: +(current / avg).toFixed(2)
+        });
+      }
+    }
+    
+    return beats;
+  }
+  
+  function detectOnsets(features) {
+    const onsets = [];
+    
+    for (let i = 3; i < features.length - 1; i++) {
+      const flux = Math.abs(features[i].energy - features[i - 1].energy) +
+                    Math.abs(features[i].high - features[i - 1].high);
+      
+      const prevFlux = Math.abs(features[i - 1].energy - features[i - 2].energy) +
+                       Math.abs(features[i - 1].high - features[i - 2].high);
+      
+      if (flux > 0.05 && flux > prevFlux * 1.5) {
+        onsets.push({
+          time: +(features[i].time.toFixed(3)),
+          type: "onset",
+          intensity: +(flux * 10).toFixed(2)
+        });
+      }
+    }
+    
+    return onsets;
+  }
+  
+  function detectDropsAndBuildups(features) {
+    const markers = [];
+    const windowSize = 20;
+    
+    for (let i = windowSize; i < features.length - windowSize; i++) {
+      // Look for energy buildup followed by drop
+      let buildupSlope = 0;
+      for (let j = 1; j < windowSize; j++) {
+        buildupSlope += features[i - windowSize + j].energy - features[i - windowSize + j - 1].energy;
+      }
+      
+      let dropAmount = features[i].energy - features[i + 5]?.energy || 0;
+      
+      // Buildup detection
+      if (buildupSlope > 0.3) {
+        markers.push({
+          time: +(features[i].time.toFixed(3)),
+          type: "buildup",
+          intensity: +(buildupSlope * 5).toFixed(2)
+        });
+      }
+      
+      // Drop detection (sudden decrease after high energy)
+      if (features[i].energy > 0.3 && dropAmount > 0.2) {
+        markers.push({
+          time: +(features[i + 5].time.toFixed(3)),
+          type: "drop",
+          intensity: +(dropAmount * 10).toFixed(2)
+        });
+      }
+      
+      // Breakdown detection (sustained low energy after high)
+      const avgBefore = features.slice(i - windowSize, i).reduce((s, f) => s + f.energy, 0) / windowSize;
+      const avgAfter = features.slice(i, i + windowSize).reduce((s, f) => s + f.energy, 0) / windowSize;
+      
+      if (avgBefore > 0.3 && avgAfter < 0.15) {
+        markers.push({
+          time: +(features[i].time.toFixed(3)),
+          type: "breakdown",
+          intensity: +((avgBefore - avgAfter) * 10).toFixed(2)
+        });
+      }
+      
+      // Transition detection (change in spectral content)
+      const lowBefore = features.slice(i - windowSize, i).reduce((s, f) => s + f.low, 0) / windowSize;
+      const lowAfter = features.slice(i, i + windowSize).reduce((s, f) => s + f.low, 0) / windowSize;
+      
+      if (Math.abs(lowBefore - lowAfter) > 0.1) {
+        markers.push({
+          time: +(features[i].time.toFixed(3)),
+          type: "transition",
+          intensity: +(Math.abs(lowBefore - lowAfter) * 10).toFixed(2)
+        });
+      }
+    }
+    
+    return markers;
+  }
+});
+</script>
+</body>
+</html>
