@@ -173,14 +173,6 @@
       alignment: rive.Alignment.CENTER,
       onLoad: () => {
         console.log("✅ Rive 500x500 loaded");
-        
-        // Define View Model 1 with click trigger
-        const viewModel = riveInstance.getViewModel("View Model 1");
-        if (viewModel) {
-          viewModel.setTrigger("click");
-          console.log("✅ View Model 1 click trigger defined");
-        }
-        
         startRiveUpdateLoop();
       },
     });
