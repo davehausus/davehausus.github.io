@@ -48,6 +48,7 @@
     const riveFile = "tag_gyro.riv";
     const stateMachineName = "State Machine 1";
     const inputName = "tiltX";
+    const triggerName = "click";
 
     const canvas = document.getElementById("riveCanvas");
     const button = document.getElementById("permissionBtn");
@@ -174,6 +175,7 @@
       onLoad: () => {
         console.log("✅ Rive 500x500 loaded");
         startRiveUpdateLoop();
+        setupClickTrigger();
       },
     });
 
@@ -192,6 +194,22 @@
         requestAnimationFrame(update);
       }
       update();
+    }
+
+    // --- Click trigger setup ---
+    function setupClickTrigger() {
+      canvas.addEventListener('click', () => {
+        const inputs = riveInstance.stateMachineInputs(stateMachineName);
+        const clickTrigger = inputs.find(i => i.name === triggerName);
+        
+        if (clickTrigger) {
+          clickTrigger.fire();
+          console.log("🎯 Click trigger fired!");
+        }
+      });
+      
+      // Add pointer cursor to indicate clickability
+      canvas.style.cursor = 'pointer';
     }
 
     // --- Handle motion permission (iOS) ---
