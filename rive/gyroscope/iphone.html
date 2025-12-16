@@ -47,7 +47,6 @@
   <script>
     const riveFile = "tag_gyro.riv";
     const stateMachineName = "State Machine 1";
-    const inputName = "tiltX";
 
     const canvas = document.getElementById("riveCanvas");
     const button = document.getElementById("permissionBtn");
@@ -70,7 +69,7 @@
         this.noiseThreshold = 0.5; // Ignore tiny movements
         this.previousRaw = 0;
         
-        // Range mapping
+        // Range mapping - now normalized to -1.0 to +1.0
         this.inputMin = -45;
         this.inputMax = 45;
         this.deadZone = 2; // Center dead zone for stability
@@ -128,8 +127,11 @@
         // Clamp to input range
         adjusted = Math.max(this.inputMin, Math.min(this.inputMax, adjusted));
         
+        // Normalize to -1.0 to +1.0 range for gyroX
+        const normalized = adjusted / 45.0;
+        
         // Set as target for smooth interpolation
-        this.targetValue = adjusted;
+        this.targetValue = normalized;
         
         return this.currentValue;
       }
@@ -187,24 +189,74 @@
         
         console.log("✅ View Model Instance connected");
         
-        // Define click trigger property
+        // Define View Model properties
+        const gyroXProp = vmi.number("gyroX");
+        const neutralWeightProp = vmi.number("neutralWeight");
+        const right22WeightProp = vmi.number("right22Weight");
+        const right45WeightProp = vmi.number("right45Weight");
+        const left22WeightProp = vmi.number("left22Weight");
+        const left45WeightProp = vmi.number("left45Weight");
         const clickTrigger = vmi.trigger("click");
-        console.log("✅ Click trigger property defined:", clickTrigger);
         
-        startRiveUpdateLoop();
+        console.log("✅ View Model properties defined:", {
+          gyroX: gyroXProp,
+          neutralWeight: neutralWeightProp,
+          right22Weight: right22WeightProp,
+          right45Weight: right45WeightProp,
+          left22Weight: left22WeightProp,
+          left45Weight: left45WeightProp,
+          click: clickTrigger
+        });
+        
+        startRiveUpdateLoop(vmi, {
+          gyroX: gyroXProp,
+          neutralWeight: neutralWeightProp,
+          right22Weight: right22WeightProp,
+          right45Weight: right45WeightProp,
+          left22Weight: left22WeightProp,
+          left45Weight: left45WeightProp
+        });
       },
     });
 
     // --- Continuous update loop for Rive ---
-    function startRiveUpdateLoop() {
+    function startRiveUpdateLoop(vmi, props) {
       function update() {
-        const smoothedValue = gyroProcessor.getValue();
+        const gyroX = gyroProcessor.getValue();
         
-        const inputs = riveInstance.stateMachineInputs(stateMachineName);
-        const tiltX = inputs.find(i => i.name === inputName);
+        // Update gyroX value
+        if (props.gyroX) {
+          props.gyroX.value = gyroX;
+        }
         
-        if (tiltX) {
-          tiltX.value = smoothedValue;
+        // Calculate weights based on gyroX value
+        // 🟢 Neutral - Always 1
+        if (props.neutralWeight) {
+          props.neutralWeight.value = 1;
+        }
+        
+        // 🟢 Right 22.5° - max(0, min(gyroX, 0.5)) / 0.5
+        if (props.right22Weight) {
+          const clampedGyro = Math.max(0, Math.min(gyroX, 0.5));
+          props.right22Weight.value = clampedGyro / 0.5;
+        }
+        
+        // 🟢 Right 45° - max(0, gyroX - 0.5) / 0.5
+        if (props.right45Weight) {
+          const excessGyro = Math.max(0, gyroX - 0.5);
+          props.right45Weight.value = excessGyro / 0.5;
+        }
+        
+        // 🔵 Left 22.5° - max(0, min(-gyroX, 0.5)) / 0.5
+        if (props.left22Weight) {
+          const clampedNegGyro = Math.max(0, Math.min(-gyroX, 0.5));
+          props.left22Weight.value = clampedNegGyro / 0.5;
+        }
+        
+        // 🔵 Left 45° - max(0, (-gyroX - 0.5)) / 0.5
+        if (props.left45Weight) {
+          const excessNegGyro = Math.max(0, -gyroX - 0.5);
+          props.left45Weight.value = excessNegGyro / 0.5;
         }
         
         requestAnimationFrame(update);
