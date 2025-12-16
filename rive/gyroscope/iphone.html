@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rive Gyroscope (500x500)</title>
-  <script src="https://unpkg.com/@rive-app/canvas@2.21.7"></script>
+  <script src="https://unpkg.com/@rive-app/webgl2@latest"></script>
   <style>
     html, body {
       margin: 0;
@@ -168,11 +168,29 @@
       src: riveFile,
       canvas: canvas,
       autoplay: true,
+      autoBind: true,
       stateMachines: stateMachineName,
-      fit: rive.Fit.CONTAIN,
-      alignment: rive.Alignment.CENTER,
+      fit: rive.Fit.Contain,
+      alignment: rive.Alignment.Center,
+      useOffscreenRenderer: true,
       onLoad: () => {
         console.log("✅ Rive 500x500 loaded");
+        
+        riveInstance.resizeDrawingSurfaceToCanvas();
+        
+        // Get View Model Instance
+        const vmi = riveInstance.viewModelInstance;
+        if (!vmi) {
+          console.error("❌ No ViewModelInstance found!");
+          return;
+        }
+        
+        console.log("✅ View Model Instance connected");
+        
+        // Define click trigger property
+        const clickTrigger = vmi.trigger("click");
+        console.log("✅ Click trigger property defined:", clickTrigger);
+        
         startRiveUpdateLoop();
       },
     });
