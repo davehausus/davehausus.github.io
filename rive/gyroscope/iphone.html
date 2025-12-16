@@ -54,8 +54,8 @@
     // --- Professional Gyroscope Processing ---
     class GyroProcessor {
       constructor() {
-        // Smoothing parameters
-        this.smoothingFactor = 0.15; // Lower = smoother (0.1-0.2 optimal)
+        // Smoothing parameters - increased for more responsive motion
+        this.smoothingFactor = 0.25; // Increased from 0.15 for faster response
         this.currentValue = 0;
         this.targetValue = 0;
         
@@ -65,14 +65,14 @@
         this.isCalibrated = false;
         this.baselineOffset = 0;
         
-        // Noise filtering
-        this.noiseThreshold = 0.5; // Ignore tiny movements
+        // Noise filtering - reduced for more sensitivity
+        this.noiseThreshold = 0.3; // Reduced from 0.5
         this.previousRaw = 0;
         
         // Range mapping - now normalized to -1.0 to +1.0
         this.inputMin = -45;
         this.inputMax = 45;
-        this.deadZone = 2; // Center dead zone for stability
+        this.deadZone = 1; // Reduced from 2 for more sensitivity
         
         // Animation loop
         this.animationFrameId = null;
@@ -244,33 +244,35 @@
         }
         
         // Calculate weights based on gyroX value
+        // These weights should be at END of timeline (frame 10) immediately
         // 🟢 Neutral - Always 1 (base pose)
         if (props.neutralWeight) {
           props.neutralWeight.value = 1;
         }
         
-        // 🟢 Right 22.5° - max(0, min(gyroX, 0.5)) / 0.5
+        // 🟢 Right 22.5° - Ramps from 0 to 1 as gyroX goes 0 → 0.5
         if (props.right22Weight) {
           const clampedGyro = Math.max(0, Math.min(gyroX, 0.5));
           const weight = clampedGyro / 0.5;
+          // Weight of 1 means "show frame 10 fully"
           props.right22Weight.value = weight;
         }
         
-        // 🟢 Right 45° - max(0, gyroX - 0.5) / 0.5
+        // 🟢 Right 45° - Ramps from 0 to 1 as gyroX goes 0.5 → 1.0
         if (props.right45Weight) {
           const excessGyro = Math.max(0, gyroX - 0.5);
           const weight = excessGyro / 0.5;
           props.right45Weight.value = weight;
         }
         
-        // 🔵 Left 22.5° - max(0, min(-gyroX, 0.5)) / 0.5
+        // 🔵 Left 22.5° - Ramps from 0 to 1 as gyroX goes 0 → -0.5
         if (props.left22Weight) {
           const clampedNegGyro = Math.max(0, Math.min(-gyroX, 0.5));
           const weight = clampedNegGyro / 0.5;
           props.left22Weight.value = weight;
         }
         
-        // 🔵 Left 45° - max(0, (-gyroX - 0.5)) / 0.5
+        // 🔵 Left 45° - Ramps from 0 to 1 as gyroX goes -0.5 → -1.0
         if (props.left45Weight) {
           const excessNegGyro = Math.max(0, -gyroX - 0.5);
           const weight = excessNegGyro / 0.5;
