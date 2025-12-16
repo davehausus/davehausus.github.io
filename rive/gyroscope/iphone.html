@@ -55,7 +55,7 @@
     class GyroProcessor {
       constructor() {
         // Smoothing parameters - increased for more responsive motion
-        this.smoothingFactor = 0.25; // Increased from 0.15 for faster response
+        this.smoothingFactor = 0.35; // Higher = more responsive
         this.currentValue = 0;
         this.targetValue = 0;
         
@@ -66,13 +66,13 @@
         this.baselineOffset = 0;
         
         // Noise filtering - reduced for more sensitivity
-        this.noiseThreshold = 0.3; // Reduced from 0.5
+        this.noiseThreshold = 0.2; // Lower = more sensitive
         this.previousRaw = 0;
         
         // Range mapping - now normalized to -1.0 to +1.0
         this.inputMin = -45;
         this.inputMax = 45;
-        this.deadZone = 1; // Reduced from 2 for more sensitivity
+        this.deadZone = 0.5; // Minimal dead zone
         
         // Animation loop
         this.animationFrameId = null;
@@ -189,95 +189,65 @@
         
         console.log("✅ View Model Instance connected");
         
-        // Define View Model properties
-        const gyroXProp = vmi.number("gyroX");
-        const neutralWeightProp = vmi.number("neutralWeight");
-        const right22WeightProp = vmi.number("right22Weight");
-        const right45WeightProp = vmi.number("right45Weight");
-        const left22WeightProp = vmi.number("left22Weight");
-        const left45WeightProp = vmi.number("left45Weight");
-        const clickTrigger = vmi.trigger("click");
+        // Get the linear animation (not state machine)
+        const artboard = riveInstance.artboard;
+        if (!artboard) {
+          console.error("❌ No artboard found!");
+          return;
+        }
         
-        console.log("✅ View Model properties defined:", {
-          gyroX: gyroXProp,
-          neutralWeight: neutralWeightProp,
-          right22Weight: right22WeightProp,
-          right45Weight: right45WeightProp,
-          left22Weight: left22WeightProp,
-          left45Weight: left45WeightProp,
-          click: clickTrigger
-        });
+        // Get the rotation timeline animation
+        const rotationAnimation = artboard.animationByName("rotation_timeline");
+        if (!rotationAnimation) {
+          console.error("❌ Animation 'rotation_timeline' not found!");
+          console.log("Available animations:", artboard.animationNames());
+          return;
+        }
         
-        startRiveUpdateLoop(vmi, {
-          gyroX: gyroXProp,
-          neutralWeight: neutralWeightProp,
-          right22Weight: right22WeightProp,
-          right45Weight: right45WeightProp,
-          left22Weight: left22WeightProp,
-          left45Weight: left45WeightProp
-        });
+        console.log("✅ Animation found:", rotationAnimation.name, "Duration:", rotationAnimation.duration, "seconds");
+        
+        // Create a linear animation instance we can control
+        const animInstance = new rive.LinearAnimationInstance(rotationAnimation, artboard);
+        
+        startRiveUpdateLoop(animInstance, rotationAnimation);
       },
     });
 
     // --- Continuous update loop for Rive ---
-    function startRiveUpdateLoop(vmi, props) {
+    function startRiveUpdateLoop(animInstance, animation) {
+      const totalFrames = 60; // Your timeline has 60 frames
+      const centerFrame = 30; // Center/neutral position
+      const fps = 60; // Assuming 60fps timeline
+      
       let frameCount = 0;
+      
       function update() {
         const gyroX = gyroProcessor.getValue();
         
+        // Map gyroX (-1.0 to +1.0) to frame range (0 to 60)
+        // gyroX = -1.0 → frame 0 (full left)
+        // gyroX =  0.0 → frame 30 (neutral)
+        // gyroX = +1.0 → frame 60 (full right)
+        const targetFrame = centerFrame + (gyroX * centerFrame);
+        
+        // Clamp to valid frame range
+        const clampedFrame = Math.max(0, Math.min(totalFrames, targetFrame));
+        
+        // Convert frame to time (seconds)
+        const targetTime = clampedFrame / fps;
+        
+        // Set the animation time directly (scrubbing)
+        animInstance.time = targetTime;
+        
+        // Apply the animation to the artboard
+        animInstance.apply(1.0); // Weight of 1.0 = full effect
+        animInstance.artboard.advance(0); // Advance artboard with 0 delta to update
+        
         // Debug logging every 60 frames (~1 second)
         if (frameCount % 60 === 0) {
-          const weights = {
-            neutral: props.neutralWeight?.value || 0,
-            right22: props.right22Weight?.value || 0,
-            right45: props.right45Weight?.value || 0,
-            left22: props.left22Weight?.value || 0,
-            left45: props.left45Weight?.value || 0
-          };
-          console.log(`🎯 gyroX: ${gyroX.toFixed(3)} | Weights: R45=${weights.right45.toFixed(2)} R22=${weights.right22.toFixed(2)} N=${weights.neutral.toFixed(2)} L22=${weights.left22.toFixed(2)} L45=${weights.left45.toFixed(2)}`);
+          console.log(`🎯 gyroX: ${gyroX.toFixed(3)} | Frame: ${clampedFrame.toFixed(1)} | Time: ${targetTime.toFixed(3)}s`);
         }
         frameCount++;
-        
-        // Update gyroX value
-        if (props.gyroX) {
-          props.gyroX.value = gyroX;
-        }
-        
-        // Calculate weights based on gyroX value
-        // These weights should be at END of timeline (frame 10) immediately
-        // 🟢 Neutral - Always 1 (base pose)
-        if (props.neutralWeight) {
-          props.neutralWeight.value = 1;
-        }
-        
-        // 🟢 Right 22.5° - Ramps from 0 to 1 as gyroX goes 0 → 0.5
-        if (props.right22Weight) {
-          const clampedGyro = Math.max(0, Math.min(gyroX, 0.5));
-          const weight = clampedGyro / 0.5;
-          // Weight of 1 means "show frame 10 fully"
-          props.right22Weight.value = weight;
-        }
-        
-        // 🟢 Right 45° - Ramps from 0 to 1 as gyroX goes 0.5 → 1.0
-        if (props.right45Weight) {
-          const excessGyro = Math.max(0, gyroX - 0.5);
-          const weight = excessGyro / 0.5;
-          props.right45Weight.value = weight;
-        }
-        
-        // 🔵 Left 22.5° - Ramps from 0 to 1 as gyroX goes 0 → -0.5
-        if (props.left22Weight) {
-          const clampedNegGyro = Math.max(0, Math.min(-gyroX, 0.5));
-          const weight = clampedNegGyro / 0.5;
-          props.left22Weight.value = weight;
-        }
-        
-        // 🔵 Left 45° - Ramps from 0 to 1 as gyroX goes -0.5 → -1.0
-        if (props.left45Weight) {
-          const excessNegGyro = Math.max(0, -gyroX - 0.5);
-          const weight = excessNegGyro / 0.5;
-          props.left45Weight.value = weight;
-        }
         
         requestAnimationFrame(update);
       }
