@@ -3,143 +3,139 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rive Gyroscope (500x500)</title>
+  <title>Rive Gyroscope</title>
   <script src="https://unpkg.com/@rive-app/webgl2@latest"></script>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, #1a1a1a 0%, #0d0d0d 100%);
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
+      height: 100vh;
+      background: #1a1a1a;
     }
 
-    /* Fixed-size Rive canvas */
     canvas {
-      width: 500px;
-      height: 500px;
-      display: block;
-      border-radius: 16px;
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+      max-width: 500px;
+      max-height: 500px;
     }
 
     #permissionBtn {
       position: absolute;
-      bottom: 2rem;
-      background: #fff;
+      padding: 16px 32px;
+      font-size: 18px;
+      background: #ff6b6b;
+      color: white;
       border: none;
-      font-size: 1.1rem;
-      padding: 0.8rem 1.4rem;
-      border-radius: 0.8rem;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      z-index: 10;
+      display: none;
+    }
+
+    #status {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 12px;
     }
   </style>
 </head>
 <body>
   <canvas id="riveCanvas" width="500" height="500"></canvas>
-  <button id="permissionBtn" style="display:none;">Enable Motion</button>
-
+  <button id="permissionBtn">Enable Gyroscope</button>
+  <div id="status">Loading...</div>
+  
   <script>
     const riveFile = "tag_gyro.riv";
+    const timelineName = "rotation_timeline";
     const stateMachineName = "State Machine 1";
-
     const canvas = document.getElementById("riveCanvas");
     const button = document.getElementById("permissionBtn");
+    const statusDiv = document.getElementById("status");
+
+    function updateStatus(msg) {
+      console.log(msg);
+      statusDiv.textContent = msg;
+    }
 
     // --- Professional Gyroscope Processing ---
     class GyroProcessor {
       constructor() {
-        // Smoothing parameters - increased for more responsive motion
-        this.smoothingFactor = 0.35; // Higher = more responsive
+        this.smoothingFactor = 0.35;
         this.currentValue = 0;
         this.targetValue = 0;
         
-        // Calibration
         this.calibrationSamples = [];
         this.maxCalibrationSamples = 30;
         this.isCalibrated = false;
         this.baselineOffset = 0;
         
-        // Noise filtering - reduced for more sensitivity
-        this.noiseThreshold = 0.2; // Lower = more sensitive
+        this.noiseThreshold = 0.2;
         this.previousRaw = 0;
         
-        // Range mapping - now normalized to -1.0 to +1.0
         this.inputMin = -45;
         this.inputMax = 45;
-        this.deadZone = 0.5; // Minimal dead zone
+        this.deadZone = 0.5;
         
-        // Animation loop
         this.animationFrameId = null;
         this.startSmoothingLoop();
       }
 
-      // Exponential moving average for buttery smooth motion
       smooth(current, target, factor) {
         return current + (target - current) * factor;
       }
 
-      // Calibrate device to find neutral position
       calibrate(rawValue) {
         if (this.isCalibrated) return;
         
         this.calibrationSamples.push(rawValue);
         
         if (this.calibrationSamples.length >= this.maxCalibrationSamples) {
-          // Calculate average as baseline
           const sum = this.calibrationSamples.reduce((a, b) => a + b, 0);
           this.baselineOffset = sum / this.calibrationSamples.length;
           this.isCalibrated = true;
-          console.log(`📐 Calibrated. Baseline offset: ${this.baselineOffset.toFixed(2)}°`);
+          updateStatus(`Calibrated! Baseline: ${this.baselineOffset.toFixed(2)}°`);
         }
       }
 
-      // Process raw gyroscope input
       processInput(rawGamma) {
         if (rawGamma === null) return this.currentValue;
         
-        // Calibration phase
         if (!this.isCalibrated) {
           this.calibrate(rawGamma);
-          return 0; // Return neutral during calibration
+          return 0;
         }
         
-        // Apply baseline offset
         let adjusted = rawGamma - this.baselineOffset;
         
-        // Noise filtering - ignore micro-movements
         const delta = Math.abs(adjusted - this.previousRaw);
         if (delta < this.noiseThreshold) {
           adjusted = this.previousRaw;
         }
         this.previousRaw = adjusted;
         
-        // Apply dead zone for center stability
         if (Math.abs(adjusted) < this.deadZone) {
           adjusted = 0;
         }
         
-        // Clamp to input range
         adjusted = Math.max(this.inputMin, Math.min(this.inputMax, adjusted));
         
-        // Normalize to -1.0 to +1.0 range for gyroX
         const normalized = adjusted / 45.0;
         
-        // Set as target for smooth interpolation
         this.targetValue = normalized;
         
         return this.currentValue;
       }
 
-      // Animation loop for smooth interpolation
       startSmoothingLoop() {
         const animate = () => {
-          // Smooth towards target
           this.currentValue = this.smooth(
             this.currentValue,
             this.targetValue,
@@ -162,7 +158,6 @@
       }
     }
 
-    // Initialize gyroscope processor
     const gyroProcessor = new GyroProcessor();
 
     // --- Initialize Rive ---
@@ -176,7 +171,7 @@
       alignment: rive.Alignment.Center,
       useOffscreenRenderer: true,
       onLoad: () => {
-        console.log("✅ Rive 500x500 loaded");
+        updateStatus('✅ Rive loaded');
         
         riveInstance.resizeDrawingSurfaceToCanvas();
         
@@ -189,46 +184,62 @@
         
         console.log("✅ View Model Instance connected");
         
-        // Define View Model properties for timeline control
-        const gyroXProp = vmi.number("gyroX");
+        // Get the artboard
+        const artboard = riveInstance.artboard;
+        if (!artboard) {
+          console.error("❌ No artboard found!");
+          return;
+        }
+        
+        // Get the rotation timeline animation
+        const rotationAnimation = artboard.animationByName(timelineName);
+        if (!rotationAnimation) {
+          console.error(`❌ Animation '${timelineName}' not found!`);
+          console.log("Available animations:", artboard.animationNames());
+          return;
+        }
+        
+        console.log("✅ Animation found:", rotationAnimation.name, "Duration:", rotationAnimation.duration, "seconds");
+        
+        // Create a linear animation instance we can control
+        const animInstance = new rive.LinearAnimationInstance(rotationAnimation, artboard);
+        
+        // Define View Model properties
         const clickTrigger = vmi.trigger("click");
         
         console.log("✅ View Model properties defined:", {
-          gyroX: gyroXProp,
           click: clickTrigger
         });
         
-        startRiveUpdateLoop(vmi, gyroXProp);
+        startRiveUpdateLoop(animInstance, rotationAnimation);
       },
     });
 
     // --- Continuous update loop for Rive ---
-    function startRiveUpdateLoop(vmi, gyroXProp) {
-      const totalFrames = 60; // Your timeline has 60 frames
-      const centerFrame = 30; // Center/neutral position at frame 30
+    function startRiveUpdateLoop(animInstance, rotationAnimation) {
+      const totalFrames = 60;
+      const centerFrame = 30;
+      const duration = rotationAnimation.duration;
       
       let frameCount = 0;
       
       function update() {
-        const gyroX = gyroProcessor.getValue();
+        const gyroY = gyroProcessor.getValue();
         
-        // Map gyroX (-1.0 to +1.0) to frame range (0 to 60)
-        // gyroX = -1.0 → frame 0 (full left)
-        // gyroX =  0.0 → frame 30 (neutral)
-        // gyroX = +1.0 → frame 60 (full right)
-        const targetFrame = centerFrame + (gyroX * centerFrame);
-        
-        // Clamp to valid frame range
+        // Map gyroY (-1.0 to +1.0) to frame range (0 to 60)
+        const targetFrame = centerFrame + (gyroY * centerFrame);
         const clampedFrame = Math.max(0, Math.min(totalFrames, targetFrame));
         
-        // Update gyroX property (this will drive your timeline in Rive)
-        if (gyroXProp) {
-          gyroXProp.value = clampedFrame;
-        }
+        // Convert frame to time
+        const targetTime = (clampedFrame / totalFrames) * duration;
         
-        // Debug logging every 60 frames (~1 second)
+        // Set animation time directly
+        animInstance.time = targetTime;
+        animInstance.apply(1.0);
+        
+        // Debug logging every 60 frames
         if (frameCount % 60 === 0) {
-          console.log(`🎯 gyroX: ${gyroX.toFixed(3)} | Target Frame: ${clampedFrame.toFixed(1)}`);
+          updateStatus(`gyroY: ${gyroY.toFixed(3)} | Frame: ${clampedFrame.toFixed(1)}`);
         }
         frameCount++;
         
@@ -247,14 +258,18 @@
               if (state === "granted") {
                 button.style.display = "none";
                 window.addEventListener("deviceorientation", handleOrientation);
+                updateStatus('Gyroscope enabled! Calibrating...');
               } else {
-                alert("Motion access denied");
+                updateStatus('Motion access denied');
               }
             })
-            .catch(console.error);
+            .catch(err => {
+              updateStatus('Error: ' + err.message);
+            });
         };
       } else {
         window.addEventListener("deviceorientation", handleOrientation);
+        updateStatus('Gyroscope enabled! Calibrating...');
       }
     }
 
@@ -265,7 +280,6 @@
 
     setupMotion();
 
-    // Cleanup on page unload
     window.addEventListener("beforeunload", () => {
       gyroProcessor.destroy();
     });
