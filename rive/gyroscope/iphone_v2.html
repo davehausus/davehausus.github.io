@@ -98,7 +98,7 @@
         const SMOOTHING = 0.15;
         
         function handleOrientation(event) {
-          const rotationX = event.beta || 0;
+          const rotationX = event.gamma || 0; // Changed from beta to gamma for horizontal tilt
           
           if (neutralBeta === null) {
             neutralBeta = rotationX;
