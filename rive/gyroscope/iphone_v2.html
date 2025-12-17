@@ -92,6 +92,10 @@
         
         // Start at frame 30 (neutral)
         let currentTime = (30 / TOTAL_FRAMES) * animationDuration;
+        let targetTime = currentTime;
+        
+        // Smoothing factor (0-1, lower = smoother but more lag)
+        const SMOOTHING = 0.15;
         
         function handleOrientation(event) {
           const rotationX = event.beta || 0;
@@ -105,14 +109,22 @@
           const clamped = Math.max(-TILT_RANGE, Math.min(TILT_RANGE, offset));
           const normalized = (clamped + TILT_RANGE) / (TILT_RANGE * 2);
           
-          currentTime = normalized * animationDuration;
-          
-          const currentFrame = normalized * TOTAL_FRAMES;
-          updateStatus(`Beta: ${rotationX.toFixed(1)}° | Offset: ${offset.toFixed(1)}° | Frame: ${currentFrame.toFixed(1)}`);
+          // Set target time instead of directly setting current time
+          targetTime = normalized * animationDuration;
         }
         
         function renderLoop() {
           renderer.clear();
+          
+          // Smooth interpolation towards target time
+          currentTime += (targetTime - currentTime) * SMOOTHING;
+          
+          // Update status less frequently (every 10 frames)
+          if (Math.random() < 0.1) {
+            const currentFrame = (currentTime / animationDuration) * TOTAL_FRAMES;
+            const offset = neutralBeta !== null ? ((currentTime / animationDuration) * (TILT_RANGE * 2) - TILT_RANGE) : 0;
+            updateStatus(`Frame: ${currentFrame.toFixed(1)} | Offset: ${offset.toFixed(1)}°`);
+          }
           
           animation.time = currentTime;
           animation.apply(1.0);
