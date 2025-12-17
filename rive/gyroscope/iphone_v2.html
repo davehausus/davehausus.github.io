@@ -81,6 +81,41 @@
         
         const renderer = riveInstance.makeRenderer(canvas);
         
+        // Get ViewModel instance for "View Model 1"
+        let clickTrigger = null;
+        let stateMachine = null;
+        
+        try {
+          // Get the ViewModel
+          const viewModel = artboard.viewModelByName('View Model 1');
+          if (viewModel) {
+            console.log('ViewModel "View Model 1" found');
+            
+            // Create ViewModel instance
+            const vmInstance = new riveInstance.ViewModelInstance(viewModel, artboard);
+            
+            // Get the click trigger from the ViewModel instance
+            clickTrigger = vmInstance.propertyByName('click');
+            
+            if (clickTrigger) {
+              console.log('Click trigger found and ready');
+            }
+            
+            // Also get the state machine if it needs to run
+            try {
+              stateMachine = new riveInstance.StateMachineInstance(
+                artboard.stateMachineByName('State Machine 1'),
+                artboard
+              );
+              console.log('State Machine 1 loaded');
+            } catch (e) {
+              console.log('State Machine not needed for this setup');
+            }
+          }
+        } catch (e) {
+          console.log('ViewModel setup:', e.message);
+        }
+        
         // Animation config
         const TOTAL_FRAMES = 60;
         const FPS = 60;
@@ -128,6 +163,13 @@
           
           animation.time = currentTime;
           animation.apply(1.0);
+          
+          // Apply state machine if it exists
+          if (stateMachine) {
+            stateMachine.advance(0.016); // ~60fps
+            stateMachine.apply(1.0);
+          }
+          
           artboard.advance(0);
           
           renderer.save();
@@ -176,6 +218,33 @@
         startButton.addEventListener('click', async () => {
           await requestGyroscopePermission();
           startButton.style.display = 'none';
+        });
+        
+        // Add click handler with proper hit testing
+        canvas.addEventListener('click', (event) => {
+          if (clickTrigger && stateMachine) {
+            const rect = canvas.getBoundingClientRect();
+            const canvasX = event.clientX - rect.left;
+            const canvasY = event.clientY - rect.top;
+            
+            // Convert to artboard coordinates
+            const artboardBounds = artboard.bounds;
+            const scaleX = artboardBounds.maxX / canvas.width;
+            const scaleY = artboardBounds.maxY / canvas.height;
+            
+            const artboardX = canvasX * scaleX;
+            const artboardY = canvasY * scaleY;
+            
+            // Use state machine's pointer down to handle hit testing
+            const hitResult = stateMachine.pointerDown(artboardX, artboardY);
+            
+            if (hitResult) {
+              console.log('Clickable area hit!');
+            }
+            
+            // Always call pointerUp after pointerDown
+            stateMachine.pointerUp(artboardX, artboardY);
+          }
         });
         
         updateStatus('Ready! Click button to enable gyroscope.');
