@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rive Gyroscope (500x500)</title>
-  <script src="https://unpkg.com/@rive-app/canvas@2.7.0"></script>
+  <script src="https://unpkg.com/@rive-app/webgl2@latest"></script>
   <style>
     body {
       margin: 0;
@@ -61,110 +61,123 @@
     
     async function init() {
       try {
-        updateStatus('Initializing Rive...');
+        updateStatus('Initializing Rive WebGL2...');
         
         const canvas = document.getElementById('canvas');
-        const riveInstance = new rive.Rive({
-          src: 'tag_gyro.riv',
-          canvas: canvas,
-          autoplay: false,
-          stateMachines: [],
-          onLoad: () => {
-            updateStatus('Rive loaded. Click button to enable gyroscope.');
-            
-            const artboard = riveInstance.artboard;
-            const animation = artboard.animationByName('rotation_timeline');
-            
-            if (!animation) {
-              updateStatus('Error: Animation "rotation_timeline" not found');
-              return;
-            }
-            
-            // Animation config
-            const TOTAL_FRAMES = 60;
-            const FPS = 60;
-            const animationDuration = TOTAL_FRAMES / FPS;
-            
-            // Gyroscope config
-            const MIN_ANGLE = -90;
-            const MAX_ANGLE = 90;
-            
-            // Start at neutral
-            let targetTime = animationDuration / 2;
-            
-            function handleOrientation(event) {
-              const rotationX = event.beta || 0;
-              
-              // Clamp and normalize
-              const clamped = Math.max(MIN_ANGLE, Math.min(MAX_ANGLE, rotationX));
-              const normalized = (clamped - MIN_ANGLE) / (MAX_ANGLE - MIN_ANGLE);
-              
-              // Map to animation time
-              targetTime = normalized * animationDuration;
-              
-              updateStatus(`Beta: ${rotationX.toFixed(1)}° | Frame: ${(normalized * TOTAL_FRAMES).toFixed(1)}`);
-            }
-            
-            // Manual animation loop
-            function animationLoop() {
-              if (riveInstance.animator && riveInstance.animator.instances.length > 0) {
-                riveInstance.animator.instances[0].time = targetTime;
-                riveInstance.animator.instances[0].advance(0);
-                riveInstance.animator.instances[0].apply(1.0);
-              }
-              riveInstance.drawFrame();
-              requestAnimationFrame(animationLoop);
-            }
-            
-            // iOS 13+ requires permission request
-            async function requestGyroscopePermission() {
-              if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                try {
-                  const permission = await DeviceOrientationEvent.requestPermission();
-                  if (permission === 'granted') {
-                    window.addEventListener('deviceorientation', handleOrientation);
-                    updateStatus('Gyroscope enabled! Tilt your device.');
-                    animationLoop();
-                    return true;
-                  } else {
-                    updateStatus('Permission denied');
-                    return false;
-                  }
-                } catch (e) {
-                  updateStatus('Error: ' + e.message);
-                  return false;
-                }
-              } else {
-                // Android and older iOS
-                window.addEventListener('deviceorientation', handleOrientation);
-                updateStatus('Gyroscope enabled! Tilt your device.');
-                animationLoop();
-                return true;
-              }
-            }
-            
-            // Button handler
-            const startButton = document.getElementById('startButton');
-            startButton.addEventListener('click', async () => {
-              await requestGyroscopePermission();
-              startButton.style.display = 'none';
-            });
-          },
-          onLoadError: (err) => {
-            updateStatus('Failed to load: ' + err);
+        
+        // Load the low-level WebGL2 runtime
+        const riveInstance = await window.rive.RuntimeLoader.awaitInstance();
+        
+        updateStatus('Loading .riv file...');
+        const bytes = await (await fetch('tag_gyro.riv')).arrayBuffer();
+        const file = await riveInstance.load(new Uint8Array(bytes));
+        const artboard = file.defaultArtboard();
+        
+        updateStatus('Creating animation...');
+        const animation = new riveInstance.LinearAnimationInstance(
+          artboard.animationByName('rotation_timeline'),
+          artboard
+        );
+        
+        const renderer = riveInstance.makeRenderer(canvas);
+        
+        // Animation config
+        const TOTAL_FRAMES = 60;
+        const FPS = 60;
+        const animationDuration = TOTAL_FRAMES / FPS;
+        
+        // Gyroscope config
+        let neutralBeta = null;
+        const TILT_RANGE = 45;
+        
+        // Start at frame 30 (neutral)
+        let currentTime = (30 / TOTAL_FRAMES) * animationDuration;
+        
+        function handleOrientation(event) {
+          const rotationX = event.beta || 0;
+          
+          if (neutralBeta === null) {
+            neutralBeta = rotationX;
+            updateStatus(`Calibrated! Neutral: ${neutralBeta.toFixed(1)}°`);
           }
+          
+          const offset = rotationX - neutralBeta;
+          const clamped = Math.max(-TILT_RANGE, Math.min(TILT_RANGE, offset));
+          const normalized = (clamped + TILT_RANGE) / (TILT_RANGE * 2);
+          
+          currentTime = normalized * animationDuration;
+          
+          const currentFrame = normalized * TOTAL_FRAMES;
+          updateStatus(`Beta: ${rotationX.toFixed(1)}° | Offset: ${offset.toFixed(1)}° | Frame: ${currentFrame.toFixed(1)}`);
+        }
+        
+        function renderLoop() {
+          renderer.clear();
+          
+          animation.time = currentTime;
+          animation.apply(1.0);
+          artboard.advance(0);
+          
+          renderer.save();
+          renderer.align(
+            riveInstance.Fit.contain,
+            riveInstance.Alignment.center,
+            {
+              minX: 0,
+              minY: 0,
+              maxX: canvas.width,
+              maxY: canvas.height
+            },
+            artboard.bounds
+          );
+          artboard.draw(renderer);
+          renderer.restore();
+          renderer.flush();
+          
+          requestAnimationFrame(renderLoop);
+        }
+        
+        async function requestGyroscopePermission() {
+          if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            try {
+              const permission = await DeviceOrientationEvent.requestPermission();
+              if (permission === 'granted') {
+                window.addEventListener('deviceorientation', handleOrientation);
+                updateStatus('Gyroscope enabled! Calibrating...');
+                return true;
+              } else {
+                updateStatus('Permission denied');
+                return false;
+              }
+            } catch (e) {
+              updateStatus('Error: ' + e.message);
+              return false;
+            }
+          } else {
+            window.addEventListener('deviceorientation', handleOrientation);
+            updateStatus('Gyroscope enabled! Calibrating...');
+            return true;
+          }
+        }
+        
+        const startButton = document.getElementById('startButton');
+        startButton.addEventListener('click', async () => {
+          await requestGyroscopePermission();
+          startButton.style.display = 'none';
         });
+        
+        updateStatus('Ready! Click button to enable gyroscope.');
+        renderLoop();
+        
       } catch (err) {
-        updateStatus('Init error: ' + err.message);
+        updateStatus('Error: ' + err.message);
+        console.error(err);
       }
     }
     
-    // Wait for Rive library
-    if (typeof rive !== 'undefined') {
-      init();
-    } else {
-      window.addEventListener('load', init);
-    }
+    window.addEventListener('load', () => {
+      setTimeout(init, 100);
+    });
   </script>
 </body>
 </html>
