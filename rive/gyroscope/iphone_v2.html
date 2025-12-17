@@ -184,26 +184,6 @@
         
         console.log("✅ View Model Instance connected");
         
-        // Get the artboard
-        const artboard = riveInstance.artboard;
-        if (!artboard) {
-          console.error("❌ No artboard found!");
-          return;
-        }
-        
-        // Get the rotation timeline animation
-        const rotationAnimation = artboard.animationByName(timelineName);
-        if (!rotationAnimation) {
-          console.error(`❌ Animation '${timelineName}' not found!`);
-          console.log("Available animations:", artboard.animationNames());
-          return;
-        }
-        
-        console.log("✅ Animation found:", rotationAnimation.name, "Duration:", rotationAnimation.duration, "seconds");
-        
-        // Create a linear animation instance we can control
-        const animInstance = new rive.LinearAnimationInstance(rotationAnimation, artboard);
-        
         // Define View Model properties
         const clickTrigger = vmi.trigger("click");
         
@@ -211,15 +191,22 @@
           click: clickTrigger
         });
         
-        startRiveUpdateLoop(animInstance, rotationAnimation);
+        startRiveUpdateLoop(vmi);
       },
     });
 
     // --- Continuous update loop for Rive ---
-    function startRiveUpdateLoop(animInstance, rotationAnimation) {
+    function startRiveUpdateLoop(vmi) {
       const totalFrames = 60;
       const centerFrame = 30;
-      const duration = rotationAnimation.duration;
+      
+      // Create a number property to control the timeline
+      const gyroYProp = vmi.number("gyroY");
+      
+      if (!gyroYProp) {
+        console.error("❌ gyroY property not found in ViewModel!");
+        return;
+      }
       
       let frameCount = 0;
       
@@ -230,12 +217,8 @@
         const targetFrame = centerFrame + (gyroY * centerFrame);
         const clampedFrame = Math.max(0, Math.min(totalFrames, targetFrame));
         
-        // Convert frame to time
-        const targetTime = (clampedFrame / totalFrames) * duration;
-        
-        // Set animation time directly
-        animInstance.time = targetTime;
-        animInstance.apply(1.0);
+        // Update the ViewModel property
+        gyroYProp.value = clampedFrame;
         
         // Debug logging every 60 frames
         if (frameCount % 60 === 0) {
