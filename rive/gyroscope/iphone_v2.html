@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rive Gyroscope (500x500)</title>
+  <script src="https://unpkg.com/@rive-app/webgl2@latest"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #1a1a1a;
+    }
+
+    canvas {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    #startButton {
+      position: absolute;
+      padding: 16px 32px;
+      font-size: 18px;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <button id="startButton">Enable Gyroscope</button>
+  <script type="module" src="main.js"></script>
+  <script>
+    import RiveCanvas from '@rive-app/webgl2';
+
+    async function init() {
+        const canvas = document.getElementById('canvas');
+        const rive = await RiveCanvas.default();
+        const bytes = await (await fetch('tag_gyro.riv')).arrayBuffer();
+        const file = await rive.load(new Uint8Array(bytes));
+        const artboard = file.defaultArtboard();
+        
+        // Get your rotation animation
+        const animation = new rive.LinearAnimationInstance(
+            artboard.animationByName('rotation_timeline'), // Replace with your animation name
+            artboard
+        );
+        
+        const renderer = rive.makeRenderer(canvas);
+        
+        // Animation config
+        const TOTAL_FRAMES = 60;
+        const FPS = 60; // Your animation's FPS (check in Rive editor)
+        const animationDuration = TOTAL_FRAMES / FPS; // 1 second if 60fps
+        
+        // Gyroscope config
+        const MIN_ANGLE = -90; // Gyroscope angle for frame 0 (LEFT)
+        const MAX_ANGLE = 90; //Gyroscope angle for frame 60(RIGHT)
+        
+        // Start at neutral (frame 30)
+        let currentTime = animationDuration / 2;
+        
+        function handleOrientation(event) {
+            // event.beta = X-axis rotation (-180 to 180)
+            // Adjust if you need gamma (Y-axis) or alpha (Z - axis) instead
+            const rotationX = event.beta;
+            
+            // Clamp and normalize
+            const clamped = Math.max(MIN_ANGLE, Math.min(MAX_ANGLE, rotationX));
+            const normalized = (clamped - MIN_ANGLE) / (MAX_ANGLE - MIN_ANGLE);
+            
+            // Map to animation time
+            // normalized 0 = frame 0 (LEFT)
+            // normalized 0.5 = frame 30 (NEUTRAL)
+            // normalized 1 = frame 60 (RIGHT)
+            currentTime = normalized * animationDuration;
+        }
+        
+        function renderLoop() {
+            renderer.clear();
+            
+            // Scrub animation to current time
+            animation.time = currentTime;
+            animation.apply(1.0);
+            
+            artboard.advance(0);
+            
+            renderer.save();
+            artboard.draw(renderer);
+            renderer.restore();
+            
+            renderer.flush();
+            requestAnimationFrame(renderLoop);
+        }
+        
+        // iOS 13+ requires permission request
+        async function requestGyroscopePermission() {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                try {
+                    const permission = await DeviceOrientationEvent.requestPermission();
+                    if (permission === 'granted') {
+                        window.addEventListener('deviceorientation', handleOrientation);
+                        return true;
+                    }
+                } catch (e) {
+                    console.error('Gyroscope permission denied: ', e);
+                    return false;
+                }
+            } else {
+                // Android and older iOS - no permission needed
+                window.addEventListener('deviceorientation', handleOrientation);
+                return true;
+            }
+            return false;
+        }
+        
+        // Add a button for iOS permission(required user gesture)
+        const startButton = document.getElementById('startButton');
+        if (startButton) {
+                startButton.addEventListener('click', async () => {
+                    await requestGyroscopePermission();
+                    startButton.style.display = 'none';
+                });
+        } else {
+            // Try to start immediately (will work on Android)
+            requestGyroscopePermission();
+        }
+        
+        // Start render loop
+        renderLoop();
+    }
+    
+    init();
+</script>
+</body>
+</html>
