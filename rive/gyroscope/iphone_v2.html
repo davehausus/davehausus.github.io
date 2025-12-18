@@ -50,7 +50,7 @@
   <canvas id="canvas" width="500" height="500"></canvas>
   <button id="startButton">Enable Gyroscope</button>
   <div id="status">Loading...</div>
- <script>
+<script>
     const statusDiv = document.getElementById('status');
     
     function updateStatus(msg) {
@@ -72,17 +72,11 @@
         const file = await riveInstance.load(new Uint8Array(bytes));
         const artboard = file.defaultArtboard();
         
-        updateStatus('Creating state machine and inputs...');
-        const stateMachine = new riveInstance.StateMachineInstance(
-          artboard.stateMachineByName('State Machine 1'),
+        updateStatus('Creating animation...');
+        const animation = new riveInstance.LinearAnimationInstance(
+          artboard.animationByName('rotation_timeline'),
           artboard
         );
-        
-        // Define trigger input
-        const clickTrigger = stateMachine.input('click_trigger');
-        
-        // Get the timeline number input (you may need to check the actual input name in your Rive file)
-        const timelineInput = stateMachine.input('timeline') || stateMachine.input('rotation') || null;
         
         const renderer = riveInstance.makeRenderer(canvas);
         
@@ -91,76 +85,37 @@
         const FPS = 60;
         const animationDuration = TOTAL_FRAMES / FPS;
         
-        // Professional Gyroscope Processing
-        let neutralGamma = null;
+        // Gyroscope config
+        let neutralBeta = null;
         const TILT_RANGE = 45;
-        const SMOOTHING_FACTOR = 0.15; // Low-pass filter coefficient
-        const DEADZONE = 0.5; // Ignore small movements
         
-        let smoothedValue = 0;
-        let targetTime = (30 / TOTAL_FRAMES) * animationDuration; // Start at neutral frame 30
-        let currentTime = targetTime;
-        
-        // Exponential moving average for smoothing
-        function smoothValue(current, target, factor) {
-          return current + (target - current) * factor;
-        }
+        // Start at frame 30 (neutral)
+        let currentTime = (30 / TOTAL_FRAMES) * animationDuration;
         
         function handleOrientation(event) {
-          const rotationY = event.gamma || 0; // Y-axis rotation (left-right tilt)
+          const rotationX = event.beta || 0;
           
-          // Calibration on first reading
-          if (neutralGamma === null) {
-            neutralGamma = rotationY;
-            smoothedValue = 0;
-            updateStatus(`Calibrated! Neutral: ${neutralGamma.toFixed(1)}°`);
-            return;
+          if (neutralBeta === null) {
+            neutralBeta = rotationX;
+            updateStatus(`Calibrated! Neutral: ${neutralBeta.toFixed(1)}°`);
           }
           
-          // Calculate offset from neutral
-          let offset = rotationY - neutralGamma;
-          
-          // Apply deadzone to reduce jitter
-          if (Math.abs(offset) < DEADZONE) {
-            offset = 0;
-          }
-          
-          // Clamp to range
+          const offset = rotationX - neutralBeta;
           const clamped = Math.max(-TILT_RANGE, Math.min(TILT_RANGE, offset));
+          const normalized = (clamped + TILT_RANGE) / (TILT_RANGE * 2);
           
-          // Apply smoothing filter
-          smoothedValue = smoothValue(smoothedValue, clamped, SMOOTHING_FACTOR);
-          
-          // Normalize to 0-1 range
-          const normalized = (smoothedValue + TILT_RANGE) / (TILT_RANGE * 2);
-          
-          // Update target time
-          targetTime = normalized * animationDuration;
+          currentTime = normalized * animationDuration;
           
           const currentFrame = normalized * TOTAL_FRAMES;
-          updateStatus(`Gamma: ${rotationY.toFixed(1)}° | Offset: ${offset.toFixed(1)}° | Smoothed: ${smoothedValue.toFixed(1)}° | Frame: ${currentFrame.toFixed(1)}`);
+          updateStatus(`Beta: ${rotationX.toFixed(1)}° | Offset: ${offset.toFixed(1)}° | Frame: ${currentFrame.toFixed(1)}`);
         }
         
-        let lastTime = Date.now();
-        
         function renderLoop() {
-          const now = Date.now();
-          const deltaTime = (now - lastTime) / 1000;
-          lastTime = now;
-          
           renderer.clear();
           
-          // Smooth interpolation toward target time
-          currentTime = smoothValue(currentTime, targetTime, 0.2);
-          
-          // Update timeline input if available
-          if (timelineInput) {
-            timelineInput.value = currentTime;
-          }
-          
-          // Advance state machine with delta time
-          stateMachine.advance(deltaTime);
-          artboard.advance(deltaTime);
+          animation.time = currentTime;
+          animation.apply(1.0);
+          artboard.advance(0);
           
           renderer.save();
           renderer.align(
