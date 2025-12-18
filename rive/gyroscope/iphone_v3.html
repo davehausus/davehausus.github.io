@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rive 3D Rotation with Gyroscope</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #1a1a2e;
+            font-family: system-ui, sans-serif;
+        }
+
+        #canvas {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1;
+        }
+
+        #startButton {
+            margin-top: 20px;
+            padding: 16px 32px;
+            font-size: 18px;
+            background: #4a90d9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #startButton:hover {
+            background: #357abd;
+        }
+
+        .controls {
+            margin-top: 20px;
+            color: white;
+        }
+
+        #rotationSlider {
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <canvas id="canvas" width="500" height="500"></canvas>
+    
+    <button id="startButton">Start Gyroscope</button>
+    
+    <!-- Desktop testing slider -->
+    <div class="controls">
+        <label for="rotationSlider">Manual Rotation: </label>
+        <input type="range" id="rotationSlider" min="-90" max="90" value="0">
+    </div>
+
+    <div id="debug">Loading Rive...</div>
+
+<script>
+    // Helper to update debug text safely
+    function updateDebug(message) {
+        const el = document.getElementById('debug');
+        if (el) {
+            el.textContent = message;
+        }
+        console.log(message);
+    }
+
+    // Load Rive WebGL2 dynamically
+    async function loadRiveRuntime() {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/@rive-app/webgl2@2.23.2/rive.js';
+            script.onload = () => {
+    if (!window.rive) {
+        reject(new Error('Rive WebGL2 runtime not found'));
+        return;
+        }
+            resolve();
+    };
+            script.onerror = () => reject(new Error('Failed to load Rive script'));
+            document.head.appendChild(script);
+        });
+    }
+    
+    async function initRive3DRotation() {
+        const debug = document.getElementById('debug');
+        
+        // Load the runtime
+        debug.textContent = 'Loading Rive runtime...';
+        await loadRiveRuntime();
+        
+        // Initialize Rive WebGL2 runtime
+        debug.textContent = 'Initializing Rive...';
+        const rive = window.rive;
+        
+        // Get canvas and setup renderer
+        const canvas = document.getElementById('canvas');
+        if (!canvas) {
+            throw new Error('Canvas element not found');
+        }
+
+        const gl = canvas.getContext('webgl2');
+        if (!gl) {
+            throw new Error('WebGL2 not supported on this device');
+        }
+
+        const renderer = rive.makeRenderer(canvas);
+        
+        // ========================================
+        // LOAD RIVE FILE - UPDATE THIS PATH
+        // ========================================
+        updateDebug('Loading Rive file...');
+        const riveFileUrl = 'tag_gyro.riv'; // <-- UPDATE THIS
+        
+        let bytes;
+        try {
+            const response = await fetch(riveFileUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            bytes = await response.arrayBuffer();
+        } catch (fetchError) {
+            throw new Error(`Failed to load Rive file "${riveFileUrl}": ${fetchError.message}`);
+        }
+        
+        const file = await rive.load(new Uint8Array(bytes));
+        const artboard = file.defaultArtboard();
+        
+        updateDebug(`Artboard loaded: ${artboard.name}`);
+
+
+        // ========================================
+        // VIEWMODEL SETUP
+        // ========================================
+        
+        // Get the ViewModel by name (must match what's in your Rive file)
+        let viewModelInstance = null;
+        
+        // Get default ViewModel instance from the file
+        const viewModelCount = file.viewModelCount();
+        console.log(`ViewModel count: ${viewModelCount}`);
+
+        if (viewModelCount > 0) {
+            const viewModel = file.viewModelByIndex(0);
+            if (viewModel) {
+                console.log(`ViewModel name: ${viewModel.name}`);
+                const instanceCount = viewModel.instanceCount();
+                if (instanceCount > 0) {
+                    viewModelInstance = viewModel.instanceByIndex(0);
+                }
+            }
+        }
+        
+        // Bind the ViewModel to the artboard
+        if (viewModelInstance) {
+            artboard.bindViewModelInstance(viewModelInstance);
+            console.log('ViewModel bound successfully');
+        }
+        
+        
+        // ========================================
+        // ANIMATION SETUP
+        // ========================================
+
+        // List all available animations
+        console.log('Available animations:');
+        for (let i = 0; i < artboard.animationCount(); i++) {
+            const anim = artboard.animationByIndex(i);
+            console.log(`  ${i}: ${anim.name}`);
+        }
+
+
+        // Get the rotation animation - UPDATE THIS NAME
+        const animationName = 'rotation_timeline'; // <-- Change this to your animation name
+        let rotationAnimation = artboard.animationByName(animationName);
+        
+        // Fallback to first animation if not found
+        if (!rotationAnimation && artboard.animationCount() > 0) {
+            rotationAnimation = artboard.animationByIndex(0);
+            console.warn(`Animation "${animationName}" not found, using first animation: ${rotationAnimation.name}`);
+        }
+        
+        if (!rotationAnimation) {
+            throw new Error('No animations found in artboard');
+        }
+        
+
+        const animation = new rive.LinearAnimationInstance(rotationAnimation, artboard);
+        const animationDuration = animation.duration;
+        console.log(`Using animation: ${rotationAnimation.name}, duration: ${animationDuration}s`);
+        
+        // Start at middle (neutral position)
+        let targetTime = animationDuration / 2;
+        let smoothedTime = targetTime;
+        
+        // ========================================
+        // GYROSCOPE CONFIGURATION
+        // ========================================
+        
+        const config = {
+            minAngle: -90,      // Minimum gyroscope angle
+            maxAngle: 90,       // Maximum gyroscope angle
+            smoothing: 0.15,    // Smoothing factor (0-1, lower = smoother)
+            axis: 'beta',       // 'beta' (X-axis), 'gamma' (Y-axis), 'alpha' (Z-axis)
+        };
+        
+        function mapRange(value, inMin, inMax, outMin, outMax) {
+            const clamped = Math.max(inMin, Math.min(inMax, value));
+            const normalized = (clamped - inMin) / (inMax - inMin);
+            return outMin + normalized * (outMax - outMin);
+        }
+        
+        function handleOrientation(event) {
+            // Get rotation based on configured axis
+            let rotation;
+            switch (config.axis) {
+                case 'beta':
+                    rotation = event.beta;   // X-axis: -180 to 180
+                    break;
+                case 'gamma':
+                    rotation = event.gamma;  // Y-axis: -90 to 90
+                    break;
+                case 'alpha':
+                    rotation = event.alpha;  // Z-axis: 0 to 360
+                    break;
+                default:
+                    rotation = event.beta;
+                }
+                
+                if (rotation === null) return;
+
+                // Map gyroscope value to animation time
+                targetTime = mapRange(
+                    rotation,
+                    config.minAngle,
+                    config.maxAngle,
+                    0,
+                    animationDuration
+                );
+
+                // Update debug display
+                updateDebug(`Rotation: ${rotation.toFixed(1)}° → Time: ${targetTime.toFixed(3)}s`);
+            }
+            
+            // ========================================
+            // RENDER LOOP
+            // ========================================
+            
+            let lastFrameTime = performance.now();
+            let isRunning = false;
+
+            function renderLoop(currentFrameTime) {
+                if (!isRunning) return;
+
+                const deltaTime = (currentFrameTime - lastFrameTime) / 1000;
+                lastFrameTime = currentFrameTime;
+                    
+                // Smooth the animation time for less jittery movement
+                smoothedTime += (targetTime - smoothedTime) * config.smoothing;
+                
+                // Clear the canvas
+                renderer.clear();
+                
+                // Apply animation at the smoothed time
+                animation.time = Math.max(0, Math.min(animationDuration, smoothedTime));
+                animation.apply(1.0);
+                
+                // Advance artboard to apply changes (including ViewModel updates)
+                artboard.advance(deltaTime);
+                
+                // Draw
+                renderer.save();
+                renderer.align(
+                    rive.Fit.contain,
+                    rive.Alignment.center,
+                    { minX: 0, minY: 0, maxX: canvas.width, maxY: canvas.height },
+                    artboard.bounds
+                );
+                artboard.draw(renderer);
+                renderer.restore();
+                
+                renderer.flush();
+                
+                requestAnimationFrame(renderLoop);
+            }
+            
+            // ========================================
+            // GYROSCOPE PERMISSION & INITIALIZATION
+            // ========================================
+            
+            async function startGyroscope() {
+                // iOS 13+ requires permission
+                if (typeof DeviceOrientationEvent !== 'undefined' &&
+                typeof DeviceOrientationEvent.requestPermission === 'function') {
+                try {
+                    const permission = await DeviceOrientationEvent.requestPermission();
+                    if (permission === 'granted') {
+                        window.addEventListener('deviceorientation', handleOrientation);
+                        return true;
+                    }
+                } catch (error) {
+                    console.error('Gyroscope permission error:', error);
+                    return false;
+                }
+            } else if ('DeviceOrientationEvent' in window) {
+                // Non-iOS devices
+                window.addEventListener('deviceorientation', handleOrientation);
+                return true;
+            }
+            
+            console.warn('DeviceOrientation not supported');
+            return false;
+        }
+        
+        // ========================================
+        // PUBLIC API
+        // ========================================
+        
+        return {
+            // Start the experience (call this from a user gesture for iOS)
+            start: async () => {
+                isRunning = true;
+                await startGyroscope();
+                lastFrameTime = performance.now();
+                requestAnimationFrame(renderLoop);
+            },
+            
+            // Manual control (for testing without gyroscope)
+            setRotation: (angle) => {
+                targetTime = mapRange(
+                    angle,
+                    config.minAngle,
+                    config.maxAngle,
+                    0,
+                    animationDuration
+                );
+                updateDebug(`Manual: ${angle.toFixed(1)}° → Time: ${targetTime.toFixed(3)}s`);
+            },
+            
+            // Update configuration
+            setConfig: (newConfig) => {
+                Object.assign(config, newConfig);
+            },
+            
+            // Access the artboard for advanced use
+            artboard,
+            viewModelInstance,
+        };
+    }
+    
+    // ========================================
+    // INITIALIZATION - Wait for DOM
+    // ========================================
+    
+    function init() {
+        const startButton = document.getElementById('startButton');
+        const slider = document.getElementById('rotationSlider');
+        
+        initRive3DRotation()
+            .then((riveController) => {
+                updateDebug('Ready! Click "Start Gyroscope" or use slider.');
+                
+                if (startButton) {
+                    startButton.addEventListener('click', async () => {
+                        await riveController.start();
+                        startButton.textContent = 'Running...';
+                        startButton.disabled = true;
+                    });
+                }
+                
+                if (slider) {
+                    slider.addEventListener('input', (e) => {
+                        riveController.setRotation(parseFloat(e.target.value));
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Failed to initialize Rive:', error);
+                updateDebug(`Error: ${error.message}`);
+            });
+        }
+        
+        // Ensure DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+
+</html>
