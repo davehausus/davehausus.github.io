@@ -117,9 +117,15 @@
             const FPS = 60;
             const animationDuration = TOTAL_FRAMES / FPS;
             
-            // Gyroscope config
-            let neutralBeta = null;
+            // Professional Gyroscope Processing
+            let neutralGamma = null;
             const TILT_RANGE = 45;
+            const SMOOTHING_FACTOR = 0.15; // Low-pass filter (0-1, lower = smoother)
+            const DEADZONE = 0.5; // Degrees - ignore micro-movements
+            
+            let smoothedValue = 0;
+            let rawBuffer = [];
+            const BUFFER_SIZE = 5;
             
             // Start at frame 30 (neutral)
             let currentTime = (30 / TOTAL_FRAMES) * animationDuration;
@@ -128,21 +134,42 @@
             let lastFrameTime = performance.now();
             
             function handleOrientation(event) {
-                const rotationX = event.beta || 0;
+                const rotationY = event.gamma || 0;
                 
-                if (neutralBeta === null) {
-                    neutralBeta = rotationX;
-                    updateStatus(`Calibrated! Neutral: ${neutralBeta.toFixed(1)}°`);
+                if (neutralGamma === null) {
+                    neutralGamma = rotationY;
+                    smoothedValue = 0;
+                    updateStatus(`Calibrated! Neutral: ${neutralGamma.toFixed(1)}°`);
                 }
                 
-                const offset = rotationX - neutralBeta;
-                const clamped = Math.max(-TILT_RANGE, Math.min(TILT_RANGE, offset));
+                // Calculate offset from neutral
+                let offset = rotationY - neutralGamma;
+                
+                // Apply deadzone
+                if (Math.abs(offset) < DEADZONE) {
+                    offset = 0;
+                }
+                
+                // Moving average filter
+                rawBuffer.push(offset);
+                if (rawBuffer.length > BUFFER_SIZE) {
+                    rawBuffer.shift();
+                }
+                const avgOffset = rawBuffer.reduce((a, b) => a + b, 0) / rawBuffer.length;
+                
+                // Exponential smoothing (low-pass filter)
+                smoothedValue = smoothedValue + SMOOTHING_FACTOR * (avgOffset - smoothedValue);
+                
+                // Clamp to range
+                const clamped = Math.max(-TILT_RANGE, Math.min(TILT_RANGE, smoothedValue));
+                
+                // Normalize to 0-1
                 const normalized = (clamped + TILT_RANGE) / (TILT_RANGE * 2);
                 
                 currentTime = normalized * animationDuration;
                 
                 const currentFrame = normalized * TOTAL_FRAMES;
-                updateStatus(`Beta: ${rotationX.toFixed(1)}° | Offset: ${offset.toFixed(1)}° | Frame: ${currentFrame.toFixed(1)}`);
+                updateStatus(`Gamma: ${rotationY.toFixed(1)}° | Smoothed: ${smoothedValue.toFixed(1)}° | Frame: ${currentFrame.toFixed(1)}`);
             }
             
             function renderLoop(currentFrameTime) {
@@ -182,7 +209,7 @@
             }
             
             // ========================================
-            // POINTER EVENTS FOR TRIGGER
+            // POINTER EVENTS FOR TRIGGERS - Need 3 arguments: x, y, pointerId
             // ========================================
             
             function getCanvasCoordinates(event) {
@@ -211,21 +238,21 @@
             canvas.addEventListener('pointerdown', (event) => {
                 if (stateMachineInstance) {
                     const coords = getCanvasCoordinates(event);
-                    stateMachineInstance.pointerDown(coords.x, coords.y);
+                    stateMachineInstance.pointerDown(coords.x, coords.y, event.pointerId);
                 }
             });
             
             canvas.addEventListener('pointerup', (event) => {
                 if (stateMachineInstance) {
                     const coords = getCanvasCoordinates(event);
-                    stateMachineInstance.pointerUp(coords.x, coords.y);
+                    stateMachineInstance.pointerUp(coords.x, coords.y, event.pointerId);
                 }
             });
             
             canvas.addEventListener('pointermove', (event) => {
                 if (stateMachineInstance) {
                     const coords = getCanvasCoordinates(event);
-                    stateMachineInstance.pointerMove(coords.x, coords.y);
+                    stateMachineInstance.pointerMove(coords.x, coords.y, event.pointerId);
                 }
             });
             
