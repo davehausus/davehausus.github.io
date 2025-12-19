@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head> 
+<!-- Google Analytics 4 (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5M5R22S8EB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5M5R22S8EB');
+</script>
+<script>
+  gtag('event', 'page_view', {
+    page_title: 'How Localization Works With Rive in Native Mobile Apps',
+    page_path: '/',
+  });
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#282828"/>
+<title>How Localization Works With Rive in Native Mobile Apps</title>
+<meta name="robots" content="index, follow">
+<meta name="author" content="David de Jesus">
+<meta name="description" content="Learn how text localization works in Rive for iOS and Android apps. A designer-friendly guide to fonts, translations, and native workflows.">
+<meta name="keywords" content="UI Design, Visual Design, designer, rive, referenced fonts, data bind, motion design, highlight, projects, modern, digital, css, animation, transition, freelancers">
+
+<!-- SOCIAL MEDIA META -->
+<meta property="og:description" content="Learn how text localization works in Rive for iOS and Android apps. A designer-friendly guide to fonts, translations, and native workflows.">
+<meta property="og:image" content="https://davehausus.github.io/images/blog/referenced-fonts-in-rive.webp">
+<meta property="og:site_name" content="David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist">
+<meta property="og:title" content="Using Referenced Fonts in Rive (A Guide for Designers)">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://davehausus.github.io">
+
+<!-- TWITTER META -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="https://davehausus.github.io">
+<meta name="twitter:creator" content="@davehausus">
+<meta name="twitter:title" content="Using Referenced Fonts in Rive (A Guide for Designers)">
+<meta name="twitter:description" content="Learn how text localization works in Rive for iOS and Android apps. A designer-friendly guide to fonts, translations, and native workflows.">
+<meta name="twitter:image" content="../images/blog/referenced-fonts-in-rive.webp">
+
+<!-- FAVICON FILES -->
+<link href="../ico/apple-touch-icon-144-precomposed.png" rel="apple-touch-icon" sizes="144x144">
+<link href="../ico/apple-touch-icon-114-precomposed.png" rel="apple-touch-icon" sizes="114x114">
+<link href="../ico/apple-touch-icon-72-precomposed.png" rel="apple-touch-icon" sizes="72x72">
+<link href="../ico/apple-touch-icon-57-precomposed.png" rel="apple-touch-icon">
+<link href="../ico/favicon.png" rel="shortcut icon">
+
+<!-- CSS FILES -->
+<link rel="stylesheet" href="../css/animate.min.css">
+<link rel="stylesheet" href="../css/odometer.min.css">
+<link rel="stylesheet" href="../css/fancybox.min.css">
+<link rel="stylesheet" href="../css/swiper.min.css">
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "David de Jesús",
+  "alternateName": "David de Jesus",
+  "url": "https://davehausus.github.io",
+  "image": "https://davehausus.github.io/images/avatar.jpg",
+  "jobTitle": "Sr. UI & Motion Designer",
+  "description": "Sr. UI & Motion Designer specializing in Rive, Lottie, and motion-driven product experiences.",
+  "sameAs": [
+    "https://www.linkedin.com/in/davesigner",
+    "https://github.com/davehausus",
+  ],
+  "knowsAbout": [
+    "Rive",
+    "Lottie",
+    "Motion Design",
+    "UI Design",
+    "Interaction Design",
+    "Rive State Machines",
+    "Rive Data Bind"
+  ]
+}
+</script>
+<style>
+	/* Wrapper prevents overflow issues on mobile */
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+/* Main clean table style */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.02);  /* subtle card feel */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Header */
+.comparison-table thead th {
+  text-align: left;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Rows */
+.comparison-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Remove border on last row */
+.comparison-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Optional: soft hover effect for each row */
+.comparison-table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+}
+</style>
+
+
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P39NBK2"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+	<div class="preloader">
+  <div class="inner">
+  <figure class="logo"><img src="../images/logo-light.png" alt="Image"></figure>
+  	<span class="percentage"></span>
+  </div>
+  <!-- end inner -->
+</div>
+<!-- end preloader -->
+<div class="transition-overlay"></div>
+<!-- end transition-overlay -->
+<div class="navigation-menu">
+  <div class="inner">
+    <div class="side-menu">
+      <ul>
+        <li><a href="../about.html">About me</a></li>
+        <li style="display: none;"><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <!-- end side-menu -->
+  </div>
+  <!-- end inner -->
+</div>
+<!-- end navigation-menu -->
+<aside class="left-side">
+ <div class="logo">
+ 	<img src="../images/logo-symbol.png" alt="Image">
+ </div>
+  <ul>
+    <li><a href="#" onclick='window.open("https://www.linkedin.com/in/davesigner");return false;'>LINKEDIN</a></li>
+
+  </ul>
+  <a href="#top" class="gotop"><img src="../images/icon-gotop.svg" alt="Image"></a>
+</aside>
+<!-- end left-side -->
+<header class="header">
+  <nav class="navbar">
+    <div class="logo"> <a href="../index.html"><img src="../images/logo.png" alt="Image"></a> </div>
+    <!-- end logo -->
+
+    <div class="main-menu">
+      <ul>
+        <li><a href="../about.html">About me</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li style="display: none;"><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
+        <li>
+          <button type="contact" onclick="location.href='../contact.html'">
+              <strong>Contact</strong>
+          </button>
+        </li>
+      </ul>
+    </div>
+    <!-- end main-menu -->
+    <div class="hamburger-menu" id="hamburger-menu">
+      <div class="burger">
+        <svg id="burger-svg" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+          <title>Show / Hide Navigation</title>
+          <rect class="burger-svg__base" width="50" height="50"/>
+          <g class="burger-svg__bars">
+            <rect class="burger-svg__bar burger-svg__bar-1" x="14" y="18" width="22" height="2"/>
+            <rect class="burger-svg__bar burger-svg__bar-2" x="14" y="24" width="22" height="2"/>
+            <rect class="burger-svg__bar burger-svg__bar-3" x="14" y="30" width="22" height="2"/>
+          </g>
+        </svg>
+      </div>
+      <!-- end burger --> 
+    </div>
+    <!-- end hamburger-menu --> 
+  </nav>
+  <!-- end navbar -->
+<section class="blog">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+  
+          <div class="headlines">
+            <div class="container">
+              <h6>MOTION FIELD GUIDE</h6>
+              <small class="post-date">September 22, 2025</small>
+              <h4>How Localization Works With Rive in Native Mobile Apps</h4></br>
+              <p class="post-intro">Localization can feel intimidating when your Rive animation includes text. This guide explains how
+                Rive works with native app localization systems, in simple terms for designers and light-technical readers.</p>
+            </div>
+            <!-- end container -->
+          </div>
+          <!-- end page-title -->
+        </div>
+          </header>
+          <!-- end header -->
+  
+  
+  
+          <div class="post-body wow fadeIn">
+            <figure class="image-full"><img src="../images/blog/cover/referenced-fonts-in-rive.webp" alt="Image"></figure>
+            <div class="avatar">
+              <img src="../images/avatar.jpg" alt="Image">by
+              <a href="#">David de Jesús</a>
+            </div>
+          
+            <div class="col-lg-8">
+            
+                    <p>
+                      Rive makes it easy to design interactive graphics, but once your animation needs to show text in different languages,
+                      things become a little more complicated. Many designers think the answer is to create multiple Rive files or embed
+                      fonts
+                      directly inside the animation. In reality, native apps like iOS and Android already give you smarter ways to localize
+                      your text without blowing up your file size or duplicating work.
+                    </p>
+                    
+                    <p>
+                      This article explains how localization works when you use Rive inside a native app. It is written for designers and
+                      people with basic coding skills who want to understand how everything connects without needing deep engineering
+                      knowledge.
+                    </p>
+                    
+                    <!-- end post-body -->
+            </div>
+                    
+                    
+            <div class="col-lg-8">
+                      <h3>Why localization inside Rive looks confusing at first</h3>
+                      <p>
+                        When you open Rive, it feels natural to place text directly into the animation. You style it, animate it, and make
+                        it
+                        look perfect. That works great for a single language.
+                      </p>
+                      <p>
+                        But when a project requires Spanish, English, French, German, Japanese, and more, suddenly you face questions like:
+                      <ul>
+                        <li>Should I create a separate Rive file for every language?</li>
+                        <li>Should I animate all languages inside the same file and toggle visibility?</li>
+                        <li>Should I embed every font?</li>
+                        <li>Should the developer take care of the text?</li>
+                      </ul>
+                      </p>
+                    
+                      <p>The good news is that native apps already have solutions for this, and Rive integrates nicely with them.</p>
+            </div>
+                    
+            <div class="col-lg-8">
+                      <h3>The best approach for most native apps</h3>
+                      <p>
+                      <h5>Let the app handle the text and send it into Rive</h5>
+                    
+                      <p>
+                        This is the preferred workflow for iOS and Android teams:
+                    
+                      <ol>
+                        <li>Your Rive animation uses Text Run sources or Text inputs that expect dynamic text.</li>
+                    
+                        <li>The app pulls the correct translated string from its localization files.</li>
+                    
+                        <li>The app sends that text into the Rive file at runtime.</li>
+                    
+                        <li>Rive updates the text inside the animation.</li>
+                      </ol>
+                      </p>
+                    
+                      <p>
+                        This keeps your <b>.riv</b> file small and flexible. It also allows developers to reuse their existing localization
+                        tools.
+                        Designers keep full control over the layout and animation. Developers keep control over translations.
+                      </p>
+                      </p>
+                    
+                      <h3>What about fonts?</h3>
+                      <p>
+                        Native apps normally bundle fonts inside the app package. That means you do not need to embed fonts inside the
+                        <b>.riv</b>
+                        file. Instead, the app loads the font into the Rive runtime at launch and the animation uses it instantly.
+                      </p>
+                    
+                      <p>
+                        Advantages:
+                      <ul>
+                        <li>Your <b>.riv</b> stays tiny</li>
+                        <li>Text looks correct on all devices</li>
+                        <li>Only one version of each font lives inside the app</li>
+                        <li>You avoid the huge jump in file size that embedded fonts cause</li>
+                      </ul>
+                      </p>
+                    
+                      <p>
+                        Some projects still choose to embed fonts if they require offline usage or if the animation must be completely self
+                        contained. But in most app projects, referencing a font is the better choice.
+                      </p>
+                    
+                      <h3>How translations are stored in native apps</h3>
+                    
+                      <p>Both iOS and Android have their own localization systems. This is where the text lives:</p>
+                    
+                      <p>
+                      <h5 style="margin-top: 50px;">iOS</h5>
+                      Developers place translated strings inside <b>.strings</b> files. The system automatically selects the correct file
+                      based on
+                      the user language.
+                      </p>
+                    
+                      <p>
+                      <h5 style="margin-top: 50px;">Android</h5>
+                      Developers use <b>strings.xml</b> files inside language specific folders like:
+                      <ul>
+                        <li>values-en</li>
+                        <li>values-es</li>
+                        <li>values-fr</li>
+                      </ul>
+                      </p>
+                    
+                      <p>The app loads the correct translation without you doing anything inside Rive.</p>
+                    
+                      <h3>How the app sends text to Rive</h3>
+                      <p>
+                        Here is the simplified version of how it works:
+                      <ol>
+                        <li>Rive exposes a text property inside your animation.</li>
+                        <li>The app finds that property by name.</li>
+                        <li>The app sets its value to the translated text.</li>
+                        <li>The animation updates instantly.</li>
+                      </ol>
+                      </p>
+                    
+                      <p>
+                        For example, imagine a price card animation where the word “Today” needs to change based on language. The app simply
+                        updates that string before the animation plays.
+                      </p>
+                    
+                      <p>
+                        From your perspective as a designer, nothing changes. You design normally. You animate normally. The animation
+                        behaves
+                        the same way.
+                      </p>
+                    
+                      <h3>What designers should do inside Rive</h3>
+                    
+                      If you know your project will use localization, here are best practices:
+                    
+                      <p>
+                      <h5 style="margin-top: 30px;">1. Leave space for longer languages</h5>
+                    
+                      German and French text can be much longer than English. Japanese can be more compact. Try to allow extra room in your
+                      layout so text does not clip or overlap.
+                      </p>
+                    
+                      <p>
+                      <h5 style="margin-top: 50px;">2. Use flexible text containers</h5>
+                    
+                      Avoid wrapping text in very tight shapes. Let developers adjust text size or container width when needed.
+                      </p>
+                    
+                      <p>
+                      <h5 style="margin-top: 50px;">3. Keep styling simple</h5>
+                    
+                      Use fonts that support all the languages you need. A font that works only with Latin characters will not support
+                      Korean
+                      or Arabic. Share a list of required languages with your developer before choosing a typeface.
+                      </p>
+                    
+                      <p>
+                      <h5 style="margin-top: 50px;">4. Ask if the app can provide the font</h5>
+                    
+                      If the app already bundles the font, reference it in your Rive file. This keeps file size almost zero.
+                      </p>
+                    
+                      <h3>When you might need multiple Rive files</h3>
+                    
+                      <p>Although not very common, there are a few cases where separate Rive files per language are useful.</p>
+                      
+                      <p>
+                      <ul>
+                        <li>When each language uses a different typeface</li>
+                        <li>When text layout changes dramatically per language</li>
+                        <li>When the animations themselves differ</li>
+                      </ul>
+                      </p>
+                      
+                      <p>Still, these cases are rare and often solved through better planning or dynamic layout inside the app.</p>
+                    
+                    
+                      <h3>A real world example</h3>
+                      <p>
+                        Imagine you design a weather widget in Rive. It has a big animated temperature and a label that says “Sunny”. The
+                        animation should work in:
+                        
+                      <ul>
+                        <li>English</li>
+                        <li>Spanish</li>
+                        <li>French</li>
+                        <li>Japanese</li>
+                        <li>Portuguese</li>
+                      </ul>
+                      </p>
+                      
+                      <p>
+                        The native app already has translations for “Sunny” inside its localization files. The developer sends the correct word
+                        into Rive. The animation updates instantly. You do not need five versions of the animation. The app does all the heavy
+                        lifting.
+                      </p>
+
+
+                      <h3>Final Thoughts</h3>
+                    <p style="margin-bottom: 100px;">
+                      Localization in native apps does not require complex Rive setups or multiple versions of your file. The strongest
+                      approach is to allow the app to control the text and let Rive display it. Designers keep their freedom to animate
+                      anything they want. Developers keep their structured localization workflow. The result is cleaner, lighter, and easier
+                      to maintain over time.
+                    </p>
+              </div>
+
+
+
+          
+              <!-- end post-body -->
+  
+  
+  
+              <div class="post-navigation">
+                <a href="responsive-text-in-rive.html">Rive Responsive Text: How to Scale Typography Across Breakpoints</a>
+                <a href="why-motion-matters-in-modern-ux.html">Why Motion Isn’t a “Nice-to-Have” in Modern UX Anymore</a>
+              </div>
+              <!-- end post-navigation -->
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- end container -->
+</section>
+<!-- end blog -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="career wow fadeInUp">
+          <h6>LET'S COLLABORATE</h6>
+          <h2>If you’re building something that needs motion with purpose, I’d love to chat.</h2>
+          <div class="custom-link"><a href="../contact.html">Start Here</a> <span></span> <i></i>
+          </div>
+          <!-- end custom-link -->
+          </div>
+        <!-- end career --> 
+      </div>
+      <!-- end col-12 -->
+      <div class="col-lg-5 wow fadeInUp">
+        <figure class="logo"> <a href="../index.html"><img src="../images/logo.svg" alt="Image"></a> </figure>
+      </div>
+      <!-- end col-5 -->
+      <div class="col-lg-4 col-md-6 wow fadeInUp">
+        <h5 style="visibility: hidden !important;">Extra Stuff</h5>
+        <div class="extra" style="visibility: hidden !important;">
+        <a href="#">The Lost Cases</a>
+        </div>
+      </div>
+      <!-- end col-4 -->
+      <div class="col-lg-3 col-md-6 wow fadeInUp">
+        <h5 id="emoji-text">Emojis accepted.</h5>
+        <address>
+        davehausus@gmail.com <br>
+
+      </address>
+      </div>
+      <script>
+        const emojiLines = [
+          "Motion or no motion — even your emojis tell a story.",
+          "Static email, animated energy. Emojis totally allowed.",
+          "If emojis had easing curves, I’d accept those too.",
+          "You can write me a full paragraph or just drop a 😎.",
+          "Questions, ideas, or just a random emoji — send it my way.",
+          "No need to be formal. Emojis are perfectly acceptable.",
+          "Short message? Long message? Emoji-only message? All good."
+        ];
+
+        const randomLine = emojiLines[Math.floor(Math.random() * emojiLines.length)];
+        document.getElementById("emoji-text").textContent = randomLine;
+      </script>
+      <!-- end col-3 -->
+      <div class="col-12 wow fadeInUp">
+        <div class="sub-footer">
+          <ul>
+            <li><a href="#">Terms & Conditions</a></li>
+          </ul>
+          <span>© 2025 David de Jesus - All rights Reserved</span> </div>
+        <!-- end sub-footer --> 
+      </div>
+      <!-- end col-12 --> 
+    </div>
+    <!-- end row --> 
+  </div>
+  <!-- end container --> 
+</footer>
+<!-- end footer --> 
+<audio id="hamburger-hover" src="../audio/link.mp3" preload="auto"></audio>
+
+<!-- JS FILES -->
+<script src="../js/jquery.min.js"></script> 
+<script src="../js/bootstrap.min.js"></script> 
+<script src="../js/imagesloaded.pkgd.min.js"></script> 
+<script src="../js/isotope.min.js"></script> 
+<script src="../js/swiper.min.js"></script> 
+<script src="../js/TweenMax.min.js"></script> 
+<script src="../js/odometer.min.js"></script> 
+<script src="../js/fancybox.min.js"></script> 
+<script src="../js/wow.min.js"></script> 
+<script src="../js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+
+
+</body>
+</html>

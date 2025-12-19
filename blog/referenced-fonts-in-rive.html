@@ -215,7 +215,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="headlines">
             <div class="container">
               <h6>MOTION FIELD GUIDE</h6>
-              <small class="post-date">December 4, 2025</small>
+              <small class="post-date">July 8, 2025</small>
               <h4>Using Referenced Fonts in Rive (A Guide for Designers)</h4></br>
               <p class="post-intro">How to keep your Rive files tiny, fast, and consistent across multiple animations.</p>
             </div>
@@ -414,39 +414,58 @@ Developers load the font once, and it works everywhere.
 
 <h3>When You Should Still Embed a Font</h3>
 
-<p>There are some situations where embedding a font is the better option:</p>
-
-<ul>
-	<li>Offline apps</li>
-	
-	<li>Kiosk installations</li>
-	
-	<li>Native mobile apps with packaged assets</li>
-	
-	<li>Projects with no shared font usage</li>
-</ul>
-
-<p>For anything web-based, referenced fonts are almost always the best choice.</p>
-
-<h5>A Simple Way To Understand It</h5>
-
-<p>Think of embedded fonts as placing a full copy of the font inside each animation.</p>
-
-<p>Think of referenced fonts as pointing all animations to a single shared font file.</p>
+<p>Using referenced fonts is usually the smartest option, but there are a few cases where embedding a font is still the
+  right call. These situations depend on how your animation is delivered and how the text inside your Rive file is
+  handled.</p>
 
 <p>
-	One approach is heavy and repetitive.
-	The other is lightweight and scalable.
-</p>
+<h5 style="margin-top: 50px;">Offline apps</h5>
+If your animation must run without any internet connection, embedding the font ensures that the text will always render
+correctly. This is important for offline apps, airline IFE systems, museums, or scenarios where you cannot guarantee
+access to a remote or bundled font.</p>
+
+<p>
+<h5 style="margin-top: 50px;">Kiosk or installation setups</h5>
+Installations usually run on locked-down hardware. If you cannot bundle additional files or control how assets are
+loaded, embedding the font inside the <b>.riv</b> file is the safest way to keep everything self-contained.</p>
+
+<p>
+<h5 style="margin-top: 50px;">Native mobile apps with packaged assets</h5>
+iOS and Android apps can ship their own fonts inside the app bundle. Most of the time, you will reference these fonts
+inside your Rive file rather than embed them. This keeps the <b>.riv</b> small and lets your app use its own localization
+workflow.</br>
+However, if your app has no bundled fonts at all or if the animation must include a very specific font that only exists
+inside the <b>.riv</b>, embedding can still make sense.</p>
+
+<p>
+<h5 style="margin-top: 50px;">Localization inside the Rive animation</h5>
+If you plan to handle translations inside your native app (which is the recommended approach), you should not embed
+fonts for each language. The app can provide its own fonts and pass text into the Rive file at runtime.</br>
+But if you decide to put all text directly inside the Rive file and keep multiple languages inside the animation
+timeline, embedding a font might be required to guarantee consistent rendering across all devices. Note that this will
+increase the <b>.riv</b> size a lot, so use this only when there is no better workflow.</p>
+
+<p>
+<h5 style="margin-top: 50px;">Projects where no shared font usage exists</h5>
+If your animations are completely independent from one another and each one uses a unique font only used once, embedding
+might be acceptable. This avoids setting up a shared referenced font and keeps each animation completely portable, at
+the cost of file size.</p>
+
+<p style="margin-top: 50px;">For anything web-based, referenced fonts are almost always the best choice.</p>
+
+<h5>A Simple Way To Understand It</h5>
+  <p>Think of embedded fonts as placing a full copy of the font inside each animation.</p>
+  <p>Think of referenced fonts as pointing all animations to a single shared font file.</p>
+  <p>One approach is heavy and repetitive. The other is lightweight and scalable.</p>
 
 <h3>Final Thoughts</h3>
 
 <p>Rive gives you very powerful motion tools, but many of the improvements in performance come from workflow decisions rather than animation techniques.</p>
 
-<p>Using referenced fonts keeps your files small, your typography consistent, and your animations fast to load. It is a small technical choice that makes a meaningful difference across an entire product.</p>
+<p style="margin-bottom: 100px;">Using referenced fonts keeps your files small, your typography consistent, and your animations fast to load. It is a small technical choice that makes a meaningful difference across an entire product.</p>
 
 
-
+</div>
 
           
               <!-- end post-body -->
