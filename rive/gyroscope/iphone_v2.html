@@ -145,13 +145,13 @@
             const renderer = riveInstance.makeRenderer(canvas);
             
             // Animation config
-            const TOTAL_FRAMES = 60;
+            const TOTAL_FRAMES = 120;
             const FPS = 60;
             const animationDuration = TOTAL_FRAMES / FPS;
             
             // Professional Gyroscope Processing
             let neutralGamma = null;
-            const TILT_RANGE = 45;
+            const TILT_RANGE = 90;
             const SMOOTHING_FACTOR = 0.15; // Low-pass filter (0-1, lower = smoother)
             const DEADZONE = 0.5; // Degrees - ignore micro-movements
             
@@ -159,8 +159,8 @@
             let rawBuffer = [];
             const BUFFER_SIZE = 5;
             
-            // Start at frame 30 (neutral)
-            let currentTime = (30 / TOTAL_FRAMES) * animationDuration;
+            // Start at frame 60 (neutral)
+            let currentTime = (60 / TOTAL_FRAMES) * animationDuration;
             
             // Track delta time for state machine
             let lastFrameTime = performance.now();

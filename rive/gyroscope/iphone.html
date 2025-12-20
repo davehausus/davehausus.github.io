@@ -84,7 +84,6 @@
   <button id="startButton">Enable Gyroscope</button>
   <div id="status">Loading...</div>
 
-
 <script>
     const statusDiv = document.getElementById('status');
     
@@ -178,6 +177,9 @@
                 // Calculate offset from neutral
                 let offset = rotationY - neutralGamma;
                 
+                // Clamp offset BEFORE processing to prevent wrap-around
+                offset = Math.max(-TILT_RANGE, Math.min(TILT_RANGE, offset));
+                
                 // Apply deadzone
                 if (Math.abs(offset) < DEADZONE) {
                     offset = 0;
@@ -193,11 +195,11 @@
                 // Exponential smoothing (low-pass filter)
                 smoothedValue = smoothedValue + SMOOTHING_FACTOR * (avgOffset - smoothedValue);
                 
-                // Clamp to range
-                const clamped = Math.max(-TILT_RANGE, Math.min(TILT_RANGE, smoothedValue));
+                // Ensure smoothed value stays within bounds
+                smoothedValue = Math.max(-TILT_RANGE, Math.min(TILT_RANGE, smoothedValue));
                 
                 // Normalize to 0-1
-                const normalized = (clamped + TILT_RANGE) / (TILT_RANGE * 2);
+                const normalized = (smoothedValue + TILT_RANGE) / (TILT_RANGE * 2);
                 
                 currentTime = normalized * animationDuration;
                 
@@ -345,5 +347,6 @@
             setTimeout(init, 100);
         });
 </script>
+
 </body>
 </html>
