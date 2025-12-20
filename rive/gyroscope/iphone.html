@@ -259,19 +259,17 @@
                 };
             }
             
-            // Fire trigger on canvas click/tap
-            canvas.addEventListener('click', (event) => {
-                if (clickTrigger) {
-                    clickTrigger.fire();
-                    updateStatus('Trigger fired!');
-                }
-            });
-            
             // For state machine hit detection (if you have listeners in Rive)
             canvas.addEventListener('pointerdown', (event) => {
                 if (stateMachineInstance) {
                     const coords = getCanvasCoordinates(event);
-                    stateMachineInstance.pointerDown(coords.x, coords.y, event.pointerId);
+                    const hitDetected = stateMachineInstance.pointerDown(coords.x, coords.y, event.pointerId);
+                    
+                    // If hit detected and trigger exists, fire it
+                    if (hitDetected && clickTrigger) {
+                        clickTrigger.fire();
+                        updateStatus('Trigger fired on hit!');
+                    }
                 }
             });
             
