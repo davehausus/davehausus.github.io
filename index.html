@@ -539,7 +539,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         
         // Determine aspect ratio based on window width breakpoint
         let aspectRatio;
-        if (window.innerWidth >= 531) {
+        if (window.innerWidth >= 741) {
           // Desktop: use 1110 x 450 aspect ratio
           aspectRatio = 1110 / 450;
         } else {
@@ -580,146 +580,168 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           updateCanvasWidth();
         }, 120);
       });
-    }
-  });
-</script>
 
-<!-- Typing Animation Script -->
-<script>
-  // Wait for the first Rive canvas to load before starting typing animation
-  window.addEventListener('load', () => {
-    // Get the Rive instance from the first canvas (assuming it's named 'r')
-    if (typeof r === 'undefined') {
-      console.error("❌ First Rive instance 'r' not found");
-      return;
-    }
-
-    // Define all text update options - full sentences with variable words
-    const textUpdates = [
-      { // Update 0 (default)
-        fullText: "interactions into stories. Powered by Rive & Lottie."
-      },
-      { // Update 1
-        fullText: "states into experiences. Powered by Figma & Sketch."
-      },
-      { // Update 2
-        fullText: "micro-interactions into moments. Powered by Keyframes & More Keyframes."
-      },
-      { // Update 3
-        fullText: "gestures into emotion. Powered by Graph Editors & Easings."
-      },
-      { // Update 4
-        fullText: "clicks into clarity. Powered by Dark Mode & Bright Ideas."
-      },
-      { // Update 5
-        fullText: "flows into living motion. Powered by Bezier Curves & Keyframes."
-      },
-      { // Update 6
-        fullText: "states into experiences. Powered by Undo & Redo."
-      }
-    ];
-
-    let previousUpdateIndex = -1;
-    let isTyping = false;
-
-    // Get random typing speed (40-100ms for natural fast typing)
-    function getRandomTypingSpeed() {
-      return Math.floor(Math.random() * 60) + 40;
-    }
-
-    // Get random erasing speed (slightly faster than typing)
-    function getRandomErasingSpeed() {
-      return Math.floor(Math.random() * 40) + 30;
-    }
-
-    // Type text one character at a time
-    function typeText(textRunObj, targetText, callback) {
-      let currentIndex = 0;
-      
-      function typeNextChar() {
-        if (currentIndex < targetText.length) {
-          textRunObj.value = targetText.substring(0, currentIndex + 1);
-          currentIndex++;
-          setTimeout(typeNextChar, getRandomTypingSpeed());
-        } else {
-          if (callback) callback();
-        }
-      }
-      
-      typeNextChar();
-    }
-
-    // Erase text one character at a time (replace with spaces, not delete)
-    function eraseText(textRunObj, callback) {
-      const currentText = textRunObj.value;
-      const textLength = currentText.length;
-      let currentIndex = 0;
-      
-      function eraseNextChar() {
-        if (currentIndex < textLength) {
-          const spacesToAdd = currentIndex + 1;
-          const remainingText = currentText.substring(0, textLength - spacesToAdd);
-          textRunObj.value = remainingText + ' '.repeat(spacesToAdd);
-          currentIndex++;
-          setTimeout(eraseNextChar, getRandomErasingSpeed());
-        } else {
-          if (callback) callback();
-        }
-      }
-      
-      eraseNextChar();
-    }
-
-    // Perform complete update cycle
-    function performUpdate() {
-      if (isTyping) return;
-      isTyping = true;
-
-      const vmi = r.viewModelInstance;
-      if (!vmi) {
-        console.error("❌ Canvas 1: ViewModelInstance not available");
-        isTyping = false;
-        return;
-      }
-
+      // === TEXT RUNS UPDATE LOGIC ===
+      // Get text run references from the same View Model instance
       const run2 = vmi.string("Run 2");
-      if (!run2) {
-        console.error("❌ Canvas 1: Run 2 not found");
-        isTyping = false;
+      const run4 = vmi.string("Run 4");
+      const run7 = vmi.string("Run 7");
+      const run9 = vmi.string("Run 9");
+
+      if (!run2 || !run4 || !run7 || !run9) {
+        console.error("❌ One or more text runs not found");
         return;
       }
 
-      // Select random update different from previous
-      let newUpdateIndex;
+      // Define all text update groups
+      const textUpdates = [
+        { // Update 0 (default)
+          run2: "UI ",
+          run4: "motion",
+          run7: "Rive ",
+          run9: "Lottie"
+        },
+        { // Update 1
+          run2: "paths ",
+          run4: "rhythm",
+          run7: "Curves ",
+          run9: "Graphs"
+        },
+        { // Update 2
+          run2: "clicks ",
+          run4: "flow",
+          run7: "Figma ",
+          run9: "Rive"
+        },
+        { // Update 3
+          run2: "taps ",
+          run4: "moments",
+          run7: "Design ",
+          run9: "Motion"
+        },
+        { // Update 4
+          run2: "frames ",
+          run4: "life",
+          run7: "Timing ",
+          run9: "Ease"
+        },
+        { // Update 5
+          run2: "motion ",
+          run4: "meaning",
+          run7: "Frames ",
+          run9: "Timing"
+        },
+        { // Update 6
+          run2: "pixels ",
+          run4: "feeling",
+          run7: "Curves ",
+          run9: "Ease"
+        }
+      ];
+
+      let previousUpdateIndex = -1;
+      let isUpdating = false;
+      let eventsReceived = { run2: false, run4: false, run7: false, run9: false };
+      let firstUpdateDone = false;
+
+      console.log("📋 Text runs update system initialized, waiting for events...");
+
+      // Get first random update (not Update 0)
+      let firstUpdateIndex;
       do {
-        newUpdateIndex = Math.floor(Math.random() * textUpdates.length);
-      } while (
-        newUpdateIndex === previousUpdateIndex ||
-        (previousUpdateIndex === -1 && newUpdateIndex === 0)
-      );
+        firstUpdateIndex = Math.floor(Math.random() * textUpdates.length);
+      } while (firstUpdateIndex === 0);
+      
+      const firstUpdate = textUpdates[firstUpdateIndex];
+      console.log(`🎲 First update will be Update ${firstUpdateIndex}`);
 
-      previousUpdateIndex = newUpdateIndex;
-      const newText = textUpdates[newUpdateIndex].fullText;
+      // Listen for Rive events
+      r.on(rive.EventType.RiveEvent, (event) => {
+        const eventName = event.data.name;
+        console.log(`🎬 Event received: ${eventName}`);
 
-      console.log(`🎯 Canvas 1: Starting text update ${newUpdateIndex}`);
-
-      // Erase then type
-      eraseText(run2, () => {
-        setTimeout(() => {
-          typeText(run2, newText, () => {
-            console.log(`✅ Canvas 1: Text update ${newUpdateIndex} complete`);
-            isTyping = false;
-          });
-        }, 300);
+        if (!firstUpdateDone) {
+          // First time only - update text runs immediately when their events fire
+          if (eventName === "Run2" && !eventsReceived.run2) {
+            eventsReceived.run2 = true;
+            run2.value = firstUpdate.run2;
+            console.log(`  ✓ Run2 updated immediately to: "${firstUpdate.run2}"`);
+            scheduleFirstUpdate();
+          } else if (eventName === "Run4" && !eventsReceived.run4) {
+            eventsReceived.run4 = true;
+            run4.value = firstUpdate.run4;
+            console.log(`  ✓ Run4 updated immediately to: "${firstUpdate.run4}"`);
+            scheduleFirstUpdate();
+          } else if (eventName === "Run7" && !eventsReceived.run7) {
+            eventsReceived.run7 = true;
+            run7.value = firstUpdate.run7;
+            console.log(`  ✓ Run7 updated immediately to: "${firstUpdate.run7}"`);
+            scheduleFirstUpdate();
+          } else if (eventName === "Run9" && !eventsReceived.run9) {
+            eventsReceived.run9 = true;
+            run9.value = firstUpdate.run9;
+            console.log(`  ✓ Run9 updated immediately to: "${firstUpdate.run9}"`);
+            scheduleFirstUpdate();
+          }
+        }
       });
-    }
 
-    // Start updates
-    console.log("⏳ Canvas 1: Typing animation will start in 15 seconds");
-    setTimeout(() => {
-      performUpdate();
-      setInterval(performUpdate, 20000);
-    }, 15000);
+      // Schedule first update after receiving events
+      function scheduleFirstUpdate() {
+        // Check if all events received
+        if (eventsReceived.run2 && eventsReceived.run4 && 
+            eventsReceived.run7 && eventsReceived.run9 && !firstUpdateDone) {
+          console.log("✅ All events received, waiting 15 seconds before next update cycle");
+          previousUpdateIndex = firstUpdateIndex; // Mark first update as used
+          setTimeout(() => {
+            performUpdate();
+            // Set up recurring updates every 15 seconds
+            setInterval(performUpdate, 15000);
+          }, 15000);
+          firstUpdateDone = true;
+        }
+      }
+
+      // Update a single text run
+      function updateTextRun(textRunObj, newText, callback) {
+        textRunObj.value = newText;
+        console.log(`  ↳ Updated to: "${newText}"`);
+        if (callback) setTimeout(callback, 250); // 250ms delay before next update
+      }
+
+      // Perform complete update cycle
+      function performUpdate() {
+        if (isUpdating) return;
+        isUpdating = true;
+
+        // Select random update different from previous (and never Update 0 for first update)
+        let newUpdateIndex;
+        do {
+          newUpdateIndex = Math.floor(Math.random() * textUpdates.length);
+        } while (
+          newUpdateIndex === previousUpdateIndex ||
+          (previousUpdateIndex === -1 && newUpdateIndex === 0)
+        );
+
+        previousUpdateIndex = newUpdateIndex;
+        const updateGroup = textUpdates[newUpdateIndex];
+
+        console.log(`🎯 Starting Update ${newUpdateIndex}`);
+        console.log(`   Group values: Run2="${updateGroup.run2}", Run4="${updateGroup.run4}", Run7="${updateGroup.run7}", Run9="${updateGroup.run9}"`);
+
+        // Update Run 2, then Run 4, then Run 7, then Run 9 with 500ms intervals
+        updateTextRun(run2, updateGroup.run2, () => {
+          updateTextRun(run4, updateGroup.run4, () => {
+            updateTextRun(run7, updateGroup.run7, () => {
+              updateTextRun(run9, updateGroup.run9, () => {
+                console.log(`✅ Update ${newUpdateIndex} complete`);
+                isUpdating = false;
+              });
+            });
+          });
+        });
+      }
+    }
   });
 </script>
 
