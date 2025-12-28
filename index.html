@@ -84,8 +84,8 @@
   #riveCanvas {
     border: none;
     border-radius: 8px;
-    max-width: 1200px;
     min-width: 375px;
+    margin-left: -10px;
   }
 
   #riveCanvas2 {
@@ -195,40 +195,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- end header -->
 
 <section class="slider">
-  <div class="swiper-container"> 
-    <div class="swiper-wrapper"> 
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" data-background="images/slide04.jpg">
+        <div class="slide-inner">
+          <figure><img src="images/client-athlytix.svg" alt="Athlytix"></figure>
+          <h2>Stats Made Simple for Everyday Athletes</h2>
+          <div class="link">
+            <a href="/athlytix.html">SEE CASE STUDY</a>
+          </div>
+          <!-- end link -->
+        </div>
+        <!-- end slide-inner -->
+      </div>
+      <!-- end swiper-slide -->
       <div class="swiper-slide" data-background="images/slide06.jpg">
         <div class="slide-inner">
-        <figure><img src="images/client-tg.svg" alt="Town Green"></figure>
-        	<h2>Driving Early Engagement for a Major Urban Development</h2>
-        	<div class="link">
-        	<a href="/towngreen.html">SEE CASE STUDY</a>
-        	</div>
-        	<!-- end link -->
+          <figure><img src="images/client-tg.svg" alt="Town Green"></figure>
+          <h2>Driving Early Engagement for a Major Urban Development</h2>
+          <div class="link">
+            <a href="/towngreen.html">SEE CASE STUDY</a>
+          </div>
+          <!-- end link -->
         </div>
         <!-- end slide-inner -->
       </div>
       <!-- end swiper-slide -->
       <div class="swiper-slide" data-background="images/slide09.jpg">
         <div class="slide-inner">
-        <figure><img src="images/client-hiperwin.svg" alt="Hiperwin"></figure>
-        	<h2>Brand Identity and Product Line Ecosystem</h2>
-        	<div class="link">
-        	<a href="/hiperwin.html">SEE CASE STUDY</a>
-        	</div>
-        	<!-- end link -->
-        </div>
-        <!-- end slide-inner -->
-      </div>
-      <!-- end swiper-slide -->
-      <div class="swiper-slide" data-background="images/slide04.jpg">
-        <div class="slide-inner">
-        <figure><img src="images/client-athlytix.svg" alt="Athlytix"></figure>
-        	<h2>Stats Made Simple for Everyday Athletes</h2>
-        	<div class="link">
-        	<a href="/athlytix.html">SEE CASE STUDY</a>
-        	</div>
-        	<!-- end link -->
+          <figure><img src="images/client-hiperwin.svg" alt="Hiperwin"></figure>
+          <h2>Brand Identity and Product Line Ecosystem</h2>
+          <div class="link">
+            <a href="/hiperwin.html">SEE CASE STUDY</a>
+          </div>
+          <!-- end link -->
         </div>
         <!-- end slide-inner -->
       </div>
@@ -500,7 +500,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // Configure how the animation fits within the canvas
     layout: new rive.Layout({
       fit: rive.Fit.Contain, // Fit entire animation within canvas while maintaining aspect ratio
-      alignment: rive.Alignment.TopLeft, // Align animation to center-left of canvas
+      alignment: rive.Alignment.CenterLeft, // Align animation to center-left of canvas
     }),
 
     // Callback function that runs when Rive file is fully loaded
@@ -515,7 +515,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       // Get reference to the "num" property in the View Model
-      // This property will be used to pass canvas width to the Rive animation
+      // This property will be used to pass WINDOW width to the Rive animation
       const numProp = vmi.number("num");
       if (!numProp) {
         console.error("❌ View Model property 'num' not found");
@@ -527,24 +527,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // Flag to prevent multiple simultaneous resize operations
       let isResizing = false;
 
-      // Main function to update canvas dimensions and pass width to Rive
+      // Main function to update canvas dimensions and pass window width to Rive
       function updateCanvasWidth() {
         // Prevent overlapping resize operations
         if (isResizing) return;
         isResizing = true;
 
-        // Get current width from parent container or canvas itself
+        // Get current width from parent container or canvas itself for canvas sizing
         const currentWidth = canvasParent ? canvasParent.clientWidth : canvas.clientWidth;
         
+        // Get the absolute window width for binding to View Model
+        const windowWidth = window.innerWidth;
         
         // Determine aspect ratio based on window width breakpoint
         let aspectRatio;
-        if (window.innerWidth >= 741) {
-          // Desktop: use 1110 x 450 aspect ratio
-          aspectRatio = 1110 / 450;
+        if (windowWidth >= 741) {
+          // Desktop: use 1200 x 428 aspect ratio
+          aspectRatio = 1076 / 418;
         } else {
           // Mobile: use 500 x 400 aspect ratio (square)
-          aspectRatio = 500 / 400;
+          aspectRatio = 531 / 428;
         }
 
         // Set canvas width to match container
@@ -552,9 +554,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         // Calculate and set height to maintain artboard aspect ratio
         canvas.style.height = (currentWidth / aspectRatio) + 'px';
         
-        // Pass the width value to Rive's View Model for data binding
-        numProp.value = currentWidth;
-        console.log(`Canvas width bound to View Model: ${currentWidth}`);
+        // Pass the WINDOW width value to Rive's View Model for data binding
+        numProp.value = windowWidth;
+        console.log(`Window width bound to View Model: ${windowWidth}`);
         
         // Use requestAnimationFrame to ensure smooth rendering
         requestAnimationFrame(() => {
@@ -579,7 +581,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         resizeTimeout = setTimeout(() => {
           updateCanvasWidth();
         }, 120);
-      });
+  });
 
       // === TEXT RUNS UPDATE LOGIC ===
       // Get text run references from the same View Model instance
