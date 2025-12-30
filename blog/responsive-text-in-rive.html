@@ -185,7 +185,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   
   
           <div class="post-body wow fadeIn">
-            <figure class="image-full"><img src="../images/blog/cover/responsiveness.png" alt="Image"></figure>
+            <figure class="image-full"><img src="../images/blog/cover/responsiveness.webp" alt="Responsive Text in Rive"></figure>
             <div class="avatar">
               <img src="../images/avatar.jpg" alt="Image">by
               <a href="#">David de Jesús</a>
@@ -273,32 +273,33 @@ numProp.value = windowWidth;
                 <p>At this point, Rive knows exactly how wide the screen is.</p>
           
           
-
-          
-
+                
+                <div class="col-12" style="margin-top: 100px;"><figure><img src="../images/blog/responsiveness.png" alt="Responsive Text in Rive"></figure></div>
+                <!-- end col-12 -->
+                
                 <h3>Letting Rive Decide the Layout</h3>
                 <p>Inside Rive, the real work happens.</p>
-
+                
                 <p>Instead of one timeline that scales forever, we create four timelines:</p>
-
+                
                 <ul>
                   <li><b>xLarge</b> for screens above 1200px</li>
                   <li><b>Large</b> for screens between 741px and 1199px</li>
                   <li><b>Medium</b> for screens between 531px and 740px</li>
                   <li><b>Small</b> for screens below 530px</li>
                 </ul>
-
+                
                 <p>Each timeline has its own layout. Font sizes, line breaks, spacing, alignment. Everything is intentional.</p>
-
+                
                 <p>In the State Machine, we use an Any State with conditional transitions based on the View Model number.</p>
-
+                
                 <p>If num is greater than or less than certain values, the State Machine switches timelines.</p>
-
+                
                 <p>This is the key mental shift.</p>
-
+                
                 <p>You are no longer animating size. You are choosing layouts.</p>
-          
-          
+                
+                
 
                 <h3>Why This Feels Like CSS</h3>
                 <p>This approach feels familiar because it behaves like CSS media queries.</p>
