@@ -802,7 +802,7 @@ button[type=contact] strong:hover {
   margin-bottom: 50px;
   margin-top: 40px;
 }
-.header .headlines h1 {
+.header .headlines h1:not(.post-title) {
   font-size: 45px;
   font-weight: 800;
   line-height: 1.05;
@@ -818,12 +818,12 @@ button[type=contact] strong:hover {
   -moz-text-fill-color: transparent;
 }
 @media only screen and (min-width: 480px) {
-  .header .headlines h1 {
+  .header .headlines h1:not(.post-title) {
     font-size: calc(45px + 75 * (100vw - 480px) / (1500 - 480));
   }
 }
 @media only screen and (min-width: 1500px) {
-  .header .headlines h1 {
+  .header .headlines h1:not(.post-title) {
     font-size: 120px;
   }
 }
@@ -905,14 +905,11 @@ button[type=contact] strong:hover {
   line-height: 1;
   margin: 0;
   padding-bottom: 20px;
-  background-color: #F3A712;
   background-image: linear-gradient(45deg, #F3A712, #F95738);
   background-size: 100%;
   -webkit-background-clip: text;
-  -moz-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
 }
 @media only screen and (min-width: 480px) {
   .header .headlines h6 {
@@ -921,6 +918,49 @@ button[type=contact] strong:hover {
 }
 @media only screen and (min-width: 1500px) {
   .header .headlines h6 {
+    font-size: 25px;
+  }
+}
+
+/* POST & CASE STUDY TITLES */
+.post-title {
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+  margin: 0;
+  padding-bottom: 0;
+  color: #152230;
+}
+@media only screen and (min-width: 480px) {
+  .post-title {
+    font-size: calc(38px + 14 * (100vw - 480px) / (1500 - 480));
+  }
+}
+@media only screen and (min-width: 1500px) {
+  .post-title {
+    font-size: 52px;
+  }
+}
+
+.eyebrow {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+  padding-bottom: 20px;
+  background-image: linear-gradient(45deg, #F3A712, #F95738);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+@media only screen and (min-width: 480px) {
+  .eyebrow {
+    font-size: calc(20px + 5 * (100vw - 480px) / (1500 - 480));
+  }
+}
+@media only screen and (min-width: 1500px) {
+  .eyebrow {
     font-size: 25px;
   }
 }

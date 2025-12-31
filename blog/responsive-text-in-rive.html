@@ -8,19 +8,27 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-5M5R22S8EB');
+  gtag('config', 'G-5M5R22S8EB', {
+  content_group: 'Blog'
+});
 </script>
 <script>
-  gtag('event', 'page_view', {
-    page_title: 'Rive Responsive Text: How to Scale Typography Across Breakpoints',
-    page_path: '/',
-  });
+let articleRead = false;
+window.addEventListener('scroll', () => {
+  if (!articleRead && window.scrollY > document.body.scrollHeight * 0.6) {
+    articleRead = true;
+    gtag('event', 'article_read', {
+      content_type: 'blog_article',
+      article_title: document.title
+    });
+  }
+});
 </script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="format-detection" content="telephone=no">
-<meta name="theme-color" content="#282828"/>
+<meta name="theme-color" content="#010e19"/>
 <title>Responsive Text in Rive Without Losing Your Mind</title>
 <meta name="robots" content="index, follow">
 <meta name="author" content="David de Jesus">
@@ -31,15 +39,15 @@
 <meta property="og:description" content="Learn how to create responsive text in Rive using canvas resizing and data binding. A clear, designer-friendly guide with working code and real examples.">
 <meta property="og:image" content="https://davehausus.github.io/images/blog/responsiveness.png">
 <meta property="og:site_name" content="David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist">
-<meta property="og:title" content=">Responsive Text in Rive Without Losing Your Mind">
-<meta property="og:type" content="website">
+<meta property="og:title" content="Responsive Text in Rive Without Losing Your Mind">
+<meta property="og:type" content="article">
 <meta property="og:url" content="https://davehausus.github.io/blog/responsive-text-in-rive.html">
 
 <!-- TWITTER META -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@davehausus">
 <meta name="twitter:creator" content="@davehausus">
-<meta name="twitter:title" content=">Responsive Text in Rive Without Losing Your Mind">
+<meta name="twitter:title" content="Responsive Text in Rive Without Losing Your Mind">
 <meta name="twitter:description" content="Learn how to create responsive text in Rive using canvas resizing and data binding. A clear, designer-friendly guide with working code and real examples.">
 <meta name="twitter:image" content="../images/blog/responsiveness.png">
 
@@ -163,29 +171,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- end hamburger-menu --> 
   </nav>
   <!-- end navbar -->
+</header>
+<!-- end header -->
 <section class="blog">
     <div class="container">
       <div class="row">
         <div class="col-12">
-  
           <div class="headlines">
             <div class="container">
-              <h6>MOTION FIELD GUIDE</h6>
+              <h6 class="eyebrow">MOTION FIELD GUIDE</h6>
               <small class="post-date">December 4, 2025</small>
-              <h4>Responsive Text in Rive Without Losing Your Mind</h4></br>
+              <h1 class="post-title">Responsive Text in Rive Without Losing Your Mind</h1></br>
               <p class="post-intro">A designer friendly way to handle breakpoints, layouts, and scaling.</p>
             </div>
             <!-- end container -->
           </div>
           <!-- end page-title -->
-        </div>
-          </header>
-          <!-- end header -->
   
   
   
           <div class="post-body wow fadeIn">
             <figure class="image-full"><img src="../images/blog/cover/responsiveness.webp" alt="Responsive Text in Rive"></figure>
+
             <div class="avatar">
               <img src="../images/avatar.jpg" alt="Image">by
               <a href="#">David de Jesús</a>
@@ -430,20 +437,27 @@ numProp.value = windowWidth;
                 <p style="margin-bottom: 100px;">If responsive text in motion tools has ever felt harder than it should be, this
                   approach is a reminder that it does not have to. With clear boundaries between layout logic and design intent,
                   responsive motion starts to feel natural again.</p>
-                
+                      </div>
+
                 </div>
                 <!-- end post-body -->
+
+
+              
               <div class="post-navigation">
                 <a href="referenced-fonts-in-rive.html">Using Referenced Fonts in Rive (A Guide for Designers)</a>
                 <a href="why-motion-matters-in-modern-ux.html">Why Motion Isn’t a “Nice-to-Have” in Modern UX Anymore</a>
               </div>
               <!-- end post-navigation -->
-    </div>
+            </div>
+    <!-- end col-12 -->
+            </div>
     <!-- end row -->
   </div>
   <!-- end container -->
 </section>
 <!-- end blog -->
+
 <footer class="footer">
   <div class="container">
     <div class="row">
