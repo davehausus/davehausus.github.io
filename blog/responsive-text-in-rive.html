@@ -21,7 +21,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#282828"/>
-<title>>Responsive Text in Rive Without Losing Your Mind</title>
+<title>Responsive Text in Rive Without Losing Your Mind</title>
 <meta name="robots" content="index, follow">
 <meta name="author" content="David de Jesus">
 <meta name="description" content="Learn how to create responsive text in Rive using canvas resizing and data binding. A clear, designer-friendly guide with working code and real examples.">
@@ -365,6 +365,7 @@ numProp.value = windowWidth;
 &lt;script&gt;
   const canvas = document.getElementById(&quot;riveCanvas&quot;);
 
+  // Initialize a new Rive instance with configuration
   const r = new rive.Rive({
     src: &quot;your_rive_file.riv&quot;,
     canvas: canvas,
@@ -414,32 +415,24 @@ numProp.value = windowWidth;
 &lt;/script&gt;
 </code></pre>
 
-          
                 <h3>Closing Thoughts</h3>
                 
-                <p>Responsive text is not really about math. It is about intent.</p>
+                <p>Responsive motion is no longer optional. Interfaces are expected to feel alive across every screen size, and that
+                  includes typography inside animations.</p>
                 
-                <p>When typography simply scales up and down, it loses hierarchy, rhythm, and meaning. What works on a large screen
-                  rarely works on a small one. That is why the web moved to breakpoints a long time ago.</p>
+                <p>Responsive text is not really about math. It is about intent. When typography only scales up and down, it quickly
+                  loses hierarchy and rhythm. What feels right on a large screen often falls apart on a small one. That is why the web
+                  moved to breakpoints in the first place.</p>
                 
-                <p>By passing the window width into Rive and letting the State Machine decide which layout to show, you get the same
-                  kind of control designers already expect from CSS. Each breakpoint becomes a deliberate design decision, not a side
-                  effect of scaling.</p>
+                <p>By passing the window width into Rive and letting the State Machine choose the right layout, you regain that same
+                  level of control. Each breakpoint becomes a design decision, not a side effect of scaling.</p>
                 
-                <p>This approach also respects how teams actually work. Designers stay in Rive, where layout and typography belong.
-                  Developers wire a single value and step out of the way. The animation becomes responsive by design, not by accident.
-                </p>
+                <p style="margin-bottom: 100px;">If responsive text in motion tools has ever felt harder than it should be, this
+                  approach is a reminder that it does not have to. With clear boundaries between layout logic and design intent,
+                  responsive motion starts to feel natural again.</p>
                 
-                <p>If you have ever felt that responsive text in motion tools was harder than it should be, this pattern is a reminder
-                  that it does not have to be. Sometimes the right solution is not more control, but clearer boundaries.</p>
-                
-                <p style="margin-bottom: 100px;">Once those boundaries are in place, responsive motion starts to feel natural again.</p>
-
-</div>
-              <!-- end post-body -->
-  
-  
-  
+                </div>
+                <!-- end post-body -->
               <div class="post-navigation">
                 <a href="referenced-fonts-in-rive.html">Using Referenced Fonts in Rive (A Guide for Designers)</a>
                 <a href="why-motion-matters-in-modern-ux.html">Why Motion Isn’t a “Nice-to-Have” in Modern UX Anymore</a>
