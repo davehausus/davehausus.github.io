@@ -23,26 +23,64 @@ document.querySelectorAll('.cta-contact').forEach(el => {
 });
 </script>
 <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "David de Jesús",
-    "jobTitle": "UI & Motion Designer",
-    "url": "https://davehausus.github.io",
-    "sameAs": [
-      "https://www.linkedin.com/in/davesigner"
-    ],
-    "knowsAbout": [
-      "Rive animations",
-      "Rive State Machine",
-      "Rive Data Bind",
-      "Lottie animations",
-      "UI Design",
-      "Motion Design", 
-      "Interaction Design"
-    ]
-  }
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://davehausus.github.io/#person",
+      "name": "David de Jesús",
+      "jobTitle": "UI & Motion Designer",
+      "url": "https://davehausus.github.io/",
+      "sameAs": [
+        "https://www.linkedin.com/in/davesigner"
+      ],
+      "knowsAbout": [
+        "Rive animations",
+        "Rive State Machine",
+        "Rive Data Bind",
+        "Lottie animations",
+        "UI Design",
+        "Motion Design",
+        "Interaction Design"
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://davehausus.github.io/#publisher",
+      "name": "Davehausus",
+      "url": "https://davehausus.github.io/",
+      "founder": {
+        "@id": "https://davehausus.github.io/#person"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://davehausus.github.io/#website",
+      "name": "Davehausus",
+      "url": "https://davehausus.github.io/",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://davehausus.github.io/#publisher"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://davehausus.github.io/#home",
+      "url": "https://davehausus.github.io/",
+      "name": "David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://davehausus.github.io/#website"
+      },
+      "about": {
+        "@id": "https://davehausus.github.io/#person"
+      }
+    }
+  ]
+}
 </script>
+
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -168,7 +206,7 @@ document.querySelectorAll('.cta-contact').forEach(el => {
         <li style="display: none;"><a href="#" onclick='window.open("david_de_jesus.pdf");return false;'>Resume</a></li>
         <li>
           <button type="contact" onclick="location.href='contact.html'">
-              <strong>Contact</strong>
+            <strong>Contact</strong>
           </button>
         </li>
       </ul>
@@ -372,7 +410,7 @@ document.querySelectorAll('.cta-contact').forEach(el => {
           <div class="custom-link"><a href="contact.html">Start Here</a> <span></span> <i></i>
           </div>
           <!-- end custom-link -->
-          </div>
+        </div>
         <!-- end career --> 
       </div>
       <!-- end col-12 -->
@@ -414,7 +452,8 @@ document.querySelectorAll('.cta-contact').forEach(el => {
           <ul>
             <li><a href="#">Terms & Conditions</a></li>
           </ul>
-          <span>© 2025 David de Jesus - All rights Reserved</span> </div>
+          <span>© 2025 David de Jesus - All rights Reserved</span>
+        </div>
         <!-- end sub-footer --> 
       </div>
       <!-- end col-12 --> 
@@ -432,11 +471,11 @@ document.querySelectorAll('.cta-contact').forEach(el => {
 <script src="js/imagesloaded.pkgd.min.js"></script> 
 <script src="js/isotope.min.js"></script> 
 <script src="js/swiper.min.js"></script> 
-<script src='js/TweenMax.min.js'></script> 
-<script src='js/odometer.min.js'></script> 
-<script src='js/fancybox.min.js'></script> 
-<script src='js/wow.min.js'></script> 
-<script src='js/scripts.js'></script> 
+<script src="js/TweenMax.min.js"></script> 
+<script src="js/odometer.min.js"></script> 
+<script src="js/fancybox.min.js"></script> 
+<script src="js/wow.min.js"></script> 
+<script src="js/scripts.js"></script> 
 
 <!-- Add this script at the bottom of your HTML, before the closing 'body' tag, after your existing scripts -->
 

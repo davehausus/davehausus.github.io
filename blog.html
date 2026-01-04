@@ -12,6 +12,44 @@
 	content_group: 'Blog'
   });
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://davehausus.github.io/blog.html",
+      "url": "https://davehausus.github.io/blog.html",
+      "name": "Blog",
+      "description": "Articles, guides, and experiments on UI design, motion, and Rive workflows.",
+      "isPartOf": {
+        "@id": "https://davehausus.github.io/#website"
+      },
+      "publisher": {
+        "@id": "https://davehausus.github.io/#publisher"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://davehausus.github.io/blog.html#breadcrumbs",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://davehausus.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://davehausus.github.io/blog.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -53,12 +91,9 @@
 <link rel="stylesheet" href="css/swiper.min.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
-
-
 </head>
+
 <body>
-
-
   <div class="preloader">
   <div class="inner">
   <figure class="logo"><img src="images/logo-light.png" alt="Image"></figure>
