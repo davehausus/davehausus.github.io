@@ -179,12 +179,7 @@
         let previousPrice = null;
 
         // Haptic feedback function (works on iOS and Android)
-        function triggerHaptic() {
-      if (!hapticEnabled) {
-        console.log("⚠️ Haptic not enabled yet - needs user interaction");
-        return;
-      }
-
+    function triggerHaptic() {
       try {
         // Modern Vibration API (works on most mobile browsers including iOS 16.4+)
         if ('vibrate' in navigator) {
@@ -197,24 +192,6 @@
         console.log("⚠️ Haptic feedback error:", error.message);
       }
     }
-
-    // Enable haptics on first user interaction
-    function enableHaptics() {
-      if (!hapticEnabled) {
-        hapticEnabled = true;
-        console.log("✅ Haptics enabled after user interaction");
-        // Test vibration
-        if ('vibrate' in navigator) {
-          navigator.vibrate(10);
-          console.log("📳 Test vibration sent");
-        }
-      }
-    }
-
-    // Listen for any user interaction to enable haptics
-    ['touchstart', 'touchend', 'click'].forEach(event => {
-      document.addEventListener(event, enableHaptics, { once: true });
-    });
 
         async function fetchHourlyData() {
           try {
