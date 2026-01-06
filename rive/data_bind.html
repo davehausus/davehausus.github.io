@@ -180,21 +180,41 @@
 
         // Haptic feedback function (works on iOS and Android)
         function triggerHaptic() {
-          try {
-            // Modern Vibration API (works on most mobile browsers)
-            if (navigator.vibrate) {
-              navigator.vibrate(50); // 50ms subtle vibration
-              console.log("📳 Haptic feedback triggered");
-            }
-            // iOS Safari fallback (Haptic Feedback API)
-            else if (window.Taptic && window.Taptic.vibrate) {
-              window.Taptic.vibrate();
-              console.log("📳 iOS Haptic feedback triggered");
-            }
-          } catch (error) {
-            console.log("⚠️ Haptic feedback not available on this device");
-          }
+      if (!hapticEnabled) {
+        console.log("⚠️ Haptic not enabled yet - needs user interaction");
+        return;
+      }
+
+      try {
+        // Modern Vibration API (works on most mobile browsers including iOS 16.4+)
+        if ('vibrate' in navigator) {
+          const success = navigator.vibrate(50); // 50ms subtle vibration
+          console.log("📳 Haptic feedback triggered:", success ? "Success" : "Failed");
+        } else {
+          console.log("⚠️ Vibration API not supported on this device");
         }
+      } catch (error) {
+        console.log("⚠️ Haptic feedback error:", error.message);
+      }
+    }
+
+    // Enable haptics on first user interaction
+    function enableHaptics() {
+      if (!hapticEnabled) {
+        hapticEnabled = true;
+        console.log("✅ Haptics enabled after user interaction");
+        // Test vibration
+        if ('vibrate' in navigator) {
+          navigator.vibrate(10);
+          console.log("📳 Test vibration sent");
+        }
+      }
+    }
+
+    // Listen for any user interaction to enable haptics
+    ['touchstart', 'touchend', 'click'].forEach(event => {
+      document.addEventListener(event, enableHaptics, { once: true });
+    });
 
         async function fetchHourlyData() {
           try {
@@ -256,12 +276,14 @@
               diffProp.value = diffFormatted;
               
               if (diffFormatted === "+$0.00" || diffFormatted === "-$0.00") {
-                showDiffProp.value = false;
-              } else {
-                showDiffProp.value = true;
-                // Trigger haptic ONLY when there's a price change AND it's not zero
+            showDiffProp.value = false;
+            console.log("  ↳ No change, hiding diff indicator");
+          } else {
+            showDiffProp.value = true;
+            console.log("  ↳ Price changed! Triggering haptic...");
+            // Trigger haptic ONLY when there's a price change AND it's not zero
             triggerHaptic();
-              }
+          }
             } else {
               diffProp.value = "";
               showDiffProp.value = false;
