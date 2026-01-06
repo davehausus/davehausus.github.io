@@ -179,12 +179,19 @@
         let previousPrice = null;
         let audioContext = null;
         let isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+        let isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+
+    // Check haptic capabilities
+    if (isIOS && !isStandalone) {
+      console.log("ℹ️ iOS Safari detected - haptics not available in browser");
+      console.log("💡 Add to Home Screen for haptic support");
+    }
 
         // Initialize audio context on first user interaction (required for iOS)
         function initAudioContext() {
           if (!audioContext && isIOS) {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            console.log("🔊 Audio context initialized for iOS haptics");
+            console.log("🔊 Audio context initialized");
           }
         }
 
@@ -196,8 +203,18 @@
     // Haptic feedback function (works on iOS and Android)
     function triggerHaptic() {
       try {
-        // iOS Safari - Use audio-based haptic trigger
+        // iOS - Try vibration API first (works in PWA mode)
         if (isIOS) {
+          // Try standard vibration API (may work in standalone mode)
+          if ('vibrate' in navigator) {
+            const success = navigator.vibrate(50);
+            if (success) {
+              console.log("📳 iOS Vibration API succeeded!");
+              return;
+            }
+          }
+
+          // Fallback to audio (always works but only produces sound)
           if (!audioContext) {
             console.log("⚠️ Audio context not initialized - tap screen first");
             initAudioContext(); // Try to init
@@ -226,7 +243,7 @@
           oscillator.start(audioContext.currentTime);
           oscillator.stop(audioContext.currentTime + 0.03); // 30ms
           
-          console.log("📳 iOS Haptic feedback triggered (audio method)");
+          console.log("🔊 Audio feedback triggered (haptics not available in Safari)");
           return;
         }
         
