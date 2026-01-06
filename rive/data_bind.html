@@ -164,7 +164,7 @@
         }
         
         if (!showDiffProp) {
-          console. error("❌ Boolean property 'showDiff' not found! Make sure it exists in View Model 1");
+          console.error("❌ Boolean property 'showDiff' not found! Make sure it exists in View Model 1");
           return;
         }
 
@@ -177,6 +177,24 @@
         console.log("🔗 Bound to all properties successfully!");
 
         let previousPrice = null;
+
+        // Haptic feedback function (works on iOS and Android)
+        function triggerHaptic() {
+          try {
+            // Modern Vibration API (works on most mobile browsers)
+            if (navigator.vibrate) {
+              navigator.vibrate(50); // 50ms subtle vibration
+              console.log("📳 Haptic feedback triggered");
+            }
+            // iOS Safari fallback (Haptic Feedback API)
+            else if (window.Taptic && window.Taptic.vibrate) {
+              window.Taptic.vibrate();
+              console.log("📳 iOS Haptic feedback triggered");
+            }
+          } catch (error) {
+            console.log("⚠️ Haptic feedback not available on this device");
+          }
+        }
 
         async function fetchHourlyData() {
           try {
@@ -237,10 +255,12 @@
               console.log("📊 Price Change:", diffFormatted);
               diffProp.value = diffFormatted;
               
-              if (diffFormatted === "+$0.00") {
+              if (diffFormatted === "+$0.00" || diffFormatted === "-$0.00") {
                 showDiffProp.value = false;
               } else {
                 showDiffProp.value = true;
+                // Trigger haptic ONLY when there's a price change AND it's not zero
+            triggerHaptic();
               }
             } else {
               diffProp.value = "";
