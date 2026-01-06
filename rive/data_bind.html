@@ -177,32 +177,56 @@
         console.log("🔗 Bound to all properties successfully!");
 
         let previousPrice = null;
+        let audioContext = null;
+        let isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
 
-        // Haptic feedback function (works on iOS and Android)
+        // Initialize audio context on first user interaction (required for iOS)
+        function initAudioContext() {
+          if (!audioContext && isIOS) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            console.log("🔊 Audio context initialized for iOS haptics");
+          }
+        }
+
+        // Listen for first user interaction
+        ['touchstart', 'click'].forEach(event => {
+          document.addEventListener(event, initAudioContext, { once: true });
+        });
+
+    // Haptic feedback function (works on iOS and Android)
     function triggerHaptic() {
       try {
-        // iOS Safari - Use AudioContext trick to trigger haptic feedback
-        // This works because iOS triggers haptic when playing certain audio patterns
-        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-          // Create a silent audio context that triggers iOS haptics
-          const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // iOS Safari - Use audio-based haptic trigger
+        if (isIOS) {
+          if (!audioContext) {
+            console.log("⚠️ Audio context not initialized - tap screen first");
+            initAudioContext(); // Try to init
+            return;
+          }
+
+          // Resume context if suspended (iOS requirement)
+          if (audioContext.state === 'suspended') {
+            audioContext.resume();
+          }
+
+          // Create short audio burst that triggers haptic
           const oscillator = audioContext.createOscillator();
           const gainNode = audioContext.createGain();
           
           oscillator.connect(gainNode);
           gainNode.connect(audioContext.destination);
           
-          // Set volume to nearly silent but not zero (this triggers haptic)
-          gainNode.gain.value = 0.01;
+          // Very brief, audible burst (iOS needs actual audio for haptics)
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.03);
           
-          oscillator.frequency.value = 200;
+          oscillator.frequency.value = 1000; // Higher frequency
           oscillator.type = 'sine';
           
-          const now = audioContext.currentTime;
-          oscillator.start(now);
-          oscillator.stop(now + 0.05); // 50ms duration
+          oscillator.start(audioContext.currentTime);
+          oscillator.stop(audioContext.currentTime + 0.03); // 30ms
           
-          console.log("📳 iOS Haptic feedback triggered");
+          console.log("📳 iOS Haptic feedback triggered (audio method)");
           return;
         }
         
