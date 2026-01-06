@@ -181,7 +181,32 @@
         // Haptic feedback function (works on iOS and Android)
     function triggerHaptic() {
       try {
-        // Modern Vibration API (works on most mobile browsers including iOS 16.4+)
+        // iOS Safari - Use AudioContext trick to trigger haptic feedback
+        // This works because iOS triggers haptic when playing certain audio patterns
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+          // Create a silent audio context that triggers iOS haptics
+          const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+          
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+          
+          // Set volume to nearly silent but not zero (this triggers haptic)
+          gainNode.gain.value = 0.01;
+          
+          oscillator.frequency.value = 200;
+          oscillator.type = 'sine';
+          
+          const now = audioContext.currentTime;
+          oscillator.start(now);
+          oscillator.stop(now + 0.05); // 50ms duration
+          
+          console.log("📳 iOS Haptic feedback triggered");
+          return;
+        }
+        
+        // Android and other devices - Standard Vibration API
         if ('vibrate' in navigator) {
           const success = navigator.vibrate(50); // 50ms subtle vibration
           console.log("📳 Haptic feedback triggered:", success ? "Success" : "Failed");
