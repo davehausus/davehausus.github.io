@@ -229,7 +229,7 @@ window.addEventListener('load', () => {
       </div>
       <!-- end col-8 -->
 
-    <div class="col-8">
+    <div class="col-lg-8">
       <div class="post-body wow fadeIn">
         <h3>The Challenge</h3>
         <h5>A fast sport demands fast input</h5>
@@ -327,8 +327,8 @@ window.addEventListener('load', () => {
     <div class="col-12">
       <div class="post-body wow fadeIn">
         <h5>BRAND IDENTITY THAT REFLECTS MOTION + PRECISION</h5>
-        <p>I created a brand that feels athletic but modern — energetic yet minimal. The identity supports the product without
-          overpowering it, letting the data remain the hero.</p>
+        <p>I designed a brand that feels athletic and modern, energetic yet minimal. The identity supports the product without
+          overpowering it, allowing the data to remain the hero.</p>
       </div>
       <!-- end post-body -->
     </div>
@@ -373,7 +373,7 @@ window.addEventListener('load', () => {
           <li>Cleaner visuals</li>
           <li>Smarter defaults</li>
         </ul>
-      <p>Athlytix became a project that reinforced one of my core design beliefs: if the interface slows you down, it’s
+      <p style="margin-bottom: 100px;">Athlytix became a project that reinforced one of my core design beliefs: if the interface slows you down, it’s
         broken.</p>
     </div>
 		<!-- end col-8 -->
@@ -419,11 +419,11 @@ window.addEventListener('load', () => {
       </div>
       <script>
         const emojiLines = [
-          "Motion or no motion — even your emojis tell a story.",
+          "Motion or no motion, even your emojis tell a story.",
           "Static email, animated energy. Emojis totally allowed.",
           "If emojis had easing curves, I’d accept those too.",
           "You can write me a full paragraph or just drop a 😎.",
-          "Questions, ideas, or just a random emoji — send it my way.",
+          "Got questions, ideas, or a random emoji? Send it my way.",
           "No need to be formal. Emojis are perfectly acceptable.",
           "Short message? Long message? Emoji-only message? All good."
         ];
@@ -437,7 +437,10 @@ window.addEventListener('load', () => {
           <ul>
             <li><a href="#">Terms & Conditions</a></li>
           </ul>
-          <span>© 2025 David de Jesus - All rights Reserved</span> </div>
+          <span id="copyright-year">© 2025 David de Jesus - All rights Reserved</span> </div>
+          <script>
+            document.getElementById('copyright-year').textContent = `© ${new Date().getFullYear()} David de Jesus - All rights Reserved`;
+          </script>
         <!-- end sub-footer --> 
       </div>
       <!-- end col-12 --> 

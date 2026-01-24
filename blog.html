@@ -346,11 +346,11 @@
       </div>
       <script>
         const emojiLines = [
-          "Motion or no motion — even your emojis tell a story.",
+          "Motion or no motion, even your emojis tell a story.",
           "Static email, animated energy. Emojis totally allowed.",
           "If emojis had easing curves, I’d accept those too.",
           "You can write me a full paragraph or just drop a 😎.",
-          "Questions, ideas, or just a random emoji — send it my way.",
+          "Got questions, ideas, or a random emoji? Send it my way.",
           "No need to be formal. Emojis are perfectly acceptable.",
           "Short message? Long message? Emoji-only message? All good."
         ];
@@ -364,7 +364,10 @@
           <ul>
             <li><a href="#">Terms & Conditions</a></li>
           </ul>
-          <span>© 2025 David de Jesus - All rights Reserved</span> </div>
+          <span id="copyright-year">© 2025 David de Jesus - All rights Reserved</span> </div>
+          <script>
+            document.getElementById('copyright-year').textContent = `© ${new Date().getFullYear()} David de Jesus - All rights Reserved`;
+          </script>
         <!-- end sub-footer --> 
       </div>
       <!-- end col-12 --> 
