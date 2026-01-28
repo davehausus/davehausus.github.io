@@ -1,38 +1,46 @@
 /* CUSTOM FONTS */
 
+/* Josefin Sans - Variable fonts */
 @font-face {
-	font-family: 'Mont';
-	src: url('../fonts/Mont-Regular.eot');
-	src: local('☺'), 
-		url('../fonts/Mont-Regular.woff') format('woff'), 
-		url('../fonts/Mont-Regular.ttf') format('truetype'), 
-		url('../fonts/Mont-Regular.svg') format('svg');
-	font-weight: 400;
+	font-family: 'Josefin Sans';
+	src: url('../fonts/Josefin_Sans/JosefinSans-VariableFont_wght.ttf') format('truetype-variations');
+	font-weight: 100 700;
 	font-style: normal;
+	font-display: swap;
 }
 
-
 @font-face {
-	font-family: 'Mont';
-	src: url('../fonts/Mont-Bold.eot');
-	src: local('☺'), 
-		url('../fonts/Mont-Bold.woff') format('woff'), 
-		url('../fonts/Mont-Bold.ttf') format('truetype'), 
-		url('../fonts/Mont-Bold.svg') format('svg');
-	font-weight: 600;
-	font-style: normal;
+	font-family: 'Josefin Sans';
+	src: url('../fonts/Josefin_Sans/JosefinSans-Italic-VariableFont_wght.ttf') format('truetype-variations');
+	font-weight: 100 700;
+	font-style: italic;
+	font-display: swap;
 }
 
+/* Jost - Variable fonts */
+@font-face {
+	font-family: 'Jost';
+	src: url('../fonts/Jost/Jost-VariableFont_wght.ttf') format('truetype-variations');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
 
 @font-face {
-	font-family: 'Mont';
-	src: url('../fonts/Mont-Heavy.eot');
-	src: local('☺'), 
-		url('../fonts/Mont-Heavy.woff') format('woff'), 
-		url('../fonts/Mont-Heavy.ttf') format('truetype'), 
-		url('../fonts/Mont-Heavy.svg') format('svg');
-	font-weight: 800;
+	font-family: 'Jost';
+	src: url('../fonts/Jost/Jost-Italic-VariableFont_wght.ttf') format('truetype-variations');
+	font-weight: 100 900;
+	font-style: italic;
+	font-display: swap;
+}
+
+/* Outfit - Variable fonts */
+@font-face {
+	font-family: 'Outfit';
+	src: url('../fonts/Outfit/Outfit-VariableFont_wght.ttf') format('truetype-variations');
+	font-weight: 100 900;
 	font-style: normal;
+	font-display: swap;
 }
 
 
@@ -67,7 +75,7 @@ $color-dark : #010e19;
 // h6
 @mixin eyebrow-gradient {
   @include fluid-type(20, 25, 480, 1500);
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1;
   margin: 0;
   padding-bottom: 20px;
@@ -82,7 +90,7 @@ $color-dark : #010e19;
 
 /* BODY */
 *{outline: none !important;}
-body{margin: 0; padding-left:150px; padding-right: 50px; font-family: 'Mont'; font-size: 17px; color:$color-dark;  @include transition-bg; @include font-render;}
+body{margin: 0; padding-left:150px; padding-right: 50px; font-family: 'Outfit'; font-size: 20px; color:$color-dark;  @include transition-bg; @include font-render;}
 
 
 /* LINKS */ 
@@ -92,7 +100,7 @@ a:active{text-decoration: underline;}
 
 /* HTML ELEMENTS */
 img{max-width: 100%;}
-p{line-height: 1.5;}
+p{line-height: 1.4;}
 
 
 /* FORM ELEMENTS */
@@ -120,7 +128,7 @@ button[type="contact"]{ background-color: #F95738;
 	display: block;
 	transition: all 0.50s ease;
 	&:hover{background-color: #F3A712;}
-	strong{justify-content: center; align-content: center; font-size: 15px; font-weight: 600; padding: 0 30px; color: #fff;
+	strong{justify-content: center; align-content: center; font-size: 17px; font-weight: 600; padding: 0 30px; color: #fff;
 		&:hover{text-decoration: none;}}}
 
 
@@ -134,7 +142,7 @@ button[type="contact"]{ background-color: #F95738;
 .color-dark { background-color: $color-dark;
 	.left-side ul{ width: 100vh; line-height: 1; display: block; margin: 0; margin-top:50vh; margin-left: -9px; padding: 0; transform: rotate(-90deg); transform-origin: 0 0; position: absolute; left: 50%; top: 50%; text-align: center;
 		li{display: inline-block; margin: 0 10px; padding: 0; list-style: none;
-			a{display: block; font-size: 13px; font-weight: 600; position: relative; padding: 0 2px; color: #fff;
+			a{display: block; font-size: 14px; font-weight: 800; position: relative; padding: 0 2px; color: #fff;
 				&:hover{ text-decoration: none;}
 			&:before { content: ''; display: block; position: absolute; left: 0; bottom: 6px; height: 1px; width: 0; transition: width 0s ease, background .25s ease;}
 			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 6px; height: 1px; width: 0; background: #fff; transition: width .25s ease;}
@@ -209,7 +217,7 @@ button[type="contact"]{ background-color: #F95738;
 		.side-menu{ width: 100%; float: right; display: none;
 			ul{float: right; margin: 0; padding: 0; text-align: right;
 			li{display: block; list-style: none; margin-bottom: 5px;
-				a{font-size: 8vw; color: #fff; font-weight: 600;}}}}
+				a{font-size: 9vw; color: #fff; font-weight: 600;}}}}
 		.sides{flex: 1; display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center;
 			&:last-child{padding-left: 50px;}}
 		h2{ display: block; margin-bottom: 20px; line-height: 1.7; font-size: 25px; 
@@ -247,7 +255,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 /* CUSTOM LINK */
 .custom-link{ display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap; -ms-flex-align: center; align-items: center; -ms-flex-pack: justify; justify-content: space-between;
 	*{@include transition;}
-	a{display: inline-block; margin-right: 15px; font-size: 13px; font-weight: 600; text-transform: uppercase;
+	a{display: inline-block; margin-right: 15px; font-size: 13px; font-weight: 800; text-transform: uppercase;
 		&:hover{text-decoration: none;}}
 		span{width: 20px; height: 1px; background: $color-dark; display: inline-block; margin: 0; }
 		i{width: 0; height: 0; display: inline-block; margin-left: 0; margin-right: auto; border-style: solid; border-width: 4px 0 4px 4px; border-color: transparent transparent transparent $color-dark; opacity: 1;}
@@ -271,7 +279,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 .header{width: 100%; display: flex; flex-wrap: wrap; flex-direction: column;
 	.navbar{width: 100%; margin-bottom: 0;}
 	.page-title{ width: 100%; margin-bottom: 100px; margin-top: 50px;
-		h2{font-weight: 700; font-size: 8vw; margin-bottom: 20px;}
+		h2{font-weight: 800; font-size: 8vw; margin-bottom: 20px;}
 		h4{ padding-right: 40%; line-height: 1.7;}}
 	.headlines{ width: 100%; margin-bottom: 50px; margin-top: 40px;
 		h1:not(.post-title) {@include fluid-type(45, 120, 480, 1500); font-weight: 800; line-height: 1.05; margin: 0; padding-bottom:7px;
@@ -287,7 +295,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		h2{@include fluid-type(25, 72, 480, 1500); font-weight: 600; line-height: 1; margin: 0; padding-bottom:5px; }
 		h3{@include fluid-type(28, 62, 480, 1500); font-weight: 400; line-height: 1.15; margin: 0; padding-bottom:5px; }
 		h4{@include fluid-type(38, 52, 480, 1500); font-weight: 800; line-height: 1; margin: 0; padding-bottom:0; color:#152230;}
-		h5{@include fluid-type(21, 34, 480, 1500); font-weight: 400; line-height: 1; margin: 50px 0 0; padding-bottom:5px;
+		h5{@include fluid-type(21, 34, 480, 1500); font-weight: 300; line-height: 1; margin: 50px 0 0; padding-bottom:5px;
 			p{ margin: 0 0 50px;}}
 		h6{@include eyebrow-gradient;
 		}}}
@@ -323,7 +331,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	.main-menu{margin-left: auto;
 		ul{ margin: 0; padding: 0;
 			li{display: inline-block; margin: 0 18px; padding: 0;
-				a{display: block; font-size: 15px; font-weight: 600; position: relative; padding: 0 2px;
+				a{display: block; font-size: 17px; font-weight: 600; position: relative; padding: 0 2px;
 				&:hover{ text-decoration: none;}
 			&:before { content: ''; display: block; position: absolute; left: 0; bottom: 9px; height: 1px; width: 0; transition: width 0s ease, background .25s ease;}
 			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 9px; height: 1px; width: 0; background: $color-dark; transition: width .25s ease;}
@@ -341,7 +349,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		&.sticky{opacity: 1; transform: translateY(0);}}
 	ul{ width: 100vh; line-height: 1; display: block; margin: 0; margin-top:50vh; margin-left: -9px; padding: 0; transform: rotate(-90deg); transform-origin: 0 0; position: absolute; left: 50%; top: 50%; text-align: center;
 		li{display: inline-block; margin: 0 10px; padding: 0; list-style: none;
-			a{display: block; font-size: 13px; font-weight: 600; position: relative; padding: 0 2px;
+			a{display: block; font-size: 14px; font-weight: 800; position: relative; padding: 0 2px;
 				&:hover{ text-decoration: none;}
 			&:before { content: ''; display: block; position: absolute; left: 0; bottom: 6px; height: 1px; width: 0; transition: width 0s ease, background .25s ease;}
 			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 6px; height: 1px; width: 0; background: $color-dark; transition: width .25s ease;}
@@ -470,7 +478,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		transition: all 0.10s ease;
 		}
 	h6{font-size: 16px; font-weight: 600; margin-bottom: 5px;}
-	h5{font-size: 20px; font-weight: 600; margin-bottom: 15px;}
+	h5{font-size: 20px; font-weight: 900; margin-bottom: 15px;}
 	h3{font-size: 50px; font-weight: 800; margin-top: 100px;}
 	p{display: block; padding-right: 35px;}}
 
@@ -588,7 +596,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		p{display: block; margin-bottom: 0px;}
 		h5{font-weight: 600; margin: 0; margin-bottom: 15px;}}}
 .post-body{width: 100%; margin-bottom: 50px;
-			.avatar{width: 100%; margin-bottom: 20px; font-size: 13px;
+			.avatar{width: 100%; margin-bottom: 20px; font-size: 14px;
 				img{ height: 60px; margin-right: 20px; border-radius: 50%;}
 				a{text-decoration: underline;}}
 			.post-title{display: block; margin-bottom: 15px; font-weight: 700; font-size: 3vw;}
@@ -622,13 +630,13 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		.post-image{width: 100%; margin-bottom: 30px;
 			img{width: 100%;}}
 		.post-content{width: 100%; margin: 0;
-			.avatar{width: 100%; margin-bottom: 20px; font-size: 13px;
+			.avatar{width: 100%; margin-bottom: 20px; font-size: 14px;
 				img{ height: 60px; margin-right: 20px; border-radius: 50%;}
 				a{text-decoration: underline;}}
-			.post-title{display: block; margin-bottom: 15px; font-weight: 700; font-size: 3vw;}
+			.post-title{display: block; margin-bottom: 15px; font-weight: 800; font-size: 3.4vw;}
 			.post-date{display: block; margin-bottom: 30px; opacity: 0.5;}
-			.post-intro{display: block; margin-bottom: 20px; font-size: 18px; line-height: 1.7;}
-			.post-link{display: inline-block; font-weight: 700; padding-bottom: 8px; position: relative;
+			.post-intro{display: block; margin-bottom: 20px; font-size: 21px; line-height: 1.5;}
+			.post-link{display: inline-block; font-size: 16px; font-weight: 800; padding-bottom: 8px; position: relative;
 				&:hover{text-decoration: none;
 					&:after{width: 0;}}
 				&:before{content: ""; width: 100%; height: 3px; background: #eee; position: absolute; left: 0; bottom: 0;}
@@ -715,11 +723,11 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 /* FOOTER */
 .footer{width: 100%; display: flex; flex-wrap: wrap; padding: 150px 0; 
 	.career{display: block; border-bottom: 1px solid rgba(40,40,40,0.1); padding-bottom: 100px; margin-bottom: 100px;
-	h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px;}
+	h6{ font-size: 17px; font-weight: 700; margin-bottom: 20px;}
 	h2{font-size: 3vw; font-weight: 800; margin-bottom: 50px; }}
 	.logo{display: block; margin: 0;
 		img{height: 42px;}}
-	h5{font-size: 15px; font-weight: 600; margin-bottom: 20px;}
+	h5{font-size: 17px; font-weight: 800; margin-bottom: 20px;}
 	.extra{ width: 100%; display: flex; flex-wrap: wrap; margin-bottom:1rem;
 		a{display: block; position: relative;
 				&:hover{ text-decoration: none;}
@@ -727,7 +735,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 11px; height: 1px; width: 0; background: $color-dark; transition: width .25s ease;}
 			&:hover:before { width: 100%; background: $color-dark; transition: width .25s ease;}
 			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}}}
-	.sub-footer{ width: 100%; display: flex; flex-wrap: wrap; margin-top: 100px; font-size: 13px;
+	.sub-footer{ width: 100%; display: flex; flex-wrap: wrap; margin-top: 100px; font-size: 15px;
 		ul{display: inline-block;  margin-left: 0; margin-right: auto; margin-bottom: 0; padding: 0;
 			li{display: inline-block; margin-right: 20px; padding: 0; list-style: none;
 			a{display: block; position: relative; padding: 0 2px;

@@ -1,25 +1,41 @@
-@charset "UTF-8";
 /* CUSTOM FONTS */
+/* Josefin Sans - Variable fonts */
 @font-face {
-  font-family: "Mont";
-  src: url("../fonts/Mont-Regular.eot");
-  src: local("☺"), url("../fonts/Mont-Regular.woff") format("woff"), url("../fonts/Mont-Regular.ttf") format("truetype"), url("../fonts/Mont-Regular.svg") format("svg");
-  font-weight: 400;
+  font-family: "Josefin Sans";
+  src: url("../fonts/Josefin_Sans/JosefinSans-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 700;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
-  font-family: "Mont";
-  src: url("../fonts/Mont-Bold.eot");
-  src: local("☺"), url("../fonts/Mont-Bold.woff") format("woff"), url("../fonts/Mont-Bold.ttf") format("truetype"), url("../fonts/Mont-Bold.svg") format("svg");
-  font-weight: 600;
+  font-family: "Josefin Sans";
+  src: url("../fonts/Josefin_Sans/JosefinSans-Italic-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 700;
+  font-style: italic;
+  font-display: swap;
+}
+/* Jost - Variable fonts */
+@font-face {
+  font-family: "Jost";
+  src: url("../fonts/Jost/Jost-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
-  font-family: "Mont";
-  src: url("../fonts/Mont-Heavy.eot");
-  src: local("☺"), url("../fonts/Mont-Heavy.woff") format("woff"), url("../fonts/Mont-Heavy.ttf") format("truetype"), url("../fonts/Mont-Heavy.svg") format("svg");
-  font-weight: 800;
+  font-family: "Jost";
+  src: url("../fonts/Jost/Jost-Italic-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+/* Outfit - Variable fonts */
+@font-face {
+  font-family: "Outfit";
+  src: url("../fonts/Outfit/Outfit-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
   font-style: normal;
+  font-display: swap;
 }
 /* BODY */
 * {
@@ -30,8 +46,8 @@ body {
   margin: 0;
   padding-left: 150px;
   padding-right: 50px;
-  font-family: "Mont";
-  font-size: 17px;
+  font-family: "Outfit";
+  font-size: 20px;
   color: #010e19;
   transition: all 0.4s ease-in-out;
   -webkit-font-smoothing: antialiased;
@@ -60,7 +76,7 @@ img {
 }
 
 p {
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 /* FORM ELEMENTS */
@@ -158,7 +174,7 @@ button[type=contact]:hover {
 button[type=contact] strong {
   justify-content: center;
   align-content: center;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   padding: 0 30px;
   color: #fff;
@@ -200,8 +216,8 @@ button[type=contact] strong:hover {
 }
 .color-dark .left-side ul li a {
   display: block;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 800;
   position: relative;
   padding: 0 2px;
   color: #fff;
@@ -531,7 +547,7 @@ button[type=contact] strong:hover {
   margin-bottom: 5px;
 }
 .navigation-menu .inner .side-menu ul li a {
-  font-size: 8vw;
+  font-size: 9vw;
   color: #fff;
   font-weight: 600;
 }
@@ -681,7 +697,7 @@ button[type=contact] strong:hover {
   display: inline-block;
   margin-right: 15px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 800;
   text-transform: uppercase;
 }
 .custom-link a:hover {
@@ -789,7 +805,7 @@ button[type=contact] strong:hover {
   margin-top: 50px;
 }
 .header .page-title h2 {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 8vw;
   margin-bottom: 20px;
 }
@@ -881,7 +897,7 @@ button[type=contact] strong:hover {
 }
 .header .headlines h5 {
   font-size: 21px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1;
   margin: 50px 0 0;
   padding-bottom: 5px;
@@ -901,7 +917,7 @@ button[type=contact] strong:hover {
 }
 .header .headlines h6 {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1;
   margin: 0;
   padding-bottom: 20px;
@@ -944,7 +960,7 @@ button[type=contact] strong:hover {
 
 .eyebrow {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1;
   margin: 0;
   padding-bottom: 20px;
@@ -1020,7 +1036,7 @@ button[type=contact] strong:hover {
 }
 .navbar .main-menu ul li a {
   display: block;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   position: relative;
   padding: 0 2px;
@@ -1112,8 +1128,8 @@ button[type=contact] strong:hover {
 }
 .left-side ul li a {
   display: block;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 800;
   position: relative;
   padding: 0 2px;
 }
@@ -1555,7 +1571,7 @@ button[type=contact] strong:hover {
 }
 .case-detail h5 {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 900;
   margin-bottom: 15px;
 }
 .case-detail h3 {
@@ -1984,7 +2000,7 @@ button[type=contact] strong:hover {
 .post-body .avatar {
   width: 100%;
   margin-bottom: 20px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .post-body .avatar img {
   height: 60px;
@@ -2128,7 +2144,7 @@ button[type=contact] strong:hover {
 .blog .post .post-content .avatar {
   width: 100%;
   margin-bottom: 20px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .blog .post .post-content .avatar img {
   height: 60px;
@@ -2141,8 +2157,8 @@ button[type=contact] strong:hover {
 .blog .post .post-content .post-title {
   display: block;
   margin-bottom: 15px;
-  font-weight: 700;
-  font-size: 3vw;
+  font-weight: 800;
+  font-size: 3.4vw;
 }
 .blog .post .post-content .post-date {
   display: block;
@@ -2152,12 +2168,13 @@ button[type=contact] strong:hover {
 .blog .post .post-content .post-intro {
   display: block;
   margin-bottom: 20px;
-  font-size: 18px;
-  line-height: 1.7;
+  font-size: 21px;
+  line-height: 1.5;
 }
 .blog .post .post-content .post-link {
   display: inline-block;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 800;
   padding-bottom: 8px;
   position: relative;
 }
@@ -2542,7 +2559,7 @@ button[type=contact] strong:hover {
 }
 .footer .career h6 {
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 20px;
 }
 .footer .career h2 {
@@ -2558,8 +2575,8 @@ button[type=contact] strong:hover {
   height: 42px;
 }
 .footer h5 {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 800;
   margin-bottom: 20px;
 }
 .footer .extra {
@@ -2611,7 +2628,7 @@ button[type=contact] strong:hover {
   display: flex;
   flex-wrap: wrap;
   margin-top: 100px;
-  font-size: 13px;
+  font-size: 15px;
 }
 .footer .sub-footer ul {
   display: inline-block;
