@@ -366,7 +366,7 @@ button[type=contact] strong:hover {
   -webkit-transition-duration: 500ms;
   transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
   -webkit-transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
-  z-index: 99;
+  z-index: 9999;
   transition-delay: 0.65s;
 }
 .preloader * {
@@ -432,6 +432,7 @@ button[type=contact] strong:hover {
 .page-loaded.preloader {
   left: calc(-100% - 200px);
   visibility: hidden;
+  pointer-events: none;
 }
 
 .page-loaded.preloader .logo {
@@ -699,6 +700,7 @@ button[type=contact] strong:hover {
   font-size: 13px;
   font-weight: 800;
   text-transform: uppercase;
+  letter-spacing: 0.2em;
 }
 .custom-link a:hover {
   text-decoration: none;
@@ -1173,7 +1175,17 @@ button[type=contact] strong:hover {
   position: absolute;
   left: 50px;
   bottom: 35px;
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  transform: translateY(10px);
+}
+.left-side .gotop.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 .left-side .gotop img {
   display: block;
@@ -1249,6 +1261,7 @@ button[type=contact] strong:hover {
   color: #fff;
   font-size: 13px;
   position: relative;
+  letter-spacing: 0.1em;
 }
 .slider .swiper-container .slide-inner .link a:before {
   content: "";
@@ -1361,7 +1374,7 @@ button[type=contact] strong:hover {
 .swiper-pagination-bullet.swiper-pagination-bullet-active svg circle {
   animation-play-state: running;
   stroke-width: 3px;
-  animation: countdown 6s linear forwards;
+  animation: countdown 5.5s linear forwards;
 }
 
 .swiper-pagination-bullet svg circle {
@@ -2058,6 +2071,7 @@ button[type=contact] strong:hover {
 .post-body h3 {
   font-size: 50px;
   font-weight: 800;
+  line-height: 1;
   margin-top: 100px;
   margin-bottom: 15px;
 }
@@ -2559,7 +2573,7 @@ button[type=contact] strong:hover {
 }
 .footer .career h6 {
   font-size: 17px;
-  font-weight: 700;
+  letter-spacing: 0.2em;
   margin-bottom: 20px;
 }
 .footer .career h2 {

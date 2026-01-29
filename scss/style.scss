@@ -155,7 +155,6 @@ button[type="contact"]{ background-color: #F95738;
 .overflow{overflow: hidden;}
 
 
-
 /* ODOMETER */
 .odometer { line-height: 1; 
 	.odometer-digit {  padding: 0;}
@@ -182,7 +181,7 @@ button[type="contact"]{ background-color: #F95738;
 
 
 /* PRELOADER */
-.preloader{  position:fixed; top:0; left:0; margin:auto; width:100vw; height:100vh; background:$color-dark; opacity:1; @include transition-cubic; z-index:99;  transition-delay: 0.65s;
+.preloader{  position:fixed; top:0; left:0; margin:auto; width:100vw; height:100vh; background:$color-dark; opacity:1; @include transition-cubic; z-index: 9999;  transition-delay: 0.65s;
 	*{ @include transition-cubic;}
 	&:before{content: ""; width: 0; height: 0; border-style: solid; border-width: 0 200px 100vh 0; border-color: transparent $color-dark transparent transparent; position: absolute; left: -200px; top: 0; }
 	&:after{content: ""; width: 0; height: 0; border-style: solid; border-width:  100vh 0 0 200px; border-color: transparent transparent transparent $color-dark; position: absolute; right: -200px; top: 0; }
@@ -192,7 +191,7 @@ button[type="contact"]{ background-color: #F95738;
 	.percentage{ width: 100%; font-size: 70vh; line-height: 1; font-weight: 800; color: #F95738; position: absolute; top: 50%; transform: translateY(-50%); text-align: center; opacity: 0.15; transition-delay: 0.10s;}}}
 
 
-.page-loaded.preloader{ left: calc(-100% - 200px); visibility: hidden;}
+.page-loaded.preloader{ left: calc(-100% - 200px); visibility: hidden; pointer-events: none;}
 .page-loaded.preloader .logo{ transform: translateX(-100px); opacity: 0;}
 .page-loaded.preloader .percentage{ margin-left: 100px; opacity: 0;}
 
@@ -255,7 +254,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 /* CUSTOM LINK */
 .custom-link{ display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap; -ms-flex-align: center; align-items: center; -ms-flex-pack: justify; justify-content: space-between;
 	*{@include transition;}
-	a{display: inline-block; margin-right: 15px; font-size: 13px; font-weight: 800; text-transform: uppercase;
+	a{display: inline-block; margin-right: 15px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em;
 		&:hover{text-decoration: none;}}
 		span{width: 20px; height: 1px; background: $color-dark; display: inline-block; margin: 0; }
 		i{width: 0; height: 0; display: inline-block; margin-left: 0; margin-right: auto; border-style: solid; border-width: 4px 0 4px 4px; border-color: transparent transparent transparent $color-dark; opacity: 1;}
@@ -355,8 +354,28 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 6px; height: 1px; width: 0; background: $color-dark; transition: width .25s ease;}
 			&:hover:before { width: 100%; background: $color-dark; transition: width .25s ease;}
 			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}}}}
-	.gotop{width: 50px; padding: 14px; position: absolute; left: 50px; bottom: 35px; display: none;
-		img{ display: block;}}}
+	.gotop{
+		width: 50px; 
+		padding: 14px; 
+		position: absolute; 
+		left: 50px; 
+		bottom: 35px;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+		transform: translateY(10px);
+		
+		&.visible {
+			opacity: 1;
+			visibility: visible;
+			pointer-events: auto;
+			transform: translateY(0);
+		}
+		
+		img{ display: block;}
+	}
+}
 
 
 /* SLIDER */
@@ -372,7 +391,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		img{ max-width: 200px;}}
 		h2{ font-size: 52px; font-weight: 600; color: #fff; margin-left: -3px;}
 		.link{display: block; margin-top: 20px;
-			a{display: inline-block; font-weight: 600; color: #fff; font-size: 13px; position: relative;
+			a{display: inline-block; font-weight: 600; color: #fff; font-size: 13px; position: relative; letter-spacing: 0.1em;
 				&:before{content: ""; width: 100%; height: 6px; background: #F3A712; position: absolute; left: 0; bottom: 0; opacity: 0.4;}
 				&:after{content: ""; width: 0; height: 6px; background: #F3A712; position: absolute; right: 0; bottom: 0; @include transition;}
 				&:hover{text-decoration: none;}
@@ -392,7 +411,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 .swiper-pagination-bullet-active { color:#fff; background: none;
 	&:after{content: ""; width: 14px; height: 14px; border-radius: 50%; background: #fff; position: absolute; left: 50%; top: 50%; margin-left: -7px; margin-top: -7px;}}
 .swiper-pagination-bullet svg { position: absolute; top: 0; right: 0; width: 40px; height: 40px; transform: rotateY(-180deg) rotateZ(-90deg); }
-.swiper-pagination-bullet.swiper-pagination-bullet-active svg circle{animation-play-state: running; stroke-width: 3px; animation: countdown 6s linear forwards;}
+.swiper-pagination-bullet.swiper-pagination-bullet-active svg circle{animation-play-state: running; stroke-width: 3px; animation: countdown 5.5s linear forwards;}
 .swiper-pagination-bullet svg circle { stroke-dasharray: 113px; stroke-dashoffset: 0px; stroke-linecap: round; stroke-width: 0; stroke: #fff; fill: none; animation: none; animation-play-state: paused; animation-fill-mode:none;
 }
 
@@ -608,7 +627,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 		img{width: 100%;}}
 	.image-full{ width: 100%; display: inline-block; margin: 30px 0;
 		img{width: 100%;}}
-	h3{font-size: 50px; font-weight: 800; margin-top: 100px; margin-bottom: 15px;}
+	h3{font-size: 50px; font-weight: 800; line-height: 1; margin-top: 100px; margin-bottom: 15px;}
 	h5{font-weight: 600; margin-top: 15px; margin-bottom: 15px;}
 	ul{ padding-left: 20px; margin-bottom: 30px;
 		li{margin-bottom: 5px;}}
@@ -723,7 +742,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 /* FOOTER */
 .footer{width: 100%; display: flex; flex-wrap: wrap; padding: 150px 0; 
 	.career{display: block; border-bottom: 1px solid rgba(40,40,40,0.1); padding-bottom: 100px; margin-bottom: 100px;
-	h6{ font-size: 17px; font-weight: 700; margin-bottom: 20px;}
+	h6{ font-size: 17px; letter-spacing: 0.2em; margin-bottom: 20px;}
 	h2{font-size: 3vw; font-weight: 800; margin-bottom: 50px; }}
 	.logo{display: block; margin: 0;
 		img{height: 42px;}}
