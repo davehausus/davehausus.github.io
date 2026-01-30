@@ -28,17 +28,19 @@ document.querySelectorAll('.cta-contact').forEach(el => {
   "@graph": [
     {
       "@type": "Person",
-      "@id": "https://davehausus.github.io/#person",
+      "@id": "https://daviddejesus.me/#person",
       "name": "David de Jesús",
-      "jobTitle": "UI & Motion Designer",
-      "url": "https://davehausus.github.io/",
+      "jobTitle": "Senior UI & Motion Designer",
+      "url": "https://daviddejesus.me/",
+      "image": "https://daviddejesus.me/images/avatar.png",
       "sameAs": [
-        "https://www.linkedin.com/in/david-d-jesus"
+        "https://www.linkedin.com/in/david-d-jesus",
+        "https://github.com/davehausus"
       ],
       "knowsAbout": [
         "Rive animations",
-        "Rive State Machine",
-        "Rive Data Bind",
+        "Rive State Machines",
+        "Rive Data Binding",
         "Lottie animations",
         "UI Design",
         "Motion Design",
@@ -46,35 +48,26 @@ document.querySelectorAll('.cta-contact').forEach(el => {
       ]
     },
     {
-      "@type": "Organization",
-      "@id": "https://davehausus.github.io/#publisher",
-      "name": "Davehausus",
-      "url": "https://davehausus.github.io/",
-      "founder": {
-        "@id": "https://davehausus.github.io/#person"
-      }
-    },
-    {
       "@type": "WebSite",
-      "@id": "https://davehausus.github.io/#website",
-      "name": "Davehausus",
-      "url": "https://davehausus.github.io/",
+      "@id": "https://daviddejesus.me/#website",
+      "name": "David de Jesús",
+      "url": "https://daviddejesus.me/",
       "inLanguage": "en",
       "publisher": {
-        "@id": "https://davehausus.github.io/#publisher"
+        "@id": "https://daviddejesus.me/#person"
       }
     },
     {
       "@type": "WebPage",
-      "@id": "https://davehausus.github.io/#home",
-      "url": "https://davehausus.github.io/",
+      "@id": "https://daviddejesus.me/#home",
+      "url": "https://daviddejesus.me/",
       "name": "David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist",
       "inLanguage": "en",
       "isPartOf": {
-        "@id": "https://davehausus.github.io/#website"
+        "@id": "https://daviddejesus.me/#website"
       },
       "about": {
-        "@id": "https://davehausus.github.io/#person"
+        "@id": "https://daviddejesus.me/#person"
       }
     }
   ]
@@ -96,22 +89,24 @@ document.querySelectorAll('.cta-contact').forEach(el => {
 
 <!-- SOCIAL MEDIA META -->
 <meta property="og:description" content="Purpose-driven UI motion, micro-interactions, and Rive-powered experiences for modern products.">
-<meta property="og:image" content="https://davehausus.github.io/images/meta.jpg">
+<meta property="og:image" content="https://daviddejesus.me/images/meta.jpg">
 <meta property="og:site_name" content="davehausus">
 <meta property="og:title" content="UI & Motion Designer — Rive & Lottie | David de Jesús">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://davehausus.github.io">
+<meta property="og:url" content="https://daviddejesus.me">
 
 <!-- TWITTER -->
 <meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://davehausus.github.io/">
+<meta property="twitter:url" content="https://daviddejesus.me/">
 <meta name="twitter:title" content="UI & Motion Designer — Rive & Lottie">
 <meta name="twitter:description" content="Designing interfaces that feel alive through motion, clarity, and intent.">
-<meta property="twitter:image" content="https://davehausus.github.io/images/meta.jpg">
+<meta property="twitter:image" content="https://daviddejesus.me/images/meta.jpg">
 
-<!-- FAVICON FILES -->
-<link rel="icon" href="ico/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="ico/favicon.png" type="image/png">
+<!-- FAVICON -->
+<link rel="icon" type="image/png" sizes="32x32" href="/ico/favicon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/ico/favicon.png">
+<link rel="icon" href="/ico/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/ico/favicon.png">
 
 <!-- CSS FILES -->
 <link rel="stylesheet" href="css/animate.min.css">
