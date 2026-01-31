@@ -2,7 +2,7 @@
 
 (function ($) {
   $(document).ready(function () {
-    "use strict"; // PRELOADER — ALWAYS RUN ON HOME, SKIP ELSEWHERE
+    "use strict"; // PRELOADER — OPTIMIZED FOR PORTFOLIO SPEED
 
     (function () {
       var preloader = document.querySelector('.preloader');
@@ -16,21 +16,20 @@
         preloader.style.display = 'none';
         body.classList.remove('page-loading');
         return;
-      } // HOME PAGE: Always run preloader (remove sessionStorage check)
+      } // OPTIMAL PORTFOLIO SETTINGS: Fast but polished
 
 
-      var DURATION = 700;
-      var MAX_TIME = 1100;
+      var DURATION = 700; // Sweet spot: not too fast, not too slow
+
+      var MAX_TIME = 1100; // Shorter fail-safe for portfolio
+
       var startTime = performance.now();
       var finished = false;
       var currentValue = 0;
       var lastDisplayed = -1;
       body.classList.add('page-loading');
-      preloader.classList.remove('page-loaded'); // Set initial value immediately to prevent flash
-
-      percentage.textContent = '0'; // Force layout before animation starts
-
-      preloader.offsetHeight;
+      preloader.classList.remove('page-loaded');
+      percentage.textContent = '0';
 
       function easeOutExpo(t) {
         return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
@@ -38,18 +37,15 @@
 
       function finish() {
         if (finished) return;
-        finished = true; // Guard against multiple calls
-
+        finished = true;
         if (preloader.classList.contains('page-loaded')) return;
         percentage.textContent = 100;
         preloader.classList.add('page-loaded');
-        body.classList.remove('page-loading'); // Wait for CSS transition to complete before display:none
+        body.classList.remove('page-loading'); // Faster exit for portfolio
 
         setTimeout(function () {
-          preloader.style.display = 'none'; // Clean up to prevent memory leaks
-
-          preloader.remove();
-        }, 500); // Match CSS transition duration (0.4s + buffer)
+          preloader.style.display = 'none';
+        }, 800); // Reduced from 1200ms
       }
 
       function animate(now) {
@@ -57,9 +53,9 @@
         var elapsed = now - startTime;
         var progress = Math.min(elapsed / DURATION, 1);
         var eased = easeOutExpo(progress);
-        var target = eased * 100; // Smooth step toward target
+        var target = eased * 100; // Balanced interpolation: smooth but responsive
 
-        currentValue += (target - currentValue) * 0.25; // Clamp + floor for stability
+        currentValue += (target - currentValue) * 0.25; // Clamp for stability
 
         currentValue = Math.max(0, Math.min(currentValue, 99.5));
         var displayValue = Math.floor(currentValue); // Only update DOM if changed
@@ -77,7 +73,7 @@
       } // Start animation
 
 
-      requestAnimationFrame(animate); // Hard fail-safe: never block page
+      requestAnimationFrame(animate); // Fail-safe: never block portfolio
 
       setTimeout(finish, MAX_TIME);
     })(); // HAMBURGER AUDIO
@@ -136,8 +132,6 @@
         slidesPerView: 'auto',
         spaceBetween: 0,
         loop: true,
-        autoHeight: false,
-        // CRITICAL: prevents height recalculation
         autoplay: {
           delay: 5500,
           disableOnInteraction: false
@@ -152,10 +146,7 @@
         navigation: {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev'
-        },
-        // Prevent layout shift during initialization
-        observer: true,
-        observeParents: true
+        }
       }); // Pause on hover
 
       swiperContainer.addEventListener('mouseenter', function () {

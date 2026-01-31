@@ -1191,16 +1191,22 @@ button[type=contact] strong:hover {
   display: block;
 }
 
-/* SLIDER */
+/* SLIDER - OPTIMIZED TO PREVENT CLS */
 .slider {
   width: calc(100% + 50px);
-  height: 560px;
+  height: 560px; /* Fixed height prevents shifts */
+  min-height: 560px; /* Ensure minimum height is reserved */
   display: flex;
   flex-wrap: wrap;
   background: #010e19;
   margin-right: -50px;
   overflow: hidden;
   position: relative;
+  /* Prevent content jump before Swiper loads */
+}
+.slider:empty {
+  min-height: 560px;
+  background: #010e19;
 }
 .slider:hover .swiper-container .swiper-slide {
   margin-left: -10px;
@@ -1212,9 +1218,14 @@ button[type=contact] strong:hover {
   width: 100%;
   height: 100%;
   position: relative;
+  /* Prevent height calculation shifts */
+}
+.slider .swiper-container .swiper-wrapper {
+  height: 560px; /* Match parent height */
 }
 .slider .swiper-container .swiper-slide {
   width: calc(100% - 80px);
+  height: 560px; /* Explicit height prevents shifts */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1223,6 +1234,10 @@ button[type=contact] strong:hover {
   overflow: hidden;
   background-size: cover;
   background-position: center;
+  /* GPU acceleration for smoother transitions */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 .slider .swiper-container .swiper-slide-active {
   opacity: 1;
@@ -1237,6 +1252,8 @@ button[type=contact] strong:hover {
   padding-right: 40%;
   opacity: 0;
   transition: all 0.25s ease-in-out;
+  /* Prevent text rendering shifts */
+  transform: translateZ(0);
 }
 .slider .swiper-container .slide-inner figure {
   display: block;
@@ -1244,12 +1261,17 @@ button[type=contact] strong:hover {
 }
 .slider .swiper-container .slide-inner figure img {
   max-width: 200px;
+  height: auto;
+  display: block;
 }
 .slider .swiper-container .slide-inner h2 {
   font-size: 52px;
   font-weight: 600;
   color: #fff;
   margin-left: -3px;
+  /* Prevent font rendering shifts */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .slider .swiper-container .slide-inner .link {
   display: block;
@@ -1585,6 +1607,7 @@ button[type=contact] strong:hover {
 .case-detail h5 {
   font-size: 20px;
   font-weight: 900;
+  letter-spacing: 0.08em;
   margin-bottom: 15px;
 }
 .case-detail h3 {
@@ -1594,6 +1617,7 @@ button[type=contact] strong:hover {
 }
 .case-detail p {
   display: block;
+  letter-spacing: 0.02em;
   padding-right: 35px;
 }
 
@@ -2076,7 +2100,7 @@ button[type=contact] strong:hover {
   margin-bottom: 15px;
 }
 .post-body h5 {
-  font-weight: 600;
+  font-weight: 900;
   margin-top: 15px;
   margin-bottom: 15px;
 }
@@ -2117,8 +2141,8 @@ button[type=contact] strong:hover {
   background: #f9f9f9;
 }
 .post-navigation a {
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 700;
+  font-size: 24px;
   padding: 40px 25px;
 }
 .post-navigation a:nth-child(1) {
@@ -2742,6 +2766,14 @@ button[type=contact] strong:hover {
   .slider {
     width: 100%;
     margin-right: 0;
+    height: 560px; /* Maintain fixed height */
+    min-height: 560px;
+  }
+  .slider .swiper-container .swiper-wrapper {
+    height: 560px;
+  }
+  .slider .swiper-container .swiper-slide {
+    height: 560px;
   }
   .slider .swiper-container .slide-inner {
     padding: 0 60px;
@@ -2762,8 +2794,22 @@ button[type=contact] strong:hover {
 }
 /* RESPONSIVE TABLET FIXES */
 @media only screen and (max-width: 991px), only screen and (max-device-width: 991px) {
+  .slider {
+    height: 480px; /* Slightly smaller for tablets */
+    min-height: 480px;
+  }
+  .slider .swiper-container .swiper-wrapper {
+    height: 480px;
+  }
+  .slider .swiper-container .swiper-slide {
+    width: 100%;
+    height: 480px;
+  }
   .slider .swiper-container .slide-inner {
     padding: 0 30px;
+  }
+  .slider:hover .swiper-container .swiper-slide {
+    margin-left: 0;
   }
   .preloader .inner .percentage {
     font-size: 50vh;
@@ -2779,12 +2825,6 @@ button[type=contact] strong:hover {
   }
   .navigation-menu .inner .sides {
     display: none;
-  }
-  .slider .swiper-container .swiper-slide {
-    width: 100%;
-  }
-  .slider:hover .swiper-container .swiper-slide {
-    margin-left: 0;
   }
   .header .page-title h4 {
     padding-right: 0;
@@ -2870,13 +2910,21 @@ button[type=contact] strong:hover {
     display: none;
   }
   .slider {
+    height: 420px; /* Mobile optimized height */
+    min-height: 420px;
+  }
+  .slider .swiper-container .swiper-wrapper {
+    height: 420px;
+  }
+  .slider .swiper-container .swiper-slide {
     height: 420px;
   }
   .slider .swiper-container .slide-inner {
     padding: 0 30px;
+    padding-right: 30px; /* Adjust for mobile */
   }
   .slider .swiper-container .slide-inner h2 {
-    font-size: 35px;
+    font-size: 35px; /* Smaller heading on mobile */
   }
   .recent-news .row {
     margin-left: -15px;

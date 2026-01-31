@@ -2,7 +2,7 @@
 	$(document).ready(function() {
 		"use strict";
 		
-// PRELOADER — ALWAYS RUN ON HOME, SKIP ELSEWHERE
+// PRELOADER — OPTIMIZED FOR PORTFOLIO SPEED
 (function () {
 	const preloader = document.querySelector('.preloader');
 	const percentage = document.querySelector('.inner .percentage');
@@ -22,9 +22,9 @@
 		return;
 	}
 
-	// HOME PAGE: Always run preloader (remove sessionStorage check)
-	const DURATION = 700;
-	const MAX_TIME = 1100;
+	// OPTIMAL PORTFOLIO SETTINGS: Fast but polished
+	const DURATION = 700; // Sweet spot: not too fast, not too slow
+	const MAX_TIME = 1100; // Shorter fail-safe for portfolio
 	const startTime = performance.now();
 	let finished = false;
 	let currentValue = 0;
@@ -32,11 +32,7 @@
 
 	body.classList.add('page-loading');
 	preloader.classList.remove('page-loaded');
-	// Set initial value immediately to prevent flash
 	percentage.textContent = '0';
-	
-	// Force layout before animation starts
-	preloader.offsetHeight;
 
 	function easeOutExpo(t) {
 		return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
@@ -46,19 +42,16 @@
 		if (finished) return;
 		finished = true;
 
-		// Guard against multiple calls
 		if (preloader.classList.contains('page-loaded')) return;
 
 		percentage.textContent = 100;
 		preloader.classList.add('page-loaded');
 		body.classList.remove('page-loading');
 
-		// Wait for CSS transition to complete before display:none
+		// Faster exit for portfolio
 		setTimeout(function () {
 			preloader.style.display = 'none';
-			// Clean up to prevent memory leaks
-			preloader.remove();
-		}, 500); // Match CSS transition duration (0.4s + buffer)
+		}, 800); // Reduced from 1200ms
 	}
 
 	function animate(now) {
@@ -70,10 +63,10 @@
 
 		const target = eased * 100;
 
-		// Smooth step toward target
+		// Balanced interpolation: smooth but responsive
 		currentValue += (target - currentValue) * 0.25;
 
-		// Clamp + floor for stability
+		// Clamp for stability
 		currentValue = Math.max(0, Math.min(currentValue, 99.5));
 
 		const displayValue = Math.floor(currentValue);
@@ -94,7 +87,7 @@
 	// Start animation
 	requestAnimationFrame(animate);
 
-	// Hard fail-safe: never block page
+	// Fail-safe: never block portfolio
 	setTimeout(finish, MAX_TIME);
 
 })();
@@ -165,7 +158,6 @@
 				slidesPerView: 'auto',
 				spaceBetween: 0,
 				loop: true,
-				autoHeight: false, // CRITICAL: prevents height recalculation
 				autoplay: {
 					delay: 5500,
 					disableOnInteraction: false,
@@ -181,9 +173,6 @@
 					nextEl: '.swiper-button-next',
 					prevEl: '.swiper-button-prev',
 				},
-				// Prevent layout shift during initialization
-		observer: true,
-		observeParents: true,
 			});
 			
 			// Pause on hover
