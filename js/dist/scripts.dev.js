@@ -80,6 +80,62 @@
       requestAnimationFrame(animate); // Hard fail-safe: never block page
 
       setTimeout(finish, MAX_TIME);
+    })(); // SWIPER SLIDER - PREVENT LAYOUT SHIFT
+
+
+    (function () {
+      var swiperContainer = document.querySelector('.swiper-container');
+      if (!swiperContainer) return; // Set initial heights BEFORE Swiper initializes
+
+      var slides = swiperContainer.querySelectorAll('.swiper-slide');
+      slides.forEach(function (slide) {
+        slide.style.height = '560px';
+      }); // Initialize Swiper
+
+      var mySwiper = new Swiper('.swiper-container', {
+        slidesPerView: 'auto',
+        spaceBetween: 0,
+        loop: true,
+        autoHeight: false,
+        speed: 600,
+        // Initialize immediately
+        init: true,
+        // Preload images
+        preloadImages: true,
+        updateOnImagesReady: true,
+        // Watch for changes
+        observer: true,
+        observeParents: true,
+        autoplay: {
+          delay: 5500,
+          disableOnInteraction: false,
+          waitForTransition: false
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+          renderBullet: function renderBullet(index, className) {
+            return '<span class="' + className + '"><svg><circle r="18" cx="20" cy="20"></circle></svg></span>';
+          }
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        },
+        on: {
+          init: function init() {
+            // Force reflow to prevent shift
+            this.$el[0].offsetHeight;
+          }
+        }
+      }); // Pause on hover
+
+      swiperContainer.addEventListener('mouseenter', function () {
+        mySwiper.autoplay.stop();
+      });
+      swiperContainer.addEventListener('mouseleave', function () {
+        mySwiper.autoplay.start();
+      });
     })(); // HAMBURGER AUDIO
 
 
@@ -127,45 +183,7 @@
     $formInputs.on('input', function () {
       // Changed from 'change keyup' to 'input'
       checkForInput(this);
-    }); // SWIPER SLIDER
-
-    var swiperContainer = document.querySelector('.swiper-container');
-
-    if (swiperContainer) {
-      var mySwiper = new Swiper('.swiper-container', {
-        slidesPerView: 'auto',
-        spaceBetween: 0,
-        loop: true,
-        autoHeight: false,
-        // CRITICAL: prevents height recalculation
-        autoplay: {
-          delay: 5500,
-          disableOnInteraction: false
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-          renderBullet: function renderBullet(index, className) {
-            return '<span class="' + className + '"><svg><circle r="18" cx="20" cy="20"></circle></svg></span>';
-          }
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
-        },
-        // Prevent layout shift during initialization
-        observer: true,
-        observeParents: true
-      }); // Pause on hover
-
-      swiperContainer.addEventListener('mouseenter', function () {
-        mySwiper.autoplay.stop();
-      });
-      swiperContainer.addEventListener('mouseleave', function () {
-        mySwiper.autoplay.start();
-      });
-    } // PAGE TRANSITION - Optimized
-
+    }); // PAGE TRANSITION - Optimized
 
     $('body a').on('click', function (e) {
       if (typeof $(this).data('fancybox') == 'undefined') {

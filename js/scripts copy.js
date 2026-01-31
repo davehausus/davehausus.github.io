@@ -150,18 +150,33 @@
 		
 		
 		
-	// SWIPER SLIDER
+	// SWIPER SLIDER - IMMEDIATE INITIALIZATION
 		const swiperContainer = document.querySelector('.swiper-container');
-		
+
 		if (swiperContainer) {
+			// Initialize Swiper as soon as DOM is ready (before images load)
 			var mySwiper = new Swiper('.swiper-container', {
 				slidesPerView: 'auto',
 				spaceBetween: 0,
 				loop: true,
+				autoHeight: false,
+				speed: 600, // Smooth transition speed
+				
+				// Preload images in viewport
+				preloadImages: true,
+				updateOnImagesReady: true,
+				
+				// Watch for DOM changes
+				observer: true,
+				observeParents: true,
+				observeSlideChildren: true,
+				
 				autoplay: {
 					delay: 5500,
 					disableOnInteraction: false,
+					waitForTransition: false, // Don't wait for transition
 				},
+				
 				pagination: {
 					el: '.swiper-pagination',
 					clickable: true,
@@ -169,9 +184,18 @@
 						return '<span class="' + className + '"><svg><circle r="18" cx="20" cy="20"></circle></svg></span>';
 					},
 				},
+				
 				navigation: {
 					nextEl: '.swiper-button-next',
 					prevEl: '.swiper-button-prev',
+				},
+				
+				// Callback to ensure layout is set
+				on: {
+					init: function () {
+						// Force layout calculation
+						this.$el[0].offsetHeight;
+					},
 				},
 			});
 			
