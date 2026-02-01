@@ -1160,7 +1160,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 	h2{font-size: 3vw; font-weight: 800; margin-bottom: 50px; }}
 	.logo{display: block; margin: 0;
 		img{height: 42px;}}
-	h5{font-size: 17px; font-weight: 800; margin-bottom: 20px;}
+	h5{font-size: 17px; font-weight: 800; letter-spacing: 0.03em; margin-bottom: 20px;}
 	.extra{ width: 100%; display: flex; flex-wrap: wrap; margin-bottom:1rem;
 		a{display: block; position: relative;
 				&:hover{ text-decoration: none;}
@@ -1177,8 +1177,8 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 8px; height: 1px; width: 0; background: $color-dark; transition: width .25s ease;}
 			&:hover:before { width: 100%; background: $color-dark; transition: width .25s ease;}
 			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}}}}
-		span{margin-right: 0;}}}
-
+		span{margin-right: 0;}}
+	address { letter-spacing: 0.03em;}}
 
 
 /* ANIMATIONS */

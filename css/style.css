@@ -2670,6 +2670,7 @@ body.page-loading {
 .footer h5 {
   font-size: 17px;
   font-weight: 800;
+  letter-spacing: 0.03em;
   margin-bottom: 20px;
 }
 .footer .extra {
@@ -2777,6 +2778,9 @@ body.page-loading {
 }
 .footer .sub-footer span {
   margin-right: 0;
+}
+.footer address {
+  letter-spacing: 0.03em;
 }
 
 /* ANIMATIONS */
