@@ -2183,7 +2183,7 @@ body.page-loading {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  background: #f9f9f9;
+  background: #F7F9FF;
 }
 .post-navigation a {
   font-weight: 700;

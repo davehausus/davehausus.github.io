@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- CSS FILES -->
+  <link rel="stylesheet" href="../../css/animate.min.css">
+  <link rel="stylesheet" href="../../css/swiper.min.css">
+  <link rel="stylesheet" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Twinkle Scripting Poke</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      background-color: #212E44;
+    }
+    #rive-canvas {
+      border: 1px solid rgba(255,255,0.2);
+    }
+  </style>
+  <script src="https://unpkg.com/@rive-app/webgl2@latest"></script>
+</head>
+
+<body>
+  <canvas id="riveCanvas" width="380" height="380"></canvas>
+  
+  <script>
+    const canvas = document.getElementById("riveCanvas");
+
+    const r = new rive.Rive({
+      src: "twinkle-script_v2.riv",
+      canvas: canvas,
+      autoplay: true,
+      artboard: "LED", // Specify the correct artboard name
+      stateMachines: "State Machine 1",
+      
+      layout: new rive.Layout({
+        fit: rive.Fit.Contain,
+        alignment: rive.Alignment.Center,
+      }),
+
+      onLoad: () => {
+        console.log("✅ Rive animation loaded successfully");
+        
+        // Check what artboard is actually loaded
+        const artboardName = r.artboard?.name();
+        console.log("Current artboard name:", artboardName);
+        
+        // Get the View Model instance
+        const vmi = r.viewModelInstance;
+        
+        if (!vmi) {
+          console.error("❌ ViewModelInstance is NULL");
+          console.log("View Model may not be bound to the state machine");
+          console.log("Checking artboard methods...");
+          
+          // Try alternative method to bind view model
+          if (r.artboard) {
+            console.log("Artboard object exists");
+            console.log("Artboard name from object:", r.artboard.name());
+            
+            // Check if bindViewModelInstance method exists
+            if (typeof r.artboard.bindViewModelInstance === 'function') {
+              console.log("bindViewModelInstance method found");
+            }
+          }
+          return;
+        }
+
+        console.log("✅ ViewModelInstance found");
+
+        // Access the "angle" property from the View Model
+        try {
+          const angleProp = vmi.number("angle");
+          if (angleProp) {
+            console.log("✅ 'angle' property found, initial value:", angleProp.value);
+            // Set a test value
+            angleProp.value = 90;
+            console.log("Set angle to 90");
+          } else {
+            console.error("❌ 'angle' property not found in View Model");
+          }
+        } catch (e) {
+          console.error("Error accessing 'angle':", e);
+        }
+
+        // Access the "opacity" property from the View Model
+        try {
+          const opacityProp = vmi.number("opacity");
+          if (opacityProp) {
+            console.log("✅ 'opacity' property found, initial value:", opacityProp.value);
+            // Set a test value
+            opacityProp.value = 0.8;
+            console.log("Set opacity to 0.8");
+          } else {
+            console.error("❌ 'opacity' property not found in View Model");
+          }
+        } catch (e) {
+          console.error("Error accessing 'opacity':", e);
+        }
+      },
+      
+      onLoadError: (err) => {
+        console.error("❌ Failed to load Rive animation:", err);
+      }
+    });
+  </script>
+
+  <p>
+    <button type="button" onclick="location.href='/rive/pokes/'">
+      <strong>Back</strong>
+    </button>
+  </p>
+</body>
+</html>

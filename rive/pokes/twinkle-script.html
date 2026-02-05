@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- CSS FILES -->
+  <link rel="stylesheet" href="../../css/animate.min.css">
+  <link rel="stylesheet" href="../../css/swiper.min.css">
+  <link rel="stylesheet" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <title>Twinkle Scripting Poke</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      background-color: #212E44;
+    }
+    #rive-canvas {
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+  </style>
+  <script src="https://unpkg.com/@rive-app/canvas@2.34.0"></script>
+</head>
+
+
+<body>
+  <canvas id="canvas" width="380" height="380"></canvas>
+  
+<script>
+    const r = new rive.Rive({
+        src: "twinkle-script_v2.riv",
+        // OR the path to a discoverable and public Rive asset
+        // src: '/public/example.riv',
+        canvas: document.getElementById("canvas"),
+        autoplay: true,
+        artboard: "Artboard",
+        // Optional. If not supplied the default is selected
+        stateMachines: "State Machine 1",
+        onLoad: () => {
+          r.resizeDrawingSurfaceToCanvas();
+        },
+    });
+</script>
+
+  <p>
+    <button type="button" onclick="location.href='/rive/pokes/'">
+      <strong>Back</strong>
+    </button>
+  </p>
+</body>
+</html>
