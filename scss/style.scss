@@ -360,7 +360,7 @@ body.page-loading {
 
 /* TITLES */
 .titles{width: 100%; display: flex; flex-wrap: wrap; flex-direction: column; padding-right: 50%; margin-bottom: 80px;
-h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;}
+h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2em;}
 		p{font-size: 20px; line-height: 1.5; margin-bottom: 0; font-weight: 300; }}
 
 
@@ -712,7 +712,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 
 
 /* FEATURED SERVICES */
-.featured-services{width: 100%; display: flex; flex-wrap: wrap; padding: 150px 0; color: #fff;
+.featured-services{width: 100%; display: flex; flex-wrap: wrap; padding-top: 150px; color: #fff;
 	.titles{padding-right: 20%;}
 	.col-lg-3:nth-child(2n+2){margin-top: 134px;}
 	figure{width: 100%; display: flex; flex-wrap: wrap; flex-direction: column; position: relative; margin: 15px 0; border: 1px solid rgba(255,255,255,0.05);
@@ -760,7 +760,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;
 
 
 /* SHOWREEL */
-.showreel{width: 100%; display: flex; flex-wrap: wrap; padding: 150px 0; color: #fff;
+.showreel{width: 100%; display: flex; flex-wrap: wrap; padding-bottom: 50px; color: #fff;
 	h6{ width: 100%; display: flex; flex-wrap: wrap; flex-direction: column; padding-right: 50%; margin-bottom: 10px; font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;}
 	.video{width: 100%; float: left; display: flex; flex-wrap: wrap; flex-direction: column; justify-content: center;position: relative;
 		video{width: 100%; min-width: 100%; min-height: 100%; float: left;}

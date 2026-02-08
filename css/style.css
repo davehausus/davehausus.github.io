@@ -702,7 +702,7 @@ body.page-loading {
   font-size: 17px;
   font-weight: 600;
   margin-bottom: 20px;
-  letter-spacing: 2px;
+  letter-spacing: 0.2em;
 }
 .titles p {
   font-size: 20px;
@@ -1671,7 +1671,7 @@ body.page-loading {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 150px 0;
+  padding-top: 150px;
   color: #fff;
 }
 .featured-services .titles {
@@ -1880,7 +1880,7 @@ body.page-loading {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 150px 0;
+  padding-bottom: 50px;
   color: #fff;
 }
 .showreel h6 {
