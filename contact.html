@@ -146,27 +146,27 @@
         <script type="text/javascript">var submitted=false;</script>
          <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
          onload="if(submitted) {window.location='thankyou.html';}"></iframe>
-        <form action="https://docs.google.com/forms/d/e/1FAIpQLSe8VbRKOZonNTDYy3VnkzT_fn4cSvYBKPe0NfJLZk4A3zpyUQ/formResponse" method="post" target="hidden_iframe" onsubmit="submitted=true;">
-           <div class="form-group">
-             <span>Your name *</span>
-             <input type="text" id="name" name="entry.2005620554" required placeholder="Who’s reaching out?">
-           </div>
-           <!-- end form-group -->
-           <div class="form-group">
-             <span>Your e-mail *</span>
-             <input type="email" id="email" name="entry.1045781291" required placeholder="Where can I get back to you?">
-           </div>
-           <!-- end form-group -->
-           <div class="form-group">
-             <span>Subject</span>
-             <input type="text" name="entry.1166974658">
-           </div>
-           <!-- end form-group -->
-           <div class="form-group">
-             <span>Your message *</span>
-             <textarea id="message" name="entry.839337160" required placeholder="Say hello or tell me what you need"></textarea>
-           </div>
-           <!-- end form-group -->
+        <form id="contact" action="https://docs.google.com/forms/d/e/1FAIpQLSe8VbRKOZonNTDYy3VnkzT_fn4cSvYBKPe0NfJLZk4A3zpyUQ/formResponse" method="post" target="hidden_iframe" onsubmit="submitted=true;">
+       <div class="form-group">
+         <input type="text" id="name" name="entry.2005620554" required placeholder="">
+         <span>Your name *</span>
+       </div>
+       <!-- end form-group -->
+       <div class="form-group">
+         <input type="email" id="email" name="entry.1045781291" required placeholder="">
+         <span>Your e-mail *</span>
+       </div>
+       <!-- end form-group -->
+       <div class="form-group">
+         <input type="text" name="entry.1166974658" placeholder="">
+         <span>Subject</span>
+       </div>
+       <!-- end form-group -->
+       <div class="form-group">
+         <textarea id="message" name="entry.839337160" required placeholder=""></textarea>
+         <span>Your message *</span>
+       </div>
+       <!-- end form-group -->
            <div class="form-group">
              <button type="contact">
                <strong>Send<b></b> <i></i></strong>
@@ -174,38 +174,33 @@
            </div>
            <!-- end form-group -->
          </form>
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("contactForm");
 
-            const customMessages = {
-              name: "If this was a movie, this is where you say your name dramatically.",
-              email: "I need your email so I can reply back.",
-              message: "Write a quick note so I know how I can help."
-            };
-
-            // Apply custom messages
-            Object.keys(customMessages).forEach((fieldId) => {
-              const field = document.getElementById(fieldId);
-
-              field.addEventListener("invalid", function (e) {
-                e.target.setCustomValidity(customMessages[fieldId]);
-              });
-
-              field.addEventListener("input", function (e) {
-                // Reset message when user corrects input
-                e.target.setCustomValidity("");
-              });
-            });
-
-            // Optional: Prevent "default tooltip" in some browsers
-            form.addEventListener("submit", function (e) {
-              if (!form.checkValidity()) {
-                e.preventDefault();
-              }
-            });
-          });
-        </script>
+<script>
+  jQuery(document).ready(function($) {
+    'use strict';
+    
+    // Handle floating labels
+    $('#contact .form-group input, #contact .form-group textarea').on('focus blur', function(e) {
+      var $this = $(this);
+      var $label = $this.next('span'); // Changed from siblings to next
+      
+      if (e.type === 'focus') {
+        $label.addClass('label-up');
+      } else {
+        if ($this.val() === '') {
+          $label.removeClass('label-up');
+        }
+      }
+    });
+    
+    // Check on page load
+    $('#contact .form-group input, #contact .form-group textarea').each(function() {
+      if ($(this).val() !== '') {
+        $(this).next('span').addClass('label-up');
+      }
+    });
+  });
+</script>
         <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
          <!-- end form --> 
           <div class="form-group">

@@ -75,6 +75,7 @@ $color-dark : #010e19;
 // h6
 @mixin eyebrow-gradient {
   @include fluid-type(20, 25, 480, 1500);
+  & {
   font-weight: 800;
   line-height: 1;
   margin: 0;
@@ -84,6 +85,7 @@ $color-dark : #010e19;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  }
 }
 
 
@@ -111,8 +113,10 @@ pre[class*="language-"] {
 
 /* FORM ELEMENTS */
 input[type="text"],
-input[type="email"]{width: 100%; height: 54px; border: 1px solid #eee; padding: 0 20px;}
-textarea{width: 100%; height: 160px; border: 1px solid #eee; padding: 15px 20px;}
+input[type="email"]{width: 100%; height: 54px; border: 2px solid #F7F8F7; border-radius: 10px; padding: 0 20px; background: #F7F8F7;
+	&:focus { outline: none; border-color: #DADCDB;}}
+textarea{width: 100%; height: 160px; border: 2px solid #F7F8F7; border-radius: 10px; background: #F7F8F7; padding: 15px 20px;
+	&:focus { outline: none; border-color: #DADCDB;}}
 button[type="submit"]{ height: 58px; display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap; -ms-flex-align: center; -ms-flex-pack: justify; justify-content: space-between; text-align: center; border: none; margin: 0; padding: 0; 
 	*{@include transition;}
 	strong{display: flex; flex-wrap: wrap; justify-content: center; align-content: center; height: 58px; border: 1px solid $color-dark; font-size: 13px; font-weight: 600; text-transform: uppercase; padding: 0 30px; background: $color-dark; color: #fff;
@@ -391,10 +395,16 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 .header{width: 100%; display: flex; flex-wrap: wrap; flex-direction: column;
 	.navbar{width: 100%; margin-bottom: 0;}
 	.page-title{ width: 100%; margin-bottom: 100px; margin-top: 50px;
-		h2{font-weight: 800; font-size: 8vw; margin-bottom: 20px;}
+		h2{font-weight: 800; font-size: 8vw; color: #302F4D; margin-bottom: 20px;}
 		h4{ padding-right: 40%; letter-spacing: 0.02em; line-height: 1.5;}}
 	.headlines{ width: 100%; margin-bottom: 50px; margin-top: 40px;
-		h1:not(.post-title) {@include fluid-type(45, 120, 480, 1500); font-weight: 800; line-height: 1.05; margin: 0; padding-bottom:7px;
+		h1:not(.post-title) {
+			@include fluid-type(45, 120, 480, 1500); 
+			& {
+			font-weight: 800; 
+			line-height: 1.05; 
+			margin: 0; 
+			padding-bottom:7px;
 			background-color: #152230;
 			background-image: linear-gradient(45deg, #152230, #5386E4);
 			background-size: 100%;
@@ -403,12 +413,46 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 			background-clip: text;
 			-webkit-text-fill-color: transparent; 
 			-moz-text-fill-color: transparent;
+			}
 		}
-		h2{@include fluid-type(25, 72, 480, 1500); font-weight: 600; line-height: 1; margin: 0; padding-bottom:5px; }
-		h3{@include fluid-type(28, 62, 480, 1500); font-weight: 400; line-height: 1.15; margin: 0; padding-bottom:5px; }
-		h4{@include fluid-type(38, 52, 480, 1500); font-weight: 800; line-height: 1; margin: 0; padding-bottom:0; color:#152230;}
-		h5{@include fluid-type(21, 34, 480, 1500); font-weight: 300; line-height: 1; margin: 50px 0 0; padding-bottom:5px;
-			p{ margin: 0 0 50px;}}
+		h2{
+			@include fluid-type(25, 72, 480, 1500); 
+			& {
+			font-weight: 600; 
+			line-height: 1; 
+			margin: 0; 
+			padding-bottom:5px;
+			}
+		}
+		h3{
+			@include fluid-type(28, 62, 480, 1500); 
+			& {
+			font-weight: 400; 
+			line-height: 1.15; 
+			margin: 0; 
+			padding-bottom:5px;
+			}
+		}
+		h4{
+			@include fluid-type(38, 52, 480, 1500); 
+			& {
+			font-weight: 800; 
+			line-height: 1; 
+			margin: 0; 
+			padding-bottom:0; 
+			color:#152230;
+			}
+		}
+		h5{
+			@include fluid-type(21, 34, 480, 1500); 
+			& {
+			font-weight: 300; 
+			line-height: 1; 
+			margin: 50px 0 0; 
+			padding-bottom:5px;
+			}
+			p{ margin: 0 0 50px;}
+		}
 		h6{@include eyebrow-gradient;
 		}}}
 
@@ -416,11 +460,13 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 /* POST & CASE STUDY TITLES */
 .post-title {
 			@include fluid-type(38, 52, 480, 1500);
+			& {
 			font-weight: 800;
 			line-height: 1;
 			margin: 0;
 			padding-bottom:0;
 			color: #152230;
+			}
 		}
 
 .eyebrow {
@@ -731,18 +777,87 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 	.col-lg-4{padding-left: 25px; padding-right: 25px;}
 	.col-12{padding-left: 25px; padding-right: 25px;}
 	.inner h3{font-size: 20px;}
-	.content-box{display: flex; flex-wrap: wrap; flex-direction: column; margin-bottom: 80px; padding-bottom: 40px; border-bottom: 1px solid rgba(40,40,40,0.1); @include transition; position: relative;
-		&:before { content: ''; display: block; position: absolute; left: 0; bottom: -1px; height: 1px; width: 0; transition: width 0s ease, background .25s ease;}
-			&:after { content: ''; display: block; position: absolute; right: 0; bottom: -1px; height: 1px; width: 0; background: $color-dark; transition: width .25s ease;}
-			&:hover:before { width: 100%; background: $color-dark; transition: width .25s ease;}
-			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}
-		&.selected {padding-bottom: 80px;}
-		&.selected h3{@include fluid-type(30, 72, 480, 1500); font-weight: 600;}
-		small{opacity: 0.5; margin-bottom: 10px;}
-		h3{display: block; margin-bottom: 20px; padding-bottom: 20px;
-			a{display: block;
-				&:hover{text-decoration: none;}}}
-		span{display: block; font-weight: 600;}}}
+	.content-box {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: column;
+		margin-bottom: 80px;
+		padding-bottom: 40px;
+		border-bottom: 1px solid rgba(40, 40, 40, 0.1);
+		@include transition;
+		position: relative;
+
+		&:before {
+			content: '';
+			display: block;
+			position: absolute;
+			left: 0;
+			bottom: -1px;
+			height: 1px;
+			width: 0;
+			transition: width 0s ease, background .25s ease;
+		}
+
+		&:after {
+			content: '';
+			display: block;
+			position: absolute;
+			right: 0;
+			bottom: -1px;
+			height: 1px;
+			width: 0;
+			background: $color-dark;
+			transition: width .25s ease;
+		}
+
+		&:hover:before {
+			width: 100%;
+			background: $color-dark;
+			transition: width .25s ease;
+		}
+
+		&:hover:after {
+			width: 100%;
+			background: transparent;
+			transition: all 0s ease;
+		}
+
+		&.selected {
+			padding-bottom: 80px;
+		}
+
+		&.selected h3 {
+			@include fluid-type(30, 72, 480, 1500);
+			& {
+			font-weight: 600;
+			}
+		}
+
+		small {
+			opacity: 0.5;
+			margin-bottom: 10px;
+		}
+
+		h3 {
+			display: block;
+			margin-bottom: 20px;
+			padding-bottom: 20px;
+
+			a {
+				display: block;
+
+				&:hover {
+					text-decoration: none;
+				}
+			}
+		}
+
+		span {
+			display: block;
+			font-weight: 600;
+		}
+	}
+	}
 
 
 
@@ -922,6 +1037,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 				letter-spacing: 0.1em;
 				padding-bottom: 8px;
 				position: relative;
+				color: #2F1CB0;
 
 				&:hover {
 					text-decoration: none;
@@ -935,7 +1051,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 					content: "";
 					width: 100%;
 					height: 3px;
-					background: #eee;
+					background: #B1A7F1;
 					position: absolute;
 					left: 0;
 					bottom: 0;
@@ -945,7 +1061,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 					content: "";
 					width: 100%;
 					height: 3px;
-					background: $color-dark;
+					background: #2F1CB0;
 					position: absolute;
 					right: 0;
 					bottom: 0;
@@ -1131,21 +1247,44 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 
 /* CONTACT */
 .contact{width: 100%; display: flex; flex-wrap: wrap; padding-top: 0px;
-	h5{font-weight: 600; margin-bottom: 20px; display: block;}
-	address{display: block; margin-bottom: 50px;
+	h5{font-weight: 800; letter-spacing: 0.04em; margin-bottom: 20px; display: block;}
+	address{display: block; letter-spacing: 0.03em; margin-bottom: 50px;
 		p{margin: 0;}
-		a{text-decoration: underline;}}
+		a{text-decoration: none;}}
 	.contact-form{display: block; margin-top: 0px;
 		h5{margin-bottom: 40px;}
 	#contact{display: block; 
 		.form-group{display: block; position: relative; margin-bottom: 35px;
-			span{ width: 100%; line-height: 54px; position: absolute; left: 0; top: 0; padding: 0 20px; z-index:0; @include transition;
-				&.label-up{ font-size: 13px; line-height: 16px; top: -20px; font-weight: 600;}}
-			input[type="text"]{background: none; position: relative; z-index: 2;}
-			input:focus + span{ font-size: 13px; line-height: 16px; top: -20px; font-weight: 600;}
-			textarea{background: none; position: relative; z-index: 2;}
-			textarea:focus + span{ font-size: 13px; line-height: 16px; top: -20px; font-weight: 600;}
-			label.error{color: red; margin-top: 5px; margin-bottom: 0; font-weight: 600; font-size: 13px;}}}
+			span{ width: 100%; 
+				line-height: 54px; 
+				position: absolute; 
+				left: 0; 
+				top: 0; 
+				padding: 0 20px; 
+				z-index: 3; // Changed from 3 to 1 so it's behind input
+				pointer-events: none;
+				font-weight: 300;
+				color: #1E212B;
+				transition: all 0.3s ease;
+				&.label-up{ font-size: 13px; line-height: 16px; top: -20px; font-weight: 500;}}
+			// When the form-group contains a focused input, move the label up
+			&:focus-within span {
+				font-size: 13px; 
+				line-height: 16px; 
+				top: -20px; 
+				font-weight: 500;
+				color: #1E212B;
+			}
+			input[type="text"],
+			input[type="email"]{background: #F7F8F7 !important; font-weight: 700; letter-spacing: 0.02em; position: relative; z-index: 2;
+				&::placeholder { opacity: 0; transition: opacity 0.3s ease; }
+				&:focus::placeholder { opacity: 1; }
+			}
+			textarea{background: #F7F8F7 !important; font-weight: 700; letter-spacing: 0.02em; position: relative; z-index: 2;
+				&::placeholder { opacity: 0; transition: opacity 0.3s ease; }
+				&:focus::placeholder { opacity: 1; }
+			}
+			label.error{color: #3A86FF; margin-top: 5px; margin-bottom: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.05em;}}}
 		#success,  #error {display:none; float:left;}
 		#error {background: red; color: #fff;}
 		#success{background: green; color: #fff;} 

@@ -125,18 +125,6 @@ document.querySelectorAll('.cta-contact').forEach(el => {
     border-radius: 8px;
     min-width: 375px;
     margin-left: -10px;
-    width: 100%;
-    
-        
-    /* Desktop aspect ratio */
-    aspect-ratio: 1024 / 600;
-    
-    @media (max-width: 740px) {
-      /* Mobile aspect ratio */
-      aspect-ratio: 531 / 428;
-      min-width: 100%;
-      margin-left: 0;
-    }
   }
 
   #riveCanvas2 {
@@ -496,7 +484,7 @@ document.querySelectorAll('.cta-contact').forEach(el => {
         const imageData = await imageResponse.arrayBuffer();
         
         const image = await rive.decodeImage(new Uint8Array(imageData));
-        asset.setRenderImage(image);
+        asset.setImageAsset(image);
         
         console.log(`  ✅ Image loaded successfully: ${imagePath}`);
         return true;
@@ -505,7 +493,7 @@ document.querySelectorAll('.cta-contact').forEach(el => {
         return false;
       }
     }
-
+    
     return false;
   },
 

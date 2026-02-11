@@ -90,15 +90,28 @@ input[type=text],
 input[type=email] {
   width: 100%;
   height: 54px;
-  border: 1px solid #eee;
+  border: 2px solid #F7F8F7;
+  border-radius: 10px;
   padding: 0 20px;
+  background: #F7F8F7;
+}
+input[type=text]:focus,
+input[type=email]:focus {
+  outline: none;
+  border-color: #DADCDB;
 }
 
 textarea {
   width: 100%;
   height: 160px;
-  border: 1px solid #eee;
+  border: 2px solid #F7F8F7;
+  border-radius: 10px;
+  background: #F7F8F7;
   padding: 15px 20px;
+}
+textarea:focus {
+  outline: none;
+  border-color: #DADCDB;
 }
 
 button[type=submit] {
@@ -836,6 +849,7 @@ body.page-loading {
 .header .page-title h2 {
   font-weight: 800;
   font-size: 8vw;
+  color: #302F4D;
   margin-bottom: 20px;
 }
 .header .page-title h4 {
@@ -850,6 +864,18 @@ body.page-loading {
 }
 .header .headlines h1:not(.post-title) {
   font-size: 45px;
+}
+@media only screen and (min-width: 480px) {
+  .header .headlines h1:not(.post-title) {
+    font-size: calc(45px + 75 * (100vw - 480px) / (1500 - 480));
+  }
+}
+@media only screen and (min-width: 1500px) {
+  .header .headlines h1:not(.post-title) {
+    font-size: 120px;
+  }
+}
+.header .headlines h1:not(.post-title) {
   font-weight: 800;
   line-height: 1.05;
   margin: 0;
@@ -863,22 +889,8 @@ body.page-loading {
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
 }
-@media only screen and (min-width: 480px) {
-  .header .headlines h1:not(.post-title) {
-    font-size: calc(45px + 75 * (100vw - 480px) / (1500 - 480));
-  }
-}
-@media only screen and (min-width: 1500px) {
-  .header .headlines h1:not(.post-title) {
-    font-size: 120px;
-  }
-}
 .header .headlines h2 {
   font-size: 25px;
-  font-weight: 600;
-  line-height: 1;
-  margin: 0;
-  padding-bottom: 5px;
 }
 @media only screen and (min-width: 480px) {
   .header .headlines h2 {
@@ -890,12 +902,14 @@ body.page-loading {
     font-size: 72px;
   }
 }
-.header .headlines h3 {
-  font-size: 28px;
-  font-weight: 400;
-  line-height: 1.15;
+.header .headlines h2 {
+  font-weight: 600;
+  line-height: 1;
   margin: 0;
   padding-bottom: 5px;
+}
+.header .headlines h3 {
+  font-size: 28px;
 }
 @media only screen and (min-width: 480px) {
   .header .headlines h3 {
@@ -907,13 +921,14 @@ body.page-loading {
     font-size: 62px;
   }
 }
+.header .headlines h3 {
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0;
+  padding-bottom: 5px;
+}
 .header .headlines h4 {
   font-size: 38px;
-  font-weight: 800;
-  line-height: 1;
-  margin: 0;
-  padding-bottom: 0;
-  color: #152230;
 }
 @media only screen and (min-width: 480px) {
   .header .headlines h4 {
@@ -925,12 +940,15 @@ body.page-loading {
     font-size: 52px;
   }
 }
+.header .headlines h4 {
+  font-weight: 800;
+  line-height: 1;
+  margin: 0;
+  padding-bottom: 0;
+  color: #152230;
+}
 .header .headlines h5 {
   font-size: 21px;
-  font-weight: 300;
-  line-height: 1;
-  margin: 50px 0 0;
-  padding-bottom: 5px;
 }
 @media only screen and (min-width: 480px) {
   .header .headlines h5 {
@@ -942,20 +960,17 @@ body.page-loading {
     font-size: 34px;
   }
 }
+.header .headlines h5 {
+  font-weight: 300;
+  line-height: 1;
+  margin: 50px 0 0;
+  padding-bottom: 5px;
+}
 .header .headlines h5 p {
   margin: 0 0 50px;
 }
 .header .headlines h6 {
   font-size: 20px;
-  font-weight: 800;
-  line-height: 1;
-  margin: 0;
-  padding-bottom: 20px;
-  background-image: linear-gradient(45deg, #F3A712, #F95738);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 @media only screen and (min-width: 480px) {
   .header .headlines h6 {
@@ -967,15 +982,21 @@ body.page-loading {
     font-size: 25px;
   }
 }
+.header .headlines h6 {
+  font-weight: 800;
+  line-height: 1;
+  margin: 0;
+  padding-bottom: 20px;
+  background-image: linear-gradient(45deg, #F3A712, #F95738);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 /* POST & CASE STUDY TITLES */
 .post-title {
   font-size: 38px;
-  font-weight: 800;
-  line-height: 1;
-  margin: 0;
-  padding-bottom: 0;
-  color: #152230;
 }
 @media only screen and (min-width: 480px) {
   .post-title {
@@ -987,18 +1008,16 @@ body.page-loading {
     font-size: 52px;
   }
 }
-
-.eyebrow {
-  font-size: 20px;
+.post-title {
   font-weight: 800;
   line-height: 1;
   margin: 0;
-  padding-bottom: 20px;
-  background-image: linear-gradient(45deg, #F3A712, #F95738);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  padding-bottom: 0;
+  color: #152230;
+}
+
+.eyebrow {
+  font-size: 20px;
 }
 @media only screen and (min-width: 480px) {
   .eyebrow {
@@ -1009,6 +1028,17 @@ body.page-loading {
   .eyebrow {
     font-size: 25px;
   }
+}
+.eyebrow {
+  font-weight: 800;
+  line-height: 1;
+  margin: 0;
+  padding-bottom: 20px;
+  background-image: linear-gradient(45deg, #F3A712, #F95738);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* NAVBAR */
@@ -1795,7 +1825,6 @@ body.page-loading {
 }
 .recent-news .content-box.selected h3 {
   font-size: 30px;
-  font-weight: 600;
 }
 @media only screen and (min-width: 480px) {
   .recent-news .content-box.selected h3 {
@@ -1806,6 +1835,9 @@ body.page-loading {
   .recent-news .content-box.selected h3 {
     font-size: 72px;
   }
+}
+.recent-news .content-box.selected h3 {
+  font-weight: 600;
 }
 .recent-news .content-box small {
   opacity: 0.5;
@@ -2262,6 +2294,7 @@ body.page-loading {
   letter-spacing: 0.1em;
   padding-bottom: 8px;
   position: relative;
+  color: #2F1CB0;
 }
 .blog .post .post-content .post-link:hover {
   text-decoration: none;
@@ -2273,7 +2306,7 @@ body.page-loading {
   content: "";
   width: 100%;
   height: 3px;
-  background: #eee;
+  background: #B1A7F1;
   position: absolute;
   left: 0;
   bottom: 0;
@@ -2282,7 +2315,7 @@ body.page-loading {
   content: "";
   width: 100%;
   height: 3px;
-  background: #010e19;
+  background: #2F1CB0;
   position: absolute;
   right: 0;
   bottom: 0;
@@ -2542,19 +2575,21 @@ body.page-loading {
   padding-top: 0px;
 }
 .contact h5 {
-  font-weight: 600;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   margin-bottom: 20px;
   display: block;
 }
 .contact address {
   display: block;
+  letter-spacing: 0.03em;
   margin-bottom: 50px;
 }
 .contact address p {
   margin: 0;
 }
 .contact address a {
-  text-decoration: underline;
+  text-decoration: none;
 }
 .contact .contact-form {
   display: block;
@@ -2578,43 +2613,79 @@ body.page-loading {
   left: 0;
   top: 0;
   padding: 0 20px;
-  z-index: 0;
-  transition: all 0.25s ease-in-out;
+  z-index: 3;
+  pointer-events: none;
+  font-weight: 300;
+  color: #1E212B;
+  transition: all 0.3s ease;
 }
 .contact .contact-form #contact .form-group span.label-up {
   font-size: 13px;
   line-height: 16px;
   top: -20px;
-  font-weight: 600;
+  font-weight: 500;
 }
-.contact .contact-form #contact .form-group input[type=text] {
-  background: none;
-  position: relative;
-  z-index: 2;
-}
-.contact .contact-form #contact .form-group input:focus + span {
+.contact .contact-form #contact .form-group:focus-within span {
   font-size: 13px;
   line-height: 16px;
   top: -20px;
-  font-weight: 600;
+  font-weight: 500;
+  color: #1E212B;
+}
+.contact .contact-form #contact .form-group input[type=text],
+.contact .contact-form #contact .form-group input[type=email] {
+  background: #F7F8F7 !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 2;
+}
+.contact .contact-form #contact .form-group input[type=text]::-moz-placeholder, .contact .contact-form #contact .form-group input[type=email]::-moz-placeholder {
+  opacity: 0;
+  -moz-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+.contact .contact-form #contact .form-group input[type=text]::placeholder,
+.contact .contact-form #contact .form-group input[type=email]::placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.contact .contact-form #contact .form-group input[type=text]:focus::-moz-placeholder, .contact .contact-form #contact .form-group input[type=email]:focus::-moz-placeholder {
+  opacity: 1;
+}
+.contact .contact-form #contact .form-group input[type=text]:focus::placeholder,
+.contact .contact-form #contact .form-group input[type=email]:focus::placeholder {
+  opacity: 1;
 }
 .contact .contact-form #contact .form-group textarea {
-  background: none;
+  background: #F7F8F7 !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   position: relative;
   z-index: 2;
 }
-.contact .contact-form #contact .form-group textarea:focus + span {
-  font-size: 13px;
-  line-height: 16px;
-  top: -20px;
-  font-weight: 600;
+.contact .contact-form #contact .form-group textarea::-moz-placeholder {
+  opacity: 0;
+  -moz-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+.contact .contact-form #contact .form-group textarea::placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.contact .contact-form #contact .form-group textarea:focus::-moz-placeholder {
+  opacity: 1;
+}
+.contact .contact-form #contact .form-group textarea:focus::placeholder {
+  opacity: 1;
 }
 .contact .contact-form #contact .form-group label.error {
-  color: red;
+  color: #3A86FF;
   margin-top: 5px;
   margin-bottom: 0;
-  font-weight: 600;
   font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
 }
 .contact .contact-form #success, .contact .contact-form #error {
   display: none;

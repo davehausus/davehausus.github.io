@@ -10,16 +10,9 @@ jQuery(document).ready(function (e) {
           required: !0,
           minlength: 2
         },
-        surname: {
-          required: !0,
-          minlength: 2
-        },
         email: {
           required: !0,
           email: !0
-        },
-        subject: {
-          required: !0
         },
         message: {
           required: !0
@@ -27,23 +20,16 @@ jQuery(document).ready(function (e) {
       },
       messages: {
         name: {
-          required: "Please type your name",
-          minlength: "Please type your name correctly"
-        },
-        surname: {
-          required: "Please type your surname",
-          minlength: "Please type your surname correctly"
+          required: "If this was a movie, this is where you say your name dramatically.",
+          minlength: "If this was a movie, this is where you say your name dramatically."
         },
         email: {
-          required: "Please type your e-mail correctly"
-        },
-        subject: {
-          required: "Please type your number",
-          minlength: "To short number"
+          required: "I need your email so I can reply back.",
+          email: "I need your email so I can reply back."
         },
         message: {
-          required: "Please type your message",
-          minlength: "To short message"
+          required: "Write a quick note so I know how I can help.",
+          minlength: "Write a quick note so I know how I can help."
         }
       }
     });
