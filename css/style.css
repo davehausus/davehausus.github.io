@@ -175,14 +175,14 @@ button[type=submit]:hover i {
 
 button[type=contact] {
   background-color: #F95738;
-  border-radius: 3px;
+  border-radius: 8px;
   color: #fff;
   font-size: 1.0625rem;
   font-weight: 600;
   letter-spacing: 1.4px;
   border: 0;
   text-align: center;
-  height: 32px;
+  height: 40px;
   padding: 0 0.5rem 0.125rem 0.5625rem;
   display: block;
   transition: all 0.5s ease;
