@@ -722,6 +722,7 @@ body.page-loading {
   line-height: 1.5;
   margin-bottom: 0;
   font-weight: 300;
+  letter-spacing: 0.05em;
 }
 
 /* CUSTOM LINK */
@@ -1621,13 +1622,15 @@ body.page-loading {
 .project-box .project-image {
   width: 100%;
   display: block;
-  filter: brightness(100%);
 }
 .project-box .project-image a {
   display: block;
 }
 .project-box .project-image a img {
   width: 100%;
+}
+.project-box .project-image {
+  filter: brightness(100%);
 }
 .project-box img:hover {
   filter: brightness(60%);
@@ -1662,13 +1665,15 @@ body.page-loading {
 .case-detail figure {
   display: block;
   margin-bottom: 50px;
-  filter: brightness(100%);
 }
 .case-detail figure a {
   display: block;
 }
 .case-detail figure a img {
   width: 100%;
+}
+.case-detail figure {
+  filter: brightness(100%);
 }
 .case-detail a:hover {
   filter: brightness(90%);
