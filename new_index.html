@@ -444,7 +444,7 @@ document.querySelectorAll('.cta-contact').forEach(el => {
   const r = new rive.Rive({
     src: "rive/header_v3.riv", // Path to the Rive animation file
     canvas: canvas, // Target canvas element for rendering
-    autoplay: true, // Start animation automatically on load
+    autoplay: false, // Start animation automatically on load
     autoBind: true, // Automatically bind to canvas
     loadRiveFile: true, // Required for WebGL2 + View Model support
     artboard: "Artboard", // Name of the artboard to display
@@ -714,6 +714,22 @@ document.querySelectorAll('.cta-contact').forEach(el => {
         performUpdate();
         setInterval(performUpdate, 5000);
       }, 5000);
+
+      // HERO VISIBILITY CONTROL
+      const heroObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              r.play();
+            } else {
+              r.pause();
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      heroObserver.observe(canvas);
     }
   });
 </script>
@@ -732,7 +748,7 @@ document.querySelectorAll('.cta-contact').forEach(el => {
     const r2 = new rive.Rive({
       src: "rive/daviddejesus.riv",
       canvas: canvas2,
-      autoplay: true,
+      autoplay: false,
       autoBind: true,
       loadRiveFile: true,
       artboard: "Artboard",
@@ -874,8 +890,26 @@ document.querySelectorAll('.cta-contact').forEach(el => {
           if (progressPercentage < 120) {
             triggeredSections.section3 = false;
           }
+
+        // FOOTER VISIBILITY CONTROL
+        const footerObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                r2.play("ScrollController");
+              } else {
+                r2.pause();
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+
+        footerObserver.observe(canvas2);
+
         });
       }
+      
     });
   } else {
     console.log("Canvas 2 not found on this page - scroll controller not initialized");
