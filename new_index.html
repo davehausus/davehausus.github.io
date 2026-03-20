@@ -30,27 +30,51 @@ document.querySelectorAll('.cta-contact').forEach(el => {
       "@type": "Person",
       "@id": "https://daviddejesus.me/#person",
       "name": "David de Jesús",
-      "jobTitle": "Senior UI & Motion Designer",
+      "jobTitle": "Senior Product Designer (Motion & Interaction)",
       "url": "https://daviddejesus.me/",
       "image": "https://daviddejesus.me/images/avatar.png",
+
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "Product Designer",
+        "occupationLocation": {
+          "@type": "Place",
+          "name": "Remote"
+        },
+        "skills": [
+          "Motion-driven interface design",
+          "Interaction design",
+          "Rive animations",
+          "Rive state machines",
+          "UI motion systems",
+          "Design systems",
+          "Interaction prototyping",
+          "UI animation systems",
+          "Micro-interactions"
+        ]
+      },
+
       "sameAs": [
         "https://www.linkedin.com/in/david-d-jesus",
         "https://github.com/davehausus"
       ],
+
       "knowsAbout": [
+        "Product Design",
+        "Interaction Design",
+        "Motion-driven Interfaces",
         "Rive animations",
         "Rive State Machines",
         "Rive Data Binding",
-        "Lottie animations",
-        "UI Design",
-        "Motion Design",
-        "Interaction Design"
+        "UI Motion Systems",
+        "Design Systems",
+        "Micro-interactions"
       ]
     },
     {
       "@type": "WebSite",
       "@id": "https://daviddejesus.me/#website",
-      "name": "David de Jesús",
+      "name": "David de Jesús | Product Designer",
       "url": "https://daviddejesus.me/",
       "inLanguage": "en",
       "publisher": {
@@ -61,14 +85,15 @@ document.querySelectorAll('.cta-contact').forEach(el => {
       "@type": "WebPage",
       "@id": "https://daviddejesus.me/#home",
       "url": "https://daviddejesus.me/",
-      "name": "David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist",
+      "name": "David de Jesús | Senior Product Designer · Motion & Interaction",
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://daviddejesus.me/#website"
       },
       "about": {
         "@id": "https://daviddejesus.me/#person"
-      }
+      },
+      "description": "Senior Product Designer specializing in motion-driven interfaces, interaction design, and Rive-powered UI systems."
     }
   ]
 }
@@ -80,26 +105,26 @@ document.querySelectorAll('.cta-contact').forEach(el => {
 <meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#010e19"/>
 
-<title>David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist</title>
+<title>David de Jesús - Senior Product Designer | Motion & Interaction</title>
 <meta name="robots" content="index, follow">
 <meta name="author" content="David de Jesús">
-<meta name="description" content="I design interfaces that move with purpose., combining UI, motion, and product thinking. From micro-interactions to Rive State Machines and Data Binding workflows, I create web and mobile experiences that feel clear, intuitive, and alive." />
-<meta name="keywords" content="Rive animation, UI motion design, interaction design">
+<meta name="description" content="Senior Product Designer focused on motion-driven interfaces and interaction design. I craft product experiences that combine UI systems, micro-interactions, and Rive-powered motion to create intuitive and expressive digital products." />
+<meta name="keywords" content="Product Designer, Interaction Design, UI Motion Design, Rive animation, Motion-driven interfaces, Micro-interactions, UI systems">
 <meta name="google-site-verification" content="Ff2D8q3yGA0OtWq4AAFc0tNCskC_cDfSt7a_bUeGFoo" />
 
 <!-- SOCIAL MEDIA META -->
-<meta property="og:description" content="Purpose-driven UI motion, micro-interactions, and Rive-powered experiences for modern products.">
+<meta property="og:description" content="Motion-driven product design combining UI systems, interaction design, and Rive-powered interfaces.">
 <meta property="og:image" content="https://daviddejesus.me/images/meta.jpg">
-<meta property="og:site_name" content="davehausus">
-<meta property="og:title" content="UI & Motion Designer — Rive & Lottie | David de Jesús">
+<meta property="og:site_name" content="daviddejesus.me">
+<meta property="og:title" content="Senior Product Designer - Motion & Interaction | David de Jesús">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://daviddejesus.me">
 
 <!-- TWITTER -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://daviddejesus.me/">
-<meta name="twitter:title" content="UI & Motion Designer — Rive & Lottie">
-<meta name="twitter:description" content="Designing interfaces that feel alive through motion, clarity, and intent.">
+<meta name="twitter:title" content="Senior Product Designer - Motion & Interaction">
+<meta name="twitter:description" content="Designing motion-driven interfaces and product experiences using interaction design and Rive-powered UI systems.">
 <meta property="twitter:image" content="https://daviddejesus.me/images/meta.jpg">
 
 <!-- FAVICON -->
@@ -238,7 +263,10 @@ document.querySelectorAll('.cta-contact').forEach(el => {
   <!-- end navbar -->
 
 <canvas id="riveCanvas"></canvas>
-<h1 class="visually-hidden">Sr. UI & Motion Designer Specializing in Rive, Lottie & Product Animation</h1>
+<h1 class="visually-hidden">David de Jesús — Senior Product Designer specializing in motion-driven interfaces, interaction design, micro-interactions, and Rive-powered UI systems</h1>
+<p class="visually-hidden">
+Portfolio of David de Jesús, a Senior Product Designer creating motion-driven product experiences, interactive UI systems, and micro-interactions for modern web and mobile products.
+</p>
 </header>
 <!-- end header -->
 
@@ -656,6 +684,10 @@ document.querySelectorAll('.cta-contact').forEach(el => {
         { // Update 11
           run2: "Static Shapes ",
           run4: "Living Frames"
+        },
+        { // Update 12
+          run2: "User Needs ",
+          run4: "Smart Solutions"
         }
       ];
 
