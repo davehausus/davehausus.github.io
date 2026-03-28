@@ -276,7 +276,7 @@ button[type=contact] strong:hover {
   transition: all 0s ease;
 }
 .color-dark .left-side .logo img {
-  filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);
+  filter: invert(38%) sepia(84%) saturate(2600%) hue-rotate(235deg) brightness(92%) contrast(95%);
 }
 .color-dark .left-side .gotop img {
   filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);
@@ -488,7 +488,6 @@ body.page-loading {
 /* BURGER */
 .burger {
   margin-top: 1px;
-  z-index: 3;
   display: inline-block;
   width: 50px;
   height: 50px;
@@ -521,7 +520,7 @@ body.page-loading {
   position: fixed;
   right: calc(-100% - 200px);
   top: 0;
-  z-index: 2;
+  z-index: 9999;
   background: #010e19;
   transition: all 0.3s ease;
   transition-duration: 500ms;
@@ -1049,7 +1048,6 @@ body.page-loading {
   flex-wrap: wrap;
   padding: 30px 0;
   position: relative;
-  z-index: 9;
   transition: all 0.25s ease-in-out;
 }
 .navbar.hide {
@@ -1073,12 +1071,14 @@ body.page-loading {
 }
 .navbar .logo {
   margin-left: 0;
+  position: relative;
+  z-index: 10000;
 }
 .navbar .logo a {
   margin: 0;
 }
 .navbar .logo a img {
-  height: 42px;
+  height: 43px;
 }
 .navbar .phone {
   margin-left: 50px;
@@ -1139,6 +1139,13 @@ body.page-loading {
 .navbar .hamburger-menu {
   margin-right: 0;
   margin-left: 30px;
+  position: relative;
+  z-index: 10000;
+}
+
+body.overflow .navbar .main-menu {
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 /* LEFT SIDE */

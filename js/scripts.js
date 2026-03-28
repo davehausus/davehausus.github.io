@@ -258,7 +258,38 @@
 			}
 		});
 		
-		
+	// Reset menu and overlay on resize back to desktop
+	let resizeTimer;
+	let lastWidth = $(window).width();
+	$(window).on('resize', function () {
+		clearTimeout(resizeTimer);
+		resizeTimer = setTimeout(function () {
+			const currentWidth = $(window).width();
+
+			if (currentWidth !== lastWidth) {
+				lastWidth = currentWidth;
+				
+				if (currentWidth >= 992) {
+					$("body").removeClass("overflow");
+					$(".navigation-menu").removeClass("active");
+					$(".navbar").removeClass("light");
+					$(".transition-overlay").removeClass("active");
+
+					TweenMax.set('.burger-svg__bar-1', { y: 0, rotation: 0, scaleX: 1 });
+					TweenMax.set('.burger-svg__bar-2', { scaleX: 1, opacity: 1 });
+					TweenMax.set('.burger-svg__bar-3', { y: 0, rotation: 0, scaleX: 1 });
+
+					window._burgerIsOpen = false;          // ← now reachable
+					window._burgerIsChangingState = false; // ← now reachable
+				}
+			}
+		}, 150);
+	});
+
+	// Clean up transition-overlay when returning via browser Back
+	$(window).on('pageshow', function () {
+		$('.transition-overlay').removeClass("active");
+	});	
 		
 	// GO TO TOP - Debounced scroll
 		let scrollTimer;
@@ -322,21 +353,23 @@
 		});
 		
 		
+	
 		
 	// HAMBURGER - Already well optimized with GSAP
+		window._burgerIsOpen = false;
+		window._burgerIsChangingState = false;
+		
 		(function(){
 			var $burger = $('.burger');
 			var $bar1 = $('.burger-svg__bar-1');
 			var $bar2 = $('.burger-svg__bar-2');
 			var $bar3 = $('.burger-svg__bar-3');
-			var isChangingState = false;
-			var isOpen = false;
 			var burgerTL = new TimelineMax();
 
 			function burgerOver() {
-				if(!isChangingState) {
+				if(!window._burgerIsChangingState) {
 					burgerTL.clear();
-					if(!isOpen) {
+					if(!window._burgerIsOpen) {
 						burgerTL.to($bar1, 0.5, { y: -2, ease: Elastic.easeOut })
 								.to($bar2, 0.5, { scaleX: 0.6, ease: Elastic.easeOut, transformOrigin: "50% 50%" }, "-=0.5")
 								.to($bar3, 0.5, { y: 2, ease: Elastic.easeOut }, "-=0.5");
@@ -348,9 +381,9 @@
 			}
 
 			function burgerOut() {
-				if(!isChangingState) {
+				if(!window._burgerIsChangingState) {
 					burgerTL.clear();
-					if(!isOpen) {
+					if(!window._burgerIsOpen) {
 						burgerTL.to($bar1, 0.5, { y: 0, ease: Elastic.easeOut })
 								.to($bar2, 0.5, { scaleX: 1, ease: Elastic.easeOut, transformOrigin: "50% 50%" }, "-=0.5")
 								.to($bar3, 0.5, { y: 0, ease: Elastic.easeOut }, "-=0.5");
@@ -368,7 +401,12 @@
 						.to($bar3, 0.3, { y: -6, ease: Power4.easeIn }, "-=0.3")
 						.to($bar1, 0.5, { rotation: 45, ease: Elastic.easeOut, transformOrigin: "50% 50%" })
 						.set($bar2, { opacity: 0, immediateRender: false }, "-=0.5")
-						.to($bar3, 0.5, { rotation: -45, ease: Elastic.easeOut, transformOrigin: "50% 50%", onComplete: function() { isChangingState = false; isOpen = true; } }, "-=0.5");
+						.to($bar3, 0.5, { rotation: -45, ease: Elastic.easeOut, transformOrigin: "50% 50%", 
+							onComplete: function() { 
+								window._burgerIsChangingState = false; 
+								window._burgerIsOpen = true; 
+							} 
+						}, "-=0.5");
 			}
 
 			function showOpenBurger() {
@@ -380,16 +418,25 @@
 						.set($bar3, { rotation: 0, y: 0 })
 						.to($bar2, 0.5, { scaleX: 1, ease: Elastic.easeOut })
 						.to($bar1, 0.5, { scaleX: 1, ease: Elastic.easeOut }, "-=0.4")
-						.to($bar3, 0.5, { scaleX: 1, ease: Elastic.easeOut, onComplete: function() { isChangingState = false; isOpen = false; } }, "-=0.5");
+						.to($bar3, 0.5, { scaleX: 1, ease: Elastic.easeOut, 
+							onComplete: function() { 
+								window._burgerIsChangingState = false; 
+								window._burgerIsOpen = false; 
+							} 
+						}, "-=0.5");
 			}
 
 			$burger.on('click', function(e) {
 				$("body").toggleClass("overflow");
 				$(".navigation-menu").toggleClass("active");
 				$(".navbar").toggleClass("light");
-				if(!isChangingState) {
-					isChangingState = true;
-					if(!isOpen) {
+				if (!window._burgerIsOpen) {
+					$(".navbar").removeClass("hide");
+				}
+
+				if(!window._burgerIsChangingState) {
+					window._burgerIsChangingState = true; 
+					if(!window._burgerIsOpen) {
 						showCloseBurger();
 					} else {
 						showOpenBurger();

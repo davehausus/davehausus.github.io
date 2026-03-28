@@ -212,6 +212,47 @@
           }, 600);
         }
       }
+    }); // Reset menu and overlay on resize back to desktop
+
+    var resizeTimer;
+    var lastWidth = $(window).width();
+    $(window).on('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        var currentWidth = $(window).width();
+
+        if (currentWidth !== lastWidth) {
+          lastWidth = currentWidth;
+
+          if (currentWidth >= 992) {
+            $("body").removeClass("overflow");
+            $(".navigation-menu").removeClass("active");
+            $(".navbar").removeClass("light");
+            $(".transition-overlay").removeClass("active");
+            TweenMax.set('.burger-svg__bar-1', {
+              y: 0,
+              rotation: 0,
+              scaleX: 1
+            });
+            TweenMax.set('.burger-svg__bar-2', {
+              scaleX: 1,
+              opacity: 1
+            });
+            TweenMax.set('.burger-svg__bar-3', {
+              y: 0,
+              rotation: 0,
+              scaleX: 1
+            });
+            window._burgerIsOpen = false; // ← now reachable
+
+            window._burgerIsChangingState = false; // ← now reachable
+          }
+        }
+      }, 150);
+    }); // Clean up transition-overlay when returning via browser Back
+
+    $(window).on('pageshow', function () {
+      $('.transition-overlay').removeClass("active");
     }); // GO TO TOP - Debounced scroll
 
     var scrollTimer;
@@ -265,20 +306,21 @@
       }
     }); // HAMBURGER - Already well optimized with GSAP
 
+    window._burgerIsOpen = false;
+    window._burgerIsChangingState = false;
+
     (function () {
       var $burger = $('.burger');
       var $bar1 = $('.burger-svg__bar-1');
       var $bar2 = $('.burger-svg__bar-2');
       var $bar3 = $('.burger-svg__bar-3');
-      var isChangingState = false;
-      var isOpen = false;
       var burgerTL = new TimelineMax();
 
       function burgerOver() {
-        if (!isChangingState) {
+        if (!window._burgerIsChangingState) {
           burgerTL.clear();
 
-          if (!isOpen) {
+          if (!window._burgerIsOpen) {
             burgerTL.to($bar1, 0.5, {
               y: -2,
               ease: Elastic.easeOut
@@ -303,10 +345,10 @@
       }
 
       function burgerOut() {
-        if (!isChangingState) {
+        if (!window._burgerIsChangingState) {
           burgerTL.clear();
 
-          if (!isOpen) {
+          if (!window._burgerIsOpen) {
             burgerTL.to($bar1, 0.5, {
               y: 0,
               ease: Elastic.easeOut
@@ -353,8 +395,8 @@
           ease: Elastic.easeOut,
           transformOrigin: "50% 50%",
           onComplete: function onComplete() {
-            isChangingState = false;
-            isOpen = true;
+            window._burgerIsChangingState = false;
+            window._burgerIsOpen = true;
           }
         }, "-=0.5");
       }
@@ -386,8 +428,8 @@
           scaleX: 1,
           ease: Elastic.easeOut,
           onComplete: function onComplete() {
-            isChangingState = false;
-            isOpen = false;
+            window._burgerIsChangingState = false;
+            window._burgerIsOpen = false;
           }
         }, "-=0.5");
       }
@@ -397,10 +439,14 @@
         $(".navigation-menu").toggleClass("active");
         $(".navbar").toggleClass("light");
 
-        if (!isChangingState) {
-          isChangingState = true;
+        if (!window._burgerIsOpen) {
+          $(".navbar").removeClass("hide");
+        }
 
-          if (!isOpen) {
+        if (!window._burgerIsChangingState) {
+          window._burgerIsChangingState = true;
+
+          if (!window._burgerIsOpen) {
             showCloseBurger();
           } else {
             showOpenBurger();
