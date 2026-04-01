@@ -404,7 +404,7 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
         const from = oldText[i] || ''
         const to = newText[i] || ''
         const start = Math.floor(Math.random() * 40)
-        const end = start + Math.floor(Math.random() * 40)
+        const end = start + 30
         this.queue.push({ from, to, start, end })
       }
       
@@ -964,7 +964,7 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
         run2.value = textUpdates[0].run2;
         run3.value = textUpdates[0].run3;
 
-        let previousUpdateIndex = 0;
+        let currentUpdateIndex = 0;
         let isUpdating = false;
 
         console.log("📋 Canvas 2: Text runs update system initialized");
@@ -973,15 +973,10 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
           if (isUpdating) return;
           isUpdating = true;
 
-          let newUpdateIndex;
-          do {
-            newUpdateIndex = Math.floor(Math.random() * textUpdates.length);
-          } while (newUpdateIndex === previousUpdateIndex || newUpdateIndex === 0);
+          currentUpdateIndex = (currentUpdateIndex + 1) % textUpdates.length;
+          const updateGroup = textUpdates[currentUpdateIndex];
 
-          previousUpdateIndex = newUpdateIndex;
-          const updateGroup = textUpdates[newUpdateIndex];
-
-          console.log(`🎯 Canvas 2: Starting Update ${newUpdateIndex}`);
+          console.log(`🎯 Canvas 2: Starting Update ${currentUpdateIndex}`);
           console.log(`   run1="${updateGroup.run1}"  run2="${updateGroup.run2}"  run3="${updateGroup.run3}"`);
 
           // Set run3 immediately — single char, no scramble needed
@@ -998,17 +993,17 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
               run2.value = scrambledText;
             }).then(() => {
               console.log(`  ✓ run2 scramble complete: "${updateGroup.run2}"`);
-              console.log(`✅ Canvas 2: Update ${newUpdateIndex} complete`);
+              console.log(`✅ Canvas 2: Update ${currentUpdateIndex} complete`);
               isUpdating = false;
             });
-          }, 450);
+          }, 300);
         }
 
         console.log("⏱️ Canvas 2: Waiting before starting text updates…");
         setTimeout(() => {
           performUpdate2();
-          setInterval(performUpdate2, 8000);
-        }, 2800);
+          setInterval(performUpdate2, 3000);
+        }, 3000);
 
         // ─── Lenis smooth scroll + scroll-progress triggers ──────────────────
         const lenis = new Lenis({
