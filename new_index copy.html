@@ -387,7 +387,7 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
   // ——————————————————————————————————————————————————
   class TextScramble {
     constructor() {
-      this.uppercaseChars = 'ABCDEFGHIJKLMNOPRSTUVZ'
+      this.uppercaseChars = 'ABCDEFGHIJKLMNOPRSTUV'
       this.lowercaseChars = 'abcdefghklmnopqrstuvwz'
       this.update = this.update.bind(this)
       this.currentText = ''
@@ -858,10 +858,10 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
 
         return false;
       },
-      
+
       layout: new rive.Layout({
-        fit: rive.Fit.Cover,
-        alignment: rive.Alignment.Center,
+        fit: rive.Fit.Contain,
+        alignment: rive.Alignment.CenterLeft,
       }),
 
       onLoad: () => {
@@ -932,37 +932,33 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
         // ─── TextScramble for run1 / run2 ────────────────────────────────────
         const run1 = vmi2.string("run1");
         const run2 = vmi2.string("run2");
-        const run3 = vmi2.string("run3");
 
-        if (!run1 || !run2 || !run3) {
+        if (!run1 || !run2) {
           console.error("❌ Canvas 2: run1 or run2 string properties not found in ViewModel");
           return;
         }
 
         const textUpdates = [
-          { run1: "Product Interaction",   run2: "Design",              run3: " "       }, // 0 — default
-          { run1: "Complex System",        run2: "Design",              run3: " "       }, // 1
-          { run1: "Motion-Driven",         run2: "UX",                  run3: " "       }, // 2
-          { run1: "Scalable Design",       run2: "Systems",             run3: " "       }, // 3
-          { run1: "Interaction",           run2: "Architecture",        run3: " "       }, // 4
-          { run1: "Rive State Machine",    run2: "Development",         run3: " "       }, // 5
-          { run1: "Prototyping",           run2: "for Validation",      run3: " "       }, // 6
-          { run1: "Cross-Platform",        run2: "UI Design",           run3: " "       }, // 7
-          { run1: "Motion Systems",        run2: "Standards",           run3: "&"      }, // 8
-          { run1: "Visual Refinement",     run2: "Interface Polish",    run3: "&"      }, // 9
+          { run1: "Product Interaction",  run2: "Design"               }, // 0 — default
+          { run1: "Complex System",        run2: "Design"               }, // 1
+          { run1: "Motion-Driven",         run2: "UX"                   }, // 2
+          { run1: "Scalable Design",       run2: "Systems"              }, // 3
+          { run1: "Interaction",           run2: "Architecture"         }, // 4
+          { run1: "Rive State Machine",    run2: "Development"          }, // 5
+          { run1: "Prototyping",           run2: "for Validation"       }, // 6
+          { run1: "Cross-Platform",        run2: "UI Design"            }, // 7
+          { run1: "Motion Systems",        run2: "& Standards"          }, // 8
+          { run1: "Visual Refinement",     run2: "& Interface Polish"   }, // 9
         ];
 
         const scrambleRun1 = new TextScramble();
         const scrambleRun2 = new TextScramble();
-        const scrambleRun3 = new TextScramble();
 
         // Seed with the default values so the first scramble has a sensible "from"
         scrambleRun1.currentText = textUpdates[0].run1;
         scrambleRun2.currentText = textUpdates[0].run2;
-        scrambleRun3.currentText = textUpdates[0].run3;
         run1.value = textUpdates[0].run1;
         run2.value = textUpdates[0].run2;
-        run3.value = textUpdates[0].run3;
 
         let previousUpdateIndex = 0;
         let isUpdating = false;
@@ -982,10 +978,7 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
           const updateGroup = textUpdates[newUpdateIndex];
 
           console.log(`🎯 Canvas 2: Starting Update ${newUpdateIndex}`);
-          console.log(`   run1="${updateGroup.run1}"  run2="${updateGroup.run2}"  run3="${updateGroup.run3}"`);
-
-          // Set run3 immediately — single char, no scramble needed
-          run3.value = updateGroup.run3;
+          console.log(`   run1="${updateGroup.run1}"  run2="${updateGroup.run2}"`);
 
           scrambleRun1.setText(updateGroup.run1, (scrambledText) => {
             run1.value = scrambledText;
@@ -1019,73 +1012,59 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
           touchMultiplier: 2,
         });
 
-        // Lenis animation loop
         function raf(time) {
           lenis.raf(time);
           requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
 
-        // Track which triggers have been fired
         const triggeredSections = {
           section1: false,
           section2: false,
           section3: false
         };
 
-        // Calculate scroll progress relative to canvas2 visibility
-        // Returns values > 1.0 when canvas scrolls past viewport (allows 120-130% triggers)
         function getCanvas2ScrollProgress() {
           const canvas2Rect = canvas2.getBoundingClientRect();
           const viewportHeight = window.innerHeight;
-          const canvasHeight = canvas2Rect.height;
-          
-          // Canvas hasn't entered viewport yet
+          const canvasHeight  = canvas2Rect.height;
+
           if (canvas2Rect.top >= viewportHeight) return 0;
-          
-          // Calculate how far the canvas has scrolled
-          // This includes when it's partially visible AND when it's scrolled past
+
           const scrolledAmount = viewportHeight - canvas2Rect.top;
-          
-          // Progress can exceed 1.0 (100%) - goes up to ~2.0 when fully scrolled past
           const progress = scrolledAmount / canvasHeight;
-          
+
           return Math.max(0, progress);
         }
 
-        // Listen to Lenis scroll events
         lenis.on('scroll', () => {
-          const canvasProgress = getCanvas2ScrollProgress();
-          const progressPercentage = canvasProgress * 100;
-          
-          // Trigger section 1 when canvas is 25% scrolled into view
+          const canvasProgress      = getCanvas2ScrollProgress();
+          const progressPercentage  = canvasProgress * 100;
+
           if (progressPercentage >= 25 && !triggeredSections.section1) {
-            scrollSection1.trigger(); // FIXED: Use .trigger() method
+            scrollSection1.trigger();
             triggeredSections.section1 = true;
             console.log("🎯 Canvas 2: Scroll Section 1 triggered at", progressPercentage.toFixed(2) + "%");
           }
-          
-          // Trigger section 2 when canvas is 50% scrolled into view
+
           if (progressPercentage >= 50 && !triggeredSections.section2) {
-            scrollSection2.trigger(); // FIXED: Use .trigger() method
+            scrollSection2.trigger();
             triggeredSections.section2 = true;
             console.log("🎯 Canvas 2: Scroll Section 2 triggered at", progressPercentage.toFixed(2) + "%");
           }
-          
-          // Trigger section 3 when canvas is 120% scrolled (going past viewport)
+
           if (progressPercentage >= 120 && !triggeredSections.section3) {
-            scrollSection3.trigger(); // FIXED: Use .trigger() method
+            scrollSection3.trigger();
             triggeredSections.section3 = true;
             console.log("🎯 Canvas 2: Scroll Section 3 triggered at", progressPercentage.toFixed(2) + "%");
           }
-          
-          // Reset triggers when scrolling back up
+
           if (progressPercentage < 25)  triggeredSections.section1 = false;
           if (progressPercentage < 50)  triggeredSections.section2 = false;
           if (progressPercentage < 120) triggeredSections.section3 = false;
         });
 
-        // FOOTER VISIBILITY CONTROL
+        // ─── Visibility control — play/pause with IntersectionObserver ───────
         const footerObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
