@@ -387,8 +387,8 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
   // ——————————————————————————————————————————————————
   class TextScramble {
     constructor() {
-      this.uppercaseChars = 'ABCDEFGHIJKLMNOPRSTUVZ'
-      this.lowercaseChars = 'abcdefghklmnopqrstuvwz'
+      this.uppercaseChars = 'ABCDEFGHIJKLMNOPRSTUV'
+      this.lowercaseChars = 'abcdefghklmnopqrstuvw'
       this.update = this.update.bind(this)
       this.currentText = ''
     }
@@ -404,7 +404,7 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
         const from = oldText[i] || ''
         const to = newText[i] || ''
         const start = Math.floor(Math.random() * 40)
-        const end = start + 30
+        const end = start + Math.floor(Math.random() * 40)
         this.queue.push({ from, to, start, end })
       }
       
@@ -873,6 +873,8 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
           return;
         }
 
+        const scrambleStartTrigger = vmi2.trigger("scrambleStart");
+
         // ─── Responsive sizing via numProp ───────────────────────────────────
         const numProp2 = vmi2.number("num");
         if (!numProp2) {
@@ -975,6 +977,9 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
 
           currentUpdateIndex = (currentUpdateIndex + 1) % textUpdates.length;
           const updateGroup = textUpdates[currentUpdateIndex];
+
+          // ✅ Fires exactly once per update, at the very start
+          scrambleStartTrigger.trigger();
 
           console.log(`🎯 Canvas 2: Starting Update ${currentUpdateIndex}`);
           console.log(`   run1="${updateGroup.run1}"  run2="${updateGroup.run2}"  run3="${updateGroup.run3}"`);
