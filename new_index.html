@@ -170,6 +170,17 @@ document.querySelectorAll('.cta-contact').forEach(el => {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+
+        /* Desktop aspect ratio */
+    aspect-ratio: 1024 / 600;
+    
+    @media (max-width: 740px) {
+      /* Mobile aspect ratio */
+      aspect-ratio: 531 / 428;
+      min-width: 100%;
+      margin-left: 0;
+    }
+
   }
 
   .visually-hidden {
@@ -816,7 +827,12 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
 <!-- Load Lenis -->
 <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 
-<!-- SECOND RIVE CANVAS - Showreel with Scroll Animation Controller -->
+
+
+// ——————————————————————————————————————————————————
+//  SECOND RIVE CANVAS - Showreel with Scroll Animation Controller
+// ——————————————————————————————————————————————————
+
 <script>
   // Only initialize if canvas2 exists on the page
   const canvas2 = document.getElementById("riveCanvas2");
@@ -893,9 +909,9 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
 
           let aspectRatio;
           if (windowWidth >= 741) {
-            aspectRatio = 16 / 9;         // Desktop
+            aspectRatio = 1200 / 700;         // Desktop
           } else {
-            aspectRatio = 531 / 708;      // Mobile — adjust if artboard differs
+            aspectRatio = 531 / 531;      // Mobile — adjust if artboard differs
           }
 
           canvas2.style.width  = currentWidth + 'px';
