@@ -275,8 +275,15 @@ button[type=contact] strong:hover {
   background: transparent;
   transition: all 0s ease;
 }
-.color-dark .left-side .logo img {
-  filter: invert(38%) sepia(84%) saturate(2600%) hue-rotate(235deg) brightness(92%) contrast(95%);
+.color-dark .left-side .logo svg #J path,
+.color-dark .left-side .logo svg #D1 path,
+.color-dark .left-side .logo svg #D2 path {
+  fill: white;
+  transition: fill 1.6s ease;
+}
+.color-dark .left-side .logo svg #Square path {
+  fill: #9183EC;
+  transition: fill 1.6s ease;
 }
 .color-dark .left-side .gotop img {
   filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);
@@ -1166,8 +1173,9 @@ body.overflow .navbar .main-menu {
   opacity: 0;
   transform: translateY(-30px);
 }
-.left-side .logo img {
+.left-side .logo svg {
   height: 42px;
+  width: auto;
 }
 .left-side .logo.sticky {
   opacity: 1;
@@ -3035,13 +3043,11 @@ body.overflow .navbar .main-menu {
     font-size: 6vw;
   }
   input[type=text] {
-    border-radius: 0 !important;
     -moz-appearance: none;
          appearance: none;
     -webkit-appearance: none;
   }
   textarea {
-    border-radius: 0 !important;
     -moz-appearance: none;
          appearance: none;
     -webkit-appearance: none;

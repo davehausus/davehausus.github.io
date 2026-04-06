@@ -158,10 +158,14 @@ button[type="contact"]{ background-color: #F95738;
 			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 6px; height: 1px; width: 0; background: #fff; transition: width .25s ease;}
 			&:hover:before { width: 100%; background: #fff; transition: width .25s ease;}
 			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}}}}
-	.left-side .logo img {
-  -webkit-filter: invert(38%) sepia(84%) saturate(2600%) hue-rotate(235deg) brightness(92%) contrast(95%);
-  filter: invert(38%) sepia(84%) saturate(2600%) hue-rotate(235deg) brightness(92%) contrast(95%);
-}
+		.left-side .logo svg #J path,
+		.left-side .logo svg #D1 path,
+		.left-side .logo svg #D2 path {
+		fill: white; transition: fill 1.6s ease
+		}
+		.left-side .logo svg #Square path {
+		fill: #9183EC; transition: fill 1.6s ease
+		}
 	.left-side .gotop img{-webkit-filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%); filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);}}
 .color-light { background-color: #fff;}
 .color-undefined{background-color: transparent;}
@@ -515,7 +519,10 @@ body.overflow .navbar .main-menu {
 /* LEFT SIDE */
 .left-side{width: 150px; height: 100vh; position: fixed; left: 0; top: 0;
 	.logo{ width: 100%; display: block; height: 42px; text-align: center; margin-top: 35px; @include transition; opacity: 0; transform: translateY(-30px);
-		img{height: 42px;}
+		svg {
+			height: 42px;
+			width: auto; // preserves the viewBox aspect ratio (80:84 ≈ square)
+    	}
 		&.sticky{opacity: 1; transform: translateY(0);}}
 	ul{ width: 100vh; line-height: 1; display: block; margin: 0; margin-top:50vh; margin-left: -9px; padding: 0; transform: rotate(-90deg); transform-origin: 0 0; position: absolute; left: 50%; top: 50%; text-align: center;
 		li{display: inline-block; margin: 0 10px; padding: 0; list-style: none;
@@ -1448,8 +1455,8 @@ body.overflow .navbar .main-menu {
 	.swiper-button-next { display: none; }
 	.footer .logo { margin-bottom: 40px; }
 	.footer .career h2 { font-size: 6vw; }
-	input[type="text"] { border-radius: 0 !important; appearance: none; -webkit-appearance: none; }
-	textarea { border-radius: 0 !important; appearance: none; -webkit-appearance: none; }
+	input[type="text"] { appearance: none; -webkit-appearance: none; }
+	textarea { appearance: none; -webkit-appearance: none; }
 	.icon-scroll { text-align: center; margin: 15px 0px 0px; }
 }
 
