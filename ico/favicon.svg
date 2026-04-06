@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><style>.cls-1{fill:#f95738;}</style></defs><title>favicon</title><g id="Favicon"><path class="cls-1" d="M7.85,2A3.94,3.94,0,0,1,9,5,5.13,5.13,0,0,1,7.94,7.89L5,13H1L2.57,7.85A3.34,3.34,0,0,1,1.4,6.57,3.16,3.16,0,0,1,1,5,3.94,3.94,0,0,1,2.15,2.09,3.93,3.93,0,0,1,5,1,4.15,4.15,0,0,1,7.85,2Z"/><path class="cls-1" d="M31,3H11V8.27c0,.78.93,2.73,1.76,2.73h7.52c.69,0,.72,1.36.72,2v6c0,2.43-.34,3.31-1,3.86a7,7,0,0,1-4,1.57L5,25.17V31H21.93c5,0,9.07-3.7,9.07-8.26Z"/></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #8572ff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <!-- Generator: Adobe Illustrator 28.7.10, SVG Export Plug-In . SVG Version: 1.2.0 Build 236)  -->
+  <g>
+    <g id="Layer_1">
+      <g id="Favicon">
+        <path class="cls-1" d="M29,1v21.3c0,4.8-4.2,8.7-9.3,8.7H3v-6.8l10.5-.4c1.8,0,3.3-.3,4.2-1.1.7-.6,1.3-1.6,1.3-4.2V1h10Z"/>
+        <path class="cls-1" d="M13,1v10H3V1h10Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
