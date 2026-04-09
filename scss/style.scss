@@ -54,7 +54,7 @@
 @mixin transition{-webkit-transition: all .25s ease-in-out;-moz-transition: all .25s ease-in-out; -ms-transition: all .25s ease-in-out; -o-transition: all .25s ease-in-out; transition: all .25s ease-in-out;}
 
 
-$color-dark : #010e19;
+$color-dark : #00072D;
 
 
 // fluidly resize type
@@ -149,27 +149,109 @@ button[type="contact"]{ background-color: #F95738;
 
 
 /* CUSTOM ELEMENTS */
-.color-dark { background-color: $color-dark;
-	.left-side ul{ width: 100vh; line-height: 1; display: block; margin: 0; margin-top:50vh; margin-left: -9px; padding: 0; transform: rotate(-90deg); transform-origin: 0 0; position: absolute; left: 50%; top: 50%; text-align: center;
-		li{display: inline-block; margin: 0 10px; padding: 0; list-style: none;
-			a{display: block; font-size: 14px; font-weight: 800; position: relative; padding: 0 2px; color: #fff;
-				&:hover{ text-decoration: none;}
-			&:before { content: ''; display: block; position: absolute; left: 0; bottom: 6px; height: 1px; width: 0; transition: width 0s ease, background .25s ease;}
-			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 6px; height: 1px; width: 0; background: #fff; transition: width .25s ease;}
-			&:hover:before { width: 100%; background: #fff; transition: width .25s ease;}
-			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}}}}
-		.left-side .logo svg #J path,
-		.left-side .logo svg #D1 path,
-		.left-side .logo svg #D2 path {
-		fill: white; transition: fill 1.6s ease
+.color-dark {
+	background-color: $color-dark;
+
+	.left-side ul {
+		width: 100vh;
+		line-height: 1;
+		display: block;
+		margin: 0;
+		margin-top: 50vh;
+		margin-left: -9px;
+		padding: 0;
+		transform: rotate(-90deg);
+		transform-origin: 0 0;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		text-align: center;
+
+		li {
+			display: inline-block;
+			margin: 0 10px;
+			padding: 0;
+			list-style: none;
+
+			a {
+				display: block;
+				font-size: 14px;
+				font-weight: 800;
+				position: relative;
+				padding: 0 2px;
+				color: #fff;
+
+				&:hover {
+					text-decoration: none;
+				}
+
+				&:before {
+					content: '';
+					display: block;
+					position: absolute;
+					left: 0;
+					bottom: 6px;
+					height: 1px;
+					width: 0;
+					transition: width 0s ease, background .25s ease;
+				}
+
+				&:after {
+					content: '';
+					display: block;
+					position: absolute;
+					right: 0;
+					bottom: 6px;
+					height: 1px;
+					width: 0;
+					background: #fff;
+					transition: width .25s ease;
+				}
+
+				&:hover:before {
+					width: 100%;
+					background: #fff;
+					transition: width .25s ease;
+				}
+
+				&:hover:after {
+					width: 100%;
+					background: transparent;
+					transition: all 0s ease;
+				}
+			}
 		}
-		.left-side .logo svg #Square path {
-		fill: #9183EC; transition: fill 1.6s ease
-		}
-	.left-side .gotop img{-webkit-filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%); filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);}}
-.color-light { background-color: #fff;}
-.color-undefined{background-color: transparent;}
-.overflow{overflow: hidden;}
+	}
+
+	.left-side .logo svg #J path,
+	.left-side .logo svg #D1 path,
+	.left-side .logo svg #D2 path {
+		fill: white;
+		transition: fill 1.6s ease
+	}
+
+	.left-side .logo svg #Square path {
+		fill: #9183EC;
+		transition: fill 1.6s ease
+	}
+
+	.left-side .gotop img {
+		-webkit-filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);
+		filter: invert(42%) sepia(72%) saturate(2744%) hue-rotate(341deg) brightness(104%) contrast(95%);
+	}
+}
+
+.color-light {
+	background-color: #fff;
+}
+
+.color-undefined {
+	background-color: transparent;
+}
+
+.overflow {
+	overflow: hidden;
+}
 
 
 /* ODOMETER */
@@ -412,8 +494,8 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 			line-height: 1.05; 
 			margin: 0; 
 			padding-bottom:7px;
-			background-color: #152230;
-			background-image: linear-gradient(45deg, #152230, #5386E4);
+			background-color: #00072D;
+			background-image: linear-gradient(45deg, #00072D, #5386E4);
 			background-size: 100%;
 			-webkit-background-clip: text;
 			-moz-background-clip: text;
@@ -472,7 +554,7 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 			line-height: 1;
 			margin: 0;
 			padding-bottom:0;
-			color: #152230;
+			color: #00072D;
 			}
 		}
 
