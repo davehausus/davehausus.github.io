@@ -38,7 +38,7 @@
       align-items: center;
       height: 100vh;
       flex-direction: column;
-      background: #0d0c1d;
+      background: #0B0A14;
     }
 
     canvas {
@@ -94,30 +94,26 @@
     const r = new rive.Rive({
       src: "data_binding.riv",
       canvas: document.getElementById("riveCanvas"),
-      autoplay: false, // Don't autoplay until data is loaded
+      autoplay: false,
       autoBind: true,
       artboard: "Artboard",
       stateMachines: "State Machine 1",
-      
-      // CRITICAL: Asset loader to handle referenced fonts
+
       assetLoader: async (asset, bytes) => {
         console.log("🔍 Asset detected:", asset.name, "Type:", asset.isFont ? "Font" : "Other");
-        
+
         if (bytes.length > 0 || asset.cdnUuid.length > 0) {
           console.log("  ↳ Letting Rive handle this asset");
           return false;
         }
-        
+
         if (asset.isFont) {
           console.log("  ↳ Loading referenced font:", asset.name);
-          
           try {
-            const fontResponse = await fetch(`./RobotoCondensed-Italic-VariableFont_wght-5011138.ttf`);
+            const fontResponse = await fetch(`../fonts/Roboto_Condensed/RobotoCondensed-VariableFont_wght.ttf`);
             const fontData = await fontResponse.arrayBuffer();
-            
             const font = await rive.decodeFont(new Uint8Array(fontData));
             asset.setFont(font);
-            
             console.log("  ✅ Font loaded successfully!");
             return true;
           } catch (error) {
@@ -125,14 +121,13 @@
             return false;
           }
         }
-        
+
         return false;
       },
 
       onLoad: async () => {
         console.log("✅ Rive file loaded successfully!");
-
-        await new Promise((rslv) => setTimeout(rslv, 300));
+        await new Promise(rslv => setTimeout(rslv, 300));
 
         const vmi = r.viewModelInstance;
         if (!vmi) {
@@ -140,246 +135,292 @@
           return;
         }
 
-        const numProp = vmi.number("num");
-        const diffProp = vmi.string("priceDiff");
-        const showDiffProp = vmi.boolean("showDiff");
-        
-        const bars = [
-          vmi.number("bar1"), vmi.number("bar2"), vmi.number("bar3"),
-          vmi.number("bar4"), vmi.number("bar5"), vmi.number("bar6"),
-          vmi.number("bar7"), vmi.number("bar8"), vmi.number("bar9"),
-          vmi.number("bar10"), vmi.number("bar11"), vmi.number("bar12")
-        ];
-        
-        // Better error checking
-        if (!numProp) {
-          console.error("❌ Number property 'num' not found!");
-          return;
-        }
-        
-        if (!diffProp) {
-          console.error("❌ String property 'priceDiff' not found! Make sure it exists in View Model 1");
-          return;
-        }
-        
-        if (!showDiffProp) {
-          console.error("❌ Boolean property 'showDiff' not found! Make sure it exists in View Model 1");
-          return;
-        }
+        // ─── View Model Properties ──────────────────────────────────────────────
+        const newPriceProp  = vmi.number("newPrice");   // Current (latest) spot price
+        const oldPriceProp  = vmi.number("oldPrice");   // Previous spot price snapshot
+        const priceDiffProp = vmi.number("priceDiff");  // Newest − Oldest in active range (no symbols)
+        const percDiffProp  = vmi.number("percDiff");   // % change oldest→newest (no symbols)
+        const showDiffProp  = vmi.boolean("showDiff");  // Show/hide spot diff indicator
+        const btcEthProp    = vmi.boolean("btcEth");    // true = Bitcoin | false = Ethereum
+        const maxRangeProp  = vmi.number("maxRange");   // Highest close in active range
+        const minRangeProp  = vmi.number("minRange");   // Lowest close in active range
 
-        const missingBars = bars.filter((bar, index) => !bar);
-        if (missingBars.length > 0) {
-          console.error("❌ Some bar properties not found!");
-          return;
-        }
+        // 30 bar properties — bars[0] = bar1 (newest), bars[29] = bar30 (oldest)
+        const bars = Array.from({ length: 30 }, (_, i) => vmi.number(`bar${i + 1}`));
 
-        console.log("🔗 Bound to all properties successfully!");
+        // Time-range view model triggers (can also be fired externally via window.setTimeRange)
+        const timeTriggers = {
+          h1:  vmi.trigger("h1"),
+          h24: vmi.trigger("h24"),
+          d7:  vmi.trigger("d7"),
+          d30: vmi.trigger("d30"),
+          d90: vmi.trigger("d90"),
+        };
 
-        let previousPrice = null;
-        let audioContext = null;
-        let isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-        let isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+        // ─── Runtime State ───────────────────────────────────────────────────────
+        let previousPrice   = null;                     // Last recorded spot price
+        let currentRange    = "h1";                     // Active time range key
+        let isBitcoin       = btcEthProp ? btcEthProp.value : true;
+        let lastBtcEthValue = isBitcoin;
+        let chartRefreshTimer = null;
 
-    // Check haptic capabilities
-    if (isIOS && !isStandalone) {
-      console.log("ℹ️ iOS Safari detected - haptics not available in browser");
-      console.log("💡 Add to Home Screen for haptic support");
-    }
+        // ─── Haptics ─────────────────────────────────────────────────────────────
+        const isIOS        = /iPhone|iPad|iPod/.test(navigator.userAgent);
+        const isStandalone = window.navigator.standalone ||
+                            window.matchMedia('(display-mode: standalone)').matches;
+        let audioContext   = null;
 
-        // Initialize audio context on first user interaction (required for iOS)
-        function initAudioContext() {
-          if (!audioContext && isIOS) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            console.log("🔊 Audio context initialized");
-          }
+        if (isIOS && !isStandalone) {
+          console.log("ℹ️ iOS Safari: haptics unavailable in browser. Add to Home Screen to enable.");
         }
 
-        // Listen for first user interaction
-        ['touchstart', 'click'].forEach(event => {
-          document.addEventListener(event, initAudioContext, { once: true });
+        ['touchstart', 'click'].forEach(evt => {
+          document.addEventListener(evt, () => {
+            if (!audioContext && isIOS)
+              audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          }, { once: true });
         });
 
-    // Haptic feedback function (works on iOS and Android)
-    function triggerHaptic() {
-      try {
-        // iOS - Try vibration API first (works in PWA mode)
-        if (isIOS) {
-          // Try standard vibration API (may work in standalone mode)
-          if ('vibrate' in navigator) {
-            const success = navigator.vibrate(50);
-            if (success) {
-              console.log("📳 iOS Vibration API succeeded!");
-              return;
+        function triggerHaptic() {
+          try {
+            if ('vibrate' in navigator) {
+              navigator.vibrate(50);
+              console.log("📳 Haptic triggered");
             }
+          } catch (e) {
+            console.log("⚠️ Haptic error:", e.message);
           }
-
-          // Fallback to audio (always works but only produces sound)
-          if (!audioContext) {
-            console.log("⚠️ Audio context not initialized - tap screen first");
-            initAudioContext(); // Try to init
-            return;
-          }
-
-          // Resume context if suspended (iOS requirement)
-          if (audioContext.state === 'suspended') {
-            audioContext.resume();
-          }
-
-          // Create short audio burst that triggers haptic
-          const oscillator = audioContext.createOscillator();
-          const gainNode = audioContext.createGain();
-          
-          oscillator.connect(gainNode);
-          gainNode.connect(audioContext.destination);
-          
-          // Very brief, audible burst (iOS needs actual audio for haptics)
-          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.03);
-          
-          oscillator.frequency.value = 1000; // Higher frequency
-          oscillator.type = 'sine';
-          
-          oscillator.start(audioContext.currentTime);
-          oscillator.stop(audioContext.currentTime + 0.03); // 30ms
-          
-          console.log("🔊 Audio feedback triggered (haptics not available in Safari)");
-          return;
         }
-        
-        // Android and other devices - Standard Vibration API
-        if ('vibrate' in navigator) {
-          const success = navigator.vibrate(50); // 50ms subtle vibration
-          console.log("📳 Haptic feedback triggered:", success ? "Success" : "Failed");
-        } else {
-          console.log("⚠️ Vibration API not supported on this device");
-        }
-      } catch (error) {
-        console.log("⚠️ Haptic feedback error:", error.message);
-      }
-    }
 
-        async function fetchHourlyData() {
+        // ─── Time Range Configuration ─────────────────────────────────────────
+        //  granularity must be one of Coinbase's valid values: 60, 300, 900, 3600, 21600, 86400
+        //  We fetch with the finest granularity that keeps us ≤ 300 candles, then resample to 30.
+        //
+        //  h1  → 3600 s  ÷ 60 s    =  60 candles  → resample 60  → 30
+        //  h24 → 86400 s ÷ 900 s   =  96 candles  → resample 96  → 30
+        //  d7  → 604800 s÷ 3600 s  = 168 candles  → resample 168 → 30
+        //  d30 → 2592000 s÷86400 s =  30 candles  → exact 30
+        //  d90 → 7776000 s÷86400 s =  90 candles  → resample 90  → 30
+        const RANGES = {
+          h1:  { label: "1H",  durationSec: 3_600,    granularity: 60     },
+          h24: { label: "1D",  durationSec: 86_400,   granularity: 900    },
+          d7:  { label: "1W",  durationSec: 604_800,  granularity: 3_600  },
+          d30: { label: "1M",  durationSec: 2_592_000, granularity: 86_400 },
+          d90: { label: "3M",  durationSec: 7_776_000, granularity: 86_400 },
+        };
+
+        // ─── Helpers ──────────────────────────────────────────────────────────
+        const getProductId = () => isBitcoin ? "BTC-USD" : "ETH-USD";
+
+        /**
+         * Resample `arr` to exactly `n` evenly-spaced elements.
+         * Handles both up-sampling (pad/repeat) and down-sampling.
+         */
+        function resampleTo(arr, n) {
+          if (arr.length === 0) return Array(n).fill(0);
+          if (arr.length === n) return [...arr];
+          const result = [];
+          for (let i = 0; i < n; i++) {
+            const idx = Math.round(i * (arr.length - 1) / (n - 1));
+            result.push(arr[Math.min(idx, arr.length - 1)]);
+          }
+          return result;
+        }
+
+        // ─── Chart Data Fetch ─────────────────────────────────────────────────
+        async function fetchChartData(range) {
+          const cfg  = RANGES[range];
+          const end  = new Date();
+          const start = new Date(end.getTime() - cfg.durationSec * 1000);
+
+          const url = `https://api.exchange.coinbase.com/products/${getProductId()}/candles` +
+                      `?start=${start.toISOString()}&end=${end.toISOString()}&granularity=${cfg.granularity}`;
+
+          console.log(`📊 Fetching [${cfg.label}] chart for ${getProductId()} (granularity: ${cfg.granularity}s)…`);
+
+          const response = await fetch(url);
+          const data = await response.json();
+
+          if (!Array.isArray(data) || data.length === 0) {
+            console.error("❌ Empty candle response");
+            return null;
+          }
+
+          // Sort ascending: oldest → newest, then extract close prices (index 4)
+          const sorted = [...data].sort((a, b) => a[0] - b[0]);
+          const closes = sorted.map(c => c[4]);
+
+          // Resample to exactly 30 data points
+          const sampled = resampleTo(closes, 30);
+
+          return {
+            closes: sampled,           // sampled[0] = oldest, sampled[29] = newest
+            oldest: sampled[0],
+            newest: sampled[29],
+            min:    Math.min(...sampled),
+            max:    Math.max(...sampled),
+          };
+        }
+
+        // ─── Update Chart Bars + Range Properties ─────────────────────────────
+        async function updateChart(range) {
           try {
-            console.log("📊 Fetching last 12 hours of Bitcoin data...");
-            
-            const end = new Date();
-            const start = new Date();
-            start.setHours(start.getHours() - 12);
-            
-            const startISO = start.toISOString();
-            const endISO = end.toISOString();
-            
-            const url = `https://api.exchange.coinbase.com/products/BTC-USD/candles?start=${startISO}&end=${endISO}&granularity=3600`;
-            
-            const response = await fetch(url);
-            const data = await response.json();
-            
-            const hourlyPrices = data.map(candle => ({
-              timestamp: new Date(candle[0] * 1000),
-              close: candle[4]
-            })).reverse();
-            
-            console.log(`📊 Fetched ${hourlyPrices.length} hours of data`);
-            
-            bars.forEach((bar, index) => {
-              if (bar && hourlyPrices[index]) {
-                const newValue = hourlyPrices[index].close;
-                bar.value = newValue + 0.01;
-                
-                setTimeout(() => {
-                  bar.value = newValue;
-                  console.log(`  Bar ${index + 1}: $${newValue.toFixed(2)} at ${hourlyPrices[index].timestamp.toLocaleTimeString()}`);
-                }, 10);
-              }
+            const chartData = await fetchChartData(range);
+            if (!chartData) return;
+
+            const { closes, oldest, newest, min, max } = chartData;
+
+            // bar30 (bars[29]) ← closes[0] (oldest)
+            // bar1  (bars[0])  ← closes[29] (newest)
+            closes.forEach((price, i) => {
+              const bar = bars[29 - i];
+              if (bar) bar.value = price;
             });
-            
-            console.log("✅ Chart updated successfully at", new Date().toLocaleTimeString());
-            
-          } catch (error) {
-            console.error("⚠️ Error fetching hourly data:", error);
+
+            maxRangeProp.value = max;
+            minRangeProp.value = min;
+
+            // Plain numeric difference: newest − oldest (no "$" / "+/-")
+            const diff = newest - oldest;
+            priceDiffProp.value = diff;
+
+            // Plain percentage change (no "%")
+            const perc = oldest !== 0 ? ((newest - oldest) / oldest) * 100 : 0;
+            percDiffProp.value = perc;
+
+            console.log(
+              `✅ Chart [${range}] ${getProductId()} →`,
+              `oldest=$${oldest.toFixed(2)}, newest=$${newest.toFixed(2)},`,
+              `diff=${diff.toFixed(2)}, perc=${perc.toFixed(2)}%,`,
+              `min=$${min.toFixed(2)}, max=$${max.toFixed(2)}`
+            );
+          } catch (err) {
+            console.error("⚠️ Chart update error:", err);
           }
         }
 
-        async function updateBitcoinPrice() {
+        // ─── Spot Price Update ────────────────────────────────────────────────
+        async function updateCurrentPrice() {
           try {
-            const response = await fetch("https://api.coinbase.com/v2/prices/spot?currency=USD");
-            const data = await response.json();
-            const price = parseFloat(data.data.amount);
+            const res   = await fetch(`https://api.coinbase.com/v2/prices/${getProductId()}/spot`);
+            const json  = await res.json();
+            const price = parseFloat(json.data.amount);
 
-            console.log("💰 BTC Price:", price);
-            
+            console.log(`💰 ${getProductId()} spot: $${price}`);
+
             if (previousPrice !== null) {
-              const diff = price - previousPrice;
-              const diffFormatted = diff >= 0 
-                ? `+$${diff.toFixed(2)}` 
-                : `-$${Math.abs(diff).toFixed(2)}`;
-              
-              console.log("📊 Price Change:", diffFormatted);
-              diffProp.value = diffFormatted;
-              
-              if (diffFormatted === "+$0.00" || diffFormatted === "-$0.00") {
-            showDiffProp.value = false;
-            console.log("  ↳ No change, hiding diff indicator");
-          } else {
-            showDiffProp.value = true;
-            console.log("  ↳ Price changed! Triggering haptic...");
-            // Trigger haptic ONLY when there's a price change AND it's not zero
-            triggerHaptic();
-          }
+              // Capture previous as oldPrice before overwriting
+              oldPriceProp.value = previousPrice;
+
+              const changed = Math.abs(price - previousPrice) > 0.001;
+              showDiffProp.value = changed;
+              if (changed) {
+                console.log(`  ↳ Price changed $${previousPrice.toFixed(2)} → $${price.toFixed(2)}`);
+                triggerHaptic();
+              }
             } else {
-              diffProp.value = "";
+              // First read — seed oldPrice with the same value (no diff yet)
+              oldPriceProp.value = price;
               showDiffProp.value = false;
             }
-            
-            numProp.value = price;
-            previousPrice = price;
-            
-          } catch (error) {
-            console.error("⚠️ Error fetching Bitcoin data:", error);
+
+            newPriceProp.value = price;
+            previousPrice      = price;
+          } catch (err) {
+            console.error("⚠️ Spot price error:", err);
           }
         }
 
-        function msUntilNextHour() {
-          const now = new Date();
-          const nextHour = new Date(now);
-          nextHour.setHours(now.getHours() + 1, 0, 0, 0);
-          return nextHour - now;
+        // ─── Coin Toggle Detection (poll btcEth at the price interval) ────────
+        function checkCoinToggle() {
+          if (!btcEthProp) return;
+          const current = btcEthProp.value;
+          if (current !== lastBtcEthValue) {
+            lastBtcEthValue = current;
+            isBitcoin       = current;
+            previousPrice   = null; // reset spot diff tracking on coin switch
+            console.log(`🔄 Coin switched → ${isBitcoin ? "Bitcoin (BTC)" : "Ethereum (ETH)"}`);
+            updateCurrentPrice();
+            updateChart(currentRange);
+          }
         }
 
-        // IMPORTANT: Load all data first
-        console.log("⏳ Loading initial data...");
-        await fetchHourlyData();
-        await updateBitcoinPrice();
-        
-        // Wait a moment for Rive to process the values
+        // ─── Chart Auto-Refresh (aligned to active range candle period) ───────
+        function scheduleChartRefresh() {
+          if (chartRefreshTimer) clearTimeout(chartRefreshTimer);
+          const intervalMs = RANGES[currentRange].granularity * 1000;
+          chartRefreshTimer = setTimeout(async () => {
+            console.log(`🔄 Auto-refresh chart [${currentRange}]`);
+            await updateChart(currentRange);
+            scheduleChartRefresh(); // reschedule recursively
+          }, intervalMs);
+        }
+
+        // ─── Rive Event Listener (time range triggers fired from inside Rive) ──
+        r.on(rive.EventType.RiveEvent, (event) => {
+          const name = event?.data?.name;
+          if (name && RANGES[name]) {
+            console.log(`⏱️ Rive trigger fired: [${name}]`);
+            currentRange = name;
+            updateChart(currentRange);
+            scheduleChartRefresh(); // reset refresh cadence for new range
+          }
+        });
+
+        // ─── External API (HTML buttons or DevTools console) ──────────────────
+        /**
+         * window.setTimeRange("h1" | "h24" | "d7" | "d30" | "d90")
+         * Fires the corresponding Rive trigger AND fetches fresh chart data.
+         */
+        window.setTimeRange = (range) => {
+          if (!RANGES[range]) {
+            console.warn(`Unknown range "${range}". Valid: h1, h24, d7, d30, d90`);
+            return;
+          }
+          currentRange = range;
+          console.log(`⏱️ Time range set externally: [${range}]`);
+          if (timeTriggers[range]) timeTriggers[range].fire();
+          updateChart(range);
+          scheduleChartRefresh();
+        };
+
+        /**
+         * window.setCoin(true)  → Bitcoin
+         * window.setCoin(false) → Ethereum
+         */
+        window.setCoin = (btc) => {
+          if (!btcEthProp) return;
+          btcEthProp.value = btc;
+          isBitcoin        = btc;
+          lastBtcEthValue  = btc;
+          previousPrice    = null;
+          console.log(`🪙 Coin set externally: ${btc ? "BTC" : "ETH"}`);
+          updateCurrentPrice();
+          updateChart(currentRange);
+        };
+
+        // ─── Bootstrap ────────────────────────────────────────────────────────
+        console.log(`🪙 Initial coin:  ${isBitcoin ? "Bitcoin (BTC)" : "Ethereum (ETH)"}`);
+        console.log(`⏱️ Initial range: [${currentRange}]`);
+
+        await updateChart(currentRange);
+        await updateCurrentPrice();
         await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Now show the canvas and start animation
-        const canvas = document.getElementById("riveCanvas");
-        const loadingIndicator = document.getElementById("loadingIndicator");
-        
-        canvas.classList.add("loaded");
-        loadingIndicator.classList.add("hidden");
-        r.play(); // Start the animation
-        
-        console.log("✅ All data loaded! Animation started.");
 
-        // Update current price every 2 seconds
-        setInterval(updateBitcoinPrice, 2000);
+        document.getElementById("riveCanvas").classList.add("loaded");
+        document.getElementById("loadingIndicator").classList.add("hidden");
+        r.play();
 
-        // Schedule hourly updates
-        const msToNextHour = msUntilNextHour();
-        console.log(`⏰ Next chart update in ${Math.round(msToNextHour / 1000 / 60)} minutes at ${new Date(Date.now() + msToNextHour).toLocaleTimeString()}`);
-        
-        setTimeout(() => {
-          console.log("🔄 Starting hourly chart updates...");
-          fetchHourlyData();
-          
-          setInterval(() => {
-            console.log("🔄 Hourly update triggered");
-            fetchHourlyData();
-          }, 3600000);
-        }, msToNextHour);
+        console.log("✅ Bootstrap complete — animation started.");
+
+        // Spot price + coin-toggle polling every 2s
+        setInterval(async () => {
+          await updateCurrentPrice();
+          checkCoinToggle();
+        }, 2000);
+
+        // Start chart auto-refresh cadence
+        scheduleChartRefresh();
       },
     });
   </script>
