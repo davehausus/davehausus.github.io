@@ -88,7 +88,7 @@
     <div class="spinner"></div>
     <span>Loading Bitcoin data...</span>
   </div>
-  <canvas id="riveCanvas" width="428" height="926"></canvas>
+  <canvas id="riveCanvas" width="428" height="667"></canvas>
 
   <script>
     const r = new rive.Rive({
@@ -210,6 +210,22 @@
 
         function triggerHaptic() {
           try { if ('vibrate' in navigator) navigator.vibrate(50); } catch (_) {}
+        }
+
+        function resizeCanvas() {
+          const ratio = window.devicePixelRatio || 1;
+          const width = 428;
+          const height = 667;
+
+          // Set the canvas resolution based on device pixel ratio
+          canvas.width = width * ratio;
+          canvas.height = height * ratio;
+          canvas.style.width = width + "px";
+          canvas.style.height = height + "px";
+
+          if (riveInstance) {
+            riveInstance.resizeDrawingSurfaceToCanvas();
+          }
         }
 
         // ─── Ease-Out Bar Animation (200ms) ───────────────────────────────────
