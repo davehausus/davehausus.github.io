@@ -88,7 +88,7 @@
     <div class="spinner"></div>
     <span>Loading Bitcoin data...</span>
   </div>
-  <canvas id="riveCanvas" width="428" height="667"></canvas>
+  <canvas id="riveCanvas" width="375" height="667"></canvas>
 
   <script>
     const r = new rive.Rive({
@@ -124,6 +124,11 @@
 
         return false;
       },
+
+      layout: new rive.Layout({
+        fit: rive.Fit.FitWidth, // Fit entire animation within canvas while maintaining aspect ratio
+        alignment: rive.Alignment.CenterLeft, // Align animation to center-left of canvas
+      }),
 
       onLoad: async () => {
         console.log("✅ Rive file loaded successfully!");
@@ -212,21 +217,46 @@
           try { if ('vibrate' in navigator) navigator.vibrate(50); } catch (_) {}
         }
 
-        function resizeCanvas() {
-          const ratio = window.devicePixelRatio || 1;
-          const width = 428;
-          const height = 667;
+             // Main function to update canvas dimensions and pass window width to Rive
+      function updateCanvasWidth() {
+        // Prevent overlapping resize operations
+        if (isResizing) return;
+        isResizing = true;
 
-          // Set the canvas resolution based on device pixel ratio
-          canvas.width = width * ratio;
-          canvas.height = height * ratio;
-          canvas.style.width = width + "px";
-          canvas.style.height = height + "px";
-
-          if (riveInstance) {
-            riveInstance.resizeDrawingSurfaceToCanvas();
-          }
+        // Get current width from parent container or canvas itself for canvas sizing
+        const currentWidth = canvasParent ? canvasParent.clientWidth : canvas.clientWidth;
+        
+        // Get the absolute window width for binding to View Model
+        const windowWidth = window.innerWidth;
+        
+        // Determine aspect ratio based on window width breakpoint
+        let aspectRatio;
+        if (windowWidth >= 428) {
+          // Desktop: use 1024 x 600 aspect ratio
+          aspectRatio = 428 / 667;
+        } else {
+          // Mobile: use 531 x 600 aspect ratio
+          aspectRatio = 375 / 667;
         }
+
+        // Set canvas width to match container
+        canvas.style.width = currentWidth + 'px';
+        // Calculate and set height to maintain artboard aspect ratio
+        canvas.style.height = (currentWidth / aspectRatio) + 'px';
+        
+        // Pass the WINDOW width value to Rive's View Model for data binding
+        numProp.value = windowWidth;
+        console.log(`Window width bound to View Model: ${windowWidth}`);
+        
+        // Use requestAnimationFrame to ensure smooth rendering
+        requestAnimationFrame(() => {
+          // Tell Rive to update its internal rendering surface to match new canvas size
+          r.resizeDrawingSurfaceToCanvas();
+          // Reset flag to allow future resize operations
+          isResizing = false;
+        });
+      }
+
 
         // ─── Ease-Out Bar Animation (200ms) ───────────────────────────────────
         function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
