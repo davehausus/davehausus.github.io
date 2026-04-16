@@ -135,163 +135,197 @@
           return;
         }
 
-        // ─── View Model Properties ──────────────────────────────────────────────
-        const newPriceProp  = vmi.number("newPrice");   // Current (latest) spot price
-        const oldPriceProp  = vmi.number("oldPrice");   // Previous spot price snapshot
-        const priceDiffProp = vmi.number("priceDiff");  // Newest − Oldest in active range (no symbols)
-        const percDiffProp  = vmi.number("percDiff");   // % change oldest→newest (no symbols)
-        const showDiffProp  = vmi.boolean("showDiff");  // Show/hide spot diff indicator
-        const btcEthProp    = vmi.boolean("btcEth");    // true = Bitcoin | false = Ethereum
-        const maxRangeProp  = vmi.number("maxRange");   // Highest close in active range
-        const minRangeProp  = vmi.number("minRange");   // Lowest close in active range
+        // ─── View Model Properties ────────────────────────────────────────────
+        const newPriceProp  = vmi.number("newPrice");
+        const oldPriceProp  = vmi.number("oldPrice");
+        const priceDiffProp = vmi.number("priceDiff");  // Always positive (abs)
+        const percDiffProp  = vmi.number("percDiff");   // Signed — negative shows "-"
+        const showDiffProp  = vmi.boolean("showDiff");
+        const btcEthProp    = vmi.boolean("btcEth");    // true = BTC | false = ETH
+        const maxRangeProp  = vmi.number("maxRange");
+        const minRangeProp  = vmi.number("minRange");
 
-        // 30 bar properties — bars[0] = bar1 (newest), bars[29] = bar30 (oldest)
+        // bar1 (bars[0]) = newest  ·  bar30 (bars[29]) = oldest
         const bars = Array.from({ length: 30 }, (_, i) => vmi.number(`bar${i + 1}`));
 
-        // Time-range view model triggers (can also be fired externally via window.setTimeRange)
-        const timeTriggers = {
-          h1:  vmi.trigger("h1"),
-          h24: vmi.trigger("h24"),
-          d7:  vmi.trigger("d7"),
-          d30: vmi.trigger("d30"),
-          d90: vmi.trigger("d90"),
+        // Time-range booleans (replace triggers)
+        const rangeBoolProps = {
+          h1:  vmi.boolean("h1"),
+          h24: vmi.boolean("h24"),
+          d7:  vmi.boolean("d7"),
+          d30: vmi.boolean("d30"),
+          d90: vmi.boolean("d90"),
         };
 
-        // ─── Runtime State ───────────────────────────────────────────────────────
-        let previousPrice   = null;                     // Last recorded spot price
-        let currentRange    = "h1";                     // Active time range key
-        let isBitcoin       = btcEthProp ? btcEthProp.value : true;
-        let lastBtcEthValue = isBitcoin;
-        let chartRefreshTimer = null;
+        // ─── Runtime State ────────────────────────────────────────────────────
+        let isBitcoin     = true;   // Initial coin: BTC
+        let currentRange  = "h1";   // Initial range: 1H
+        let previousPrice = null;   // Last recorded spot price
+        let bar30Target   = null;   // Target value for bar30 (oldest candle in range)
 
-        // ─── Haptics ─────────────────────────────────────────────────────────────
+        // Stable snapshots for change-detection (fast-poll loop)
+        let lastBtcEth     = true;
+        let lastRangeBools = { h1: true, h24: false, d7: false, d30: false, d90: false };
+
+        // Per-bar animation targets (avoids reading .value mid-animation)
+        const barTargets = new Array(30).fill(0);
+
+        // ─── Bootstrap: push initial boolean states into Rive ─────────────────
+        if (btcEthProp) btcEthProp.value = true;
+        Object.entries(rangeBoolProps).forEach(([key, prop]) => {
+          if (prop) prop.value = key === "h1";
+        });
+
+        // ─── Time-Range Configuration ─────────────────────────────────────────
+        //  Granularity is chosen as the finest valid Coinbase value that keeps
+        //  the candle count ≤ 300, then we resample down to exactly 30 bars.
+        //
+        //  h1  →  3 600 s ÷    60 s =  60 candles → resample → 30
+        //  h24 → 86 400 s ÷   900 s =  96 candles → resample → 30
+        //  d7  → 604 800 s ÷ 3 600 s = 168 candles → resample → 30
+        //  d30 → 2 592 000 s ÷ 86 400 s = 30 candles → exact 30
+        //  d90 → 7 776 000 s ÷ 86 400 s = 90 candles → resample → 30
+        const RANGES = {
+          h1:  { label: "1H",  durationSec: 3_600,     granularity: 60      },
+          h24: { label: "1D",  durationSec: 86_400,    granularity: 900     },
+          d7:  { label: "1W",  durationSec: 604_800,   granularity: 3_600   },
+          d30: { label: "1M",  durationSec: 2_592_000, granularity: 86_400  },
+          d90: { label: "3M",  durationSec: 7_776_000, granularity: 86_400  },
+        };
+
+        // ─── Haptics ──────────────────────────────────────────────────────────
         const isIOS        = /iPhone|iPad|iPod/.test(navigator.userAgent);
         const isStandalone = window.navigator.standalone ||
                             window.matchMedia('(display-mode: standalone)').matches;
-        let audioContext   = null;
 
-        if (isIOS && !isStandalone) {
-          console.log("ℹ️ iOS Safari: haptics unavailable in browser. Add to Home Screen to enable.");
-        }
+        if (isIOS && !isStandalone)
+          console.log("ℹ️ iOS Safari: add to Home Screen to enable haptics.");
 
         ['touchstart', 'click'].forEach(evt => {
           document.addEventListener(evt, () => {
-            if (!audioContext && isIOS)
-              audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (!window._audioCtx && isIOS)
+              window._audioCtx = new (window.AudioContext || window.webkitAudioContext)();
           }, { once: true });
         });
 
         function triggerHaptic() {
-          try {
-            if ('vibrate' in navigator) {
-              navigator.vibrate(50);
-              console.log("📳 Haptic triggered");
-            }
-          } catch (e) {
-            console.log("⚠️ Haptic error:", e.message);
-          }
+          try { if ('vibrate' in navigator) navigator.vibrate(50); } catch (_) {}
         }
 
-        // ─── Time Range Configuration ─────────────────────────────────────────
-        //  granularity must be one of Coinbase's valid values: 60, 300, 900, 3600, 21600, 86400
-        //  We fetch with the finest granularity that keeps us ≤ 300 candles, then resample to 30.
-        //
-        //  h1  → 3600 s  ÷ 60 s    =  60 candles  → resample 60  → 30
-        //  h24 → 86400 s ÷ 900 s   =  96 candles  → resample 96  → 30
-        //  d7  → 604800 s÷ 3600 s  = 168 candles  → resample 168 → 30
-        //  d30 → 2592000 s÷86400 s =  30 candles  → exact 30
-        //  d90 → 7776000 s÷86400 s =  90 candles  → resample 90  → 30
-        const RANGES = {
-          h1:  { label: "1H",  durationSec: 3_600,    granularity: 60     },
-          h24: { label: "1D",  durationSec: 86_400,   granularity: 900    },
-          d7:  { label: "1W",  durationSec: 604_800,  granularity: 3_600  },
-          d30: { label: "1M",  durationSec: 2_592_000, granularity: 86_400 },
-          d90: { label: "3M",  durationSec: 7_776_000, granularity: 86_400 },
-        };
+        // ─── Ease-Out Bar Animation (200ms) ───────────────────────────────────
+        function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
-        // ─── Helpers ──────────────────────────────────────────────────────────
+        function animateBarTo(index, target, duration = 200) {
+          const bar = bars[index];
+          if (!bar) return;
+
+          const start       = barTargets[index];
+          barTargets[index] = target;
+
+          const t0 = performance.now();
+          (function step(now) {
+            const p  = Math.min((now - t0) / duration, 1);
+            bar.value = start + (target - start) * easeOutCubic(p);
+            if (p < 1) requestAnimationFrame(step);
+          })(t0);
+        }
+
+        // Snap all bars to a baseline value with no animation,
+        // then immediately kick off the normal ease-out from that baseline.
+        function snapAndAnimateBars(closes, baseline) {
+          closes.forEach((price, i) => {
+            const index       = 29 - i;
+            barTargets[index] = baseline; // start point for the upcoming ease-out
+            if (bars[index]) bars[index].value = baseline;
+          });
+          // Now animate to actual targets — easeOut starts from `baseline`
+          closes.forEach((price, i) => animateBarTo(29 - i, price, 200));
+        }
+
+        // ─── Helpers ─────────────────────────────────────────────────────────
         const getProductId = () => isBitcoin ? "BTC-USD" : "ETH-USD";
 
-        /**
-         * Resample `arr` to exactly `n` evenly-spaced elements.
-         * Handles both up-sampling (pad/repeat) and down-sampling.
-         */
         function resampleTo(arr, n) {
           if (arr.length === 0) return Array(n).fill(0);
           if (arr.length === n) return [...arr];
-          const result = [];
-          for (let i = 0; i < n; i++) {
+          return Array.from({ length: n }, (_, i) => {
             const idx = Math.round(i * (arr.length - 1) / (n - 1));
-            result.push(arr[Math.min(idx, arr.length - 1)]);
-          }
-          return result;
+            return arr[Math.min(idx, arr.length - 1)];
+          });
+        }
+
+        // ─── Diff Calculations (called alongside newPrice updates) ───────────
+        // priceDiff: |newPrice − bar30|  → always positive, never shows "-"
+        // percDiff:  signed %            → shows "-" when price dropped
+        function updateDiffs(price) {
+          if (bar30Target === null) return;
+          const diff = price - bar30Target;
+          priceDiffProp.value = Math.abs(diff);
+          percDiffProp.value  = bar30Target !== 0
+            ? (diff / bar30Target) * 100
+            : 0;
         }
 
         // ─── Chart Data Fetch ─────────────────────────────────────────────────
         async function fetchChartData(range) {
-          const cfg  = RANGES[range];
-          const end  = new Date();
+          const cfg   = RANGES[range];
+          const end   = new Date();
           const start = new Date(end.getTime() - cfg.durationSec * 1000);
 
-          const url = `https://api.exchange.coinbase.com/products/${getProductId()}/candles` +
-                      `?start=${start.toISOString()}&end=${end.toISOString()}&granularity=${cfg.granularity}`;
+          const url =
+            `https://api.exchange.coinbase.com/products/${getProductId()}/candles` +
+            `?start=${start.toISOString()}&end=${end.toISOString()}&granularity=${cfg.granularity}`;
 
-          console.log(`📊 Fetching [${cfg.label}] chart for ${getProductId()} (granularity: ${cfg.granularity}s)…`);
+          console.log(`📊 [${cfg.label}] ${getProductId()} — granularity: ${cfg.granularity}s`);
 
-          const response = await fetch(url);
-          const data = await response.json();
+          const res  = await fetch(url);
+          const data = await res.json();
 
           if (!Array.isArray(data) || data.length === 0) {
             console.error("❌ Empty candle response");
             return null;
           }
 
-          // Sort ascending: oldest → newest, then extract close prices (index 4)
-          const sorted = [...data].sort((a, b) => a[0] - b[0]);
-          const closes = sorted.map(c => c[4]);
-
-          // Resample to exactly 30 data points
-          const sampled = resampleTo(closes, 30);
+          // Sort ascending (oldest → newest), extract close prices
+          const closes  = [...data].sort((a, b) => a[0] - b[0]).map(c => c[4]);
+          const sampled = resampleTo(closes, 30); // sampled[0]=oldest, sampled[29]=newest
 
           return {
-            closes: sampled,           // sampled[0] = oldest, sampled[29] = newest
-            oldest: sampled[0],
-            newest: sampled[29],
-            min:    Math.min(...sampled),
-            max:    Math.max(...sampled),
+            closes:  sampled,
+            oldest:  sampled[0],
+            newest:  sampled[29],
+            min:     Math.min(...sampled),
+            max:     Math.max(...sampled),
           };
         }
 
-        // ─── Update Chart Bars + Range Properties ─────────────────────────────
-        async function updateChart(range) {
+        // ─── Update Chart ─────────────────────────────────────────────────────
+        async function updateChart(range, snapFirst = false) {
           try {
-            const chartData = await fetchChartData(range);
-            if (!chartData) return;
+            const cd = await fetchChartData(range);
+            if (!cd) return;
 
-            const { closes, oldest, newest, min, max } = chartData;
+            const { closes, oldest, newest, min, max } = cd;
 
-            // bar30 (bars[29]) ← closes[0] (oldest)
-            // bar1  (bars[0])  ← closes[29] (newest)
-            closes.forEach((price, i) => {
-              const bar = bars[29 - i];
-              if (bar) bar.value = price;
-            });
-
+            // Update scale properties BEFORE touching bars so Rive's coordinate
+            // system is correct for whichever values we're about to write.
             maxRangeProp.value = max;
             minRangeProp.value = min;
 
-            // Plain numeric difference: newest − oldest (no "$" / "+/-")
-            const diff = newest - oldest;
-            priceDiffProp.value = diff;
+            if (snapFirst) {
+              // Snap every bar to min so they're always inside the new scale,
+              // then ease-out upward to the real values.
+              snapAndAnimateBars(closes, min);
+            } else {
+              closes.forEach((price, i) => animateBarTo(29 - i, price, 200));
+            }
 
-            // Plain percentage change (no "%")
-            const perc = oldest !== 0 ? ((newest - oldest) / oldest) * 100 : 0;
-            percDiffProp.value = perc;
+            bar30Target = oldest;
+            if (previousPrice !== null) updateDiffs(previousPrice);
 
             console.log(
-              `✅ Chart [${range}] ${getProductId()} →`,
+              `✅ [${range}] ${getProductId()} →`,
               `oldest=$${oldest.toFixed(2)}, newest=$${newest.toFixed(2)},`,
-              `diff=${diff.toFixed(2)}, perc=${perc.toFixed(2)}%,`,
               `min=$${min.toFixed(2)}, max=$${max.toFixed(2)}`
             );
           } catch (err) {
@@ -300,111 +334,112 @@
         }
 
         // ─── Spot Price Update ────────────────────────────────────────────────
-        async function updateCurrentPrice() {
+        async function updateSpotPrice() {
           try {
             const res   = await fetch(`https://api.coinbase.com/v2/prices/${getProductId()}/spot`);
             const json  = await res.json();
             const price = parseFloat(json.data.amount);
 
-            console.log(`💰 ${getProductId()} spot: $${price}`);
-
             if (previousPrice !== null) {
-              // Capture previous as oldPrice before overwriting
               oldPriceProp.value = previousPrice;
-
               const changed = Math.abs(price - previousPrice) > 0.001;
               showDiffProp.value = changed;
               if (changed) {
-                console.log(`  ↳ Price changed $${previousPrice.toFixed(2)} → $${price.toFixed(2)}`);
+                console.log(`  ↳ $${previousPrice.toFixed(2)} → $${price.toFixed(2)}`);
                 triggerHaptic();
               }
             } else {
-              // First read — seed oldPrice with the same value (no diff yet)
               oldPriceProp.value = price;
               showDiffProp.value = false;
             }
 
             newPriceProp.value = price;
             previousPrice      = price;
+
+            // priceDiff & percDiff update in lockstep with newPrice
+            updateDiffs(price);
+
+            console.log(`💰 ${getProductId()} $${price.toFixed(2)}`);
           } catch (err) {
             console.error("⚠️ Spot price error:", err);
           }
         }
 
-        // ─── Coin Toggle Detection (poll btcEth at the price interval) ────────
-        function checkCoinToggle() {
-          if (!btcEthProp) return;
-          const current = btcEthProp.value;
-          if (current !== lastBtcEthValue) {
-            lastBtcEthValue = current;
-            isBitcoin       = current;
-            previousPrice   = null; // reset spot diff tracking on coin switch
-            console.log(`🔄 Coin switched → ${isBitcoin ? "Bitcoin (BTC)" : "Ethereum (ETH)"}`);
-            updateCurrentPrice();
-            updateChart(currentRange);
+        // ─── Coin + Range Boolean Polling (100ms for instant response) ────────
+        function pollBooleans() {
+          // ── btcEth ──────────────────────────────────────────────────────────
+          if (btcEthProp) {
+            const cur = btcEthProp.value;
+            if (cur !== lastBtcEth) {
+              lastBtcEth    = cur;
+              isBitcoin     = cur;
+              previousPrice = null;
+              bar30Target   = null;
+              console.log(`🪙 Coin → ${isBitcoin ? "BTC" : "ETH"}`);
+              // Fetch both chart and spot instantly
+              updateChart(currentRange, true);
+              updateSpotPrice();
+            }
+          }
+
+          // ── Time-range booleans ──────────────────────────────────────────────
+          // Detect whichever range was just switched ON
+          for (const key of Object.keys(rangeBoolProps)) {
+            const prop = rangeBoolProps[key];
+            if (!prop) continue;
+            const cur = prop.value;
+
+            // Rising edge: false → true
+            if (cur && !lastRangeBools[key]) {
+              // Update snapshot (turn all off, then this one on)
+              Object.keys(lastRangeBools).forEach(k => { lastRangeBools[k] = false; });
+              lastRangeBools[key] = true;
+
+              currentRange = key;
+              bar30Target  = null;
+              console.log(`⏱️ Range → [${key}]`);
+              updateChart(key);
+              break; // Only handle one rising edge per tick
+            } else {
+              lastRangeBools[key] = cur;
+            }
           }
         }
 
-        // ─── Chart Auto-Refresh (aligned to active range candle period) ───────
+        // ─── Chart Auto-Refresh (aligned to active range granularity) ─────────
+        let chartRefreshTimer = null;
+
         function scheduleChartRefresh() {
-          if (chartRefreshTimer) clearTimeout(chartRefreshTimer);
-          const intervalMs = RANGES[currentRange].granularity * 1000;
+          clearTimeout(chartRefreshTimer);
+          const ms = RANGES[currentRange].granularity * 1000;
           chartRefreshTimer = setTimeout(async () => {
-            console.log(`🔄 Auto-refresh chart [${currentRange}]`);
+            console.log(`🔄 Auto-refresh [${currentRange}]`);
             await updateChart(currentRange);
-            scheduleChartRefresh(); // reschedule recursively
-          }, intervalMs);
+            scheduleChartRefresh();
+          }, ms);
         }
 
-        // ─── Rive Event Listener (time range triggers fired from inside Rive) ──
-        r.on(rive.EventType.RiveEvent, (event) => {
-          const name = event?.data?.name;
-          if (name && RANGES[name]) {
-            console.log(`⏱️ Rive trigger fired: [${name}]`);
-            currentRange = name;
-            updateChart(currentRange);
-            scheduleChartRefresh(); // reset refresh cadence for new range
-          }
-        });
-
-        // ─── External API (HTML buttons or DevTools console) ──────────────────
-        /**
-         * window.setTimeRange("h1" | "h24" | "d7" | "d30" | "d90")
-         * Fires the corresponding Rive trigger AND fetches fresh chart data.
-         */
+        // ─── External API ─────────────────────────────────────────────────────
         window.setTimeRange = (range) => {
-          if (!RANGES[range]) {
-            console.warn(`Unknown range "${range}". Valid: h1, h24, d7, d30, d90`);
-            return;
-          }
-          currentRange = range;
-          console.log(`⏱️ Time range set externally: [${range}]`);
-          if (timeTriggers[range]) timeTriggers[range].fire();
-          updateChart(range);
-          scheduleChartRefresh();
+          if (!RANGES[range]) { console.warn(`Unknown range "${range}"`); return; }
+          // Reflect into Rive booleans
+          Object.entries(rangeBoolProps).forEach(([k, p]) => { if (p) p.value = k === range; });
+          // pollBooleans() will pick this up on next tick and fetch — or call directly:
+          Object.keys(lastRangeBools).forEach(k => { lastRangeBools[k] = false; });
+          lastRangeBools[range] = false; // force rising-edge detection on next poll
         };
 
-        /**
-         * window.setCoin(true)  → Bitcoin
-         * window.setCoin(false) → Ethereum
-         */
         window.setCoin = (btc) => {
-          if (!btcEthProp) return;
-          btcEthProp.value = btc;
-          isBitcoin        = btc;
-          lastBtcEthValue  = btc;
-          previousPrice    = null;
-          console.log(`🪙 Coin set externally: ${btc ? "BTC" : "ETH"}`);
-          updateCurrentPrice();
-          updateChart(currentRange);
+          if (btcEthProp) btcEthProp.value = btc;
+          lastBtcEth = !btc; // force rising-edge detection on next poll
         };
 
         // ─── Bootstrap ────────────────────────────────────────────────────────
-        console.log(`🪙 Initial coin:  ${isBitcoin ? "Bitcoin (BTC)" : "Ethereum (ETH)"}`);
-        console.log(`⏱️ Initial range: [${currentRange}]`);
+        console.log(`🪙 Initial coin:  BTC`);
+        console.log(`⏱️ Initial range: [h1]`);
 
         await updateChart(currentRange);
-        await updateCurrentPrice();
+        await updateSpotPrice();
         await new Promise(resolve => setTimeout(resolve, 500));
 
         document.getElementById("riveCanvas").classList.add("loaded");
@@ -413,13 +448,13 @@
 
         console.log("✅ Bootstrap complete — animation started.");
 
-        // Spot price + coin-toggle polling every 2s
-        setInterval(async () => {
-          await updateCurrentPrice();
-          checkCoinToggle();
-        }, 2000);
+        // Fast boolean poll — instant response to any toggle
+        setInterval(pollBooleans, 100);
 
-        // Start chart auto-refresh cadence
+        // Spot price update every 2s
+        setInterval(updateSpotPrice, 2000);
+
+        // Chart auto-refresh aligned to range granularity
         scheduleChartRefresh();
       },
     });
