@@ -45,6 +45,10 @@
       border-radius: 16px;
       opacity: 0; /* Start hidden */
       transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+      display: block;
     }
 
     canvas.loaded {
@@ -91,13 +95,38 @@
   <canvas id="riveCanvas" width="375" height="667"></canvas>
 
   <script>
+    const canvas = document.getElementById("riveCanvas");
+
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+
+      // Fixed visual size (CSS size)
+      const cssWidth = 375;
+      const cssHeight = 667;
+
+      // Keep same visible size on screen
+      canvas.style.width = `${cssWidth}px`;
+      canvas.style.height = `${cssHeight}px`;
+
+      // Higher internal resolution for Retina / high-DPI screens
+      canvas.width = cssWidth * dpr;
+      canvas.height = cssHeight * dpr;
+    }
+
+    resizeCanvas();
+
     const r = new rive.Rive({
       src: "data_binding.riv",
-      canvas: document.getElementById("riveCanvas"),
+      canvas: canvas,
       autoplay: false,
       autoBind: true,
       artboard: "Artboard",
       stateMachines: "State Machine 1",
+
+      layout: new rive.Layout({
+        fit: rive.Fit.contain,
+        alignment: rive.Alignment.center,
+      }),
 
       assetLoader: async (asset, bytes) => {
         console.log("🔍 Asset detected:", asset.name, "Type:", asset.isFont ? "Font" : "Other");
@@ -125,13 +154,11 @@
         return false;
       },
 
-      layout: new rive.Layout({
-        fit: rive.Fit.FitWidth, // Fit entire animation within canvas while maintaining aspect ratio
-        alignment: rive.Alignment.CenterLeft, // Align animation to center-left of canvas
-      }),
-
       onLoad: async () => {
         console.log("✅ Rive file loaded successfully!");
+        // Important for WebGL2 renderer:
+        // tell Rive to resize after canvas dimensions are set
+        r.resizeDrawingSurfaceToCanvas();
         await new Promise(rslv => setTimeout(rslv, 300));
 
         const vmi = r.viewModelInstance;
@@ -216,47 +243,6 @@
         function triggerHaptic() {
           try { if ('vibrate' in navigator) navigator.vibrate(50); } catch (_) {}
         }
-
-             // Main function to update canvas dimensions and pass window width to Rive
-      function updateCanvasWidth() {
-        // Prevent overlapping resize operations
-        if (isResizing) return;
-        isResizing = true;
-
-        // Get current width from parent container or canvas itself for canvas sizing
-        const currentWidth = canvasParent ? canvasParent.clientWidth : canvas.clientWidth;
-        
-        // Get the absolute window width for binding to View Model
-        const windowWidth = window.innerWidth;
-        
-        // Determine aspect ratio based on window width breakpoint
-        let aspectRatio;
-        if (windowWidth >= 428) {
-          // Desktop: use 1024 x 600 aspect ratio
-          aspectRatio = 428 / 667;
-        } else {
-          // Mobile: use 531 x 600 aspect ratio
-          aspectRatio = 375 / 667;
-        }
-
-        // Set canvas width to match container
-        canvas.style.width = currentWidth + 'px';
-        // Calculate and set height to maintain artboard aspect ratio
-        canvas.style.height = (currentWidth / aspectRatio) + 'px';
-        
-        // Pass the WINDOW width value to Rive's View Model for data binding
-        numProp.value = windowWidth;
-        console.log(`Window width bound to View Model: ${windowWidth}`);
-        
-        // Use requestAnimationFrame to ensure smooth rendering
-        requestAnimationFrame(() => {
-          // Tell Rive to update its internal rendering surface to match new canvas size
-          r.resizeDrawingSurfaceToCanvas();
-          // Reset flag to allow future resize operations
-          isResizing = false;
-        });
-      }
-
 
         // ─── Ease-Out Bar Animation (200ms) ───────────────────────────────────
         function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
@@ -503,6 +489,11 @@
         // Chart auto-refresh aligned to range granularity
         scheduleChartRefresh();
       },
+    });
+    // Re-apply on resize / device rotation
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      r.resizeDrawingSurfaceToCanvas();
     });
   </script>
 </body>
