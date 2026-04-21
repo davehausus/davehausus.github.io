@@ -139,7 +139,7 @@
         if (asset.isFont) {
           console.log("  ↳ Loading referenced font:", asset.name);
           try {
-            const fontResponse = await fetch(`../fonts/Roboto_Condensed/RobotoCondensed-VariableFont_wght.ttf`);
+            const fontResponse = await fetch(`../fonts/Kode_Mono/KodeMono-VariableFont_wght.ttf`);
             const fontData = await fontResponse.arrayBuffer();
             const font = await rive.decodeFont(new Uint8Array(fontData));
             asset.setFont(font);
