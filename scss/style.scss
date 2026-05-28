@@ -600,9 +600,9 @@ body.overflow .navbar .main-menu {
 
 /* LEFT SIDE */
 .left-side{width: 150px; height: 100vh; position: fixed; left: 0; top: 0;
-	.logo{ width: 100%; display: block; height: 42px; text-align: center; margin-top: 35px; @include transition; opacity: 0; transform: translateY(-30px);
+	.logo{ width: 100%; display: block; height: 48px; text-align: center; margin-top: 35px; @include transition; opacity: 0; transform: translateY(-30px);
 		svg {
-			height: 42px;
+			height: 48px;
 			width: auto; // preserves the viewBox aspect ratio (80:84 ≈ square)
     	}
 		&.sticky{opacity: 1; transform: translateY(0);}}
@@ -1399,7 +1399,7 @@ body.overflow .navbar .main-menu {
 	h6{ font-size: 17px; letter-spacing: 0.2em; margin-bottom: 20px;}
 	h2{font-size: 3vw; font-weight: 800; margin-bottom: 50px; }}
 	.logo{display: block; margin: 0;
-		img{height: 42px;}}
+		img{height: 48px;}}
 	h5{font-size: 17px; font-weight: 800; letter-spacing: 0.03em; margin-bottom: 20px;}
 	.extra{ width: 100%; display: flex; flex-wrap: wrap; margin-bottom:1rem;
 		a{display: block; position: relative;

@@ -1166,7 +1166,7 @@ body.overflow .navbar .main-menu {
 .left-side .logo {
   width: 100%;
   display: block;
-  height: 42px;
+  height: 48px;
   text-align: center;
   margin-top: 35px;
   transition: all 0.25s ease-in-out;
@@ -1174,7 +1174,7 @@ body.overflow .navbar .main-menu {
   transform: translateY(-30px);
 }
 .left-side .logo svg {
-  height: 42px;
+  height: 48px;
   width: auto;
 }
 .left-side .logo.sticky {
@@ -2756,7 +2756,7 @@ body.overflow .navbar .main-menu {
   margin: 0;
 }
 .footer .logo img {
-  height: 42px;
+  height: 48px;
 }
 .footer h5 {
   font-size: 17px;
