@@ -180,7 +180,7 @@
         <script type="text/javascript">var submitted=false;</script>
          <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
          onload="if(submitted) {window.location='thankyou.html';}"></iframe>
-        <form id="contact" action="https://docs.google.com/forms/d/e/1FAIpQLSe8VbRKOZonNTDYy3VnkzT_fn4cSvYBKPe0NfJLZk4A3zpyUQ/formResponse" method="post" target="hidden_iframe" onsubmit="submitted=true;">
+        <form id="contact" action="https://docs.google.com/forms/d/e/1FAIpQLSe8VbRKOZonNTDYy3VnkzT_fn4cSvYBKPe0NfJLZk4A3zpyUQ/formResponse" method="post" target="hidden_iframe">
        <div class="form-group">
          <input type="text" id="name" name="entry.2005620554" required placeholder="">
          <span>Your name *</span>
@@ -202,39 +202,13 @@
        </div>
        <!-- end form-group -->
            <div class="form-group">
-             <button type="contact">
-               <strong>Send<b></b> <i></i></strong>
-             </button>
+            <button type="submit">
+              <strong>Send<b></b> <i></i></strong>
+            </button>
            </div>
            <!-- end form-group -->
          </form>
 
-<script>
-  jQuery(document).ready(function($) {
-    'use strict';
-    
-    // Handle floating labels
-    $('#contact .form-group input, #contact .form-group textarea').on('focus blur', function(e) {
-      var $this = $(this);
-      var $label = $this.next('span'); // Changed from siblings to next
-      
-      if (e.type === 'focus') {
-        $label.addClass('label-up');
-      } else {
-        if ($this.val() === '') {
-          $label.removeClass('label-up');
-        }
-      }
-    });
-    
-    // Check on page load
-    $('#contact .form-group input, #contact .form-group textarea').each(function() {
-      if ($(this).val() !== '') {
-        $(this).next('span').addClass('label-up');
-      }
-    });
-  });
-</script>
         <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
          <!-- end form --> 
           <div class="form-group">
@@ -326,7 +300,8 @@
 <!-- end footer --> 
 <audio id="hamburger-hover" src="audio/link.mp3" preload="auto"></audio>
 
-<!-- JS FILES --> <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- JS FILES -->
+ <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://code.jquery.com/jquery-migrate-3.4.1.min.js"></script> 
 <script src="js/bootstrap.min.js"></script> 
 <script src="js/imagesloaded.pkgd.min.js"></script> 
@@ -336,10 +311,53 @@
 <script src='js/odometer.min.js'></script> 
 <script src='js/fancybox.min.js'></script> 
 <script src='js/wow.min.js'></script> 
-<script src="js/jquery.form.min.js"></script> 
+
 <script src="js/jquery.validate.min.js"></script> 
 <script src="js/contact.form.min.js"></script> 
 <script src='js/scripts.js'></script> 
+
+<script>
+  jQuery(document).ready(function($) {
+    if (typeof $.fn.ajaxFormUnbind === 'function') {
+      $('#contact').ajaxFormUnbind();
+    }
+
+    $('#contact .form-group input, #contact .form-group textarea').on('focus blur', function(e) {
+      var $this = $(this);
+      var $label = $this.next('span');
+      if (e.type === 'focus') {
+        $label.addClass('label-up');
+      } else {
+        if ($this.val() === '') {
+          $label.removeClass('label-up');
+        }
+      }
+    });
+
+    $('#contact .form-group input, #contact .form-group textarea').each(function() {
+      if ($(this).val() !== '') {
+        $(this).next('span').addClass('label-up');
+      }
+    });
+  });
+
+  document.getElementById('contact').addEventListener('submit', function(e) {
+    var name    = document.getElementById('name').value.trim();
+    var subject = document.querySelector('input[name="entry.1166974658"]').value.trim();
+
+    var nameIsNumeric  = /^\d+$/.test(name);
+    var subjectIsEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(subject);
+
+    if (nameIsNumeric || subjectIsEmail) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      submitted = false;
+      window.location = 'thankyou.html';
+    } else {
+      submitted = true;
+    }
+  }, true);
+</script>
 
 
 </body>
