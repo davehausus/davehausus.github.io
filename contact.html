@@ -175,53 +175,52 @@
 	<div class="container">
 	<div class="row">
 
-		<div class="col-md-8 wow fadeInUp">
+    <div class="col-md-8 wow fadeInUp">
       <div class="contact-form">
-        <script type="text/javascript">var submitted=false;</script>
-         <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
-         onload="if(submitted) {window.location='thankyou.html';}"></iframe>
-        <form id="contact" action="https://docs.google.com/forms/d/e/1FAIpQLSe8VbRKOZonNTDYy3VnkzT_fn4cSvYBKPe0NfJLZk4A3zpyUQ/formResponse" method="post" target="hidden_iframe">
-       <div class="form-group">
-         <input type="text" id="name" name="entry.2005620554" required placeholder="">
-         <span>Your name *</span>
-       </div>
-       <!-- end form-group -->
-       <div class="form-group">
-         <input type="email" id="email" name="entry.1045781291" required placeholder="">
-         <span>Your e-mail *</span>
-       </div>
-       <!-- end form-group -->
-       <div class="form-group">
-         <input type="text" name="entry.1166974658" placeholder="">
-         <span>Subject</span>
-       </div>
-       <!-- end form-group -->
-       <div class="form-group">
-         <textarea id="message" name="entry.839337160" required placeholder=""></textarea>
-         <span>Your message *</span>
-       </div>
-       <!-- end form-group -->
-           <div class="form-group">
+        <form id="contact" action="https://formspree.io/f/mqevbakz" method="POST">
+          <!-- Name -->
+          <div class="form-group">
+            <input type="text" id="name" name="name" required placeholder="">
+            <span>Your name *</span>
+          </div>
+          <!-- Email -->
+          <div class="form-group">
+            <input type="email" id="email" name="email" required placeholder="">
+            <span>Your e-mail *</span>
+          </div>
+          <!-- Subject -->
+          <div class="form-group">
+            <input type="text" name="subject" placeholder="">
+            <span>Subject</span>
+          </div>
+          <!-- Message -->
+          <div class="form-group">
+            <textarea id="message" name="message" required placeholder=""></textarea>
+            <span>Your message *</span>
+          </div>
+          <!-- end form-group -->
+          <div class="form-group">
             <button type="submit">
               <strong>Send<b></b> <i></i></strong>
             </button>
-           </div>
-           <!-- end form-group -->
-         </form>
-
-        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
-         <!-- end form --> 
-          <div class="form-group">
-           <div id="success" class="alert alert-success wow fadeInUp" role="alert"> All good! Your message made it through and is now doing a little victory animation on my end.</div>
-         <!-- end success -->
-         <div id="error" class="alert alert-danger wow fadeInUp" role="alert"> Hmm, that glitched. The form hit a snag mid-motion. Refresh and give it another go. </div>
-         <!-- end error --> 
-         </div>
-         <!-- end form-group -->
-         </div>
-         <!-- end contat-form -->
-     </div>
-     <!-- end col-7 -->
+          </div>
+          <input type="hidden" name="_next" value="https://daviddejesus.me/thankyou.html">
+          <!-- end form-group -->
+        </form>
+        <!-- end form -->
+      <div class="form-group">
+          <div id="success" class="alert alert-success wow fadeInUp" role="alert"> All good! Your message made it through
+            and is now doing a little victory animation on my end.</div>
+          <!-- end success -->
+          <div id="error" class="alert alert-danger wow fadeInUp" role="alert"> Hmm, that glitched. The form hit a snag
+            mid-motion. Refresh and give it another go. </div>
+          <!-- end error -->
+      </div>
+      <!-- end form-group -->
+      </div>
+      <!-- end contat-form -->
+    </div>
+    <!-- end col-7 -->
 
 
 		<div class="col-md-4 wow fadeInUp contact-info">
@@ -343,7 +342,7 @@
 
   document.getElementById('contact').addEventListener('submit', function(e) {
     var name    = document.getElementById('name').value.trim();
-    var subject = document.querySelector('input[name="entry.1166974658"]').value.trim();
+    var subject = document.querySelector('input[name="subject"]').value.trim();
 
     var nameIsNumeric  = /^\d+$/.test(name);
     var subjectIsEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(subject);
@@ -351,10 +350,7 @@
     if (nameIsNumeric || subjectIsEmail) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      submitted = false;
       window.location = 'thankyou.html';
-    } else {
-      submitted = true;
     }
   }, true);
 </script>
