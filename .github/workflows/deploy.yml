@@ -1,0 +1,52 @@
+name: Deploy docs
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Build nomo
+        run: |
+          cd sites/nomo
+          npm install
+          npm run build
+
+      - name: Build nefis
+        run: |
+          cd sites/nefis
+          npm install
+          npm run build
+
+      - name: Assemble output
+        run: |
+          mkdir -p dist
+          # Copy root static site (everything except sites/ and dist/ itself)
+          rsync -av --exclude 'sites' --exclude 'dist' --exclude '.git' --exclude '.github' ./ dist/
+          # Copy the two built Starlight sites into their subpaths
+          mkdir -p dist/nomo dist/nefis
+          cp -r sites/nomo/dist/* dist/nomo/
+          cp -r sites/nefis/dist/* dist/nefis/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build-deploy
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
