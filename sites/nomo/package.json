@@ -13,6 +13,7 @@
     "@astrojs/starlight": "^0.41.7",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.1.6",
+    "nanoid": "^6.0.1",
     "sharp": "^0.35.3",
     "starlight-theme-vintage": "^0.1.0",
     "tailwindcss": "^4.3.3"
