@@ -24,15 +24,22 @@ jobs:
           npm install
           npm run build
 
+      - name: Build blog
+        run: |
+          cd sites/blog
+          npm install
+          npm run build
+
       - name: Assemble output
         run: |
           mkdir -p dist
           # Copy root static site (everything except sites/ and dist/ itself)
           rsync -av --exclude 'sites' --exclude 'dist' --exclude '.git' --exclude '.github' ./ dist/
-          # Copy the two built Starlight sites into their subpaths
-          mkdir -p dist/nomo dist/nefis
+          # Copy the built sites into their subpaths
+          mkdir -p dist/nomo dist/nefis dist/blog-preview
           cp -r sites/nomo/dist/* dist/nomo/
           cp -r sites/nefis/dist/* dist/nefis/
+          cp -r sites/blog/dist/* dist/blog-preview/
 
       - uses: actions/upload-pages-artifact@v3
         with:
