@@ -6,6 +6,30 @@ html.dark {
   color-scheme: dark;
 }
 
+html {
+  font-family: sans-serif;
+}
+
 body {
   @apply bg-neutral-900 text-neutral-100;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 80ch;
+  padding: 1rem;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  color: purple;
+  margin: 1rem 0;
+  font-size: 2.5rem;
+}
+
+h2 {
+  margin: 1rem 0;
+  font-size: 1.5rem;
 }

@@ -1,5 +1,9 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+
+import Navigation from "../components/Navigation.astro";
+
+import Footer from "../components/Footer.astro";
 
 const base = import.meta.env.BASE_URL;
 
@@ -7,16 +11,14 @@ const pageTitle = "My Astro Learning BLog";
 ---
 
 <Layout title={pageTitle}>
-<a href={base}>Home</a>
-<a href={`${base}about/`}>About</a>
-<a href={`${base}blog/`}>Blog</a>
-  <h1 class="text-3xl font-bold underline dark:text-white">{pageTitle}</h1>
-    <h1>My Astro Site</h1>
-    <h1>My Astro Learning Blog</h1>
-    <p>This is where I will post about my journey learning Astro.</p>
-    <ul>
-      <li><a href={`${base}posts/post-1/`}>Post 1</a></li>
-      <li><a href={`${base}posts/post-2/`}>Post 2</a></li>
-      <li><a href={`${base}posts/post-3/`}>Post 3</a></li>
-    </ul>
+  <Navigation />
+  <h1 class="text-3xl font-bold dark:text-white">{pageTitle}</h1>
+  <h2>My Astro Site</h2>
+  <p>This is where I will post about my journey learning Astro.</p>
+  <ul>
+    <li><a href={`${base}posts/post-1/`}>Post 1</a></li>
+    <li><a href={`${base}posts/post-2/`}>Post 2</a></li>
+    <li><a href={`${base}posts/post-3/`}>Post 3</a></li>
+  </ul>
+  <Footer />
 </Layout>
