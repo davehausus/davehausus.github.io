@@ -13,11 +13,13 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.8",
+    "@astrojs/rss": "^4.0.19",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.2.7",
     "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
-    "esbuild": true
+    "esbuild": true,
+    "fsevents@2.3.3": true
   }
 }
