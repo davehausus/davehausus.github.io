@@ -1,10 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-import Navigation from "../components/Navigation.astro";
-
-import Footer from "../components/Footer.astro";
-
 const base = import.meta.env.BASE_URL;
 
 const pageTitle = "About Me";
@@ -27,19 +22,15 @@ const fontWeight = "bold";
 const textCase = "uppercase";
 ---
 
-<Layout title={pageTitle}>
-  <Navigation />
-  <h1 class="text-3xl font-bold dark:text-white">{pageTitle}</h1>
+<Layout pageTitle={pageTitle}>
   <h2>... and my new Astro site!</h2>
 
   <p>
-    I am working through Astro's introductory tutorial. This is the second page
-    on my website, and it's the first one I built myself!
-  </p>
-
-  <p>
-    This site will update as I complete more of the tutorial, so keep checking
-    back and see how my journey is going!
+    Since 2009, I’ve worked across web, mobile, and large-screen experiences,
+    helping teams design clear, responsive, and intuitive products. My
+    background sits at the intersection of product design, interface design, and
+    motion systems, where motion is treated as a functional layer of the user
+    experience rather than visual decoration.
   </p>
 
   <p>Here are a few facts about me:</p>
@@ -70,11 +61,9 @@ const textCase = "uppercase";
       <p>My goal is not 3 days.</p>
     )
   }
-  <Footer />
 </Layout>
 
-<style define:vars={{ skillColor, fontWeight, textCase }}>
-
+<style is:global define:vars={{ skillColor, fontWeight, textCase }}>
   .skill {
     color: var(--skillColor);
     font-weight: var(--fontWeight);

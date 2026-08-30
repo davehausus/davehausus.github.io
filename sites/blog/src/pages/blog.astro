@@ -1,24 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-import Navigation from "../components/Navigation.astro";
-
-import Footer from "../components/Footer.astro";
-
+import BlogPost from "../components/BlogPost.astro";
 const base = import.meta.env.BASE_URL;
 
-const pageTitle = "My Astro Learning BLog";
+const allPosts = Object.values(import.meta.glob('./posts/*.md', { eager: true }));
+const pageTitle = "The Workshop";
 ---
 
-<Layout title={pageTitle}>
-  <Navigation />
-  <h1 class="text-3xl font-bold dark:text-white">{pageTitle}</h1>
+<Layout pageTitle={pageTitle}>
   <h2>My Astro Site</h2>
-  <p>This is where I will post about my journey learning Astro.</p>
+  <p>
+    I spend my time studying how things move and why that movement matters. I
+    write to share what I learn and make digital products feel better.
+  </p>
   <ul>
-    <li><a href={`${base}posts/post-1/`}>Post 1</a></li>
-    <li><a href={`${base}posts/post-2/`}>Post 2</a></li>
-    <li><a href={`${base}posts/post-3/`}>Post 3</a></li>
+    {allPosts.map((post: any) => <BlogPost url={post.url} title={post.frontmatter.title} />)}
   </ul>
-  <Footer />
 </Layout>

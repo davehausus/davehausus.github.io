@@ -1,17 +1,9 @@
 ---
-import Layout from '../layouts/Layout.astro';
-
-import Navigation from '../components/Navigation.astro';
-
-import Footer from '../components/Footer.astro';
-
-const base = import.meta.env.BASE_URL;
+import Layout from "../layouts/Layout.astro";
 
 const pageTitle = "Home Page";
 ---
 
-<Layout title={pageTitle}>
-  <Navigation />
-  <h1 class="text-3xl font-bold dark:text-white">{pageTitle}</h1>
-  <Footer />
+<Layout pageTitle={pageTitle}>
+  <h2>Welcome to my Astro site!</h2>
 </Layout>

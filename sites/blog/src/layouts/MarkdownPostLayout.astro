@@ -1,0 +1,48 @@
+---
+import Layout from './Layout.astro';
+const base = import.meta.env.BASE_URL;
+const { frontmatter } = Astro.props;
+
+const formattedDate = new Date(frontmatter.pubDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+<Layout pageTitle={frontmatter.title}>
+  <meta name="description" content={frontmatter.description} />
+  <meta name="author" content={frontmatter.author} />
+  <meta name="pubDate" content={frontmatter.pubDate} />
+  <meta name="image" content={frontmatter.image.url} />
+<p>Written by: {frontmatter.author} on {formattedDate}</p>
+<p><em>{frontmatter.description}</em></p>
+<img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
+
+  <div class="tags">
+    {frontmatter.tags.map((tag: string) => (
+      <p class="tag"><a href={`${base}tags/${tag}`}>{tag}</a></p>
+    ))}
+  </div>
+
+<slot />
+</Layout>
+
+<style>
+  a {
+    color: #00539F;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    margin: 0.25em;
+    border: dotted 1px #a1a1a1;
+    border-radius: .5em;
+    padding: .5em 1em;
+    font-size: 1.15em;
+    background-color: #F8FCFD;
+  }
+</style>
