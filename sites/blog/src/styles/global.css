@@ -2,16 +2,13 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-html.dark {
-  color-scheme: dark;
-}
 
 html {
+  background-color: #f1f5f9;
   font-family: sans-serif;
 }
 
 body {
-  @apply bg-neutral-900 text-neutral-100;
   margin: 0 auto;
   width: 100%;
   max-width: 80ch;
@@ -88,4 +85,27 @@ h2 {
   .menu {
     display: none;
   }
+}
+
+
+html.dark {
+  background-color: #121126;
+  color: #fff;
+}
+.dark .menu {
+  background-color: #fff;
+  color: #000;
+}
+
+.dark .nav-links a:hover,
+.dark .nav-links a:focus {
+  color: #0d0950;
+}
+
+.dark .nav-links a {
+  color: #fff;
+}
+
+.dark a {
+  color: #ff9776;
 }
