@@ -249,3 +249,35 @@ export interface Content extends Omit<Headline, 'classes'>, Widget {
 }
 
 export interface Contact extends Omit<Headline, 'classes'>, Form, Widget {}
+
+export interface WorkItem {
+  id: string;
+  slug: string;
+  permalink: string;
+
+  publishDate: Date;
+  updateDate?: Date;
+
+  title: string;
+  excerpt?: string;
+  image?: ImageMetadata | string;
+
+  client?: string;
+  role?: string;
+  services?: string[];
+  duration?: string;
+  projectUrl?: string;
+
+  category?: Taxonomy;
+  tags?: Taxonomy[];
+
+  metadata?: MetaData;
+
+  draft?: boolean;
+
+  /** Rendered Astro component factory for the post body. */
+  Content?: AstroComponentFactory;
+
+  /** Estimated reading time in minutes. */
+  readingTime?: number;
+}

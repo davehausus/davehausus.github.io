@@ -1,6 +1,6 @@
 import slugify from 'limax';
 
-import { SITE, APP_BLOG } from 'astrowind:config';
+import { SITE, APP_BLOG, APP_WORK } from 'astrowind:config';
 
 import { trim } from '~/utils/utils';
 
@@ -26,6 +26,12 @@ export const CATEGORY_BASE = cleanSlug(APP_BLOG?.category?.pathname);
 export const TAG_BASE = cleanSlug(APP_BLOG?.tag?.pathname) || 'tag';
 
 export const POST_PERMALINK_PATTERN = trimSlash(APP_BLOG?.post?.permalink || `${BLOG_BASE}/%slug%`);
+
+export const WORK_BASE = cleanSlug(APP_WORK?.list?.pathname);
+export const WORK_CATEGORY_BASE = cleanSlug(APP_WORK?.category?.pathname);
+export const WORK_TAG_BASE = cleanSlug(APP_WORK?.tag?.pathname) || 'work/tag';
+
+export const WORK_PERMALINK_PATTERN = trimSlash(APP_WORK?.post?.permalink || `${WORK_BASE}/%slug%`);
 
 /** */
 export const getCanonical = (path = ''): string | URL => {
@@ -76,6 +82,22 @@ export const getPermalink = (slug = '', type = 'page'): string => {
     case 'post':
       permalink = createPath(trimSlash(slug));
       break;
+    
+    case 'work':
+      permalink = getWorkPermalink();
+      break;
+
+    case 'work-category':
+      permalink = createPath(WORK_CATEGORY_BASE, trimSlash(slug));
+      break;
+
+    case 'work-tag':
+      permalink = createPath(WORK_TAG_BASE, trimSlash(slug));
+      break;
+
+    case 'work-post':
+      permalink = createPath(trimSlash(slug));
+      break;
 
     case 'page':
     default:
@@ -91,6 +113,8 @@ export const getHomePermalink = (): string => getPermalink('/');
 
 /** */
 export const getBlogPermalink = (): string => getPermalink(BLOG_BASE);
+
+export const getWorkPermalink = (): string => getPermalink(WORK_BASE);
 
 /** */
 export const getAsset = (path: string): string =>

@@ -8,6 +8,7 @@ export type Config = {
   i18n?: I18NConfig;
   apps?: {
     blog?: AppBlogConfig;
+    work?: AppWorkConfig;
   };
   ui?: unknown;
   analytics?: unknown;
@@ -69,6 +70,9 @@ export interface AppBlogConfig {
     };
   };
 }
+
+export type AppWorkConfig = AppBlogConfig;
+
 export interface AnalyticsConfig {
   vendors: {
     googleAnalytics: {
@@ -172,6 +176,49 @@ const getAppBlog = (config: Config) => {
   return merge({}, _default, config?.apps?.blog ?? {}) as AppBlogConfig;
 };
 
+const getAppWork = (config: Config) => {
+  const _default = {
+    isEnabled: false,
+    postsPerPage: 6,
+    isRelatedPostsEnabled: false,
+    relatedPostsCount: 4,
+    post: {
+      isEnabled: true,
+      permalink: '/work/%slug%',
+      robots: {
+        index: true,
+        follow: true,
+      },
+    },
+    list: {
+      isEnabled: true,
+      pathname: 'work',
+      robots: {
+        index: true,
+        follow: true,
+      },
+    },
+    category: {
+      isEnabled: true,
+      pathname: 'work/category',
+      robots: {
+        index: true,
+        follow: true,
+      },
+    },
+    tag: {
+      isEnabled: true,
+      pathname: 'work/tag',
+      robots: {
+        index: false,
+        follow: true,
+      },
+    },
+  };
+
+  return merge({}, _default, config?.apps?.work ?? {}) as AppWorkConfig;
+};
+
 const getUI = (config: Config) => {
   const _default = {
     theme: 'system',
@@ -198,6 +245,7 @@ export default (config: Config) => ({
   I18N: getI18N(config),
   METADATA: getMetadata(config),
   APP_BLOG: getAppBlog(config),
+  APP_WORK: getAppWork(config),
   UI: getUI(config),
   ANALYTICS: getAnalytics(config),
 });

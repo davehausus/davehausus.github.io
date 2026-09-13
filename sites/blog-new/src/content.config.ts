@@ -66,6 +66,31 @@ const postCollection = defineCollection({
   }),
 });
 
+const workCollection = defineCollection({
+  loader: glob({ pattern: ['*.md', '*.mdx'], base: 'src/data/work' }),
+  schema: z.object({
+    publishDate: z.date().optional(),
+    updateDate: z.date().optional(),
+    draft: z.boolean().optional(),
+
+    title: z.string(),
+    excerpt: z.string().optional(),
+    image: z.string().optional(),
+
+    client: z.string().optional(),
+    role: z.string().optional(),
+    services: z.array(z.string()).optional(),
+    duration: z.string().optional(),
+    projectUrl: z.url().optional(),
+
+    category: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+
+    metadata: metadataDefinition(),
+  }),
+});
+
 export const collections = {
   post: postCollection,
+  work: workCollection,
 };
