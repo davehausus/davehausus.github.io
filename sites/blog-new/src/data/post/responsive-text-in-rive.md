@@ -46,11 +46,11 @@ From there, Rive does what it does best. It reacts to state.
 
 ## Sending the Window Width Into Rive
 
-On the JavaScript side, the setup is straightforward. We read the current window width and pass it into a View Model number called num.
+On the JavaScript side, the setup is straightforward. We read the current window width and pass it into a View Model number called `num`.
 
 Here is the core idea simplified.
 
-```shell
+```javascript
 const windowWidth = window.innerWidth;
 numProp.value = windowWidth;
 ```
@@ -58,6 +58,8 @@ numProp.value = windowWidth;
 That value updates whenever the window resizes. Rive receives it instantly.
 
 At this point, Rive knows exactly how wide the screen is.
+
+![Super wide](https://images.unsplash.com/photo-1710170601257-242514895755?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
 
 ## Letting Rive Decide the Layout
 
@@ -91,3 +93,104 @@ This approach feels familiar because it behaves like CSS media queries.
 Designers can reason about this without touching code. Developers only wire the signal once.
 
 After that, everything lives in the Rive file.
+
+## Handling Aspect Ratios Across Devices
+
+Responsive text alone is not enough. Aspect ratio matters too.
+
+In this setup, the canvas aspect ratio changes depending on the window width. Desktop layouts use a wide ratio. Mobile layouts use a more compact one.
+
+That logic stays in JavaScript, because it is about rendering space, not design intent.
+
+Rive receives the width. The canvas adapts its shape. The State Machine picks the correct layout.
+
+Each layer does its own job.
+
+## What This Unlocks for Designers
+
+Once this system is in place, designers gain real freedom.
+
+- You can design layouts, not compromises
+- You can control typography at each breakpoint
+- You can localize text without worrying about scaling
+- You can iterate without asking for code changes
+
+The animation behaves like a responsive component, not a static asset.
+
+## Why This Approach Scales Long Term
+
+This is not a hack. It is a pattern.
+
+It works for headers, heroes, UI animations, and entire responsive scenes.<br>It scales across teams because responsibilities are clear.
+
+JavaScript provides the signal.
+Rive owns the decisions.
+
+And nobody loses their mind resizing text ever again.
+
+## Final Code Block
+
+Here is the complete script ready to paste into your project.
+
+```javascript
+<script>
+  const canvas = document.getElementById("riveCanvas");
+
+  // Initialize a new Rive instance with configuration
+  const r = new rive.Rive({
+    src: "your_rive_file.riv",
+    canvas: canvas,
+    autoplay: true,
+    autoBind: true,
+    loadRiveFile: true,
+    artboard: "Artboard",
+    stateMachines: "State Machine 1",
+    useDataBinding: true,
+
+    onLoad: () => {
+      const vmi = r.viewModelInstance;
+      if (!vmi) return;
+
+      // View Model number used for breakpoints
+      const widthProp = vmi.number("num");
+      if (!widthProp) return;
+
+      function updateLayout() {
+        const windowWidth = window.innerWidth;
+
+        // Send window width into Rive
+        widthProp.value = windowWidth;
+
+        // Optional: control aspect ratio here if needed
+        const aspectRatio =
+          windowWidth >= 741
+            ? 1076 / 418   // desktop
+            : 531 / 428;   // mobile
+
+        const parentWidth = canvas.parentElement.clientWidth;
+        canvas.style.width = parentWidth + "px";
+        canvas.style.height = (parentWidth / aspectRatio) + "px";
+
+        r.resizeDrawingSurfaceToCanvas();
+      }
+
+      updateLayout();
+
+      let resizeTimeout;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(updateLayout, 120);
+      });
+    }
+  });
+</script>
+```
+## Closing Thoughts
+
+Responsive motion is no longer optional. Interfaces are expected to feel alive across every screen size, and that includes typography inside animations.
+
+Responsive text is not really about math. It is about intent. When typography only scales up and down, it quickly loses hierarchy and rhythm. What feels right on a large screen often falls apart on a small one. That is why the web moved to breakpoints in the first place.
+
+By passing the window width into Rive and letting the State Machine choose the right layout, you regain that same level of control. Each breakpoint becomes a design decision, not a side effect of scaling.
+
+If responsive text in motion tools has ever felt harder than it should be, this approach is a reminder that it does not have to. With clear boundaries between layout logic and design intent, responsive motion starts to feel natural again.

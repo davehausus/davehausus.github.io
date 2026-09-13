@@ -94,7 +94,7 @@ export const headerData = {
         },
         {
           text: 'Article',
-          href: getPermalink('get-started-website-with-astro-tailwind-css', 'post'),
+          href: getPermalink('responsive-text-in-rive', 'post'),
         },
         {
           text: 'Article (with MDX)',

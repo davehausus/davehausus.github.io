@@ -1,6 +1,6 @@
 site:
-  name: David de Jesus
-  site: 'https://astrowind.vercel.app'
+  name: 'David de Jesus'                                 # leave as-is
+  site: 'https://daviddejesus.me'
   base: '/'
   trailingSlash: false
 

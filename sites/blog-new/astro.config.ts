@@ -45,6 +45,7 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
+  site: 'https://daviddejesus.me',
   output: 'static',
 
   // Prefetch links as they enter the viewport for snappier navigations
@@ -56,12 +57,12 @@ export default defineConfig({
 
   // Native Fonts API: self-hosts + subsets + preloads Inter and generates
   // metric-adjusted fallbacks. Injected via <Font /> in Layout.astro and
-  // consumed through the `--font-inter` CSS variable in CustomStyles.astro.
+  // consumed through the `--font-outfit` CSS variable in CustomStyles.astro.
   fonts: [
     {
       provider: fontProviders.fontsource(),
-      name: 'Inter',
-      cssVariable: '--font-inter',
+      name: 'Outfit',
+      cssVariable: '--font-outfit',
       weights: ['100 900'],
       styles: ['normal'],
       subsets: ['latin'],
@@ -75,6 +76,8 @@ export default defineConfig({
     }),
     mdx(),
     icon({
+      // Local SVG icons (used as <Icon name="file-name" />) live next to the other assets.
+      iconDir: 'src/assets/icons',
       include: {
         tabler: ['*'],
         'flat-color-icons': [
@@ -143,6 +146,10 @@ export default defineConfig({
       remarkPlugins: [readingTimeRemarkPlugin],
       rehypePlugins: [responsiveTablesRehypePlugin],
     }),
+    shikiConfig: {
+      // Code blocks follow the site theme; see the `.astro-code` rules in tailwind.css.
+      themes: { light: 'github-light', dark: 'github-dark' },
+    },
   },
 
   vite: {
