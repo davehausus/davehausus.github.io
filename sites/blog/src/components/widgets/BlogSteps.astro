@@ -1,0 +1,98 @@
+---
+// Single-column "steps" widget for use inside .mdx blog posts.
+//
+// Usage in a .mdx post:
+//
+//   import BlogSteps from '~/components/widgets/BlogSteps.astro';
+//   import BlogStep from '~/components/widgets/BlogStep.astro';
+//
+//   <BlogSteps title="Why This Workflow Is Better">
+//     <Fragment slot="intro">
+//       A short lead-in paragraph, written like regular body text. Supports
+//       **bold**, *italic* and `inline code` — anything else it's better to
+//       just write directly under the title outside <BlogSteps>.
+//     </Fragment>
+//
+//     <BlogStep title="Huge file size reduction" icon="tabler:file-zip">
+//       Here is a real comparison:
+//
+//       | Rive File        | With Embedded Font | With Referenced Font |
+//       | :---------------- | :------------------ | :-------------------- |
+//       | Single animation | Around 800 KB       | **3 KB**              |
+//
+//       This matters when:
+//
+//       - Your site needs to load instantly.
+//       - Animations appear frequently in user interfaces.
+//     </BlogStep>
+//
+//     <BlogStep title="Fonts stay consistent across all animations">
+//       If the font is updated, you only replace one `.ttf` file instead of
+//       updating every `.riv` file.
+//     </BlogStep>
+//   </BlogSteps>
+//
+// Each <BlogStep> is written as ordinary MDX/Markdown, so **bold**,
+// *italic*, line breaks, unordered lists, tables and `inline code` all work
+// with no extra props. `icon` is optional per step (any astro-icon name,
+// e.g. "tabler:file-zip"); steps without one fall back to an automatic
+// step number.
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Headline from '~/components/ui/Headline.astro';
+
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  tagline?: string;
+  id?: string;
+  isDark?: boolean;
+  classes?: { container?: string };
+}
+
+const {
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline,
+  id,
+  isDark = false,
+  classes = {},
+} = Astro.props;
+
+const intro = await Astro.slots.render('intro');
+---
+
+{/*
+  No max-w-3xl / horizontal padding here: this widget lives inside a post's
+  own `.prose` container, which is already narrower than max-w-3xl (its
+  `max-width: 65ch` is the real constraint). Adding another max-width and
+  px-4/md:px-6 on top of that just double-padded it, so it rendered
+  narrower than the surrounding paragraphs. Letting it fill 100% of the
+  already-correct parent width, with no extra horizontal padding, is what
+  makes it line up with the rest of the article.
+*/}
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-none px-0 md:px-0 ${classes?.container ?? ''}`}>
+  <Headline
+    title={title}
+    subtitle={subtitle}
+    tagline={tagline}
+    classes={{
+      // Headline always starts from a hardcoded 'mb-8 md:mx-auto md:mb-12
+      // text-center' base and twMerges this on top of it, so mb-0/md:mb-0
+      // have to be spelled out here to actually cancel the baked-in
+      // mb-8/md:mb-12 — omitting them (as in 'text-left' alone) leaves the
+      // large margin in place since it's a different utility group.
+      container: 'mb-0 md:mb-0 text-left',
+      title: 'text-3xl md:text-4xl',
+    }}
+  />
+  {intro && <div class="rich-text mt-3 md:mt-4 mb-8 md:mb-12" set:html={intro} />}
+  <ol class:list={['blog-steps space-y-8 md:space-y-10', { 'mt-3 md:mt-4': !intro }]}>
+    <slot />
+  </ol>
+</WidgetWrapper>
+
+<style>
+  .blog-steps {
+    counter-reset: blog-step;
+  }
+</style>

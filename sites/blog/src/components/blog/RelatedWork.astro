@@ -1,0 +1,31 @@
+---
+import { APP_WORK } from 'astrowind:config';
+
+import { getRelatedWork } from '~/utils/work';
+import WorkHighlighted from '~/components/widgets/WorkHighlighted.astro';
+import type { WorkItem } from '~/types';
+import { getWorkPermalink } from '~/utils/permalinks';
+
+export interface Props {
+  post: WorkItem;
+}
+
+const { post } = Astro.props;
+
+const relatedWork = post.tags ? await getRelatedWork(post, 4) : [];
+---
+
+{
+  APP_WORK.isRelatedPostsEnabled ? (
+    <WorkHighlighted
+      classes={{
+        container:
+          'pt-0 lg:pt-0 md:pt-0 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade',
+      }}
+      title="Related Work"
+      linkText="Explore In Practice"
+      linkUrl={getWorkPermalink()}
+      postIds={relatedWork.map((post) => post.id)}
+    />
+  ) : null
+}

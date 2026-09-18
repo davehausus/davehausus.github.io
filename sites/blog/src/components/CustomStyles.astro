@@ -1,0 +1,71 @@
+---
+// Font family is provided by Astro's native Fonts API (see `fonts` in
+// astro.config.ts and <Font /> in Layout.astro), exposed as `--font-outfit`.
+// To switch typefaces, change the `fonts` entry and repoint `--aw-font-*` below.
+
+// 'DM Sans'
+// Nunito
+// Dosis
+// Outfit
+// Roboto
+// Literata
+// 'IBM Plex Sans'
+// Karla
+// Poppins
+// 'Fira Sans'
+// 'Libre Franklin'
+// Inconsolata
+// Raleway
+// Oswald
+// 'Space Grotesk'
+// Urbanist
+---
+
+<style is:inline>
+  :root {
+    --aw-font-sans: var(--font-outfit);
+    --aw-font-serif: var(--font-outfit);
+    --aw-font-heading: var(--font-outfit);
+
+    --aw-color-primary: rgb(1 97 239);
+    --aw-color-secondary: rgb(1 84 207);
+    --aw-color-accent: rgb(109 40 217);
+
+    --aw-color-text-heading: rgb(0 0 0);
+    --aw-color-text-default: rgb(16 16 16);
+    --aw-color-text-muted: rgb(0 33 94 / 66%);
+    --aw-color-bg-page: rgb(255 255 255);
+
+    --aw-color-bg-page-dark: rgb(3 6 32);
+
+    ::selection {
+      background-color: lavender;
+    }
+  }
+
+  .dark {
+    --aw-font-sans: var(--font-outfit);
+    --aw-font-serif: var(--font-outfit);
+    --aw-font-heading: var(--font-outfit);
+
+    --aw-color-primary: rgb(1 97 239);
+    --aw-color-secondary: rgb(1 84 207);
+    --aw-color-accent: rgb(109 40 217);
+
+    --aw-color-text-heading: rgb(247, 248, 248);
+    --aw-color-text-default: rgb(229 236 246);
+    --aw-color-text-muted: rgb(153 194 255 / 66%);
+    --aw-color-bg-page: rgb(3 6 32);
+
+    ::selection {
+      background-color: rgb(233, 9, 9);
+      color: snow;
+    }
+  }
+  .prose :where(ul > li, ol > li)::marker {
+    color: var(--color-muted);
+  }
+  .prose blockquote {
+    border-left-color: var(--color-muted);
+  }
+</style>

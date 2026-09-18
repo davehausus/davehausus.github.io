@@ -1,0 +1,69 @@
+---
+// A single step inside <BlogSteps>. Renders as one <li>.
+//
+// The marker circle shows `icon` when given, otherwise an automatic step
+// number driven by a CSS counter. The counter is named `blog-step` and is
+// reset on the parent <ol class="blog-steps"> in BlogSteps.astro — both
+// files have to agree on that name for the numbering to work.
+import { Icon } from 'astro-icon/components';
+
+export interface Props {
+  title: string;
+  icon?: string;
+}
+
+const { title, icon } = Astro.props;
+---
+
+<li class="blog-step flex gap-4 md:gap-5">
+  <span class="blog-step__marker">
+    {icon && <Icon name={icon} class="w-6 h-6 icon-bold" />}
+  </span>
+  <div class="min-w-0 flex-1 pb-1">
+    <h3 class="mb-2 text-xl font-semibold font-heading text-heading">{title}</h3>
+    {/*
+      `.rich-text` (defined in tailwind.css) styles the markdown output here
+      — **bold**, *italic*, line breaks, lists, tables, `inline code`. Not
+      `.prose`: Tailwind Typography won't re-apply `.prose` once nested
+      inside WidgetWrapper's `not-prose` section, so it was silently doing
+      nothing (unstyled tables, body text falling back to browser default
+      size instead of matching the post).
+    */}
+    <div class="rich-text">
+      <slot />
+    </div>
+  </div>
+</li>
+
+<style>
+  .blog-step {
+    counter-increment: blog-step;
+  }
+
+  .blog-step__marker {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 9999px;
+    background-color: color-mix(in oklab, var(--color-primary) 12%, transparent);
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+
+  /* Only shows when the icon slot above rendered nothing. */
+  .blog-step__marker:empty::before {
+    content: counter(blog-step);
+  }
+
+  @media (min-width: 768px) {
+    .blog-step__marker {
+      width: 3.5rem;
+      height: 3.5rem;
+      font-size: 1.25rem;
+    }
+  }
+</style>

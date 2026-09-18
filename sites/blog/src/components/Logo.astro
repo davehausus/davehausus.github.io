@@ -1,0 +1,8 @@
+---
+import { Image } from 'astro:assets';
+import logoLight from '~/assets/images/logo-light.svg';
+import logoDark from '~/assets/images/logo-dark.svg';
+---
+
+<Image src={logoLight} alt="David de Jesus" height={48} class="self-center ml-2 rtl:ml-0 rtl:mr-2 dark:hidden" />
+<Image src={logoDark} alt="David de Jesus" height={48} class="self-center ml-2 rtl:ml-0 rtl:mr-2 hidden dark:block" />
