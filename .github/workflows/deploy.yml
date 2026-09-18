@@ -39,7 +39,7 @@ jobs:
           mkdir -p dist/nomo dist/nefis dist/blog
           cp -r sites/nomo/dist/* dist/nomo/
           cp -r sites/nefis/dist/* dist/nefis/
-          cp -r sites/blog/dist/* dist/blog/
+          cp -r sites/blog/dist/* dist/blog-preview/
 
       - uses: actions/upload-pages-artifact@v3
         with:
