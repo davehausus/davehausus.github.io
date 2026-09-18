@@ -46,7 +46,7 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
 
 export default defineConfig({
   site: 'https://daviddejesus.me',
-  base: '/blog-preview/',
+  base: '/blog',
   output: 'static',
 
   // Prefetch links as they enter the viewport for snappier navigations
