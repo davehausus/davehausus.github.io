@@ -59,6 +59,7 @@ const {
 } = Astro.props;
 
 const intro = await Astro.slots.render('intro');
+const outro = await Astro.slots.render('outro');
 ---
 
 {/*
@@ -82,13 +83,18 @@ const intro = await Astro.slots.render('intro');
       // mb-8/md:mb-12 — omitting them (as in 'text-left' alone) leaves the
       // large margin in place since it's a different utility group.
       container: 'mb-0 md:mb-0 text-left',
-      title: 'text-3xl md:text-4xl',
+      // Sized in em so it follows the article's own font size, the same way
+      // the prose h2s outside the widget do. The md: twin is required:
+      // Headline's base has its own md: size, and twMerge only overrides a
+      // utility that has the same variant.
+      title: 'text-[length:1.6667em] md:text-[length:1.6667em]',
     }}
   />
   {intro && <div class="rich-text mt-3 md:mt-4 mb-8 md:mb-12" set:html={intro} />}
   <ol class:list={['blog-steps space-y-8 md:space-y-10', { 'mt-3 md:mt-4': !intro }]}>
     <slot />
   </ol>
+  {outro && <div class="rich-text mt-8 md:mt-12" set:html={outro} />}
 </WidgetWrapper>
 
 <style>

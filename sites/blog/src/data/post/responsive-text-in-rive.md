@@ -3,7 +3,7 @@ publishDate: 2025-12-04T00:00:00Z
 author: David de Jesus
 title: Responsive Text in Rive Without Losing Your Mind
 excerpt: A designer friendly way to handle breakpoints, layouts, and scaling.
-image: '~/assets/images/blog/responsiveness.jpg'
+image: '~/assets/images/blog/responsive-text-cover.jpg'
 category: Tutorials
 tags:
   - astro
@@ -59,7 +59,7 @@ That value updates whenever the window resizes. Rive receives it instantly.
 
 At this point, Rive knows exactly how wide the screen is.
 
-![Super wide](~/assets/images/blog/responsiveness.jpg)
+![Super wide](~/assets/images/blog/responsive-text-rive.png)
 
 ## Letting Rive Decide the Layout
 

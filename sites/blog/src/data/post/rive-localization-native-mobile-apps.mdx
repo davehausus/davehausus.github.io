@@ -1,0 +1,160 @@
+---
+publishDate: 2025-11-03T00:00:00Z
+author: David de Jesus
+title: How Localization Works With Rive in Native Mobile Apps
+excerpt: Localization can feel intimidating when your Rive animation includes text. This guide explains how Rive works with native app localization systems, in simple terms for designers and light-technical readers.
+image: https://images.unsplash.com/photo-1502101872923-d48509bff386?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80
+imageAlt: Two toddlers standing at the bottom of a beige concrete staircase
+category: Tutorials
+tags:
+  - astro
+  - tailwind css
+---
+import BlogSteps from '~/components/widgets/BlogSteps.astro';
+import BlogStep from '~/components/widgets/BlogStep.astro';
+
+Rive makes it easy to design interactive graphics, but once your animation needs to show text in different languages, things become a little more complicated. Many designers think the answer is to create multiple Rive files or embed fonts directly inside the animation. In reality, native apps like iOS and Android already give you smarter ways to localize your text without blowing up your file size or duplicating work.
+
+This article explains how localization works when you use Rive inside a native app. It is written for designers and people with basic coding skills who want to understand how everything connects without needing deep engineering knowledge.
+
+<BlogSteps title="Why localization inside Rive looks confusing at first">
+  <Fragment slot="intro">
+When you open Rive, it feels natural to place text directly into the animation. You style it, animate it, and make it look perfect. That works great for a single language.
+
+But when a project requires **Spanish, English, French, German, Japanese, and more**, suddenly you face questions like:
+  </Fragment>
+  <BlogStep title="Should I create a separate Rive file for every language?" icon="tabler:files">
+  </BlogStep>
+  <BlogStep title="Should I animate all languages inside the same file and toggle visibility?" icon="tabler:ease-in-out-control-points">
+  </BlogStep>
+  <BlogStep title="Should I embed every font?" icon="tabler:file-zip">
+  </BlogStep>
+  <BlogStep title="Should the developer take care of the text?" icon="tabler:code">
+  </BlogStep>
+  <Fragment slot="outro">
+     The good news is that native apps already have solutions for this, and Rive integrates nicely with them.
+  </Fragment>
+</BlogSteps>
+
+<BlogSteps title="The best approach for most native apps">
+  <Fragment slot="intro">
+    Let the app handle the text and send it into Rive.<br />
+    This is the preferred workflow for iOS and Android teams:
+  </Fragment>
+  <BlogStep title="Your Rive animation uses Text Run sources or Text inputs that expect dynamic text.">
+  </BlogStep>
+  <BlogStep title="The app pulls the correct translated string from its localization files.">
+  </BlogStep>
+  <BlogStep title="The app sends that text into the Rive file at runtime.">
+  </BlogStep>
+  <BlogStep title="Rive updates the text inside the animation.">
+  </BlogStep>
+  <Fragment slot="outro">
+     This keeps your `.riv` file small and flexible. It also allows developers to reuse their existing localization tools. Designers keep full control over the layout and animation. Developers keep control over translations.
+  </Fragment>
+</BlogSteps>
+
+<BlogSteps title="What about fonts?">
+  <Fragment slot="intro">
+    Native apps normally bundle fonts inside the app package. That means you do not need to embed fonts inside the .riv file. Instead, the app loads the font into the Rive runtime at launch and the animation uses it instantly.
+
+    Advantages:
+  </Fragment>
+  <BlogStep title="Your `.riv` stays tiny" icon="tabler:keyframes">
+  </BlogStep>
+  <BlogStep title="Text looks correct on all devices" icon="tabler:devices">
+  </BlogStep>
+  <BlogStep title="Only one version of each font lives inside the app" icon="tabler:file-typography">
+  </BlogStep>
+  <BlogStep title="You avoid the huge jump in file size that embedded fonts cause" icon="tabler:files">
+  </BlogStep>
+  <Fragment slot="outro">
+     Some projects still choose to embed fonts if they require offline usage or if the animation must be completely self contained. But in most app projects, referencing a font is the better choice.
+  </Fragment>
+</BlogSteps>
+
+<BlogSteps title="How translations are stored in native apps">
+  <Fragment slot="intro">
+    Both iOS and Android have their own localization systems. This is where the text lives:
+  </Fragment>
+  <BlogStep title="iOS" icon="tabler:brand-apple">
+      Developers place translated strings inside `.strings` files. The system automatically selects the correct file based on the user language.
+  </BlogStep>
+  <BlogStep title="Android" icon="tabler:brand-android">
+      Developers use `strings.xml` files inside language specific folders like:
+  - values-en
+  - values-es
+  - values-fr
+  </BlogStep>
+  <Fragment slot="outro">
+     The app loads the correct translation without you doing anything inside Rive.
+  </Fragment>
+</BlogSteps>
+
+<BlogSteps title="How the app sends text to Rive">
+  <Fragment slot="intro">
+    Here is the simplified version of how it works:
+  </Fragment>
+  <BlogStep title="Rive exposes a text property inside your animation.">
+  </BlogStep>
+  <BlogStep title="The app finds that property by name.">
+  </BlogStep>
+    <BlogStep title="The app sets its value to the translated text.">
+  </BlogStep>
+    <BlogStep title="The animation updates instantly.">
+  </BlogStep>
+  <Fragment slot="outro">
+     For example, imagine a price card animation where the word “Today” needs to change based on language. The app simply updates that string before the animation plays.
+
+From your perspective as a designer, nothing changes. You design normally. You animate normally. The animation behaves the same way.
+  </Fragment>
+</BlogSteps>
+
+<BlogSteps title="What designers should do inside Rive">
+  <Fragment slot="intro">
+    If you know your project will use localization, here are best practices:
+  </Fragment>
+  <BlogStep title="Leave space for longer languages" icon="tabler:letter-spacing">
+      German and French text can be much longer than English. Japanese can be more compact. Try to allow extra room in your layout so text does not clip or overlap.
+  </BlogStep>
+  <BlogStep title="Use flexible text containers" icon="tabler:layout-dashboard">
+      Avoid wrapping text in very tight shapes. Let developers adjust text size or container width when needed.
+  </BlogStep>
+  <BlogStep title="Keep styling simple" icon="tabler:language-katakana">
+      Use fonts that support all the languages you need. A font that works only with Latin characters will not support Korean or Arabic. Share a list of required languages with your developer before choosing a typeface.
+  </BlogStep>
+  <BlogStep title="Ask if the app can provide the font" icon="tabler:file-typography">
+      If the app already bundles the font, reference it in your Rive file. This keeps file size almost zero.
+  </BlogStep>
+</BlogSteps>
+
+<BlogSteps title="When you might need multiple Rive files">
+  <Fragment slot="intro">
+    Although not very common, there are a few cases where separate Rive files per language are useful.
+  </Fragment>
+  <BlogStep title="When each language uses a different typeface" icon="tabler:language-hiragana">
+  </BlogStep>
+  <BlogStep title="When text layout changes dramatically per language" icon="tabler:text-orientation">
+  </BlogStep>
+    <BlogStep title="When the animations themselves differ" icon="tabler:ease-in-out-control-points">
+  </BlogStep>
+  <Fragment slot="outro">
+     Still, these cases are rare and often solved through better planning or dynamic layout inside the app.
+  </Fragment>
+</BlogSteps>
+
+## A real world example
+Imagine you design a weather widget in Rive. It has a big animated temperature and a label that says “Sunny”. The animation should work in:
+
+- English
+- Spanish
+- French
+- Japanese
+- Portuguese
+
+The native app already has translations for “Sunny” inside its localization files. The developer sends the correct word into Rive. The animation updates instantly. You do not need five versions of the animation. The app does all the heavy lifting.
+
+
+## Final Thoughts
+
+Localization in native apps does not require complex Rive setups or multiple versions of your file. The strongest approach is to allow the app to control the text and let Rive display it. Designers keep their freedom to animate anything they want. Developers keep their structured localization workflow. The result is cleaner, lighter, and easier to maintain over time.
