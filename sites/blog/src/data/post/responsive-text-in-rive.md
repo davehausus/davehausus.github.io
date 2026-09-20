@@ -6,8 +6,10 @@ excerpt: A designer friendly way to handle breakpoints, layouts, and scaling.
 image: '~/assets/images/blog/responsive-text-cover.jpg'
 category: Tutorials
 tags:
-  - astro
-  - tailwind
+  - Rive
+  - Responsive Design
+  - Typography
+  - Interaction Design
 metadata:
   canonical: https://daviddejesus.me/responsive-text-in-rive
 ---
