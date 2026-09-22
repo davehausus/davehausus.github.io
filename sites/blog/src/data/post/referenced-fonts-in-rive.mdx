@@ -14,6 +14,7 @@ tags:
 
 import BlogSteps from '~/components/widgets/BlogSteps.astro';
 import BlogStep from '~/components/widgets/BlogStep.astro';
+import Features2 from '~/components/widgets/Features2.astro';
 
 When you work with Rive, one of the biggest advantages is how lightweight the files are. A full animation with vectors, interpolation, states, and interactions can easily stay under **5 KB**. That is one of the reasons Rive feels perfect for web-based motion systems.
 
@@ -127,7 +128,7 @@ Once this is in place, all your Rive files that use the same font will work auto
     - You are building a complete motion system.
   </BlogStep>
 
-  <BlogStep title="Fonts stay consistent across all animations" icon="tabler:typography">
+  <BlogStep title="Fonts stay consistent across all animations" icon="tabler:letter-case-lower">
     If the font is updated, you only replace one `.ttf` file instead of updating every `.riv` file.
   </BlogStep>
   <BlogStep title="Faster design workflow" icon="tabler:clock-bolt">
@@ -157,7 +158,7 @@ Once this is in place, all your Rive files that use the same font will work auto
     If you plan to handle translations inside your native app (which is the recommended approach), you should not embed fonts for each language. The app can provide its own fonts and pass text into the Rive file at runtime.
 But if you decide to put all text directly inside the Rive file and keep multiple languages inside the animation timeline, embedding a font might be required to guarantee consistent rendering across all devices. Note that this will increase the `.riv` size a lot, so use this only when there is no better workflow.
   </BlogStep>
-  <BlogStep title="Projects where no shared font usage exists" icon="tabler:file-typography">
+  <BlogStep title="Projects where no shared font usage exists" icon="tabler:share-off">
     If your animations are completely independent from one another and each one uses a unique font only used once, embedding might be acceptable. This avoids setting up a shared referenced font and keeps each animation completely portable, at the cost of file size.
 For anything web-based, referenced fonts are almost always the best choice.
   </BlogStep>
@@ -165,14 +166,19 @@ For anything web-based, referenced fonts are almost always the best choice.
 </BlogSteps>
 
 
+<BlogSteps title="A Simple Way To Understand It">
+  <BlogStep title="" icon="tabler:file-typography">
+    Think of **embedded fonts** as placing a full copy of the font inside each animation.
+  </BlogStep>
+  <BlogStep title="" icon="tabler:link">
+    Think of **referenced fonts** as pointing all animations to a single shared font file.
+  </BlogStep>
+  <Fragment slot="outro">
+     One approach is heavy and repetitive. The other is lightweight and scalable.
+  </Fragment>
+  
+</BlogSteps>
 
-
-### A Simple Way To Understand It
-Think of embedded fonts as placing a full copy of the font inside each animation.
-
-Think of referenced fonts as pointing all animations to a single shared font file.
-
-One approach is heavy and repetitive. The other is lightweight and scalable.
 
 ## Final Thoughts
 Rive gives you very powerful motion tools, but many of the improvements in performance come from workflow decisions rather than animation techniques.
