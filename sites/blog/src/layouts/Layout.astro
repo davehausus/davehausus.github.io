@@ -51,3 +51,16 @@ const { language, textDirection } = I18N;
     <Intersect />
   </body>
 </html>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href$="/contact"], a[href$="/contact/"]');
+    if (!link) return;
+
+    (window as any).gtag?.('event', 'header_cta_click', {
+      content_type: 'header',
+      cta_label: link.innerText.trim(),
+      page_path: location.pathname,
+    });
+  });
+</script>

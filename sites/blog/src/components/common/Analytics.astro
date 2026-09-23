@@ -4,18 +4,21 @@ import { ANALYTICS } from 'astrowind:config';
 const id = ANALYTICS?.vendors?.googleAnalytics?.id ? String(ANALYTICS.vendors.googleAnalytics.id) : '';
 const partytown = !!ANALYTICS?.vendors?.googleAnalytics?.partytown;
 const scriptType = partytown ? 'text/partytown' : undefined;
+
+const { pathname } = Astro.url;
+const contentGroup = pathname === '/' ? 'Home' : pathname.split('/').filter(Boolean)[0] ?? '';
 ---
 
 {id && <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${id}`} type={scriptType} />}
 
-<script is:inline id="ga-init" data-id={id} type={id ? scriptType : undefined}>
-  if (document.getElementById('ga-init').dataset.id) {
-    var d = document.getElementById('ga-init').dataset.id;
+<script is:inline id="ga-init" data-id={id} data-content-group={contentGroup} type={id ? scriptType : undefined}>
+  var el = document.getElementById('ga-init');
+  if (el.dataset.id) {
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () {
       dataLayer.push(arguments);
     };
     window.gtag('js', new Date());
-    window.gtag('config', d);
+    window.gtag('config', el.dataset.id, el.dataset.contentGroup ? { content_group: el.dataset.contentGroup } : {});
   }
 </script>
