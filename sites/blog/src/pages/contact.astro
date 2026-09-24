@@ -12,12 +12,14 @@ const metadata = {
 <Layout metadata={metadata}>
   <!-- HeroText Widget ******************* -->
 
-  <HeroText tagline="Contact" title="Let's Connect!" />
+  <HeroText tagline="Contact" title="Let's Collaborate" />
 
   <ContactUs
     id="form"
-    title="Drop us a message today!"
-    subtitle="For quicker answers, explore our FAQs section. You may find the solution you're looking  for right there! If not, our support team is delighted to help you."
+    title=""
+    subtitle="Have a project in mind? Looking for a product designer? Want to collaborate, share an idea, or just say hello?
+<br /><br />
+Drop me a message. I'd love to hear what you're working on."
     inputs={[
       {
         type: 'text',
@@ -44,33 +46,32 @@ const metadata = {
     }}
     disclaimer={{
       label:
-        'I´ll only use the information you provide to respond to your message. See my Privacy Notice for details.',
+        "I'll only use the information you provide to respond to your message. See my Privacy Notice for details.",
     }}
-    button="Send"
+    button="Send message"
     action="https://formspree.io/f/mqevbakz"
     redirectTo="https://daviddejesus.me/about"
 
-    description="Our support team typically responds within 24 business hours."
+    description=""
   />
 
   <!-- Features2 Widget ************** -->
 
   <Features2
-    title="We are here to help!"
+    title="What's on your mind?"
     items={[
       {
-        title: 'General support',
-        description: `Chat with us for inquiries related to account management, website navigation, payment issues, accessing purchased templates or general questions about the website's functionality.`,
+        title: "Hiring for a role?",
+        description: "Looking for a Senior Product Designer with a strong motion and interaction background? I'd be happy to hear about the opportunity.",
       },
       {
-        title: 'Contact sales',
+        title: "Have a project?",
         description:
-          'Chat with us for questions about purchases, customization options, licensing for commercial use, inquiries about specific template, etc.',
+          "Tell me what you're building, where you're at, and what you need help with. I'll take it from there.",
       },
       {
-        title: 'Technical support',
-        description:
-          'Chat with us when facing issues like template installation, problems editing difficulties, compatibility issues with software or download errors, or other technical challenges related to using the templates.',
+        title: "Want to collaborate?",
+        description: "Have an idea, a design challenge, or something interesting you'd like to explore together? Let's start a conversation.",
       },
       {
         title: 'Email',
