@@ -56,6 +56,18 @@
 
 $color-dark : #0F1020;
 
+:root {
+  --aw-font-sans: 'Outfit', sans-serif;
+ 
+  --aw-color-primary: rgb(1 97 239);
+  --aw-color-secondary: rgb(1 84 207);
+  --aw-color-accent: rgb(109 40 217);
+ 
+  --aw-color-text-heading: rgb(0 0 0);
+  --aw-color-text-default: rgb(16 16 16);
+  --aw-color-text-muted: rgb(0 33 94 / 66%);
+  --aw-color-bg-page: rgb(255 255 255);
+}
 
 // fluidly resize type
 @mixin fluid-type($font-min, $font-max, $screen-min, $screen-max) {
@@ -125,21 +137,6 @@ button[type="submit"]{ height: 58px; display: -ms-flexbox; display: flex; -ms-fl
 		i{width: 0; height: 0; display: inline-block; margin-left: 0; margin-right: auto; border-style: solid; border-width: 4px 0 4px 4px; border-color: transparent transparent transparent #fff; opacity: 1; margin-top: 5px;}
 	&:hover b{width:50px; margin-left: 20px;}
 &:hover i{ opacity: 0;}}
-button[type="contact"]{ background-color: #F95738;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 1.0625rem;
-    font-weight: 600;
-    letter-spacing: 1.4px;
-	border: 0;
-    text-align: center;
-    height: 40px;
-    padding: 0 .5rem .125rem .5625rem;
-	display: block;
-	transition: all 0.50s ease;
-	&:hover{background-color: #F3A712;}
-	strong{justify-content: center; align-content: center; font-size: 17px; font-weight: 600; padding: 0 30px; color: #fff;
-		&:hover{text-decoration: none;}}}
 
 
 
@@ -564,33 +561,103 @@ h6{ font-size: 17px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.2e
 
 
 /* NAVBAR */
-.navbar{width: 100%; display: flex; flex-wrap: wrap; padding:30px 0; position: relative; @include transition;
-	&.hide{ transform: translateY(-100px); @include transition;}
-	&.light{color: #fff;
-		.logo a img{-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);}
-		.main-menu ul li a{color:#fff;
-			&:after{background: #fff;}
-			&:hover:before{background: #fff;}}}
-	.logo{margin-left: 0; position: relative; z-index: 10000;
-		a{ margin: 0;
-			img{height: 48px;}}}
-	.phone{margin-left: 50px;}
-	.main-menu{margin-left: auto;
-		ul{ margin: 0; padding: 0;
-			li{display: inline-block; margin: 0 18px; padding: 0;
-				a{display: block; font-size: 17px; font-weight: 600; position: relative; padding: 0 2px;
-				&:hover{ text-decoration: none;}
-			&:before { content: ''; display: block; position: absolute; left: 0; bottom: 9px; height: 1px; width: 0; transition: width 0s ease, background .25s ease;}
-			&:after { content: ''; display: block; position: absolute; right: 0; bottom: 9px; height: 1px; width: 0; background: $color-dark; transition: width .25s ease;}
-			&:hover:before { width: 100%; background: $color-dark; transition: width .25s ease;}
-			&:hover:after { width: 100%; background: transparent; transition: all 0s ease;}}
-			}}}
-	.hamburger-menu{ 
-        margin-right: 0; 
-        margin-left: 30px;
-		position: relative;
-		z-index: 10000;
-    }}
+.navbar {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12px 24px;          // was: 30px 0 — Astro's header is ~73px tall, not ~108px
+  position: relative;
+  font-family: var(--aw-font-sans);
+  color: var(--aw-color-text-default);
+  align-items: center;
+  @include transition;
+ 
+  &.hide { transform: translateY(-100px); @include transition; }
+ 
+  .logo {
+    margin-left: 0;
+    position: relative;
+    z-index: 10000;
+    a { 
+		display: flex;          // add this
+  		align-items: center;
+		margin: 0;
+    	img { height: 48px; } }   // matches Astro's 48px logo height, unchanged
+  }
+ 
+  .phone { margin-left: 50px; } // unchanged, not part of Astro's header
+ 
+  .main-menu {
+    margin-left: auto;
+    ul {
+      margin: 0; padding: 0;
+      li {
+        display: inline-block;
+        margin: 0;             // was: 0 18px — Astro uses padding on the link, not margin on the li
+        padding: 0;
+        a {
+          display: flex;
+          align-items: center;
+          font-weight: 500;            // was: 600
+		  font-size: 15px;      // back to this
+		  letter-spacing: 0.01rem;
+		  padding: 12px 16px;
+          position: relative;
+
+			@media (min-width: 96rem) {
+			font-size: 18.75px;
+			letter-spacing: 0.2px;
+		}
+ 
+          // Astro's nav links are a plain color change on hover, no underline —
+          // delete the four &:before / &:after / &:hover rules from the
+          // existing partial, they're the underline-on-hover effect
+          &:hover { text-decoration: none; color: var(--aw-color-primary); }
+        }
+      }
+    }
+  }
+ 
+  .hamburger-menu {
+    margin-right: 0;
+    margin-left: 30px;
+    position: relative;
+    z-index: 10000;
+  }
+}
+
+.main-menu ul li button[type="contact"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  border: 1px solid var(--aw-color-primary);
+  
+  background: var(--aw-color-primary);
+  color: #fff;
+  font-family: var(--aw-font-sans);
+
+  border-radius: 9999px;   // was 8px — Astro uses a full pill, not rounded corners
+  font-size: 14px;         // was 15px
+  padding: 10px 24px;      // py-2.5 (10px) + px-6 (24px, desktop)
+  font-weight: 600;        // unchanged, matches font-semibold
+  letter-spacing: 0.01rem;
+
+	@media (min-width: 96rem) {
+	font-size: 18.75px;
+	letter-spacing: 0.2px;
+}
+  line-height: 1.4286;
+  cursor: pointer;
+  transition: background-color .2s ease-in, border-color .2s ease-in;
+ 
+  strong { font-weight: inherit; } // was bolding on top of an already-bold button; Astro's is a single weight
+ 
+  &:hover {
+    background: var(--aw-color-secondary);
+    border-color: var(--aw-color-secondary);
+  }
+}
 
 body.overflow .navbar .main-menu {
     opacity: 0 !important;

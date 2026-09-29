@@ -1,10 +1,7 @@
 ---
-import Features2 from '~/components/widgets/Features2.astro';
-import Features3 from '~/components/widgets/Features3.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import Steps2 from '~/components/widgets/Steps2.astro';
 import Layout from '~/layouts/PageLayout.astro';
+import Hero3 from '~/components/widgets/Hero3.astro';
+import Features3 from '~/components/widgets/Features3.astro';
 
 const metadata = {
   title: 'About',
@@ -14,7 +11,7 @@ const metadata = {
 <Layout metadata={metadata}>
   <!-- Hero Widget ******************* -->
 
-<Hero
+<Hero3
   tagline=""
 >
   <Fragment slot="title">
@@ -23,31 +20,24 @@ const metadata = {
   </Fragment>
 
   <Fragment slot="subtitle">
-    I’m <strong>David de Jesús</strong>, a Senior <strong>Product Designer</strong> focused on <strong>motion-driven interfaces, interaction design, and scalable UI systems</strong> for digital products.
-  </Fragment>
-</Hero>
-
-<div class="max-w-3xl mx-auto">
-  <p>
-    Since 2009, I’ve worked across <strong>web, mobile, and large-screen experiences</strong>, helping teams design <strong>clear, responsive, and intuitive products</strong>. My background sits at the intersection of product design, interface design, and motion systems, where motion is treated as a <strong>functional layer of the user experience</strong> rather than visual decoration.
-  </p><br />
-
-  <p>
+        <br /><br />I'm <strong>David de Jesús</strong>, a Senior <strong>Product Designer</strong> focused on <strong>motion-driven interfaces, interaction design, and scalable UI systems</strong> for digital products.
+    <br /><br />
+    Since 2009, I've worked across <strong>web, mobile, and large-screen experiences</strong>, helping teams design <strong>clear, responsive, and intuitive products</strong>. My background sits at the intersection of product design, interface design, and motion systems, where motion is treated as a <strong>functional layer of the user experience</strong> rather than visual decoration.
+    <br /><br />
     I specialize in using motion to <strong>clarify workflows, explain system state, guide user attention, and improve usability</strong>. I design and build interaction logic using tools like <strong>Rive</strong>, create state machines for dynamic interfaces, and prototype behavior-rich experiences that help teams <strong>validate ideas and ship with confidence</strong>.
-  </p><br />
+    <br /><br />
 
-  <p>
     My process combines <strong>product thinking, UI design, and animation craft</strong>. I focus on timing, transitions, and feedback to ensure motion decisions support both <strong>user needs and design system consistency</strong>. I work closely with product managers and engineers to deliver <strong>production-ready solutions</strong> that scale across platforms and devices.
-  </p><br />
+    <br /><br />
 
-  <p>
-    Based in <strong>Guadalajara, México</strong>, I collaborate with teams and clients worldwide. Alongside client work, I’ve spoken at conferences and led workshops on <strong>product design, UI motion, and prototyping</strong>, sharing hands-on experience with designers and developers working on real-world products.
-  </p><br />
+    Based in <strong>Guadalajara, México</strong>, I collaborate with teams and clients worldwide. Alongside client work, I've spoken at conferences and led workshops on <strong>product design, UI motion, and prototyping</strong>, sharing hands-on experience with designers and developers working on real-world products.
+    <br /><br />
 
-  <p>
     I see motion as a <strong>design language within product design</strong>. When used intentionally, it can reduce cognitive load, reinforce usability, and help digital products communicate with <strong>clarity and personality</strong>.
-  </p><br />
-</div>
+
+  </Fragment>
+</Hero3>
+
 
 <Features3
   title="What I Work On"

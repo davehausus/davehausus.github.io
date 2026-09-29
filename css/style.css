@@ -37,6 +37,17 @@
   font-style: normal;
   font-display: swap;
 }
+:root {
+  --aw-font-sans: 'Outfit', sans-serif;
+  --aw-color-primary: rgb(1 97 239);
+  --aw-color-secondary: rgb(1 84 207);
+  --aw-color-accent: rgb(109 40 217);
+  --aw-color-text-heading: rgb(0 0 0);
+  --aw-color-text-default: rgb(16 16 16);
+  --aw-color-text-muted: rgb(0 33 94 / 66%);
+  --aw-color-bg-page: rgb(255 255 255);
+}
+
 /* BODY */
 * {
   outline: none !important;
@@ -171,35 +182,6 @@ button[type=submit]:hover b {
 }
 button[type=submit]:hover i {
   opacity: 0;
-}
-
-button[type=contact] {
-  background-color: #F95738;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: 1.4px;
-  border: 0;
-  text-align: center;
-  height: 40px;
-  padding: 0 0.5rem 0.125rem 0.5625rem;
-  display: block;
-  transition: all 0.5s ease;
-}
-button[type=contact]:hover {
-  background-color: #F3A712;
-}
-button[type=contact] strong {
-  justify-content: center;
-  align-content: center;
-  font-size: 17px;
-  font-weight: 600;
-  padding: 0 30px;
-  color: #fff;
-}
-button[type=contact] strong:hover {
-  text-decoration: none;
 }
 
 /* CUSTOM CONTAINER */
@@ -1053,28 +1035,16 @@ body.page-loading {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 30px 0;
+  padding: 12px 24px;
   position: relative;
+  font-family: var(--aw-font-sans);
+  color: var(--aw-color-text-default);
+  align-items: center;
   transition: all 0.25s ease-in-out;
 }
 .navbar.hide {
   transform: translateY(-100px);
   transition: all 0.25s ease-in-out;
-}
-.navbar.light {
-  color: #fff;
-}
-.navbar.light .logo a img {
-  filter: brightness(0) invert(1);
-}
-.navbar.light .main-menu ul li a {
-  color: #fff;
-}
-.navbar.light .main-menu ul li a:after {
-  background: #fff;
-}
-.navbar.light .main-menu ul li a:hover:before {
-  background: #fff;
 }
 .navbar .logo {
   margin-left: 0;
@@ -1082,6 +1052,8 @@ body.page-loading {
   z-index: 10000;
 }
 .navbar .logo a {
+  display: flex;
+  align-items: center;
   margin: 0;
 }
 .navbar .logo a img {
@@ -1099,55 +1071,67 @@ body.page-loading {
 }
 .navbar .main-menu ul li {
   display: inline-block;
-  margin: 0 18px;
+  margin: 0;
   padding: 0;
 }
 .navbar .main-menu ul li a {
-  display: block;
-  font-size: 17px;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.01rem;
+  padding: 12px 16px;
   position: relative;
-  padding: 0 2px;
+}
+@media (min-width: 96rem) {
+  .navbar .main-menu ul li a {
+    font-size: 18.75px;
+    letter-spacing: 0.2px;
+  }
 }
 .navbar .main-menu ul li a:hover {
   text-decoration: none;
-}
-.navbar .main-menu ul li a:before {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 0;
-  bottom: 9px;
-  height: 1px;
-  width: 0;
-  transition: width 0s ease, background 0.25s ease;
-}
-.navbar .main-menu ul li a:after {
-  content: "";
-  display: block;
-  position: absolute;
-  right: 0;
-  bottom: 9px;
-  height: 1px;
-  width: 0;
-  background: #0F1020;
-  transition: width 0.25s ease;
-}
-.navbar .main-menu ul li a:hover:before {
-  width: 100%;
-  background: #0F1020;
-  transition: width 0.25s ease;
-}
-.navbar .main-menu ul li a:hover:after {
-  width: 100%;
-  background: transparent;
-  transition: all 0s ease;
+  color: var(--aw-color-primary);
 }
 .navbar .hamburger-menu {
   margin-right: 0;
   margin-left: 30px;
   position: relative;
   z-index: 10000;
+}
+
+.main-menu ul li button[type=contact] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  border: 1px solid var(--aw-color-primary);
+  background: var(--aw-color-primary);
+  color: #fff;
+  font-family: var(--aw-font-sans);
+  border-radius: 9999px;
+  font-size: 14px;
+  padding: 10px 24px;
+  font-weight: 600;
+  letter-spacing: 0.01rem;
+}
+@media (min-width: 96rem) {
+  .main-menu ul li button[type=contact] {
+    font-size: 18.75px;
+    letter-spacing: 0.2px;
+  }
+}
+.main-menu ul li button[type=contact] {
+  line-height: 1.4286;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in, border-color 0.2s ease-in;
+}
+.main-menu ul li button[type=contact] strong {
+  font-weight: inherit;
+}
+.main-menu ul li button[type=contact]:hover {
+  background: var(--aw-color-secondary);
+  border-color: var(--aw-color-secondary);
 }
 
 body.overflow .navbar .main-menu {
