@@ -1,0 +1,22 @@
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<div
+  class="relative flex flex-col rounded-lg shadow-[0_4px_30px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur border border-[#ffffff29] bg-white dark:bg-slate-900 p-8 intersect-once intersect-quarter intersect-no-queue motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+>
+  <div class="text-xl font-bold">{title}</div>
+  <div
+  class="text-muted mt-2
+    [&>:first-child]:mt-0 [&>:last-child]:mb-0
+    [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-3 [&_ul]:space-y-1
+    [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-3 [&_ol]:space-y-1
+    [&_li]:pl-1
+    [&_p]:my-3"
+>
+  <slot />
+</div>
+</div>

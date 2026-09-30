@@ -71,6 +71,7 @@ const outro = await Astro.slots.render('outro');
   already-correct parent width, with no extra horizontal padding, is what
   makes it line up with the rest of the article.
 */}
+<div class="blog-steps-wrap">
 <WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-none px-0 md:px-0 ${classes?.container ?? ''}`}>
   <Headline
     title={title}
@@ -96,9 +97,14 @@ const outro = await Astro.slots.render('outro');
   </ol>
   {outro && <div class="rich-text mt-8 md:mt-12" set:html={outro} />}
 </WidgetWrapper>
+</div>
 
 <style>
   .blog-steps {
     counter-reset: blog-step;
+  }
+
+  :global(:is(h1, h2, h3, h4, h5, h6):has(+ .blog-steps-wrap)) {
+    margin-bottom: -4rem;
   }
 </style>

@@ -1,0 +1,136 @@
+---
+title: 'Designing Motion for Connected Care Hardware and Mobile Apps'
+excerpt: 'Nomo Smart Care is a connected care system designed to support older adults and care recipients living independently, while keeping caregivers informed and emotionally connected. The product ecosystem includes a set of in-home sensors and a central device called the Nomo Hub, all connected to a mobile app used by caregivers.'
+publishDate: 2026-09-13
+client: 'ATHLYTIX'
+role: 'Lead Designer'
+category: 'Branding'
+tags: ['design', 'branding']
+---
+
+import Features4 from '~/components/widgets/Features4.astro';
+import Features4Item from '~/components/widgets/Features4Item.astro';
+
+
+<Features4 columns={2}>
+<Features4Item title="GOAL">
+
+The challenge was to create a unified animation language that could communicate system states clearly, while also delivering moments of warmth, reassurance, and human connection.
+
+</Features4Item>
+
+<Features4Item title="ROLE">
+
+My role focused on designing motion and animation across two very different surfaces
+
+1. **Physical hardware**, via an LED ring on the Nomo Hub
+2. **Digital interfaces**, via animations inside the Nomo mobile app
+
+</Features4Item>
+</Features4>
+
+# The Product Ecosystem
+The system is composed of three main hardware components
+
+- **Nomo Satellite** and **Nomo Tag**, sensors placed around the care recipient's home
+- **Nomo Hub**, the central unit that receives sensor data and communicates feedback
+All sensors send activity data to the Nomo Hub, which then syncs information to the mobile app. The Hub features a circular LED ring that serves as its primary visual output, communicating system statuses, alerts, and personalized reminders.
+
+Caregivers interact with the system primarily through the mobile app, where they can monitor activity, manage settings, and send gentle reminders or emotional touchpoints to the care recipient.
+
+
+# Defining Two Animation Fronts
+From the beginning, it was clear that motion design would need to exist in two parallel but synchronized worlds.
+
+#### HARDWARE ANIMATIONS
+Animations displayed through the LED ring on the Nomo Hub. These needed to be readable from across a room, work under different lighting conditions, and communicate meaning with very limited visual resolution.
+
+#### APP ANIMATIONS
+Animations shown inside the mobile app so caregivers could preview what they were sending to the Hub. These needed to feel expressive, friendly, and emotionally aligned with the intent of each interaction.
+
+The final interface felt cohesive and easy to navigate, guided by the same design decisions that shaped the packaging.
+
+## Working With LED Hardware for the First Time
+I had no prior experience animating for LED hardware. The LED ring was composed of a fixed number of individually addressable lights, with no concept of easing, blur, or opacity.
+
+To prototype and design these animations, I used an LED sequence tool that allowed frame-by-frame control of each LED. I configured the tool to match the physical LED count of the Hub and manually animated each state over time. Engineers then translated those sequences into production code.
+
+This process required a mindset shift
+
+- Motion had to be reduced to timing, color, and position
+- Every frame mattered
+- Subtlety came from rhythm, not curves or interpolation
+
+Designing motion under these constraints became a core strength of the project.
+
+## Two Animation Systems With Different Goals
+The animations naturally split into two categories, each with very different requirements.
+
+#### SYSTEM STATUS ANIMATIONS
+These animations were used during setup and operation to communicate technical states such as
+
+- Powering on
+- Connecting to Wi-Fi
+- Downloading or syncing
+- Errors or connection failures
+
+Clarity and speed were the priority. Color usage was intentional and limited
+
+- Green for success and readiness
+- Blue for progress and activity
+- Red for errors and interruptions
+
+These animations appeared both on the LED ring and inside the app during onboarding and provisioning flows, reinforcing consistency between physical and digital experiences.
+
+#### POKES: EMOTIONAL MOTION DESIGN
+
+The second category was called **Pokes**. These are animations caregivers can send to the Hub through the app to remind care recipients about medications, routines, or simply to let them know someone is thinking of them.
+
+Pokes needed to feel calm, human, and reassuring. They were not alerts. They were gentle interruptions designed to support emotional well-being.
+
+Three base motion patterns were designed
+
+- **Twinkle**, where individual LEDs turn on and off at different times like soft sparkles
+- **Pulse**, where the entire ring fades in and out in a slow, steady rhythm
+- **Comet**, where a gradient of light rotates smoothly around the ring
+
+Each Poke could be sent in one of seven carefully chosen colors inspired by nature and calm emotional states
+
+- Aquamarine
+- Blue Orchid
+- Emerald
+- Jade
+- Lavender
+- Marigold
+- Sunstone
+
+Color naming and palette selection were intentionally poetic to reinforce warmth and emotional intent.
+
+## Bridging Hardware and App Animation
+Each Poke needed to be previewed inside the app before being sent to the Nomo Hub. Early app animations were built with Lottie, which worked well for simple motion based on timing, position, and opacity.
+
+As the goal shifted toward **replicating the feel of real LED light**, the gap between hardware and app animation became more noticeable. The LED ring naturally produces soft glow and light falloff, qualities that are central to how the hardware feels calm and alive. At the time, Lottie did not support true blur effects at all, and blur is still not consistently supported across all runtimes today. Simulating light required complex gradient stacking that was difficult to maintain and still fell short visually.
+
+At the same time, motion behavior itself became a limiting factor. The Twinkle animation depended on individual LEDs activating unpredictably over time. Without support for true randomization or non-deterministic behavior, the app version felt structured and repetitive compared to the hardware.
+
+Together, these issues made it clear that achieving true parity between physical and digital motion would require a different approach.
+
+## The Shift to Rive
+The need to support both organic motion behavior and realistic light rendering became the catalyst for a broader platform shift.
+
+Rive introduced two capabilities that directly addressed these challenges
+
+- **Randomized exits** and **state-driven motion**, which allowed animations like Twinkle to feel organic and non-repetitive
+- **Vector Feathering**, which made it possible to create soft, natural light glows without relying on complex gradient workarounds
+
+Animating light in Rive immediately felt closer to how the LED hardware behaved. Glows were smoother, falloff felt natural, and motion retained its clarity without becoming visually heavy.
+
+Earlier app animations that did not rely on light effects were perfectly viable in Lottie. But once realism, glow, and emotional fidelity became essential to the experience, switching to Rive was no longer optional.
+
+With Rive, the app previews could finally
+
+Replicate the luminous quality of the LED ring
+Feel organic and non-deterministic
+Match the emotional intent of the hardware animations
+Scale more confidently as motion complexity increased
+This shift significantly improved parity between hardware and app experiences and established a more future-proof motion system.

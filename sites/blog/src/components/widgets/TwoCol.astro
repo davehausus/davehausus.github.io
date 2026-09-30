@@ -1,5 +1,11 @@
 ---
 ---
-<div class="grid grid-cols-1 gap-8 md:grid-cols-2 my-2 ">
+<div class="two-col grid grid-cols-1 gap-8 md:grid-cols-2 mt-0 mb-8">
   <slot />
 </div>
+
+<style>
+  :global(:is(h1, h2, h3, h4, h5, h6):has(+ .two-col)) {
+    margin-bottom: 0rem;
+  }
+</style>

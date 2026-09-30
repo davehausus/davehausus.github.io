@@ -10,6 +10,8 @@ tags: ['design', 'branding']
 ---
 
 import FAQs from '~/components/widgets/FAQs.astro';
+import Features4 from '~/components/widgets/Features4.astro';
+import Features4Item from '~/components/widgets/Features4Item.astro';
 
 import BlogSteps from '~/components/widgets/BlogSteps.astro';
 import BlogStep from '~/components/widgets/BlogStep.astro';
@@ -17,18 +19,27 @@ import BlogStep from '~/components/widgets/BlogStep.astro';
 import TwoCol from '~/components/widgets/TwoCol.astro';
 import Block from '~/components/widgets/Block.astro';
 
-## GOAL
+
+<Features4 columns={2}>
+<Features4Item title="GOAL">
+
 Design an iPad app that makes stat-tracking effortless during a fast-paced game. It needed to feel clean and simple for amateurs, while still powerful enough to capture the full story of a game.
 
-## ROLE
+</Features4Item>
+
+<Features4Item title="ROLE">
+
 I led the product design and brand identity, building the visual system and interaction patterns from scratch.
+
+</Features4Item>
+</Features4>
 
 
 <FAQs
     title="The Challenge"
     subtitle=""
     tagline=""
-    classes={{ container: 'max-w-6xl' }}
+    classes={{ container: 'max-w-7xl mb-0' }}
     items={[
       {
         title: 'A fast sport demands fast input',
@@ -80,7 +91,7 @@ Every screen was optimized for **fast decision-making**.
 
 
 
-## BRAND IDENTITY THAT REFLECTS MOTION + PRECISION
+## BRAND IDENTITY THAT REFLECTS <br />MOTION + PRECISION
 I designed a brand that feels athletic and modern, energetic yet minimal. The identity supports the product without overpowering it, allowing the data to remain the hero.
 
 ## Outcome
@@ -88,26 +99,14 @@ The result is an app that gives everyday athletes and coaches the analytical too
 
 Athlytix proves that powerful tools don’t need complex interfaces. With the right hierarchy, motion, and clarity, even advanced stat tracking becomes simple.
 
-# Reflection
-<BlogSteps title="">
-  <Fragment slot="intro">
-    Designing for speed teaches you to remove friction everywhere:
-  </Fragment>
-  <BlogStep title="Fewer taps" icon="tabler:wifi-off">
-    
-  </BlogStep>
-  <BlogStep title="Clearer paths" icon="tabler:bubble-tea">
-    
-  </BlogStep>
-  <BlogStep title="Cleaner visuals" icon="tabler:package">
-    
-  </BlogStep>
-  <BlogStep title="Smarter defaults" icon="tabler:alphabet-korean">
-    
-  </BlogStep>
-    <Fragment slot="outro">
-     Athlytix became a project that reinforced one of my core design beliefs: if the interface slows you down, it’s broken.
-  </Fragment>
-  
-</BlogSteps>
+<br />
 
+# Reflection
+
+Designing for speed teaches you to remove friction everywhere:
+- Fewer taps
+- Clearer paths
+- Cleaner visuals
+- Smarter defaults
+
+Athlytix became a project that reinforced one of my core design beliefs:<br /> **if the interface slows you down, it's broken**.
