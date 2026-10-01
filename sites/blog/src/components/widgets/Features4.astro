@@ -17,7 +17,7 @@ const {
 const hasChildren = Astro.slots.has('default');
 ---
 
-<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-7xl mx-auto ${classes?.container ?? ''}`}>
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-7xl md:px-0 mx-auto ${classes?.container ?? ''}`}>
   <Headline title={title} subtitle={subtitle} tagline={tagline} classes={classes?.headline as Record<string, string>} />
 
   {
