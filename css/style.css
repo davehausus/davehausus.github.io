@@ -59,7 +59,7 @@ body {
   padding-right: 50px;
   font-family: "Outfit";
   font-size: 20px;
-  color: #0F1020;
+  color: rgb(3, 6, 32);
   transition: all 0.4s ease-in-out;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -68,13 +68,13 @@ body {
 
 /* LINKS */
 a {
-  color: #0F1020;
+  color: rgb(3, 6, 32);
   transition: all 0.25s ease-in-out;
 }
 
 a:hover {
   text-decoration: underline;
-  color: #0F1020;
+  color: rgb(3, 6, 32);
 }
 
 a:active {
@@ -145,12 +145,12 @@ button[type=submit] strong {
   justify-content: center;
   align-content: center;
   height: 58px;
-  border: 1px solid #0F1020;
+  border: 1px solid rgb(3, 6, 32);
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
   padding: 0 30px;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   color: #fff;
 }
 button[type=submit] strong:hover {
@@ -192,7 +192,7 @@ button[type=submit]:hover i {
 }
 /* CUSTOM ELEMENTS */
 .color-dark {
-  background-color: #0F1020;
+  background-color: rgb(3, 6, 32);
 }
 .color-dark .left-side ul {
   width: 100vh;
@@ -307,12 +307,12 @@ button[type=submit]:hover i {
   padding-left: 0;
 }
 .pagination li.page-item.active a.page-link {
-  border: 1px solid #0F1020;
+  border: 1px solid rgb(3, 6, 32);
   background: none;
 }
 .pagination li.page-item a.page-link {
   border: none;
-  color: #0F1020;
+  color: rgb(3, 6, 32);
   font-size: 13px;
   font-weight: 600;
   border-radius: 50%;
@@ -334,7 +334,7 @@ button[type=submit]:hover i {
   position: fixed;
   right: calc(-100% - 200px);
   bottom: 0;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   z-index: 99;
   transition: all 0.3s ease;
   transition-duration: 500ms;
@@ -349,7 +349,7 @@ button[type=submit]:hover i {
   height: 0;
   border-style: solid;
   border-width: 0 200px 100vh 0;
-  border-color: transparent #0F1020 transparent transparent;
+  border-color: transparent rgb(3, 6, 32) transparent transparent;
   position: absolute;
   left: -200px;
   top: 0;
@@ -364,7 +364,7 @@ button[type=submit]:hover i {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   opacity: 1;
   transition: all 0.3s ease;
   transition-duration: 500ms;
@@ -390,7 +390,7 @@ button[type=submit]:hover i {
   height: 0;
   border-style: solid;
   border-width: 0 200px 100vh 0;
-  border-color: transparent #0F1020 transparent transparent;
+  border-color: transparent rgb(3, 6, 32) transparent transparent;
   position: absolute;
   left: -200px;
   top: 0;
@@ -401,7 +401,7 @@ button[type=submit]:hover i {
   height: 0;
   border-style: solid;
   border-width: 100vh 0 0 200px;
-  border-color: transparent transparent transparent #0F1020;
+  border-color: transparent transparent transparent rgb(3, 6, 32);
   position: absolute;
   right: -200px;
   top: 0;
@@ -495,7 +495,7 @@ body.page-loading {
 }
 
 .burger-svg__bars {
-  fill: #0F1020;
+  fill: rgb(3, 6, 32);
 }
 
 /* NAVIGATION MENU */
@@ -510,7 +510,7 @@ body.page-loading {
   right: calc(-100% - 200px);
   top: 0;
   z-index: 9999;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   transition: all 0.3s ease;
   transition-duration: 500ms;
   -webkit-transition-duration: 500ms;
@@ -524,7 +524,7 @@ body.page-loading {
   height: 0;
   border-style: solid;
   border-width: 0 200px 100vh 0;
-  border-color: transparent #0F1020 transparent transparent;
+  border-color: transparent rgb(3, 6, 32) transparent transparent;
   position: absolute;
   left: -200px;
   top: 0;
@@ -737,7 +737,7 @@ body.page-loading {
 .custom-link span {
   width: 20px;
   height: 1px;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   display: inline-block;
   margin: 0;
 }
@@ -749,7 +749,7 @@ body.page-loading {
   margin-right: auto;
   border-style: solid;
   border-width: 4px 0 4px 4px;
-  border-color: transparent transparent transparent #0F1020;
+  border-color: transparent transparent transparent rgb(3, 6, 32);
   opacity: 1;
 }
 .custom-link:hover a {
@@ -779,13 +779,13 @@ body.page-loading {
   flex-wrap: wrap;
   justify-content: center;
   height: 58px;
-  border: 1px solid #0F1020;
+  border: 1px solid rgb(3, 6, 32);
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
   padding: 0 30px;
   padding-top: 18px;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   color: #fff;
 }
 .custom-btn a:hover {
@@ -1214,12 +1214,12 @@ body.overflow .navbar .main-menu {
   bottom: 6px;
   height: 1px;
   width: 0;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   transition: width 0.25s ease;
 }
 .left-side ul li a:hover:before {
   width: 100%;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   transition: width 0.25s ease;
 }
 .left-side ul li a:hover:after {
@@ -1256,7 +1256,7 @@ body.overflow .navbar .main-menu {
   min-height: 560px; /* Ensure minimum height is reserved */
   display: flex;
   flex-wrap: wrap;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   margin-right: -50px;
   overflow: hidden;
   position: relative;
@@ -1266,7 +1266,7 @@ body.overflow .navbar .main-menu {
 }
 .slider:empty {
   min-height: 560px;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
 }
 .slider:hover .swiper-container .swiper-slide {
   margin-left: -10px;
@@ -1308,7 +1308,7 @@ body.overflow .navbar .main-menu {
   /* Prevent image load shifts */
 }
 .slider .swiper-container .swiper-slide[data-background] {
-  background-color: #0F1020; /* Placeholder color */
+  background-color: rgb(3, 6, 32); /* Placeholder color */
 }
 .slider .swiper-container .swiper-slide-active {
   opacity: 1;
@@ -1491,7 +1491,7 @@ body.overflow .navbar .main-menu {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
 }
 .page-header .video-bg {
   width: 100%;
@@ -1731,7 +1731,7 @@ body.overflow .navbar .main-menu {
   filter: invert(100%);
 }
 .featured-services figure:hover figcaption {
-  color: #0F1020;
+  color: rgb(3, 6, 32);
 }
 .featured-services figure img {
   opacity: 0.1;
@@ -1811,12 +1811,12 @@ body.overflow .navbar .main-menu {
   bottom: -1px;
   height: 1px;
   width: 0;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   transition: width 0.25s ease;
 }
 .recent-news .content-box:hover:before {
   width: 100%;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   transition: width 0.25s ease;
 }
 .recent-news .content-box:hover:after {
@@ -2356,7 +2356,7 @@ body.overflow .navbar .main-menu {
   content: "";
   width: 30%;
   height: 3px;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   position: absolute;
   left: -25px;
   bottom: 0;
@@ -2371,7 +2371,7 @@ body.overflow .navbar .main-menu {
   font-weight: 600;
   font-size: 14px;
   color: #fff;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   padding: 0 30px;
 }
 .blog .sidebar .widget .categories {
@@ -2391,7 +2391,7 @@ body.overflow .navbar .main-menu {
   height: 5px;
   float: left;
   border-radius: 50%;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   margin-right: 15px;
   margin-top: 11px;
 }
@@ -2420,8 +2420,8 @@ body.overflow .navbar .main-menu {
 }
 .blog .sidebar .widget .tags li a:hover {
   text-decoration: none;
-  border: 1px solid #0F1020;
-  background: #0F1020;
+  border: 1px solid rgb(3, 6, 32);
+  background: rgb(3, 6, 32);
   color: #fff;
 }
 .blog .sidebar .widget .works {
@@ -2779,12 +2779,12 @@ body.overflow .navbar .main-menu {
   bottom: 11px;
   height: 1px;
   width: 0;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   transition: width 0.25s ease;
 }
 .footer .extra a:hover:before {
   width: 100%;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   transition: width 0.25s ease;
 }
 .footer .extra a:hover:after {
@@ -2838,12 +2838,12 @@ body.overflow .navbar .main-menu {
   bottom: 8px;
   height: 1px;
   width: 0;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   transition: width 0.25s ease;
 }
 .footer .sub-footer ul li a:hover:before {
   width: 100%;
-  background: #0F1020;
+  background: rgb(3, 6, 32);
   transition: width 0.25s ease;
 }
 .footer .sub-footer ul li a:hover:after {
