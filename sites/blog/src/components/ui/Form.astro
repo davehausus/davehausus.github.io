@@ -33,7 +33,7 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '', a
                 autocomplete={autocomplete}
                 placeholder={placeholder}
                 required={required}
-                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+                class="py-3 px-4 block w-full text-md rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
               />
             </div>
           )
@@ -52,7 +52,7 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '', a
           rows={textarea.rows ? textarea.rows : 4}
           placeholder={textarea.placeholder}
           required={textarea.required ?? false}
-          class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+          class="py-3 px-4 block w-full text-md rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
         />
       </div>
     )
@@ -106,14 +106,14 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '', a
       <Fragment>
         <div
           id="contact-form-success"
-          class="hidden mt-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 dark:border-green-900/50 dark:bg-green-900/20 dark:text-green-300"
+          class="hidden mt-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 dark:border-green-900/50 dark:bg-green-900/20 dark:text-green-300"
           role="alert"
         >
           All good! Your message made it through and is now doing a little victory animation on my end.
         </div>
         <div
           id="contact-form-error"
-          class="hidden mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-300"
+          class="hidden mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-300"
           role="alert"
         >
           Hmm, that glitched. The form hit a snag mid-motion. Refresh and give it another go.

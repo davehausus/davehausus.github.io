@@ -223,6 +223,12 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
       // Close the mobile menu when a nav link is clicked.
       nav?.addEventListener('click', closeMenu);
 
+      // The CTA buttons live outside <nav>, so close the menu for them too.
+      // Only react to links so the theme toggle doesn't dismiss the menu.
+      lastChild?.addEventListener('click', (e) => {
+        if ((e.target as HTMLElement)?.closest('a[href]')) closeMenu();
+      });
+
       // Desktop dropdowns open on hover/`:focus-within`. When a dropdown link is
       // clicked it keeps focus, and because the header uses `transition:persist`
       // the dropdown would stay open after the client-side navigation. Blur the

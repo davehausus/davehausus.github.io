@@ -10,10 +10,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.41.7",
+    "@astrojs/starlight": "^0.42.7",
+    "@astrojs/starlight-tailwind": "^5.0.0",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.2",
+    "astro": "^7.4.2",
     "sharp": "^0.35.3",
+    "starlight-sidebar-topics": "^0.9.0",
     "starlight-theme-rose-pine": "^0.2.0",
     "tailwindcss": "^4.3.3"
   },

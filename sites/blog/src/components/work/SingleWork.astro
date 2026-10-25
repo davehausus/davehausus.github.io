@@ -23,7 +23,7 @@ const { post, url, tagType = 'tag', categoryType = 'category', isTagEnabled = un
 
 <Hero2 image={post.image ? { src: post.image, alt: post.excerpt || post.title } : undefined}>
   <Fragment slot="tagline">
-    <p class="max-w-3xl mx-auto mt-0 mb-2 px-4 sm:px-6 text-base font-normal normal-case tracking-normal text-current">
+    <p class="mt-0 mb-2 text-base font-normal normal-case tracking-normal text-current intersect-once motion-safe:md:intersect:animate-fade motion-safe:md:opacity-0 intersect-quarter">
       <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
       <time datetime={String(post.publishDate)} class="inline-block">{getFormattedDate(post.publishDate)}</time>
       {
@@ -52,7 +52,7 @@ const { post, url, tagType = 'tag', categoryType = 'category', isTagEnabled = un
 </Hero2>
 
 <div
-  class="mx-auto px-4 sm:px-6 max-w-4xl prose prose-md lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8 prose-headings:scroll-mt-[80px] prose-li:my-0"
+  class="mx-auto px-4 sm:px-6 max-w-4xl prose lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-2xl prose-img:shadow-lg mt-8 prose-headings:scroll-mt-[80px] prose-li:my-0"
 >
   <slot />
 </div>

@@ -36,7 +36,7 @@ const columnsClass =
     items.length > 0 && (
       <div class:list={['grid gap-4 md:gap-6 gap-x-12', columnsClass]}>
         {items.map(({ title: itemTitle, description, icon, callToAction }) => (
-          <div class="relative flex flex-col rounded-lg shadow-[0_4px_30px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur border border-[#ffffff29] bg-white dark:bg-slate-900 p-6 intersect-once intersect-quarter intersect-no-queue motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
+          <div class="relative flex flex-col rounded-3xl shadow-[0_3px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_3px_20px_rgba(0,0,0,0.2)] backdrop-blur dark:border border-[#8884ff26] bg-white dark:bg-indigo-400/5 p-6 intersect-once intersect-quarter intersect-no-queue motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
             {(icon || defaultIcon) && <Icon name={icon || defaultIcon} class="mb-6 w-12 h-12 text-primary" />}
             <div class="text-xl font-bold">{itemTitle}</div>
             {description && <p class="text-muted mt-2" set:html={description} />}

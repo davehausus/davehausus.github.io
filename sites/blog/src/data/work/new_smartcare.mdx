@@ -1,0 +1,99 @@
+---
+title: 'Designing Motion for Connected Care Hardware and Mobile Apps'
+excerpt: 'Nomo Smart Care connects in-home sensors with a caregiver app and an LED-equipped hub. I designed motion for system feedback and personal messages, adapting each animation to the capabilities of its display.'
+image: '~/assets/images/work/smartcare/smartcare-square.png'
+publishDate: 2026-09-13
+client: 'Nomo Smart Care'
+role: 'Motion Designer'
+category: 'Product Design'
+tags: ['motion design', 'interaction design', 'Rive']
+---
+
+import Features4 from '~/components/widgets/Features4.astro';
+import Features4Item from '~/components/widgets/Features4Item.astro';
+
+
+The Nomo Hub has a circular LED ring instead of a screen. Every animation had to communicate through a limited number of lights, while its mobile app needed to preview those same animations for caregivers. I worked across both surfaces, designing the hardware sequences and the app animations that represented them.
+
+## Two types of motion
+
+The work covered two distinct needs: communicating technical states and sending personal messages.
+
+System status animations helped communicate what the device was doing during setup and operation. Pokes gave caregivers a way to send reminders or personal signals to the Hub through the app.
+
+[Visual: Nomo Hub, its LED ring, and the caregiver app shown together.]
+
+## Designing for the LED ring
+
+I had never designed animations for LED hardware before. The ring consisted of individually addressable lights, so I couldn't rely on conventional blur, opacity, or easing to shape the motion.
+
+I used an LED sequence tool configured to match the Hub's physical LED count. I animated each state frame by frame, then engineers translated the sequences into production code.
+
+[Visual: LED sequence editor beside the corresponding animation on the physical Hub.]
+
+This workflow made timing, color, and the position of each light the primary design variables. The animation had to read through the sequence itself.
+
+For system feedback, I designed states for powering on, connecting to Wi-Fi, downloading or syncing, and connection failures. Color distinguished the type of feedback:
+
+- Green for success and readiness
+- Blue for progress and activity
+- Red for errors and interruptions
+
+Related animations also appeared during app onboarding and device provisioning.
+
+[Visual: System status animations, ideally with labels identifying each state.]
+
+## Pokes: messages expressed through light
+
+Pokes were designed for a different purpose from system feedback. Caregivers could send them to remind someone about a routine or let them know someone was thinking of them.
+
+I developed three base motion patterns for the LED ring:
+
+- **Twinkle** uses individual lights switching on and off at different times.
+- **Pulse** moves through a slow, repeating rhythm across the ring.
+- **Comet** sends a band of light around the ring.
+
+[Visual: The three patterns playing side by side on the physical Hub.]
+
+Each pattern could be paired with one of seven colors: Aquamarine, Blue Orchid, Emerald, Jade, Lavender, Marigold, and Sunstone.
+
+[Visual: The seven-color palette applied to one or more Poke patterns.]
+
+The combination of pattern and color gave caregivers different ways to send a message without requiring text or direct interaction with the device.
+
+## Bringing the hardware behavior into the app
+
+The app needed to preview a Poke before a caregiver sent it to the Hub. I initially built these animations with Lottie, which worked well for simpler movement based on timing, position, and opacity.
+
+The more expressive patterns exposed two limitations.
+
+First, the physical LEDs produced a soft glow and natural light falloff. Reproducing that appearance in Lottie required layered gradients and workarounds that were difficult to maintain.
+
+Second, Twinkle depended on variation in how individual lights activated. A fixed animation could reproduce the general pattern, but its repetition made the behavior feel different from the intended hardware effect.
+
+[Visual: The original Lottie preview compared with the LED ring. Show the glow and Twinkle behavior separately if possible.]
+
+## Why I moved to Rive
+
+I moved the more complex app animations to Rive because I needed better control over both light rendering and motion behavior.
+
+**Vector Feathering** let me create softer light effects without relying on the same stack of gradients. This made it easier to approximate the appearance of the illuminated ring in the app.
+
+[Visual: Rive file showing the feathered glow, alongside the corresponding hardware animation.]
+
+Rive's state-driven animation and randomized exits also gave me more flexibility when developing Twinkle. I could introduce variation into the animation instead of depending entirely on a predetermined sequence.
+
+[Visual: Rive state machine or animation setup, paired with a recording showing the resulting variation.]
+
+This wasn't a blanket replacement of Lottie. Simpler animations that didn't depend on these capabilities could remain in Lottie. Rive was the better fit for the patterns that needed more expressive light and less predictable behavior.
+
+## Comparing the two implementations
+
+The hardware and app didn't render motion in the same way. The Hub relied on individual lights, while the app could simulate gradients, glow, and transitions unavailable to the physical ring.
+
+The goal was to preserve the qualities that mattered to each interaction rather than force both implementations to use identical techniques.
+
+[Visual: Final comparison of a Poke on the physical Hub and in the app, shown at the same time if possible.]
+
+The project gave me a practical way to explore motion across physical and digital interfaces. The hardware defined the constraints, the app provided a different rendering environment, and the choice of animation tool followed from the behavior each pattern needed to support.
+<br />

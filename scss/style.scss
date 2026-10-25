@@ -104,7 +104,7 @@ $color-dark : rgb(3 6 32);
 
 /* BODY */
 *{outline: none !important;}
-body{margin: 0; padding-left:150px; padding-right: 50px; font-family: 'Outfit'; font-size: 20px; color:$color-dark;  @include transition-bg; @include font-render;}
+body{margin: 0; padding-left:50px; padding-right: 50px; font-family: 'Outfit'; font-size: 20px; color:$color-dark;  @include transition-bg; @include font-render;}
 
 
 /* LINKS */ 

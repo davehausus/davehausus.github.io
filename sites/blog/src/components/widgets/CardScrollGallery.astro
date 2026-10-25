@@ -1,0 +1,475 @@
+---
+/**
+ * CardScrollGallery
+ *
+ * - Title + optional description
+ * - Rounded image tiles with a caption underneath (bold lead-in + muted text)
+ * - Cards can be "wide" (2x) and overflow the viewport; scroll-snap + prev/next buttons
+ * - Track is aligned with the page container on the left and bleeds to the right edge
+ *
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+export interface GalleryCard {
+  /** Bold lead-in of the caption, e.g. "Just ask Siri AI." */
+  title: string;
+  /** Muted caption text that follows the title */
+  description: string;
+  /** Imported image (ImageMetadata) or a string URL (public/ path or remote) */
+  image: ImageMetadata | string;
+  imageAlt?: string;
+  /** Double-width card (Apple's "wide" tile) */
+  wide?: boolean;
+  /** Tile background behind the image (any CSS color). Defaults to near-black. */
+  background?: string;
+}
+
+export interface Props {
+  id?: string;
+  title: string;
+  description?: string;
+  cards: GalleryCard[];
+  /** Extra classes for the outer <section> */
+  class?: string;
+  prevLabel?: string;
+  nextLabel?: string;
+}
+
+const {
+  id,
+  title,
+  description,
+  cards = [],
+  class: className = '',
+  prevLabel = 'Previous item',
+  nextLabel = 'Next item',
+} = Astro.props;
+
+// BASE_URL discipline: prefix root-relative string URLs
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const resolveSrc = (src: string) =>
+  src.startsWith('/') && !src.startsWith('//') && !(base && src.startsWith(`${base}/`)) ? `${base}${src}` : src;
+
+// Same intersect/fade motion used by the other AstroWind widgets
+const motion =
+  'intersect-once intersect-quarter intersect-no-queue motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade';
+const STEP_MS = 120; // delay between consecutive elements
+const MAX_STEPS = 6; // cap so cards revealed later (after scrolling) don't wait too long
+// Order: 0 Title, 1 Description (if present), then each card individually
+const delay = (order: number) => `animation-delay:${Math.min(order, MAX_STEPS) * STEP_MS}ms`;
+const cardOffset = description ? 2 : 1;
+---
+
+<section
+  id={id}
+  class:list={['card-scroll-gallery relative', className]}
+  data-card-gallery
+  aria-label={title.replace(/<[^>]*>/g, '')}
+>
+  <!-- Header (aligned with the page container) -->
+  <header class="csg-container">
+    <h2
+      class:list={['text-4xl font-bold tracking-tighter text-default md:text-5xl lg:text-6xl', motion]}
+      style={delay(0)}
+      set:html={title}
+    />
+    {
+      description && (
+        <p
+          class:list={['mt-4 max-w-2xl text-lg text-muted md:text-xl', motion]}
+          style={delay(1)}
+          set:html={description}
+        />
+      )
+    }
+  </header>
+
+  <!-- Scrolling track -->
+  <div
+    data-track
+    tabindex="0"
+    role="group"
+    aria-roledescription="carousel"
+    aria-label={`${title.replace(/<[^>]*>/g, '')} gallery`}
+    class="csg-track mt-10 flex gap-4 overflow-x-auto pb-1 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 md:mt-14 md:gap-5"
+  >
+    {
+      cards.map((card, i) => (
+        <article
+          data-card
+          aria-roledescription="slide"
+          aria-label={`${i + 1} of ${cards.length}`}
+          class:list={['csg-card shrink-0', card.wide ? 'csg-card-wide' : 'csg-card-regular', motion]}
+          style={delay(cardOffset + i)}
+        >
+          <div
+            class="csg-tile relative overflow-hidden rounded-3xl bg-neutral-900"
+            style={card.background ? `background:${card.background}` : undefined}
+          >
+            {typeof card.image === 'string' ? (
+              <img
+                src={resolveSrc(card.image)}
+                alt={card.imageAlt ?? ''}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                draggable="false"
+                class="h-full w-full object-cover"
+              />
+            ) : (
+              <Image
+                src={card.image}
+                alt={card.imageAlt ?? ''}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                widths={[480, 800, 1200]}
+                sizes={card.wide ? '(min-width: 768px) 696px, 88vw' : '(min-width: 768px) 372px, 78vw'}
+                draggable="false"
+                class="h-full w-full object-cover"
+              />
+            )}
+          </div>
+          <p class="mt-5 px-4 text-[15px] leading-snug text-muted md:text-base">
+            <strong class="font-semibold text-default">{card.title}</strong>{' '}
+            <span set:html={card.description} />
+          </p>
+        </article>
+      ))
+    }
+  </div>
+
+  <!-- Prev / Next -->
+  <div class="csg-container mt-6 flex justify-end md:mt-8" data-nav>
+    <div class="flex gap-3">
+      <button
+        type="button"
+        data-prev
+        aria-label={prevLabel}
+        class="csg-btn"
+      >
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m15 6-6 6 6 6"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        data-next
+        aria-label={nextLabel}
+        class="csg-btn"
+      >
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m9 6 6 6-6 6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .card-scroll-gallery {
+    /* Match these to the container width/padding used by the rest of your page (AstroWind default: max-w-6xl + px-4/6) */
+    --csg-max: 72rem;
+    --csg-pad: 1rem;
+    /* Left inset that lines the first card up with the header, while the track bleeds to the right edge */
+    --csg-gutter: max(var(--csg-pad), calc((100% - var(--csg-max)) / 2 + var(--csg-pad)));
+  }
+  @media (min-width: 768px) {
+    .card-scroll-gallery {
+      --csg-pad: 0rem;
+    }
+  }
+
+  .csg-container {
+    max-width: var(--csg-max);
+    margin-inline: auto;
+    padding-inline: var(--csg-pad);
+  }
+
+  /* Full-bleed: the track escapes the page container and spans the whole viewport.
+     CSS fallback first; the script then replaces it with measured values
+     (excludes the scrollbar width and works inside any parent container). */
+  .csg-track {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+  }
+  :global([data-card-gallery][data-ready='true']) .csg-track {
+    width: var(--csg-vw);
+    margin-left: calc(-1 * var(--csg-offset));
+  }
+
+  .csg-track {
+    padding-inline: var(--csg-gutter);
+    scroll-padding-inline: var(--csg-gutter);
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  .csg-track::-webkit-scrollbar {
+    display: none; /* Safari / Chrome */
+  }
+
+  .csg-card {
+    scroll-snap-align: start;
+  }
+  .csg-card-regular {
+    width: min(78vw, 372px);
+  }
+  .csg-card-wide {
+    width: min(88vw, 696px);
+  }
+
+  .csg-tile {
+    height: 360px;
+  }
+    /* The image always covers the entire tile, so the tile background can never show through */
+  .csg-tile :global(img) {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    object-fit: cover;
+    object-position: center;
+  }
+  @media (min-width: 768px) {
+    .csg-tile {
+      height: 452px;
+    }
+  }
+
+  .csg-btn {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+    color: rgb(29 29 31);
+    background: rgb(0 0 0 / 0.08);
+    transition:
+      background-color 0.2s ease,
+      opacity 0.2s ease;
+  }
+  .csg-btn:hover:not(:disabled) {
+    background: rgb(0 0 0 / 0.16);
+  }
+  .csg-btn:focus-visible {
+    outline: 2px solid rgb(59 130 246);
+    outline-offset: 2px;
+  }
+  .csg-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  :global(.dark) .csg-btn {
+    color: rgb(245 245 247);
+    background: rgb(255 255 255 / 0.16);
+  }
+  :global(.dark) .csg-btn:hover:not(:disabled) {
+    background: rgb(255 255 255 / 0.26);
+  }
+</style>
+
+<script>
+  // CSS-style cubic-bezier easing: returns y for a given x (progress 0..1)
+  function cubicBezier(x1: number, y1: number, x2: number, y2: number) {
+    const cx = 3 * x1;
+    const bx = 3 * (x2 - x1) - cx;
+    const ax = 1 - cx - bx;
+    const cy = 3 * y1;
+    const by = 3 * (y2 - y1) - cy;
+    const ay = 1 - cy - by;
+    const sampleX = (t: number) => ((ax * t + bx) * t + cx) * t;
+    const sampleY = (t: number) => ((ay * t + by) * t + cy) * t;
+    return (x: number) => {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      let lo = 0;
+      let hi = 1;
+      let t = x;
+      for (let i = 0; i < 24; i++) {
+        const v = sampleX(t);
+        if (Math.abs(v - x) < 1e-5) break;
+        if (v < x) lo = t;
+        else hi = t;
+        t = (lo + hi) / 2;
+      }
+      return sampleY(t);
+    };
+  }
+
+  // ease-in-out (cubic-bezier.com/#.42,0,.58,1)
+  const easeInOut = cubicBezier(0.42, 0, 0.58, 1);
+
+  function initGallery(root: HTMLElement) {
+    if (root.dataset.ready === 'true') return;
+    root.dataset.ready = 'true';
+
+    const track = root.querySelector<HTMLElement>('[data-track]');
+    const nav = root.querySelector<HTMLElement>('[data-nav]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-next]');
+    if (!track || !prev || !next) return;
+
+    const header = root.querySelector<HTMLElement>('header');
+    const cards = Array.from(track.querySelectorAll<HTMLElement>('[data-card]'));
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // Full-bleed layout: stretch the track from the left edge to the right edge of the viewport,
+    // and set the left inset so the first card lines up with the header text.
+    const layout = () => {
+      const rootLeft = root.getBoundingClientRect().left;
+      root.style.setProperty('--csg-vw', `${document.documentElement.clientWidth}px`);
+      root.style.setProperty('--csg-offset', `${rootLeft}px`);
+      if (header) {
+        const h = header.getBoundingClientRect();
+        const pad = parseFloat(getComputedStyle(header).paddingLeft) || 0;
+        root.style.setProperty('--csg-gutter', `${Math.max(0, h.left + pad)}px`);
+      }
+    };
+    layout();
+    window.addEventListener('resize', layout, { passive: true });
+
+    // Entrance animation only for cards that are visible from the start.
+    // Cards hidden behind the right edge lose their motion classes, so they are fully opaque
+    // (no fade, no delay) when they come into view via navigation.
+    const MOTION_CLASSES = [
+      'intersect-once',
+      'intersect-quarter',
+      'intersect-no-queue',
+      'motion-safe:md:opacity-0',
+      'motion-safe:md:intersect:animate-fade',
+    ];
+    const viewportWidth = document.documentElement.clientWidth;
+    cards.forEach((card) => {
+      const r = card.getBoundingClientRect();
+      const visibleWidth = Math.min(r.right, viewportWidth) - Math.max(r.left, 0);
+      if (visibleWidth / r.width < 0.3) {
+        card.classList.remove(...MOTION_CLASSES);
+        card.style.animationDelay = '';
+      }
+    });
+
+    const gutter = () => parseFloat(getComputedStyle(track).paddingLeft) || 0;
+    const maxScroll = () => track.scrollWidth - track.clientWidth;
+
+    // scrollLeft value at which a card sits flush with the left gutter
+    const snapPosition = (card: HTMLElement) =>
+      card.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft - gutter();
+
+    // Eased scroll used only by the prev/next buttons (and arrow keys).
+    // Touch / trackpad / wheel scrolling stays native.
+    let raf = 0;
+    let animTarget: number | null = null;
+
+    const stopAnimation = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+      animTarget = null;
+      track.style.scrollSnapType = ''; // back to the CSS value (x mandatory)
+    };
+
+    const scrollToX = (x: number) => {
+      const target = Math.max(0, Math.min(x, maxScroll()));
+      const from = track.scrollLeft;
+      const distance = target - from;
+      if (Math.abs(distance) < 1) return;
+
+      if (reduceMotion.matches) {
+        track.scrollLeft = target;
+        return;
+      }
+
+      if (raf) cancelAnimationFrame(raf);
+      animTarget = target;
+      track.style.scrollSnapType = 'none'; // snapping would fight the animation frames
+      const duration = Math.min(900, Math.max(500, Math.abs(distance) * 0.9));
+      const start = performance.now();
+
+      const step = (now: number) => {
+        const progress = Math.min(1, (now - start) / duration);
+        track.scrollLeft = from + distance * easeInOut(progress);
+        if (progress < 1) {
+          raf = requestAnimationFrame(step);
+        } else {
+          raf = 0;
+          animTarget = null;
+          track.style.scrollSnapType = '';
+        }
+      };
+      raf = requestAnimationFrame(step);
+    };
+
+    // User takes over (wheel, touch, drag): cancel the animation immediately
+    ['wheel', 'touchstart', 'pointerdown'].forEach((evt) =>
+      track.addEventListener(evt, stopAnimation, { passive: true })
+    );
+
+    const goNext = () => {
+      const x = animTarget ?? track.scrollLeft; // rapid clicks advance one card each
+      const target = cards.map(snapPosition).find((p) => p > x + 4);
+      scrollToX(target ?? maxScroll());
+    };
+
+    const goPrev = () => {
+      const x = animTarget ?? track.scrollLeft;
+      const target = [...cards.map(snapPosition)].reverse().find((p) => p < x - 4);
+      scrollToX(target ?? 0);
+    };
+
+    const update = () => {
+      const x = track.scrollLeft;
+      const max = maxScroll();
+      prev.disabled = x <= 1;
+      next.disabled = x >= max - 1;
+      // Hide the buttons entirely when everything already fits
+      nav?.classList.toggle('hidden', max <= 1);
+    };
+
+    let ticking = false;
+    track.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
+      },
+      { passive: true }
+    );
+
+    prev.addEventListener('click', goPrev);
+    next.addEventListener('click', goNext);
+
+    // Keyboard: arrows move one card when the track is focused
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goNext();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goPrev();
+      }
+    });
+
+    const ro = new ResizeObserver(() => {
+      layout();
+      update();
+    });
+    ro.observe(track);
+    if (header) ro.observe(header);
+    update();
+  }
+
+  function initAll() {
+    document.querySelectorAll<HTMLElement>('[data-card-gallery]').forEach(initGallery);
+  }
+
+  initAll();
+  // Re-init after client-side navigations (Astro ClientRouter / view transitions)
+  document.addEventListener('astro:after-swap', initAll);
+  document.addEventListener('astro:page-load', initAll);
+</script>

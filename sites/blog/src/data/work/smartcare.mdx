@@ -14,13 +14,13 @@ import Features4Item from '~/components/widgets/Features4Item.astro';
 
 
 <Features4 columns={2}>
-<Features4Item title="GOAL">
+<Features4Item title="Goal">
 
 The challenge was to create a unified animation language that could communicate system states clearly, while also delivering moments of warmth, reassurance, and human connection.
 
 </Features4Item>
 
-<Features4Item title="ROLE">
+<Features4Item title="Role">
 
 My role focused on designing motion and animation across two very different surfaces
 
@@ -44,11 +44,18 @@ Caregivers interact with the system primarily through the mobile app, where they
 # Defining Two Animation Fronts
 From the beginning, it was clear that motion design would need to exist in two parallel but synchronized worlds.
 
-#### HARDWARE ANIMATIONS
+<Features4 columns={2} containerClass={`md:px-16 py-14 md:py-16 lg:py-20 md:px-0 mx-auto`}>
+<Features4Item title="Hardware Animations">
+
 Animations displayed through the LED ring on the Nomo Hub. These needed to be readable from across a room, work under different lighting conditions, and communicate meaning with very limited visual resolution.
 
-#### APP ANIMATIONS
+</Features4Item>
+<Features4Item title="App Animations">
+
 Animations shown inside the mobile app so caregivers could preview what they were sending to the Hub. These needed to feel expressive, friendly, and emotionally aligned with the intent of each interaction.
+
+</Features4Item>
+</Features4>
 
 The final interface felt cohesive and easy to navigate, guided by the same design decisions that shaped the packaging.
 
@@ -65,10 +72,10 @@ This process required a mindset shift
 
 Designing motion under these constraints became a core strength of the project.
 
-## Two Animation Systems With Different Goals
+# Two Animation Systems <br />With Different Goals
 The animations naturally split into two categories, each with very different requirements.
 
-#### SYSTEM STATUS ANIMATIONS
+### SYSTEM STATUS ANIMATIONS
 These animations were used during setup and operation to communicate technical states such as
 
 - Powering on
@@ -84,7 +91,7 @@ Clarity and speed were the priority. Color usage was intentional and limited
 
 These animations appeared both on the LED ring and inside the app during onboarding and provisioning flows, reinforcing consistency between physical and digital experiences.
 
-#### POKES: EMOTIONAL MOTION DESIGN
+### POKES: EMOTIONAL MOTION DESIGN
 
 The second category was called **Pokes**. These are animations caregivers can send to the Hub through the app to remind care recipients about medications, routines, or simply to let them know someone is thinking of them.
 

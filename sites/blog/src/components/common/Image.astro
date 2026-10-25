@@ -37,9 +37,10 @@ interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'width' | 'height'> 
   widths?: number[];
   format?: Format;
   layout?: Layout;
+  bare?: boolean; // skip prose image styling (rounded corners, shadow)
 }
 
-const { src, alt, width, height, widths, format, layout = 'constrained', ...rest } = Astro.props;
+const { src, alt, width, height, widths, format, layout = 'constrained', bare = false, ...rest } = Astro.props;
 
 // --- Accessibility ---------------------------------------------------------
 if (alt === undefined || alt === null) {
@@ -57,6 +58,10 @@ let h = toNumber(height);
 // --- Defaults --------------------------------------------------------------
 rest.loading ??= 'lazy';
 rest.decoding ??= 'async';
+
+if (bare) {
+  rest.class = [rest.class, 'not-prose', 'my-8'].filter(Boolean).join(' ');
+}
 
 // --- Resolve src (handles `~/assets/...` paths) ----------------------------
 const resolved = await findImage(src);

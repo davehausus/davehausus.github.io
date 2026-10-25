@@ -3,7 +3,7 @@ publishDate: 2025-12-04T00:00:00Z
 author: David de Jesus
 title: Responsive Text in Rive Without Losing Your Mind
 excerpt: A designer friendly way to handle breakpoints, layouts, and scaling.
-image: '~/assets/images/blog/responsive-text-cover.jpg'
+image: '~/assets/images/blog/responsive.jpg'
 category: Tutorials
 tags:
   - Rive
@@ -78,7 +78,7 @@ Each timeline has its own layout. Font sizes, line breaks, spacing, alignment. E
 
 In the State Machine, we use an Any State with conditional transitions based on the View Model number.
 
-If num is greater than or less than certain values, the State Machine switches timelines.
+If `num` is greater than or less than certain values, the State Machine switches timelines.
 
 This is the key mental shift.
 

@@ -22,11 +22,12 @@ export const footerData = {
   links: [
     {
       title: '',
-      links: [{ text: 'hello@daviddejesus.me', href: 'mailto:hello@daviddejesus.me' }],
+      links: [{ text: 'hello@daviddejesus.me', href: 'mailto:hello@daviddejesus.me' }, { text: 'Privacy Notice', href: getPermalink('/privacy') }],
+      
     },
   ],
   secondaryLinks: [
-    { text: 'Privacy Notice', href: getPermalink('/privacy') },
+    { text: '', href: getPermalink('') },
   ],
   socialLinks: [
     { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: '#' },
@@ -34,6 +35,6 @@ export const footerData = {
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/davehausus' },
   ],
   footNote: `
-    © 2026 David de Jesús · All rights Reserved.
+    © 2026 David de Jesus · All rights Reserved.
   `,
 };
