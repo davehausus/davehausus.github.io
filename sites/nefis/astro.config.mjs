@@ -32,7 +32,11 @@ export default defineConfig({
 				icon: 'pencil',
 				items: [{ autogenerate: { directory: 'ingredientes-creativos' } }],
 			},
-			]),
+			],
+			{
+			    exclude: ['/bienvenida', '/bienvenida/**/*'],
+			},
+			),
 		],
 		}),
 	],
