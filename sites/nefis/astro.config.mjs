@@ -21,7 +21,7 @@ export default defineConfig({
 			starlightRosePine(),
 			starlightSidebarTopics([
 			{
-				label: 'Brand Operating System',
+				label: 'Ingredientes Estratégicos',
 				link: '/ingredientes-estrategicos/',
 				icon: 'open-book',
 				items: [{ autogenerate: { directory: 'ingredientes-estrategicos' } }],
