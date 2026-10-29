@@ -17,6 +17,13 @@ export default defineConfig({
 		title: 'Nefis Docs',
 		customCss: ['./src/styles/global.css'],
 		social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+		defaultLocale: 'root',
+		locales: {
+			root: {
+			label: 'Español',
+			lang: 'es',
+			},
+		},
 		plugins: [
 			starlightRosePine(),
 			starlightSidebarTopics([
