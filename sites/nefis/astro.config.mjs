@@ -14,7 +14,7 @@ export default defineConfig({
 
   integrations: [
 		starlight({
-		title: 'Nefis Docs',
+		title: 'Nefis',
 		customCss: ['./src/styles/global.css'],
 		social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
 		defaultLocale: 'root',
