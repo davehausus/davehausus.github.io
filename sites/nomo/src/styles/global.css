@@ -3,3 +3,19 @@
 @import '@astrojs/starlight-tailwind';
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
+
+.sl-link-button {
+  --sl-vintage-link-button-shape-width: 0px;
+  border-radius: 28px;
+  border-image: none;
+  clip-path: none;
+  mask: none;
+  box-shadow: none;
+}
+
+.sl-link-button::before,
+.sl-link-button::after {
+  border-radius: inherit;
+  clip-path: none;
+  border-image: none;
+}

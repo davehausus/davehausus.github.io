@@ -1,3 +1,9 @@
+const auto = (label, directory, extra = {}) => ({
+  label,
+  items: [{ autogenerate: { directory } }],
+  ...extra,
+});
+
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
@@ -31,7 +37,13 @@ export default defineConfig({
 				label: 'Ingredientes Estratégicos',
 				link: '/ingredientes-estrategicos/',
 				icon: 'open-book',
-				items: [{ autogenerate: { directory: 'ingredientes-estrategicos' } }],
+				items: [
+					auto('Parte I', 'ingredientes-estrategicos/parte-i'),
+    				auto('Parte II', 'ingredientes-estrategicos/parte-ii'),
+    				auto('Parte III', 'ingredientes-estrategicos/parte-iii'),
+    				auto('Parte IV', 'ingredientes-estrategicos/parte-iv'),
+					auto('Parte V', 'ingredientes-estrategicos/parte-v'),
+				],
 			},
 			{
 				label: 'Creative Translation System',
