@@ -23,13 +23,20 @@ export default defineConfig({
                 label: 'Brand Operating System',
                 link: '/bos/',
                 icon: 'open-book',
-                items: [{ autogenerate: { directory: 'bos' } }],
+                items: [
+                  {
+                    label: 'Part I',
+                    items: [{ autogenerate: { directory: 'bos/part-i' } }],
+                  },
+                ],
               },
               {
                 label: 'Creative Translation System',
                 link: '/cts/',
                 icon: 'pencil',
-                items: [{ autogenerate: { directory: 'cts' } }],
+                items: [
+                  { autogenerate: { directory: 'cts' } }
+                ],
               },
             ]),
           ],
