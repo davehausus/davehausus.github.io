@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightThemeVintage from 'starlight-theme-vintage'
+import starlightSidebarTopics from 'starlight-sidebar-topics';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -12,24 +13,25 @@ export default defineConfig({
 
   integrations: [
     	starlight({
-        	plugins: [starlightThemeVintage()],
-      		title: 'Nomo Docs',
-			    customCss: [
-        		'./src/styles/global.css',
-			      ],
+        	title: 'Nomo Product Experience OS',
+			    customCss: ['./src/styles/global.css',],
     		  social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
-        	sidebar: [
-            	{
-                  label: 'Guides',
-                  items: [
-                      // Each item here is one entry in the navigation menu.
-                      { label: 'Example Guide', slug: 'guides/example' },
-                  ],
+        	plugins: [
+            starlightThemeVintage(),
+            starlightSidebarTopics([
+              {
+                label: 'Brand Operating System',
+                link: '/bos/',
+                icon: 'open-book',
+                items: [{ autogenerate: { directory: 'bos' } }],
               },
               {
-                  label: 'Reference',
-                  items: [{ autogenerate: { directory: 'reference' } }],
+                label: 'Creative Translation System',
+                link: '/cts/',
+                icon: 'pencil',
+                items: [{ autogenerate: { directory: 'cts' } }],
               },
+            ]),
           ],
       }),
 	],
