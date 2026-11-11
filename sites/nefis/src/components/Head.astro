@@ -1,0 +1,7 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+import { Font } from 'astro:assets';
+---
+
+<Default {...Astro.props}><slot /></Default>
+<Font cssVariable="--font-baloo-2" preload />

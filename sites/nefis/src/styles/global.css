@@ -4,7 +4,56 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
+:root {
+  --sl-font: var(--font-baloo-2);
+}
+
+.sl-markdown-content { font-size: 1.2rem; }
+.sidebar-content a { font-size: 1.02rem; }
+
 .hero > img {
-  border-radius: 40%; /* adjust to taste */
-  transform: rotate(10deg);
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  animation: blob 12s ease-in-out infinite alternate;
+}
+
+@keyframes blob {
+  to {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero > img {
+    animation: none;
+  }
+}
+
+/* Dark mode colors. */
+:root {
+	--sl-color-accent-low: #2b2404;
+	--sl-color-accent: #7c6900;
+	--sl-color-accent-high: #c8b25a;
+	--sl-color-white: #e0dece;
+	--sl-color-gray-1: #e5eeff;
+	--sl-color-gray-2: #adc2ec;
+	--sl-color-gray-3: #6389d9;
+	--sl-color-gray-4: #31549f;
+
+	--sl-color-gray-6: #1b0d32;
+	--sl-color-black: #1b102e;
+}
+/* Light mode colors. */
+:root[data-theme='light'] {
+	--sl-color-accent-low: #ded7bd;
+	--sl-color-accent: #7f6b00;
+	--sl-color-accent-high: #3c3200;
+	--sl-color-white: #081635;
+	--sl-color-gray-1: #031d64;
+	--sl-color-gray-2: #133179;
+	--sl-color-gray-3: #31549f;
+	--sl-color-gray-4: #6389d9;
+	--sl-color-gray-5: #adc2ec;
+	--sl-color-gray-6: #e5eeff;
+	--sl-color-gray-7: #f2f6ff;
+	--sl-color-black: #ffffff;
 }

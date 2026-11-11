@@ -4,10 +4,13 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
+:root {
+  --sl-font: var(--font-poppins);
+}
+
 .sl-link-button {
   --sl-vintage-link-button-shape-width: 0px;
   border-radius: 28px;
-  border-image: none;
   clip-path: none;
   mask: none;
   box-shadow: none;
@@ -17,5 +20,34 @@
 .sl-link-button::after {
   border-radius: inherit;
   clip-path: none;
-  border-image: none;
+}
+
+/* Dark mode colors. */
+:root {
+	--sl-color-accent-low: #2b2400;
+	--sl-color-accent: #b69201;
+	--sl-color-accent-high: #ffd500;
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #e5eeff;
+	--sl-color-gray-2: #afc3e7;
+	--sl-color-gray-3: #668bce;
+	--sl-color-gray-4: #355695;
+	--sl-color-gray-5: #153470;
+	--sl-color-gray-6: #04215b;
+	--sl-color-black: #091731;
+}
+/* Light mode colors. */
+:root[data-theme='light'] {
+	--sl-color-accent-low: #dfd8b5;
+	--sl-color-accent: #0037ff;
+	--sl-color-accent-high: #002fff;
+	--sl-color-white: #091731;
+	--sl-color-gray-1: #04215b;
+	--sl-color-gray-2: #153470;
+	--sl-color-gray-3: #355695;
+	--sl-color-gray-4: #668bce;
+	--sl-color-gray-5: #afc3e7;
+	--sl-color-gray-6: #e5eeff;
+	--sl-color-gray-7: #f2f7ff;
+	--sl-color-black: #ffffff;
 }

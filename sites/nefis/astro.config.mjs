@@ -5,7 +5,7 @@ const auto = (label, directory, extra = {}) => ({
 });
 
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightRosePine from 'starlight-theme-rose-pine'
 import starlightSidebarTopics from 'starlight-sidebar-topics';
@@ -17,11 +17,22 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://daviddejesus.me',
   base: '/nefis',
-
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Baloo 2 Variable',
+      cssVariable: '--font-baloo-2',
+      weights: [200, 400, 800],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['sans-serif'],
+    },
+  ],
   integrations: [
 		starlight({
 		title: 'Nefis',
 		customCss: ['./src/styles/global.css'],
+		components: { Head: './src/components/Head.astro', },
 		social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
 		defaultLocale: 'root',
 		locales: {
