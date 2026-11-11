@@ -23,10 +23,10 @@ export default defineConfig({
   ],
   integrations: [
     	starlight({
-        	title: 'Nomo Product Experience OS',
+        	title: 'nomo',
 			    customCss: ['./src/styles/global.css',],
           components: { Head: './src/components/Head.astro', },
-    		  social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+    		  social: [],
         	plugins: [
             starlightThemeVintage(),
             starlightSidebarTopics([

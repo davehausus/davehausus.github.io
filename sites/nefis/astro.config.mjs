@@ -10,7 +10,6 @@ import starlight from '@astrojs/starlight';
 import starlightRosePine from 'starlight-theme-rose-pine'
 import starlightSidebarTopics from 'starlight-sidebar-topics';
 
-
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
@@ -33,7 +32,7 @@ export default defineConfig({
 		title: 'nefis',
 		customCss: ['./src/styles/global.css'],
 		components: { Head: './src/components/Head.astro', },
-		social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+		social: [],
 		defaultLocale: 'root',
 		locales: {
 			root: {
@@ -50,9 +49,9 @@ export default defineConfig({
 				icon: 'open-book',
 				items: [
 					auto('Parte I', 'ingredientes-estrategicos/parte-i'),
-    				auto('Parte II', 'ingredientes-estrategicos/parte-ii'),
-    				auto('Parte III', 'ingredientes-estrategicos/parte-iii'),
-    				auto('Parte IV', 'ingredientes-estrategicos/parte-iv'),
+					auto('Parte II', 'ingredientes-estrategicos/parte-ii'),
+					auto('Parte III', 'ingredientes-estrategicos/parte-iii'),
+					auto('Parte IV', 'ingredientes-estrategicos/parte-iv'),
 					auto('Parte V', 'ingredientes-estrategicos/parte-v'),
 				],
 			},
@@ -64,7 +63,7 @@ export default defineConfig({
 			},
 			],
 			{
-			    exclude: ['/bienvenida', '/bienvenida/**/*'],
+				exclude: ['/bienvenida', '/bienvenida/**/*'],
 			},
 			),
 		],
