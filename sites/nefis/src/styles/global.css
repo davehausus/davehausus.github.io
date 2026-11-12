@@ -8,10 +8,15 @@
   --sl-font: var(--font-baloo-2);
 }
 
-.sl-markdown-content { font-size: 1.2rem; }
-.sidebar-content a { font-size: 1.02rem; }
+.sl-markdown-content {
+  font-size: 1.2rem;
+}
 
-.hero > img {
+.sidebar-content a {
+  font-size: 1.02rem;
+}
+
+.hero>img {
   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
   animation: blob 12s ease-in-out infinite alternate;
 }
@@ -23,18 +28,60 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero > img {
+  .hero>img {
     animation: none;
   }
 }
 
 .card {
-    border-radius: 2.5rem;
+  border-radius: 2.5rem;
+  border: 0px;
+
+  .title .icon {
+    border-radius: .35em;
     border: 0px;
-    .title .icon {
-        border-radius: .35em;
-        border: 0px;
-        }
+  }
+}
+
+/* Dark theme → cards use LIGHT palette */
+:root:not([data-theme='light']) .card {
+  --sl-color-white: hsl(224, 10%, 10%);
+  --sl-color-gray-1: hsl(224, 14%, 16%);
+  --sl-color-gray-2: hsl(224, 10%, 23%);
+  --sl-color-gray-3: hsl(224, 7%, 36%);
+  --sl-color-gray-4: hsl(224, 6%, 56%);
+  --sl-color-gray-5: hsl(224, 6%, 73%);
+  --sl-color-gray-6: hsl(36, 74%, 58%);
+  --sl-color-black: hsl(254, 100%, 5%);
+}
+
+/* Light theme → cards use DARK palette */
+:root[data-theme='light'] .card {
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #eceef2;
+  --sl-color-gray-2: #c0c2c7;
+  --sl-color-gray-3: #888b96;
+  --sl-color-gray-4: #545861;
+  --sl-color-gray-5: #353841;
+  --sl-color-gray-6: #07022e;
+  --sl-color-black: #082182;
+}
+
+/* Shared: re-point the derived variables so they pick up the swapped values */
+.card {
+  --sl-color-text: var(--sl-color-gray-2);
+  --sl-color-bg: var(--sl-color-black);
+  background-color: var(--sl-color-gray-6);
+  color: var(--sl-color-text);
+}
+
+
+.card :is(h1, h2, h3, h4, strong, .title) {
+  color: var(--sl-color-white);
+
+  a {
+    color: var(--sl-color-white);
+  }
 }
 
 .sl-markdown-content a:not(:where(.not-content *)) {
@@ -54,36 +101,38 @@
 
 /* Dark mode colors. */
 :root {
-	--sl-color-accent-low: #341f00;
-	--sl-color-accent: #f8cd12;
-	--sl-color-accent-high: #f8cd12;
-	--sl-color-white: #ffffff;
-	--sl-color-gray-1: #efebfc;
-	--sl-color-gray-2: #c4bed3;
-	--sl-color-gray-3: #8f84ab;
-	--sl-color-gray-4: #5c5175;
-	--sl-color-gray-5: #3c3152;
-	--sl-color-gray-6: #2a203f;
-	--sl-color-black: #1a1524;
+  --sl-color-accent-low: #341f00;
+  --sl-color-accent: #f8cd12;
+  --sl-color-accent-high: #f8cd12;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #efebfc;
+  --sl-color-gray-2: #c4bed3;
+  --sl-color-gray-3: #8f84ab;
+  --sl-color-gray-4: #5c5175;
+  --sl-color-gray-5: #3c3152;
+  --sl-color-gray-6: #2a203f;
+  --sl-color-black: #1a1524;
 }
+
 /* Light mode colors. */
 :root[data-theme='light'] {
-	--sl-color-accent-low: #e8d3b9;
-	--sl-color-accent: #926000;
-	--sl-color-accent-high: #472c00;
-	--sl-color-white: #1a1524;
-	--sl-color-gray-1: #2a203f;
-	--sl-color-gray-2: #3c3152;
-	--sl-color-gray-3: #5c5175;
-	--sl-color-gray-4: #8f84ab;
-	--sl-color-gray-5: #c4bed3;
-	--sl-color-gray-6: #efebfc;
-	--sl-color-gray-7: #f7f5fd;
-	--sl-color-black: #ffffff;
+  --sl-color-accent-low: #d2e0f8;
+  --sl-color-accent: #30559c;
+  --sl-color-accent-high: #30559c;
+  --sl-color-white: #1a1524;
+  --sl-color-gray-1: #2a203f;
+  --sl-color-gray-2: #3c3152;
+  --sl-color-gray-3: #5c5175;
+  --sl-color-gray-4: #8f84ab;
+  --sl-color-gray-5: #c4bed3;
+  --sl-color-gray-6: #efebfc;
+  --sl-color-gray-7: #f7f5fd;
+  --sl-color-black: #ffffff;
 }
 
 
-.dark, .dark-theme {
+.dark,
+.dark-theme {
   --yellow-1: #191711;
   --yellow-2: #1f1c13;
   --yellow-3: #2e260a;
@@ -117,7 +166,9 @@
 }
 
 
-:root, .light, .light-theme {
+:root,
+.light,
+.light-theme {
   --blue-1: #fdfdfe;
   --blue-2: #f7f9fd;
   --blue-3: #eef2fb;
@@ -152,7 +203,10 @@
 
 @supports (color: color(display-p3 1 1 1)) {
   @media (color-gamut: p3) {
-    :root, .light, .light-theme {
+
+    :root,
+    .light,
+    .light-theme {
       --blue-1: oklch(99.4% 0.0011 262);
       --blue-2: oklch(98.3% 0.0057 262);
       --blue-3: oklch(96.1% 0.0122 262);
