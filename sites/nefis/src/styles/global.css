@@ -88,6 +88,10 @@
   }
 }
 
+a:where(.astro-b5raizh3) {
+  border-radius: 1.5rem;
+}
+
 .sl-markdown-content a:not(:where(.not-content *)) {
   text-decoration: none;
 }
