@@ -1,7 +1,60 @@
 ---
-import Default from '@astrojs/starlight/components/Head.astro';
-import { Font } from 'astro:assets';
+import Default from "@astrojs/starlight/components/Head.astro";
+import { Font } from "astro:assets";
 ---
 
-<Default {...Astro.props}><slot /></Default>
+<Default {...Astro.props}>
+  <slot />
+</Default>
 <Font cssVariable="--font-baloo-2" preload />
+
+<script>
+  // Docs pages only: the splash/main page has no sidebar
+  if (document.documentElement.hasAttribute("data-has-sidebar")) {
+    const target = document.querySelector<HTMLElement>(".sl-markdown-content");
+
+    if (target) {
+      const wrap = document.createElement("div");
+      wrap.className = "progress-scroll-container";
+      wrap.setAttribute("aria-hidden", "true");
+
+      const bar = document.createElement("div");
+      bar.id = "progress-scroll";
+      wrap.append(bar);
+      document.body.prepend(wrap);
+
+      let ticking = false;
+
+      const update = () => {
+        ticking = false;
+        const rect = target.getBoundingClientRect();
+        const total = rect.height - window.innerHeight;
+
+        let pct: number;
+        if (total > 0) {
+          pct = (-rect.top / total) * 100;
+        } else {
+          pct = rect.bottom <= window.innerHeight ? 100 : 0;
+        }
+
+        bar.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+      };
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        },
+        { passive: true },
+      );
+      window.addEventListener("resize", update);
+      window.addEventListener("load", update);
+      new ResizeObserver(update).observe(target);
+
+      update();
+    }
+  }
+</script>

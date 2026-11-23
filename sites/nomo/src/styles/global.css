@@ -5,52 +5,54 @@
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 :root {
-  --sl-font: var(--font-poppins);
+	--sl-font: var(--font-poppins);
 }
 
 .sl-link-button {
-  --sl-vintage-link-button-shape-width: 0px;
-  border-radius: 28px;
-  clip-path: none;
-  mask: none;
-  box-shadow: none;
+	--sl-vintage-link-button-shape-width: 0px;
+	border-radius: 28px;
+	clip-path: none;
+	mask: none;
+	box-shadow: none;
 }
 
 .sl-link-button::before,
 .sl-link-button::after {
-  border-radius: inherit;
-  clip-path: none;
+	border-radius: inherit;
+	clip-path: none;
 }
 
 .card {
-    border-radius: 3em;
-    .title .icon {
-        border-radius: 0.35em;
-        }
+	border-radius: 3em;
+
+	.title .icon {
+		border-radius: 0.35em;
+	}
 }
 
 .pagination-links a {
-    border-radius: 2.5em;
+	border-radius: 2.5em;
 }
 
 :root .starlight-sidebar-topics-icon {
-  border-radius: 0.45rem;
+	border-radius: 0.45rem;
 }
 
 .sl-link-button {
-  font-weight: 600;
-  &:hover {
-    text-decoration: none;
-    }
+	font-weight: 600;
+
+	&:hover {
+		text-decoration: none;
+	}
 }
 
 .sl-markdown-content a:not(:where(.not-content *)) {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 :root .card {
-    border: 0px;
-    border-color: none;
+	border: 0px;
+	border-color: none;
 }
 
 /* Dark mode colors. */
@@ -67,6 +69,7 @@
 	--sl-color-gray-6: #04215b;
 	--sl-color-black: #091731;
 }
+
 /* Light mode colors. */
 :root[data-theme='light'] {
 	--sl-color-accent-low: #dfd8b5;
@@ -81,4 +84,20 @@
 	--sl-color-gray-6: #e5eeff;
 	--sl-color-gray-7: #f2f7ff;
 	--sl-color-black: #ffffff;
+}
+
+.progress-scroll-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	z-index: 9999;
+	pointer-events: none;
+}
+
+#progress-scroll {
+	height: 100%;
+	width: 0;
+	background: var(--sl-color-accent);
 }

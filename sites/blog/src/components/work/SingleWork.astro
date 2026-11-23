@@ -4,6 +4,7 @@ import { Icon } from 'astro-icon/components';
 import Hero2 from '~/components/widgets/Hero2.astro';
 import PostTags from '~/components/blog/Tags.astro';
 import SocialShare from '~/components/common/SocialShare.astro';
+import ProgressScroll from '~/components/ui/ProgressScroll.astro';
 
 import { getPermalink } from '~/utils/permalinks';
 import { getFormattedDate } from '~/utils/utils';
@@ -20,6 +21,8 @@ export interface Props {
 
 const { post, url, tagType = 'tag', categoryType = 'category', isTagEnabled = undefined } = Astro.props;
 ---
+
+<ProgressScroll />
 
 <Hero2 image={post.image ? { src: post.image, alt: post.excerpt || post.title } : undefined}>
   <Fragment slot="tagline">
@@ -52,6 +55,7 @@ const { post, url, tagType = 'tag', categoryType = 'category', isTagEnabled = un
 </Hero2>
 
 <div
+  data-progress-target
   class="mx-auto px-4 sm:px-6 max-w-4xl prose lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-2xl prose-img:shadow-lg mt-8 prose-headings:scroll-mt-[80px] prose-li:my-0"
 >
   <slot />
