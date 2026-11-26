@@ -39,7 +39,6 @@ jobs:
           mkdir -p dist/nomo dist/nefis
           cp -r sites/nomo/dist/* dist/nomo/
           cp -r sites/nefis/dist/* dist/nefis/
-          cp -r sites/blog/dist/* dist/astro/
           # Blog now lives at the root (overwrites any same-named root files)
           cp -r sites/blog/dist/* dist/
 
