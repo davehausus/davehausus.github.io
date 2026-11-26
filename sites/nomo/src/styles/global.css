@@ -23,7 +23,7 @@
 }
 
 .card {
-	border-radius: 3em;
+	border-radius: clamp(1.25rem, 4vw, 3rem);
 
 	.title .icon {
 		border-radius: 0.35em;
