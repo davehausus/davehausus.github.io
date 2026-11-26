@@ -1,12 +1,10 @@
 ---
-
 title: 'Privacy Notice'
 
 layout: '~/layouts/MarkdownLayout.astro'
-
 ---
 
-*Last updated: September 20, 2026*
+_Last updated: September 20, 2026_
 
 This Privacy Notice explains how David de Jesús ("I", "me", or "my") collects, uses, and stores personal information when you visit **daviddejesus.me** or contact me through this website.
 
@@ -14,7 +12,7 @@ This Privacy Notice explains how David de Jesús ("I", "me", or "my") collects, 
 
 **Responsible party:** David de Jesús
 
-**Domicile:** 1966 Niños Heroes Avenue, Guadalajara, Mexico
+**Domicile:** 1511 Rio Blanco Avenue, Zapopan, Mexico
 
 **Contact:** [hello@daviddejesus.me](mailto:hello@daviddejesus.me)
 
