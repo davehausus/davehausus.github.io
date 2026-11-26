@@ -1,0 +1,56 @@
+---
+import type { ImageMetadata } from 'astro';
+import Image from '~/components/common/Image.astro';
+
+export interface MockupItem {
+  // Same shape as Hero2's `image`: { src, alt, ...Image props }
+  image: { src: string | ImageMetadata | null; alt?: string; [key: string]: any };
+  title?: string;
+  // Rendered as HTML, so <strong>, <em>, <a> etc. work
+  description?: string;
+}
+
+export interface Props {
+  items: [MockupItem, MockupItem] | MockupItem[];
+  id?: string;
+  class?: string;
+}
+
+const { items = [], id, class: className = '' } = Astro.props;
+---
+
+<!--
+  Mobile  (< md): each item fills one screen (min-h-svh): image on top, description at the bottom.
+  Desktop (>= md): two equal columns; image area has a fixed height, description sits below it.
+  Images are never cropped or stretched: height is capped, width follows the file's own
+  proportions (object-contain), and transparency is kept (webp).
+-->
+<section class:list={['not-prose w-full', className]} {...id ? { id } : {}}>
+  <div class="mx-auto max-w-7xl md:grid md:grid-cols-2 md:gap-x-8 lg:gap-x-16">
+    {
+      items.map(({ image, title, description }) => (
+        <figure class="m-0 flex min-h-svh flex-col justify-between gap-6 px-4 py-8 sm:px-6 md:min-h-0 md:py-12">
+          <div class="flex h-[68svh] items-center justify-center md:h-[70vh] lg:h-[75vh]">
+            <Image
+              class="mx-auto h-full w-auto max-w-full object-contain"
+              widths={[400, 768, 1024, 2040]}
+              sizes="(max-width: 767px) 100vw, 50vw"
+              loading="lazy"
+              {...{ inferSize: true, layout: 'none' }}
+              format="webp"
+              {...image}
+            />
+          </div>
+          {(title || description) && (
+            <figcaption class="mx-auto w-full max-w-md text-center md:text-left">
+              {title && (
+                <p class="mb-1 text-lg font-semibold font-heading text-heading dark:text-gray-200">{title}</p>
+              )}
+              {description && <p class="text-base text-muted dark:text-slate-300" set:html={description} />}
+            </figcaption>
+          )}
+        </figure>
+      ))
+    }
+  </div>
+</section>
