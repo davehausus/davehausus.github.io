@@ -1,167 +1,99 @@
 ---
 title: 'Designing Motion for Connected Care Hardware and Mobile Apps'
-excerpt: 'Nomo Smart Care is a connected care system designed to support older adults and care recipients living independently, while keeping caregivers informed and emotionally connected. The product ecosystem includes a set of in-home sensors and a central device called the Nomo Hub, all connected to a mobile app used by caregivers.'
+excerpt: 'Nomo Smart Care connects in-home sensors with a caregiver app and an LED-equipped hub. I designed motion for system feedback and personal messages, adapting each animation to the capabilities of its display.'
 image: '~/assets/images/work/smartcare/smartcare-square.png'
 publishDate: 2026-09-13
-client: 'ATHLYTIX'
-role: 'Lead Designer'
-category: 'Branding'
-tags: ['design', 'branding']
+client: 'Nomo Smart Care'
+role: 'Motion Designer'
+category: 'Product Design'
+tags: ['motion design', 'interaction design', 'Rive']
 ---
 
 import Features4 from '~/components/widgets/Features4.astro';
 import Features4Item from '~/components/widgets/Features4Item.astro';
 
 
-<Features4 columns={2}>
-<Features4Item title="Goal">
+The Nomo Hub has a circular LED ring instead of a screen. Every animation had to communicate through a limited number of lights, while its mobile app needed to preview those same animations for caregivers. I worked across both surfaces, designing the hardware sequences and the app animations that represented them.
 
-The challenge was to create a unified animation language that could communicate system states clearly, while also delivering moments of warmth, reassurance, and human connection.
+## Two types of motion
 
-</Features4Item>
+The work covered two distinct needs: communicating technical states and sending personal messages.
 
-<Features4Item title="Role">
+System status animations helped communicate what the device was doing during setup and operation. Pokes gave caregivers a way to send reminders or personal signals to the Hub through the app.
 
-My role focused on designing motion and animation across two very different surfaces
+[Visual: Nomo Hub, its LED ring, and the caregiver app shown together.]
 
-1. **Physical hardware**, via an LED ring on the Nomo Hub
-2. **Digital interfaces**, via animations inside the Nomo mobile app
+## Designing for the LED ring
 
-</Features4Item>
-</Features4>
+I had never designed animations for LED hardware before. The ring consisted of individually addressable lights, so I couldn't rely on conventional blur, opacity, or easing to shape the motion.
 
-# The Product Ecosystem
-The system is composed of three main hardware components
+I used an LED sequence tool configured to match the Hub's physical LED count. I animated each state frame by frame, then engineers translated the sequences into production code.
 
-- **Nomo Satellite** and **Nomo Tag**, sensors placed around the care recipient's home
-- **Nomo Hub**, the central unit that receives sensor data and communicates feedback
+[Visual: LED sequence editor beside the corresponding animation on the physical Hub.]
 
-All sensors send activity data to the Nomo Hub, which then syncs information to the mobile app. The Hub features a circular LED ring that serves as its primary visual output, communicating system statuses, alerts, and personalized reminders.
+This workflow made timing, color, and the position of each light the primary design variables. The animation had to read through the sequence itself.
 
-Caregivers interact with the system primarily through the mobile app, where they can monitor activity, manage settings, and send gentle reminders or emotional touchpoints to the care recipient.
-
-
-# Defining Two Animation Fronts
-From the beginning, it was clear that motion design would need to exist in two parallel but synchronized worlds.
-
-<Features4 columns={2} containerClass={`md:px-16 py-14 md:py-16 lg:py-20 md:px-0 mx-auto`}>
-<Features4Item title="Hardware Animations">
-
-Animations displayed through the LED ring on the Nomo Hub. These needed to be readable from across a room, work under different lighting conditions, and communicate meaning with very limited visual resolution.
-
-</Features4Item>
-<Features4Item title="App Animations">
-
-Animations shown inside the mobile app so caregivers could preview what they were sending to the Hub. These needed to feel expressive, friendly, and emotionally aligned with the intent of each interaction.
-
-</Features4Item>
-</Features4>
-
-The final interface felt cohesive and easy to navigate, guided by the same design decisions that shaped the packaging.
-
-## Working With LED Hardware for the First Time
-I had no prior experience animating for LED hardware. The LED ring was composed of a fixed number of individually addressable lights, with no concept of easing, blur, or opacity.
-
-To prototype and design these animations, I used an LED sequence tool that allowed frame-by-frame control of each LED. I configured the tool to match the physical LED count of the Hub and manually animated each state over time. Engineers then translated those sequences into production code.
-
-This process required a mindset shift
-
-- Motion had to be reduced to timing, color, and position
-- Every frame mattered
-- Subtlety came from rhythm, not curves or interpolation
-
-Designing motion under these constraints became a core strength of the project.
-
-# Two Animation Systems <br />With Different Goals
-The animations naturally split into two categories, each with very different requirements.
-
-### SYSTEM STATUS ANIMATIONS
-These animations were used during setup and operation to communicate technical states such as
-
-- Powering on
-- Connecting to Wi-Fi
-- Downloading or syncing
-- Errors or connection failures
-
-Clarity and speed were the priority. Color usage was intentional and limited
+For system feedback, I designed states for powering on, connecting to Wi-Fi, downloading or syncing, and connection failures. Color distinguished the type of feedback:
 
 - Green for success and readiness
 - Blue for progress and activity
 - Red for errors and interruptions
 
-These animations appeared both on the LED ring and inside the app during onboarding and provisioning flows, reinforcing consistency between physical and digital experiences.
+Related animations also appeared during app onboarding and device provisioning.
 
-### POKES: EMOTIONAL MOTION DESIGN
+[Visual: System status animations, ideally with labels identifying each state.]
 
-The second category was called **Pokes**. These are animations caregivers can send to the Hub through the app to remind care recipients about medications, routines, or simply to let them know someone is thinking of them.
+## Pokes: messages expressed through light
 
-Pokes needed to feel calm, human, and reassuring. They were not alerts. They were gentle interruptions designed to support emotional well-being.
+Pokes were designed for a different purpose from system feedback. Caregivers could send them to remind someone about a routine or let them know someone was thinking of them.
 
-Three base motion patterns were designed
+I developed three base motion patterns for the LED ring:
 
-- **Twinkle**, where individual LEDs turn on and off at different times like soft sparkles
-- **Pulse**, where the entire ring fades in and out in a slow, steady rhythm
-- **Comet**, where a gradient of light rotates smoothly around the ring
+- **Twinkle** uses individual lights switching on and off at different times.
+- **Pulse** moves through a slow, repeating rhythm across the ring.
+- **Comet** sends a band of light around the ring.
 
-Each Poke could be sent in one of seven carefully chosen colors inspired by nature and calm emotional states
+[Visual: The three patterns playing side by side on the physical Hub.]
 
-- Aquamarine
-- Blue Orchid
-- Emerald
-- Jade
-- Lavender
-- Marigold
-- Sunstone
+Each pattern could be paired with one of seven colors: Aquamarine, Blue Orchid, Emerald, Jade, Lavender, Marigold, and Sunstone.
 
-Color naming and palette selection were intentionally poetic to reinforce warmth and emotional intent.
+[Visual: The seven-color palette applied to one or more Poke patterns.]
 
-## Bridging Hardware and App Animation
-Each Poke needed to be previewed inside the app before being sent to the Nomo Hub. Early app animations were built with Lottie, which worked well for simple motion based on timing, position, and opacity.
+The combination of pattern and color gave caregivers different ways to send a message without requiring text or direct interaction with the device.
 
-As the goal shifted toward **replicating the feel of real LED light**, the gap between hardware and app animation became more noticeable. The LED ring naturally produces soft glow and light falloff, qualities that are central to how the hardware feels calm and alive. At the time, Lottie did not support true blur effects at all, and blur is still not consistently supported across all runtimes today. Simulating light required complex gradient stacking that was difficult to maintain and still fell short visually.
+## Bringing the hardware behavior into the app
 
-At the same time, motion behavior itself became a limiting factor. The Twinkle animation depended on individual LEDs activating unpredictably over time. Without support for true randomization or non-deterministic behavior, the app version felt structured and repetitive compared to the hardware.
+The app needed to preview a Poke before a caregiver sent it to the Hub. I initially built these animations with Lottie, which worked well for simpler movement based on timing, position, and opacity.
 
-Together, these issues made it clear that achieving true parity between physical and digital motion would require a different approach.
+The more expressive patterns exposed two limitations.
 
-## The Shift to Rive
-The need to support both organic motion behavior and realistic light rendering became the catalyst for a broader platform shift.
+First, the physical LEDs produced a soft glow and natural light falloff. Reproducing that appearance in Lottie required layered gradients and workarounds that were difficult to maintain.
 
-Rive introduced two capabilities that directly addressed these challenges
+Second, Twinkle depended on variation in how individual lights activated. A fixed animation could reproduce the general pattern, but its repetition made the behavior feel different from the intended hardware effect.
 
-- **Randomized exits** and **state-driven motion**, which allowed animations like Twinkle to feel organic and non-repetitive
-- **Vector Feathering**, which made it possible to create soft, natural light glows without relying on complex gradient workarounds
+[Visual: The original Lottie preview compared with the LED ring. Show the glow and Twinkle behavior separately if possible.]
 
-Animating light in Rive immediately felt closer to how the LED hardware behaved. Glows were smoother, falloff felt natural, and motion retained its clarity without becoming visually heavy.
+## Why I moved to Rive
 
-Earlier app animations that did not rely on light effects were perfectly viable in Lottie. But once realism, glow, and emotional fidelity became essential to the experience, switching to Rive was no longer optional.
+I moved the more complex app animations to Rive because I needed better control over both light rendering and motion behavior.
 
-With Rive, the app previews could finally
+**Vector Feathering** let me create softer light effects without relying on the same stack of gradients. This made it easier to approximate the appearance of the illuminated ring in the app.
 
-- Replicate the luminous quality of the LED ring
-- Feel organic and non-deterministic
-- Match the emotional intent of the hardware animations
-- Scale more confidently as motion complexity increased
+[Visual: Rive file showing the feathered glow, alongside the corresponding hardware animation.]
 
-This shift significantly improved parity between hardware and app experiences and established a more future-proof motion system.
+Rive's state-driven animation and randomized exits also gave me more flexibility when developing Twinkle. I could introduce variation into the animation instead of depending entirely on a predetermined sequence.
 
-## Outcomes and Impact
-This project established a cohesive motion language across hardware and software under tight technical constraints.
+[Visual: Rive state machine or animation setup, paired with a recording showing the resulting variation.]
 
-Key outcomes included
+This wasn't a blanket replacement of Lottie. Simpler animations that didn't depend on these capabilities could remain in Lottie. Rive was the better fit for the patterns that needed more expressive light and less predictable behavior.
 
-- A clear, readable system status animation set that reduced setup confusion
-- A emotionally resonant Poke system that supported connection and care beyond data
-- A scalable animation pipeline that evolved from Lottie to Rive as product needs matured
-- A deeper understanding of how motion design translates across physical and digital mediums
+## Comparing the two implementations
 
-Most importantly, motion became a core part of how Nomo communicates trust, care, and presence, not just information.
+The hardware and app didn't render motion in the same way. The Hub relied on individual lights, while the app could simulate gradients, glow, and transitions unavailable to the physical ring.
 
-# Reflection
-Designing animation for Nomo required balancing clarity with empathy, and precision with humanity. Working simultaneously with LED hardware and mobile interfaces reshaped how I think about motion systems, constraints, and emotional design.
+The goal was to preserve the qualities that mattered to each interaction rather than force both implementations to use identical techniques.
 
-This project reinforced a key belief in my work
+[Visual: Final comparison of a Poke on the physical Hub and in the app, shown at the same time if possible.]
 
-### Motion is not decoration. It is communication.
+The project gave me a practical way to explore motion across physical and digital interfaces. The hardware defined the constraints, the app provided a different rendering environment, and the choice of animation tool followed from the behavior each pattern needed to support.
 <br />
----
