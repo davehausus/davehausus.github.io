@@ -30,27 +30,51 @@ document.querySelectorAll('.cta-contact').forEach(el => {
       "@type": "Person",
       "@id": "https://daviddejesus.me/#person",
       "name": "David de Jesús",
-      "jobTitle": "Senior UI & Motion Designer",
+      "jobTitle": "Senior Product Designer (Motion & Interaction)",
       "url": "https://daviddejesus.me/",
       "image": "https://daviddejesus.me/images/avatar.png",
+
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "Product Designer",
+        "occupationLocation": {
+          "@type": "Place",
+          "name": "Remote"
+        },
+        "skills": [
+          "Motion-driven interface design",
+          "Interaction design",
+          "Rive animations",
+          "Rive state machines",
+          "UI motion systems",
+          "Design systems",
+          "Interaction prototyping",
+          "UI animation systems",
+          "Micro-interactions"
+        ]
+      },
+
       "sameAs": [
         "https://www.linkedin.com/in/david-d-jesus",
         "https://github.com/davehausus"
       ],
+
       "knowsAbout": [
+        "Product Design",
+        "Interaction Design",
+        "Motion-driven Interfaces",
         "Rive animations",
         "Rive State Machines",
         "Rive Data Binding",
-        "Lottie animations",
-        "UI Design",
-        "Motion Design",
-        "Interaction Design"
+        "UI Motion Systems",
+        "Design Systems",
+        "Micro-interactions"
       ]
     },
     {
       "@type": "WebSite",
       "@id": "https://daviddejesus.me/#website",
-      "name": "David de Jesús",
+      "name": "David de Jesús | Product Designer",
       "url": "https://daviddejesus.me/",
       "inLanguage": "en",
       "publisher": {
@@ -61,14 +85,15 @@ document.querySelectorAll('.cta-contact').forEach(el => {
       "@type": "WebPage",
       "@id": "https://daviddejesus.me/#home",
       "url": "https://daviddejesus.me/",
-      "name": "David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist",
+      "name": "David de Jesús | Senior Product Designer · Motion & Interaction",
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://daviddejesus.me/#website"
       },
       "about": {
         "@id": "https://daviddejesus.me/#person"
-      }
+      },
+      "description": "Senior Product Designer specializing in motion-driven interfaces, interaction design, and Rive-powered UI systems."
     }
   ]
 }
@@ -80,26 +105,26 @@ document.querySelectorAll('.cta-contact').forEach(el => {
 <meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#010e19"/>
 
-<title>David de Jesús | Sr. UI & Motion Designer | Rive & Lottie Specialist</title>
+<title>David de Jesús - Senior Product Designer | Motion & Interaction</title>
 <meta name="robots" content="index, follow">
 <meta name="author" content="David de Jesús">
-<meta name="description" content="I design interfaces that move with purpose., combining UI, motion, and product thinking. From micro-interactions to Rive State Machines and Data Binding workflows, I create web and mobile experiences that feel clear, intuitive, and alive." />
-<meta name="keywords" content="Rive animation, UI motion design, interaction design">
+<meta name="description" content="Senior Product Designer focused on motion-driven interfaces and interaction design. I craft product experiences that combine UI systems, micro-interactions, and Rive-powered motion to create intuitive and expressive digital products." />
+<meta name="keywords" content="Product Designer, Interaction Design, UI Motion Design, Rive animation, Motion-driven interfaces, Micro-interactions, UI systems">
 <meta name="google-site-verification" content="Ff2D8q3yGA0OtWq4AAFc0tNCskC_cDfSt7a_bUeGFoo" />
 
 <!-- SOCIAL MEDIA META -->
-<meta property="og:description" content="Purpose-driven UI motion, micro-interactions, and Rive-powered experiences for modern products.">
+<meta property="og:description" content="Motion-driven product design combining UI systems, interaction design, and Rive-powered interfaces.">
 <meta property="og:image" content="https://daviddejesus.me/images/meta.jpg">
-<meta property="og:site_name" content="davehausus">
-<meta property="og:title" content="UI & Motion Designer — Rive & Lottie | David de Jesús">
+<meta property="og:site_name" content="daviddejesus.me">
+<meta property="og:title" content="Senior Product Designer - Motion & Interaction | David de Jesús">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://daviddejesus.me">
 
 <!-- TWITTER -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://daviddejesus.me/">
-<meta name="twitter:title" content="UI & Motion Designer — Rive & Lottie">
-<meta name="twitter:description" content="Designing interfaces that feel alive through motion, clarity, and intent.">
+<meta name="twitter:title" content="Senior Product Designer - Motion & Interaction">
+<meta name="twitter:description" content="Designing motion-driven interfaces and product experiences using interaction design and Rive-powered UI systems.">
 <meta property="twitter:image" content="https://daviddejesus.me/images/meta.jpg">
 
 <!-- FAVICON -->
@@ -125,6 +150,18 @@ document.querySelectorAll('.cta-contact').forEach(el => {
     border-radius: 8px;
     min-width: 375px;
     margin-left: -10px;
+    width: 100%;
+    
+        
+    /* Desktop aspect ratio */
+    aspect-ratio: 1024 / 600;
+    
+    @media (max-width: 740px) {
+      /* Mobile aspect ratio */
+      aspect-ratio: 531 / 428;
+      min-width: 100%;
+      margin-left: 0;
+    }
   }
 
   #riveCanvas2 {
@@ -133,6 +170,17 @@ document.querySelectorAll('.cta-contact').forEach(el => {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+
+        /* Desktop aspect ratio */
+    aspect-ratio: 1024 / 600;
+    
+    @media (max-width: 740px) {
+      /* Mobile aspect ratio */
+      aspect-ratio: 531 / 428;
+      min-width: 100%;
+      margin-left: 0;
+    }
+
   }
 
   .visually-hidden {
@@ -185,8 +233,9 @@ document.querySelectorAll('.cta-contact').forEach(el => {
 
     <div class="main-menu">
       <ul>
-        <li><a href="about.html">About</a></li>
-        <li><a href="blog.html">The Workshop</a></li>
+        <li><a href="astro/work">Work</a></li>
+        <li><a href="astro/about">About</a></li>
+        <li><a href="astro/blog">The Workshop</a></li>
         <li>
           <button type="contact" onclick="location.href='contact.html'">
             <strong>Contact</strong>
@@ -214,160 +263,26 @@ document.querySelectorAll('.cta-contact').forEach(el => {
   <!-- end navbar -->
 
 <canvas id="riveCanvas"></canvas>
-<h1 class="visually-hidden">Sr. UI & Motion Designer Specializing in Rive, Lottie & Product Animation</h1>
+<h1 class="visually-hidden">David de Jesús — Senior Product Designer specializing in motion-driven interfaces, interaction design, micro-interactions, and Rive-powered UI systems</h1>
+<p class="visually-hidden">
+Portfolio of David de Jesús, a Senior Product Designer creating motion-driven product experiences, interactive UI systems, and micro-interactions for modern web and mobile products.
+</p>
 </header>
 <!-- end header -->
 
-<section class="slider">
-  <div class="swiper-container">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide" data-background="images/slide04.jpg">
-        <div class="slide-inner">
-          <figure><img src="images/client-athlytix.svg" alt="Athlytix"></figure>
-          <h2>Stats Made Simple for Everyday Athletes</h2>
-          <div class="link">
-            <a href="/athlytix.html">SEE CASE STUDY</a>
-          </div>
-          <!-- end link -->
-        </div>
-        <!-- end slide-inner -->
-      </div>
-      <!-- end swiper-slide -->
-      <div class="swiper-slide" data-background="images/slide06.jpg">
-        <div class="slide-inner">
-          <figure><img src="images/client-tg.svg" alt="Town Green"></figure>
-          <h2>Driving Early Engagement for a Major Urban Development</h2>
-          <div class="link">
-            <a href="/towngreen.html">SEE CASE STUDY</a>
-          </div>
-          <!-- end link -->
-        </div>
-        <!-- end slide-inner -->
-      </div>
-      <!-- end swiper-slide -->
-      <div class="swiper-slide" data-background="images/slide09.jpg">
-        <div class="slide-inner">
-          <figure><img src="images/client-hiperwin.svg" alt="Hiperwin"></figure>
-          <h2>Brand Identity and Product Line Ecosystem</h2>
-          <div class="link">
-            <a href="/hiperwin.html">SEE CASE STUDY</a>
-          </div>
-          <!-- end link -->
-        </div>
-        <!-- end slide-inner -->
-      </div>
-      <!-- end swiper-slide -->
-    </div>
-    <!-- end swiper-wrapper -->
-    <div class="swiper-pagination"></div>
-    <!-- end swiper-pagination -->
-    <div class="swiper-button-next"><span></span><b>NEXT</b></div>
-    <!-- end swiper-button-next -->
-  </div>
-  <!-- end swiper-container -->
-</section>
-<!-- end slider -->
-<div class="col-12">
-  <figure>
-    <div class="icon-scroll">
-      <svg width="29" height="50" viewBox="0 0 29 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g id="mouse">
-        <g id="mouse-outline">
-        <path id="Shape" d="M14.5 0C6.50458 0 0 6.59752 0 14.7072V35.2928C0 43.4025 6.50458 50 14.5 50C22.4954 50 29 43.4025 29 35.2928V14.7072C29 6.59752 22.4954 0 14.5 0ZM26 35.2928C26 41.748 20.8409 47 14.5 47C8.15907 47 3 41.748 3 35.2928V14.7072C3 8.25205 8.15907 3 14.5 3C20.8409 3 26 8.25205 26 14.7072V35.2928Z" fill="#010E19"/>
-        </g>
-        <g id="mouse-button">
-        <path id="Path" d="M14.5 10C13.6714 10 13 10.6779 13 11.5145V18.4855C13 19.3217 13.6714 20 14.5 20C15.3282 20 16 19.3217 16 18.4855V11.5145C16 10.6779 15.3286 10 14.5 10Z" fill="#010E19"/>
-        <path id="Vector 1" d="M11 18L14.5 21.5L18 18" stroke="#010E19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-        </g>
-        </svg>
-    </div>
-  </figure>
-</div>
-<!-- end col-12 -->
 <section class="featured-services" data-color="dark">
   <div class="container">
     <div class="row">
       <div class="col-12">
         <div class="titles">
           <h6>CAPABILITIES & CRAFT</h6>
-          <p>I bring motion, design, and product thinking together to create interfaces that feel alive and effortless. Every detail (timing, flow, interaction) serves a purpose. These are the areas where my craft has the most impact:</p>
+          <p>I bring product thinking, interaction design, and motion together to create systems that are clear, scalable, and
+            intuitive. I focus on how products behave across states, devices, and edge cases, using motion as a functional layer
+            that improves usability and understanding. These are the areas where my work has the strongest impact:</p>
         </div>
         <!-- end titles --> 
       </div>
       <!-- end col-12 -->
-      <div class="col-lg-3 col-md-6">
-        <figure class="reveal-effect masker wow"> <img src="images/icon-print.svg" alt="Image">
-          <figcaption>
-           <span>01</span>
-            <h4>PRODUCT MOTION</h4>
-          </figcaption>
-        </figure>
-      </div>
-      <!-- end col-3 -->
-      <div class="col-lg-3 col-md-6">
-        <figure class="reveal-effect masker wow"> <img src="images/icon-design.svg" alt="Image">
-          <figcaption>
-           <span>02</span>
-            <h4>RIVE CRAFTING</h4>
-          </figcaption>
-        </figure>
-      </div>
-      <!-- end col-3 -->
-      <div class="col-lg-3 col-md-6">
-        <figure class="reveal-effect masker wow"> <img src="images/icon-ui.svg" alt="Image">
-          <figcaption>
-           <span>03</span>
-            <h4>LOTTIE DESIGN</h4>
-          </figcaption>
-        </figure>
-      </div>
-      <!-- end col-3 -->
-      <div class="col-lg-3 col-md-6">
-        <figure class="reveal-effect masker wow"> <img src="images/icon-web.svg" alt="Image">
-          <figcaption>
-           <span>04</span>
-            <h4>INTERFACE DESIGN</h4>
-          </figcaption>
-        </figure>
-      </div>
-      <!-- end col-3 --> 
-      <div class="col-lg-3 col-md-6">
-        <figure class="reveal-effect masker wow"> <img src="images/icon-cms.svg" alt="Image">
-          <figcaption>
-           <span>05</span>
-            <h4>MOTION PROTOTYPING</h4>
-          </figcaption>
-        </figure>
-      </div>
-      <!-- end col-3 -->
-      <div class="col-lg-3 col-md-6">
-        <figure class="reveal-effect masker wow"> <img src="images/icon-guides.svg" alt="Image">
-          <figcaption>
-           <span>06</span>
-            <h4>MOTION SYSTEMS</h4>
-          </figcaption>
-        </figure>
-      </div>
-      <!-- end col-3 -->
-      <div class="col-lg-3 col-md-6">
-        <figure class="reveal-effect masker wow"> <img src="images/icon-direction.svg" alt="Image">
-          <figcaption>
-           <span>07</span>
-            <h4>PRODUCT STORYTELLING</h4>
-          </figcaption>
-        </figure>
-      </div>
-      <!-- end col-3 -->
-      <div class="col-lg-3 col-md-6">
-        <figure class="reveal-effect masker wow"> <img src="images/icon-branding.svg" alt="Image">
-          <figcaption>
-           <span>08</span>
-            <h4>VISUAL DESIGN</h4>
-          </figcaption>
-        </figure>
-      </div>
-      <!-- end col-3 --> 
     </div>
     <!-- end row --> 
   </div>
@@ -389,7 +304,7 @@ document.querySelectorAll('.cta-contact').forEach(el => {
       <div class="col-12">
         <div class="career wow fadeInUp">
           <h6 class="eyebrow">LET'S COLLABORATE</h6>
-          <h2>If you’re building something that needs motion with purpose, I’d love to chat.</h2>
+          <h2>If you’re building a product where motion adds clarity and makes complexity feel simple, I’d love to chat.</h2>
           <div class="custom-link"><a href="contact.html">Start Here</a> <span></span> <i></i>
           </div>
           <!-- end custom-link -->
@@ -467,23 +382,107 @@ document.querySelectorAll('.cta-contact').forEach(el => {
 <!-- Add this script at the bottom of your HTML, before the closing 'body' tag, after your existing scripts -->
 
 <script>
+  // ——————————————————————————————————————————————————
+  // TextScramble Class (adapted for Rive text runs)
+  // ——————————————————————————————————————————————————
+  class TextScramble {
+    constructor() {
+      this.uppercaseChars = 'ABCDEFGHIJKLMNOPRSTUV'
+      this.lowercaseChars = 'abcdefghklmnopqrstuvw'
+      this.update = this.update.bind(this)
+      this.currentText = ''
+    }
+    
+    setText(newText, callback) {
+      const oldText = this.currentText
+      const length = Math.max(oldText.length, newText.length)
+      const promise = new Promise((resolve) => this.resolve = resolve)
+      this.queue = []
+      this.callback = callback
+      
+      for (let i = 0; i < length; i++) {
+        const from = oldText[i] || ''
+        const to = newText[i] || ''
+        const start = Math.floor(Math.random() * 40)
+        const end = start + Math.floor(Math.random() * 40)
+        this.queue.push({ from, to, start, end })
+      }
+      
+      cancelAnimationFrame(this.frameRequest)
+      this.frame = 0
+      this.update()
+      return promise
+    }
+    
+    update() {
+      let output = ''
+      let complete = 0
+      
+      for (let i = 0, n = this.queue.length; i < n; i++) {
+        let { from, to, start, end, char } = this.queue[i]
+        if (this.frame >= end) {
+          complete++
+          output += to
+        } else if (this.frame >= start) {
+          if (!char || Math.random() < 0.28) {
+            char = this.randomChar(i)
+            this.queue[i].char = char
+          }
+          output += char
+        } else {
+          output += from
+        }
+      }
+      
+      // Update current text and call callback with new value
+      this.currentText = output
+      if (this.callback) {
+        this.callback(output)
+      }
+      
+      if (complete === this.queue.length) {
+        this.currentText = this.queue.map(q => q.to).join('')
+        if (this.callback) {
+          this.callback(this.currentText)
+        }
+        this.resolve()
+      } else {
+        this.frameRequest = requestAnimationFrame(this.update)
+        this.frame++
+      }
+    }
+    
+    randomChar(position) {
+      // First character uses uppercase, rest use lowercase
+      if (position === 0) {
+        return this.uppercaseChars[Math.floor(Math.random() * this.uppercaseChars.length)]
+      } else {
+        return this.lowercaseChars[Math.floor(Math.random() * this.lowercaseChars.length)]
+      }
+    }
+  }
+
+  // ——————————————————————————————————————————————————
+  // Rive Initialization
+  // ——————————————————————————————————————————————————
   // Get reference to the canvas element where Rive animation will render
   const canvas = document.getElementById("riveCanvas");
 
   // Initialize a new Rive instance with configuration
   const r = new rive.Rive({
-    src: "rive/header.riv", // Path to the Rive animation file
+    src: "rive/header_v3.riv", // Path to the Rive animation file
     canvas: canvas, // Target canvas element for rendering
-    autoplay: true, // Start animation automatically on load
+    autoplay: false, // Start animation automatically on load
     autoBind: true, // Automatically bind to canvas
     loadRiveFile: true, // Required for WebGL2 + View Model support
     artboard: "Artboard", // Name of the artboard to display
     stateMachines: "State Machine 1", // State machine to run
     useDataBinding: true, // Enable data binding for View Model
+    isTouchScrollEnabled: true,
     
-  // CRITICAL: Asset loader to handle referenced fonts
+  // Asset loader to handle referenced fonts and images
   assetLoader: async (asset, bytes) => {
-    console.log("🔍 Asset detected:", asset.name, "Type:", asset.isFont ? "Font" : "Other");
+    console.log("🔍 Asset detected:", asset.name, "Type:", asset.isFont ? "Font" : asset.isImage ? "Image" : "Other");
     
     if (bytes.length > 0 || asset.cdnUuid.length > 0) {
       console.log("  ↳ Letting Rive handle this asset");
@@ -511,11 +510,35 @@ document.querySelectorAll('.cta-contact').forEach(el => {
       }
     }
     
+    if (asset.isImage) {
+      console.log("  ↳ Loading referenced image:", asset.name);
+      
+      try {
+        // Determine which image file to load based on the asset name
+        let imagePath;
+        if (asset.name.includes("slide04")) {
+          imagePath = "../images/slide04.webp";
+        } else {
+          console.warn("  ⚠️ Unknown image name");
+          return false;
+        }
+        
+        const imageResponse = await fetch(imagePath);
+        const imageData = await imageResponse.arrayBuffer();
+        
+        const image = await rive.decodeImage(new Uint8Array(imageData));
+        asset.setRenderImage(image);
+        
+        console.log(`  ✅ Image loaded successfully: ${imagePath}`);
+        return true;
+      } catch (error) {
+        console.error("  ❌ Error loading image:", error);
+        return false;
+      }
+    }
+
     return false;
   },
-
-
-
 
     // Configure how the animation fits within the canvas
     layout: new rive.Layout({
@@ -562,11 +585,11 @@ document.querySelectorAll('.cta-contact').forEach(el => {
         // Determine aspect ratio based on window width breakpoint
         let aspectRatio;
         if (windowWidth >= 741) {
-          // Desktop: use 1200 x 428 aspect ratio
-          aspectRatio = 1076 / 418;
+          // Desktop: use 1024 x 600 aspect ratio
+          aspectRatio = 1024 / 600;
         } else {
-          // Mobile: use 500 x 400 aspect ratio (square)
-          aspectRatio = 531 / 428;
+          // Mobile: use 531 x 600 aspect ratio
+          aspectRatio = 375 / 667;
         }
 
         // Set canvas width to match container
@@ -604,165 +627,186 @@ document.querySelectorAll('.cta-contact').forEach(el => {
   });
 
       // === TEXT RUNS UPDATE LOGIC ===
-      // Get text run references from the same View Model instance
-      const run2 = vmi.string("Run 2");
-      const run4 = vmi.string("Run 4");
-      const run7 = vmi.string("Run 7");
-      const run9 = vmi.string("Run 9");
+      // Get text run references from the View Model instance
+      const run2 = vmi.string("run2");
+      const run4 = vmi.string("run4");
 
-      if (!run2 || !run4 || !run7 || !run9) {
+      if (!run2 || !run4) {
         console.error("❌ One or more text runs not found");
         return;
       }
 
-      // Define all text update groups
-      const textUpdates = [
-        { // Update 0 (default)
-          run2: "UI ",
-          run4: "motion",
-          run7: "Rive ",
-          run9: "Lottie"
-        },
-        { // Update 1
-          run2: "paths ",
-          run4: "rhythm",
-          run7: "Curves ",
-          run9: "Graphs"
-        },
-        { // Update 2
-          run2: "clicks ",
-          run4: "flow",
-          run7: "Figma ",
-          run9: "Rive"
-        },
-        { // Update 3
-          run2: "taps ",
-          run4: "moments",
-          run7: "Design ",
-          run9: "Motion"
-        },
-        { // Update 4
-          run2: "frames ",
-          run4: "life",
-          run7: "Timing ",
-          run9: "Ease"
-        },
-        { // Update 5
-          run2: "motion ",
-          run4: "meaning",
-          run7: "Frames ",
-          run9: "Timing"
-        },
-        { // Update 6
-          run2: "pixels ",
-          run4: "feeling",
-          run7: "Curves ",
-          run9: "Ease"
-        }
-      ];
+      // ─── Grab SliderVM ───────────────────────────────────────────────────
+      const sliderVmi = vmi.viewModel("slider");
+      if (!sliderVmi) {
+        console.error("❌ SliderVM not found");
+        return;
+      }
 
-      let previousUpdateIndex = -1;
-      let isUpdating = false;
-      let eventsReceived = { run2: false, run4: false, run7: false, run9: false };
-      let firstUpdateDone = false;
+      // ─── SliderVM properties ─────────────────────────────────────────────
+      const run1 = sliderVmi.string("run1");
+      const ctaTrigger = sliderVmi.trigger("ctaClicked");
 
-      console.log("📋 Text runs update system initialized, waiting for events...");
+      if (!run1 || !ctaTrigger) {
+        console.error("❌ SliderVM properties not found — check names match the editor");
+        return;
+      }
 
-      // Get first random update (not Update 0)
-      let firstUpdateIndex;
-      do {
-        firstUpdateIndex = Math.floor(Math.random() * textUpdates.length);
-      } while (firstUpdateIndex === 0);
-      
-      const firstUpdate = textUpdates[firstUpdateIndex];
-      console.log(`🎲 First update will be Update ${firstUpdateIndex}`);
+      // ─── URL map keyed by Run1 text ───────────────────────────────────────
+      const slideURLs = {
+        "Stats Made Simple for Everyday Athletes": "https://daviddejesus.me/athlytix.html",
+        "Designing Motion for Connected Care":     "https://daviddejesus.me/smartcare.html",
+        "Driving Early Community Engagement":      "https://daviddejesus.me/towngreen.html",
+        "Designing a Product Ecosystem":           "https://daviddejesus.me/hiperwin.html",
+      };
 
-      // Listen for Rive events
-      r.on(rive.EventType.RiveEvent, (event) => {
-        const eventName = event.data.name;
-        console.log(`🎬 Event received: ${eventName}`);
-
-        if (!firstUpdateDone) {
-          // First time only - update text runs immediately when their events fire
-          if (eventName === "Run2" && !eventsReceived.run2) {
-            eventsReceived.run2 = true;
-            run2.value = firstUpdate.run2;
-            console.log(`  ✓ Run2 updated immediately to: "${firstUpdate.run2}"`);
-            scheduleFirstUpdate();
-          } else if (eventName === "Run4" && !eventsReceived.run4) {
-            eventsReceived.run4 = true;
-            run4.value = firstUpdate.run4;
-            console.log(`  ✓ Run4 updated immediately to: "${firstUpdate.run4}"`);
-            scheduleFirstUpdate();
-          } else if (eventName === "Run7" && !eventsReceived.run7) {
-            eventsReceived.run7 = true;
-            run7.value = firstUpdate.run7;
-            console.log(`  ✓ Run7 updated immediately to: "${firstUpdate.run7}"`);
-            scheduleFirstUpdate();
-          } else if (eventName === "Run9" && !eventsReceived.run9) {
-            eventsReceived.run9 = true;
-            run9.value = firstUpdate.run9;
-            console.log(`  ✓ Run9 updated immediately to: "${firstUpdate.run9}"`);
-            scheduleFirstUpdate();
-          }
+      // ─── Subscribe to CTA trigger (correct pattern for VM triggers) ───────
+      ctaTrigger.on(() => {
+        const currentText = run1.value.trim();
+        const url = slideURLs[currentText];
+        console.log(`🔗 CTA clicked — Run1: "${currentText}" → URL: "${url}"`);
+        if (url) {
+          window.open(url, "_self");
+        } else {
+          console.warn(`⚠️ No URL mapped for: "${currentText}"`);
         }
       });
 
-      // Schedule first update after receiving events
-      function scheduleFirstUpdate() {
-        // Check if all events received
-        if (eventsReceived.run2 && eventsReceived.run4 && 
-            eventsReceived.run7 && eventsReceived.run9 && !firstUpdateDone) {
-          console.log("✅ All events received, waiting 15 seconds before next update cycle");
-          previousUpdateIndex = firstUpdateIndex; // Mark first update as used
-          setTimeout(() => {
-            performUpdate();
-            // Set up recurring updates every 15 seconds
-            setInterval(performUpdate, 15000);
-          }, 15000);
-          firstUpdateDone = true;
+      // ─── Cursor change on button hover ───────────────────────────────────
+      const isOverCTA = sliderVmi.boolean("isOverCTA");
+
+      canvas.addEventListener("pointermove", () => {
+        canvas.style.cursor = isOverCTA?.value ? "pointer" : "default";
+      });
+
+
+      // Define all text update groups
+      const textUpdates = [
+        { // Update 0 (default)
+          run2: "Lottie ",
+          run4: "Rive"
+        },
+        { // Update 1
+          run2: "Ease In ",
+          run4: "Ease Out"
+        },
+        { // Update 2
+          run2: "Figma ",
+          run4: "Sketch"
+        },
+        { // Update 3
+          run2: "Sharp Edges ",
+          run4: "Smooth Curves"
+        },
+        { // Update 4
+          run2: "UI Kits ",
+          run4: "Pixel Grids"
+        },
+        { // Update 5
+          run2: "Auto-Layout ",
+          run4: "State Machines"
+        },
+        { // Update 6
+          run2: "Outer Glow ",
+          run4: "Inner Flow"
+        },
+        { // Update 7
+          run2: "Tabs ",
+          run4: "More Tabs"
+        },
+        { // Update 8
+          run2: "Undo ",
+          run4: "Redo"
+        },
+        { // Update 9
+          run2: "Dark Mode ",
+          run4: "Bright Ideas"
+        },
+        { // Update 10
+          run2: "Snacks ",
+          run4: "Motion Guides"
+        },
+        { // Update 11
+          run2: "Static Shapes ",
+          run4: "Living Frames"
+        },
+        { // Update 12
+          run2: "User Needs ",
+          run4: "Smart Solutions"
         }
-      }
+      ];
 
-      // Update a single text run
-      function updateTextRun(textRunObj, newText, callback) {
-        textRunObj.value = newText;
-        console.log(`  ↳ Updated to: "${newText}"`);
-        if (callback) setTimeout(callback, 250); // 250ms delay before next update
-      }
+      // Initialize TextScramble instances for each text run
+      const scrambleRun2 = new TextScramble();
+      const scrambleRun4 = new TextScramble();
+      
+      // Set initial values
+      scrambleRun2.currentText = textUpdates[0].run2;
+      scrambleRun4.currentText = textUpdates[0].run4;
 
-      // Perform complete update cycle
+      let previousUpdateIndex = 0;
+      let isUpdating = false;
+
+      console.log("📋 Text runs update system initialized");
+
+      // Perform complete update cycle with text scramble effect
       function performUpdate() {
         if (isUpdating) return;
         isUpdating = true;
 
-        // Select random update different from previous (and never Update 0 for first update)
+        // Select random update different from previous (and never Update 0 after first)
         let newUpdateIndex;
         do {
           newUpdateIndex = Math.floor(Math.random() * textUpdates.length);
-        } while (
-          newUpdateIndex === previousUpdateIndex ||
-          (previousUpdateIndex === -1 && newUpdateIndex === 0)
-        );
+        } while (newUpdateIndex === previousUpdateIndex || newUpdateIndex === 0);
 
         previousUpdateIndex = newUpdateIndex;
         const updateGroup = textUpdates[newUpdateIndex];
 
         console.log(`🎯 Starting Update ${newUpdateIndex}`);
-        console.log(`   Group values: Run2="${updateGroup.run2}", Run4="${updateGroup.run4}", Run7="${updateGroup.run7}", Run9="${updateGroup.run9}"`);
+        console.log(`   Group values: Run2="${updateGroup.run2}", Run4="${updateGroup.run4}"`);
 
-        // Update Run 2, then Run 4, then Run 7, then Run 9 with 500ms intervals
-        updateTextRun(run2, updateGroup.run2, () => {
-          updateTextRun(run4, updateGroup.run4, () => {
-            updateTextRun(run7, updateGroup.run7, () => {
-              updateTextRun(run9, updateGroup.run9, () => {
-                console.log(`✅ Update ${newUpdateIndex} complete`);
-                isUpdating = false;
-              });
-            });
-          });
+        // Start Run2 scramble effect
+        scrambleRun2.setText(updateGroup.run2, (scrambledText) => {
+          run2.value = scrambledText;
+        }).then(() => {
+          console.log(`  ✓ Run2 scramble complete: "${updateGroup.run2}"`);
         });
+        
+        // Wait 250ms after Run2 starts, then start Run4
+        setTimeout(() => {
+          scrambleRun4.setText(updateGroup.run4, (scrambledText) => {
+            run4.value = scrambledText;
+          }).then(() => {
+            console.log(`  ✓ Run4 scramble complete: "${updateGroup.run4}"`);
+            console.log(`✅ Update ${newUpdateIndex} complete`);
+            isUpdating = false;
+          });
+        }, 450);
       }
+
+      // Start updates after 5 seconds, then repeat every 5 seconds
+      console.log("⏱️ Waiting 5 seconds before starting text updates...");
+      setTimeout(() => {
+        performUpdate();
+        setInterval(performUpdate, 8000);
+      }, 2800);
+
+      // HERO VISIBILITY CONTROL
+      const heroObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              r.play();
+            } else {
+              r.pause();
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      heroObserver.observe(canvas);
     }
   });
 </script>
@@ -772,21 +816,52 @@ document.querySelectorAll('.cta-contact').forEach(el => {
 <!-- Load Lenis -->
 <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 
-<!-- SECOND RIVE CANVAS - Showreel with Scroll Animation Controller -->
+
+
+
 <script>
-  // Only initialize if canvas2 exists on the page
+  // ——————————————————————————————————————————————————
+  //  SECOND RIVE CANVAS - Showreel with Scroll Animation Controller
+  // ——————————————————————————————————————————————————
   const canvas2 = document.getElementById("riveCanvas2");
   
   if (canvas2) {
     const r2 = new rive.Rive({
-      src: "rive/daviddejesus.riv",
+      src: "rive/craft.riv",
       canvas: canvas2,
-      autoplay: true,
+      autoplay: false,
       autoBind: true,
       loadRiveFile: true,
       artboard: "Artboard",
       stateMachines: "ScrollController",
       useDataBinding: true,
+
+      // ─── Asset loader: supply the variable font ──────────────────────────
+      assetLoader: async (asset, bytes) => {
+        console.log("🔍 Canvas 2 asset detected:", asset.name, "Type:", asset.isFont ? "Font" : asset.isImage ? "Image" : "Other");
+
+        if (bytes.length > 0 || asset.cdnUuid.length > 0) {
+          console.log("  ↳ Letting Rive handle this asset");
+          return false;
+        }
+
+        if (asset.isFont) {
+          console.log("  ↳ Loading referenced font:", asset.name);
+          try {
+            const fontResponse = await fetch("./fonts/Outfit/Outfit.ttf");
+            const fontData = await fontResponse.arrayBuffer();
+            const font = await rive.decodeFont(new Uint8Array(fontData));
+            asset.setFont(font);
+            console.log("  ✅ Font loaded successfully: Outfit.ttf");
+            return true;
+          } catch (error) {
+            console.error("  ❌ Error loading font:", error);
+            return false;
+          }
+        }
+
+        return false;
+      },
       
       layout: new rive.Layout({
         fit: rive.Fit.Cover,
@@ -802,19 +877,14 @@ document.querySelectorAll('.cta-contact').forEach(el => {
           return;
         }
 
-        // CRITICAL FIX: Use .trigger() to get trigger properties, NOT .fire()
-        const scrollSection1 = vmi2.trigger("scroll_section_1");
-        const scrollSection2 = vmi2.trigger("scroll_section_2");
-        const scrollSection3 = vmi2.trigger("scroll_section_3");
+        const scrambleStartTrigger = vmi2.trigger("scrambleStart");
 
-        if (!scrollSection1 || !scrollSection2 || !scrollSection3) {
-          console.error("❌ Canvas 2: One or more scroll trigger properties not found");
-          return;
+        // ─── Responsive sizing via numProp ───────────────────────────────────
+        const numProp2 = vmi2.number("num");
+        if (!numProp2) {
+          console.error("❌ Canvas 2: View Model property 'num' not found");
         }
 
-        console.log("✅ Canvas 2: Scroll triggers connected successfully");
-
-        // Handle responsive sizing
         const canvas2Parent = canvas2.parentElement;
         let isResizing2 = false;
 
@@ -823,11 +893,23 @@ document.querySelectorAll('.cta-contact').forEach(el => {
           isResizing2 = true;
 
           const currentWidth = canvas2Parent ? canvas2Parent.clientWidth : canvas2.clientWidth;
-          const aspectRatio = 16 / 9;
+          const windowWidth = window.innerWidth;
 
-          canvas2.style.width = currentWidth + 'px';
+          let aspectRatio;
+          if (windowWidth >= 741) {
+            aspectRatio = 1200 / 700;         // Desktop
+          } else {
+            aspectRatio = 531 / 531;      // Mobile — adjust if artboard differs
+          }
+
+          canvas2.style.width  = currentWidth + 'px';
           canvas2.style.height = (currentWidth / aspectRatio) + 'px';
-          
+
+          if (numProp2) {
+            numProp2.value = windowWidth;
+            console.log(`Canvas 2: Window width bound to View Model: ${windowWidth}`);
+          }
+
           requestAnimationFrame(() => {
             r2.resizeDrawingSurfaceToCanvas();
             isResizing2 = false;
@@ -839,12 +921,100 @@ document.querySelectorAll('.cta-contact').forEach(el => {
         let resizeTimeout2 = null;
         window.addEventListener("resize", () => {
           clearTimeout(resizeTimeout2);
-          resizeTimeout2 = setTimeout(() => {
-            updateCanvas2Size();
-          }, 120);
+          resizeTimeout2 = setTimeout(updateCanvas2Size, 120);
         });
 
-        // Initialize Lenis smooth scroll
+        // ─── Scroll triggers ─────────────────────────────────────────────────
+        const scrollSection1 = vmi2.trigger("scrollSection1");
+        const scrollSection2 = vmi2.trigger("scrollSection2");
+        const scrollSection3 = vmi2.trigger("scrollSection3");
+
+        if (!scrollSection1 || !scrollSection2 || !scrollSection3) {
+          console.error("❌ Canvas 2: One or more scroll trigger properties not found");
+          return;
+        }
+        console.log("✅ Canvas 2: Scroll triggers connected successfully");
+
+        // ─── TextScramble for run1 / run2 ────────────────────────────────────
+        const run1 = vmi2.string("run1");
+        const run2 = vmi2.string("run2");
+        const run3 = vmi2.string("run3");
+
+        if (!run1 || !run2 || !run3) {
+          console.error("❌ Canvas 2: run1 or run2 string properties not found in ViewModel");
+          return;
+        }
+
+        const textUpdates = [
+          { run1: "Product Interaction",   run2: "Design",              run3: " "       }, // 0 — default
+          { run1: "Complex System",        run2: "Design",              run3: " "       }, // 1
+          { run1: "Motion-Driven",         run2: "UX",                  run3: " "       }, // 2
+          { run1: "Scalable Design",       run2: "Systems",             run3: " "       }, // 3
+          { run1: "Interaction",           run2: "Architecture",        run3: " "       }, // 4
+          { run1: "Rive State Machine",    run2: "Development",         run3: " "       }, // 5
+          { run1: "Prototyping",           run2: "for Validation",      run3: " "       }, // 6
+          { run1: "Cross-Platform",        run2: "UI Design",           run3: " "       }, // 7
+          { run1: "Motion Systems",        run2: "Standards",           run3: "&"      }, // 8
+          { run1: "Visual Refinement",     run2: "Interface Polish",    run3: "&"      }, // 9
+        ];
+
+        const scrambleRun1 = new TextScramble();
+        const scrambleRun2 = new TextScramble();
+        const scrambleRun3 = new TextScramble();
+
+        // Seed with the default values so the first scramble has a sensible "from"
+        scrambleRun1.currentText = textUpdates[0].run1;
+        scrambleRun2.currentText = textUpdates[0].run2;
+        scrambleRun3.currentText = textUpdates[0].run3;
+        run1.value = textUpdates[0].run1;
+        run2.value = textUpdates[0].run2;
+        run3.value = textUpdates[0].run3;
+
+        let currentUpdateIndex = 0;
+        let isUpdating = false;
+
+        console.log("📋 Canvas 2: Text runs update system initialized");
+
+        function performUpdate2() {
+          if (isUpdating) return;
+          isUpdating = true;
+
+          currentUpdateIndex = (currentUpdateIndex + 1) % textUpdates.length;
+          const updateGroup = textUpdates[currentUpdateIndex];
+
+          // ✅ Fires exactly once per update, at the very start
+          scrambleStartTrigger.trigger();
+
+          console.log(`🎯 Canvas 2: Starting Update ${currentUpdateIndex}`);
+          console.log(`   run1="${updateGroup.run1}"  run2="${updateGroup.run2}"  run3="${updateGroup.run3}"`);
+
+          // Set run3 immediately — single char, no scramble needed
+          run3.value = updateGroup.run3;
+
+          scrambleRun1.setText(updateGroup.run1, (scrambledText) => {
+            run1.value = scrambledText;
+          }).then(() => {
+            console.log(`  ✓ run1 scramble complete: "${updateGroup.run1}"`);
+          });
+
+          setTimeout(() => {
+            scrambleRun2.setText(updateGroup.run2, (scrambledText) => {
+              run2.value = scrambledText;
+            }).then(() => {
+              console.log(`  ✓ run2 scramble complete: "${updateGroup.run2}"`);
+              console.log(`✅ Canvas 2: Update ${currentUpdateIndex} complete`);
+              isUpdating = false;
+            });
+          }, 300);
+        }
+
+        console.log("⏱️ Canvas 2: Waiting before starting text updates…");
+        setTimeout(() => {
+          performUpdate2();
+          setInterval(performUpdate2, 3000);
+        }, 3000);
+
+        // ─── Lenis smooth scroll + scroll-progress triggers ──────────────────
         const lenis = new Lenis({
           duration: 1.2,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -914,18 +1084,29 @@ document.querySelectorAll('.cta-contact').forEach(el => {
           }
           
           // Reset triggers when scrolling back up
-          if (progressPercentage < 25) {
-            triggeredSections.section1 = false;
-          }
-          if (progressPercentage < 50) {
-            triggeredSections.section2 = false;
-          }
-          if (progressPercentage < 120) {
-            triggeredSections.section3 = false;
-          }
+          if (progressPercentage < 25)  triggeredSections.section1 = false;
+          if (progressPercentage < 50)  triggeredSections.section2 = false;
+          if (progressPercentage < 120) triggeredSections.section3 = false;
         });
+
+        // FOOTER VISIBILITY CONTROL
+        const footerObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                r2.play("ScrollController");
+              } else {
+                r2.pause();
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+
+        footerObserver.observe(canvas2);
       }
     });
+
   } else {
     console.log("Canvas 2 not found on this page - scroll controller not initialized");
   }

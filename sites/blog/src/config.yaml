@@ -1,7 +1,6 @@
 site:
-  name: 'David de Jesus'                                 # leave as-is
+  name: 'David de Jesus' # leave as-is
   site: 'https://daviddejesus.me'
-  base: '/astro'
   trailingSlash: false
 
   googleSiteVerificationId: orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M
@@ -11,7 +10,7 @@ metadata:
   title:
     default: David de Jesus
     template: '%s | David de Jesus'
-  description: "Senior Product Designer specializing in motion-driven interfaces, interaction design, and Rive-powered UI systems."
+  description: 'Senior Product Designer specializing in motion-driven interfaces, interaction design, and Rive-powered UI systems.'
   robots:
     index: true
     follow: true
