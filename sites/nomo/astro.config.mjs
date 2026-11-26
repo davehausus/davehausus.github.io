@@ -31,22 +31,22 @@ export default defineConfig({
             starlightThemeVintage(),
             starlightSidebarTopics([
               {
-                label: 'Brand Operating System',
-                link: '/bos/',
+                label: 'I. Foundations',
+                link: '/foundations/',
                 icon: 'open-book',
                 items: [
                   {
                     label: 'Part I',
-                    items: [{ autogenerate: { directory: 'bos/part-i' } }],
+                    items: [{ autogenerate: { directory: 'foundations/part-i' } }],
                   },
                 ],
               },
               {
-                label: 'Creative Translation System',
-                link: '/cts/',
+                label: 'II. People & Evidence',
+                link: '/people/',
                 icon: 'pencil',
                 items: [
-                  { autogenerate: { directory: 'cts' } }
+                  { autogenerate: { directory: 'people' } }
                 ],
               },
             ]),
