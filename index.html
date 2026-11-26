@@ -196,6 +196,7 @@ document.querySelectorAll('.cta-contact').forEach(el => {
   }
 </style>
 
+<noscript><style>.transition-overlay{display:none}</style></noscript>
 
 </head>
 <body>
@@ -228,11 +229,7 @@ document.querySelectorAll('.cta-contact').forEach(el => {
         <li><a href="/work/">Work</a></li>
         <li><a href="/about/">About</a></li>
         <li><a href="/blog/">The Workshop</a></li>
-        <li>
-          <button type="contact" onclick="location.href='/contact/'">
-            <strong>Contact</strong>
-          </button>
-        </li>
+        <li><a class="btn-contact" href="/contact/"><strong>Contact</strong></a></li>
       </ul>
     </div>
     <!-- end main-menu -->

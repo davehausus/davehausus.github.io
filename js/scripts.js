@@ -2,104 +2,6 @@
 	$(document).ready(function() {
 		"use strict";
 		
-// PRELOADER — ALWAYS RUN ON HOME, SKIP ELSEWHERE
-(function () {
-	const preloader = document.querySelector('.preloader');
-	const percentage = document.querySelector('.inner .percentage');
-	const body = document.body;
-
-	if (!preloader || !percentage) return;
-
-	// Check if we're on the home page
-	const isHomePage = window.location.pathname === '/' || 
-					   window.location.pathname === '/index.html' ||
-					   window.location.pathname.endsWith('/');
-
-	// If NOT home page, skip preloader entirely
-	if (!isHomePage) {
-		preloader.style.display = 'none';
-		body.classList.remove('page-loading');
-		return;
-	}
-
-	// HOME PAGE: Always run preloader (remove sessionStorage check)
-	const DURATION = 700;
-	const MAX_TIME = 1100;
-	const startTime = performance.now();
-	let finished = false;
-	let currentValue = 0;
-	let lastDisplayed = -1;
-
-	body.classList.add('page-loading');
-	preloader.classList.remove('page-loaded');
-	// Set initial value immediately to prevent flash
-	percentage.textContent = '0';
-	
-	// Force layout before animation starts
-	preloader.offsetHeight;
-
-	function easeOutExpo(t) {
-		return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-	}
-
-	function finish() {
-		if (finished) return;
-		finished = true;
-
-		// Guard against multiple calls
-		if (preloader.classList.contains('page-loaded')) return;
-
-		percentage.textContent = 100;
-		preloader.classList.add('page-loaded');
-		body.classList.remove('page-loading');
-
-		// Wait for CSS transition to complete before display:none
-		setTimeout(function () {
-			preloader.style.display = 'none';
-			// Clean up to prevent memory leaks
-			preloader.remove();
-		}, 500); // Match CSS transition duration (0.4s + buffer)
-	}
-
-	function animate(now) {
-		if (finished) return;
-
-		const elapsed = now - startTime;
-		const progress = Math.min(elapsed / DURATION, 1);
-		const eased = easeOutExpo(progress);
-
-		const target = eased * 100;
-
-		// Smooth step toward target
-		currentValue += (target - currentValue) * 0.25;
-
-		// Clamp + floor for stability
-		currentValue = Math.max(0, Math.min(currentValue, 99.5));
-
-		const displayValue = Math.floor(currentValue);
-
-		// Only update DOM if changed
-		if (displayValue !== lastDisplayed) {
-			percentage.textContent = displayValue;
-			lastDisplayed = displayValue;
-		}
-
-		if (progress < 1) {
-			requestAnimationFrame(animate);
-		} else {
-			finish();
-		}
-	}
-
-	// Start animation
-	requestAnimationFrame(animate);
-
-	// Hard fail-safe: never block page
-	setTimeout(finish, MAX_TIME);
-
-})();
-
-
 
 // SWIPER SLIDER - PREVENT LAYOUT SHIFT
 (function() {
@@ -227,36 +129,44 @@
 		
 			
 			
-	// PAGE TRANSITION - Optimized
-		$('body a').on('click', function(e) {
-			if (typeof $(this).data('fancybox') == 'undefined') {
-				e.preventDefault(); 
-				const url = this.getAttribute("href"); 
-				
-				if(url.indexOf('#') != -1) {
-					const hash = url.substring(url.indexOf('#'));
+	// PAGE TRANSITION
+	$('body a').on('click', function(e) {
+		if (typeof $(this).data('fancybox') !== 'undefined') return;
 
-					if($('body ' + hash).length != 0) {
-						$('.transition-overlay').removeClass("active");
-						$(".hamburger").removeClass("open");
-						$("body").removeClass("overflow");
-						$(".navigation-menu").removeClass("active");
-						$(".navigation-menu .inner ul").css("transition-delay", "0s");
-						$(".navigation-menu .inner blockquote").css("transition-delay", "0s");
-						$(".navigation-menu .bg-layers span").css("transition-delay", "0.3s");
+		const url = this.getAttribute('href');
 
-						$('html, body').animate({
-							scrollTop: $(hash).offset().top
-						}, 800, 'swing'); // Added easing
-					}
-				} else {
-					$('.transition-overlay').toggleClass("active");
-					setTimeout(function(){
-						window.location = url;
-					}, 600); 
-				}
+		// Let the browser handle these natively
+		if (!url || this.target === '_blank' ||
+			e.metaKey || e.ctrlKey || e.shiftKey || e.altKey ||
+			/^(mailto:|tel:)/i.test(url) ||
+			(this.hostname && this.hostname !== location.hostname)) return;
+
+		e.preventDefault();
+
+		// In-page anchor (only when the link points at the current page)
+		if (url.indexOf('#') != -1 && this.pathname === location.pathname) {
+			const hash = url.substring(url.indexOf('#'));
+
+			if ($('body ' + hash).length != 0) {
+				$('.transition-overlay').removeClass("active");
+				$(".hamburger").removeClass("open");
+				$("body").removeClass("overflow");
+				$(".navigation-menu").removeClass("active");
+				$(".navigation-menu .inner ul").css("transition-delay", "0s");
+				$(".navigation-menu .inner blockquote").css("transition-delay", "0s");
+				$(".navigation-menu .bg-layers span").css("transition-delay", "0.3s");
+
+				$('html, body').animate({
+					scrollTop: $(hash).offset().top
+				}, 800, 'swing');
 			}
-		});
+		} else {
+			$('.transition-overlay').addClass("active");
+			setTimeout(function(){
+				window.location = url;
+			}, 600);
+		}
+	});
 		
 	// Reset menu and overlay on resize back to desktop
 	let resizeTimer;
