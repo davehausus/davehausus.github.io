@@ -16,6 +16,11 @@ const {
   id,
   bg = await Astro.slots.render('bg'),
 } = Astro.props;
+
+const { aspect: imageAspect, ...imageProps } = (
+  typeof image === 'object' && image ? image : { src: '', alt: '' }
+) as { aspect?: 'auto'; [key: string]: any };
+const imageWhole = imageAspect === 'auto';
 ---
 
 <section class="relative md:-mt-[76px] not-prose" {...id ? { id } : {}}>
@@ -26,7 +31,7 @@ const {
   </div>
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6">
     <div class="pt-0 md:pt-[76px] pointer-events-none"></div>
-    <div class="py-12 md:py-20 lg:py-0 lg:flex lg:items-center lg:h-screen lg:gap-8">
+    <div class="py-12 md:py-20 lg:py-0 lg:flex lg:items-center lg:min-h-[calc(100vh-5rem)] lg:gap-8">
       <div class="basis-1/2 text-left pb-10 md:pb-16">
         <slot name="tagline">
           {
@@ -82,14 +87,18 @@ const {
                 <Fragment set:html={image} />
               ) : (
                 <Image
-                  class="mx-auto rounded-4xl w-full"
+                  class:list={[
+                    'mx-auto',
+                    imageWhole
+                      ? 'w-auto max-h-[32rem] md:max-h-[44rem] lg:max-h-[80vh] object-contain'
+                      : 'rounded-4xl w-full',
+                  ]}
                   widths={[400, 768, 1024, 2040]}
                   sizes="(max-width: 767px) 400px, (max-width: 1023px) 768px, (max-width: 2039px) 1024px, 2040px"
                   loading="eager"
-                  width={600}
-                  height={600}
+                  {...(imageWhole ? { inferSize: true, layout: 'none' } : { width: 600, height: 600 })}
                   format="webp"
-                  {...image}
+                  {...imageProps}
                 />
               )}
             </div>
