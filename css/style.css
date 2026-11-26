@@ -1016,7 +1016,7 @@ button[type=submit]:hover i {
   z-index: 10000;
 }
 
-.main-menu ul li button[type=contact] {
+.main-menu ul li a.btn-contact {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1032,22 +1032,25 @@ button[type=submit]:hover i {
   letter-spacing: 0.01rem;
 }
 @media (min-width: 96rem) {
-  .main-menu ul li button[type=contact] {
+  .main-menu ul li a.btn-contact {
     font-size: 18.75px;
     letter-spacing: 0.2px;
   }
 }
-.main-menu ul li button[type=contact] {
+.main-menu ul li a.btn-contact {
   line-height: 1.4286;
   cursor: pointer;
   transition: background-color 0.2s ease-in, border-color 0.2s ease-in;
+  text-decoration: none;
+  width: auto;
 }
-.main-menu ul li button[type=contact] strong {
-  font-weight: inherit;
+.main-menu ul li a.btn-contact::before, .main-menu ul li a.btn-contact::after {
+  content: none;
 }
-.main-menu ul li button[type=contact]:hover {
+.main-menu ul li a.btn-contact:hover, .main-menu ul li a.btn-contact:focus-visible {
   background: var(--aw-color-secondary);
   border-color: var(--aw-color-secondary);
+  color: #fff;
 }
 
 body.overflow .navbar .main-menu {

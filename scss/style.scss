@@ -1014,8 +1014,7 @@ button[type="submit"] {
     z-index: 10000;
   }
 }
-
-.main-menu ul li button[type="contact"] {
+.main-menu ul li a.btn-contact {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1026,10 +1025,10 @@ button[type="submit"] {
   color: #fff;
   font-family: var(--aw-font-sans);
 
-  border-radius: 9999px; // was 8px — Astro uses a full pill, not rounded corners
-  font-size: 14px; // was 15px
-  padding: 10px 24px; // py-2.5 (10px) + px-6 (24px, desktop)
-  font-weight: 600; // unchanged, matches font-semibold
+  border-radius: 9999px;
+  font-size: 14px;
+  padding: 10px 24px;
+  font-weight: 600;
   letter-spacing: 0.01rem;
 
   @media (min-width: 96rem) {
@@ -1042,13 +1041,20 @@ button[type="submit"] {
     background-color 0.2s ease-in,
     border-color 0.2s ease-in;
 
-  strong {
-    font-weight: inherit;
-  } // was bolding on top of an already-bold button; Astro's is a single weight
+  // anchor resets: neutralize generic `.main-menu a` styling
+  text-decoration: none;
+  width: auto;
 
-  &:hover {
+  &::before,
+  &::after {
+    content: none; // in case the generic menu links have underline/slide effects
+  }
+
+  &:hover,
+  &:focus-visible {
     background: var(--aw-color-secondary);
     border-color: var(--aw-color-secondary);
+    color: #fff; // generic link hover colors would otherwise win
   }
 }
 
