@@ -2911,15 +2911,15 @@ body.overflow .navbar .main-menu {
 }
 
 /* NO HAMBURGER MENU IN DESKTOP */
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .hamburger-menu {
     display: none;
   }
 }
 
 /* RESPONSIVE TABLET FIXES */
-@media only screen and (max-width: 991px),
-  only screen and (max-device-width: 991px) {
+@media only screen and (max-width: 767px),
+  only screen and (max-device-width: 767px) {
   .slider {
     height: 480px;
     min-height: 480px;
