@@ -78,6 +78,12 @@
 }
 
 $color-dark: rgb(3 6 32);
+$color-primary: rgb(1, 97, 239);
+
+// Mobile menu — keep in sync with the Astro header
+$menu-inset-x: 12px; // Astro p-3 / px-3
+$menu-links-bottom: 104px; // Astro 6.5rem
+$menu-bar-height: 44px; // Astro bottom row (icon buttons)
 
 :root {
   --aw-font-sans: "Outfit", sans-serif;
@@ -550,21 +556,47 @@ button[type="submit"] {
     padding-top: 80px;
     .side-menu {
       width: 100%;
-      float: right;
-      display: none;
+      display: none; // revealed by your existing mobile rule
       ul {
-        float: right;
-        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 5px;
+        margin: 70px 0 0 0;
         padding: 0;
-        text-align: right;
+        font-size: 9vw;
+        font-weight: 600;
+        line-height: 1.2;
         li {
-          display: block;
+          margin: 0;
           list-style: none;
-          margin-bottom: 5px;
           a {
-            font-size: 9vw;
+            display: block;
             color: #fff;
-            font-weight: 600;
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+            text-decoration: none;
+          }
+          &.contact {
+            position: absolute; // out of flow, so no phantom gap
+            right: $menu-inset-x;
+            bottom: $menu-inset-x;
+            height: $menu-bar-height;
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+            a.btn-contact {
+              padding: 10px 22px; // py-2.5 px-5.5
+              font-size: 14px; // text-sm
+              line-height: 20px;
+              font-weight: 600; // font-semibold
+              white-space: nowrap;
+              color: #fff;
+              background: $color-primary;
+              border: 1px solid $color-primary;
+              border-radius: 20px;
+            }
           }
         }
       }
@@ -612,6 +644,16 @@ button[type="submit"] {
         text-decoration: underline;
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation-menu .inner {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0 $menu-inset-x $menu-links-bottom; // also clears the old padding-top: 80px
+    align-content: flex-start; // pushes the links to the bottom
   }
 }
 

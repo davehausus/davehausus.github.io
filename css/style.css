@@ -477,24 +477,50 @@ button[type=submit]:hover i {
 }
 .navigation-menu .inner .side-menu {
   width: 100%;
-  float: right;
   display: none;
 }
 .navigation-menu .inner .side-menu ul {
-  float: right;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  margin: 70px 0 0 0;
   padding: 0;
-  text-align: right;
+  font-size: 9vw;
+  font-weight: 600;
+  line-height: 1.2;
 }
 .navigation-menu .inner .side-menu ul li {
-  display: block;
+  margin: 0;
   list-style: none;
-  margin-bottom: 5px;
 }
 .navigation-menu .inner .side-menu ul li a {
-  font-size: 9vw;
+  display: block;
   color: #fff;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  text-decoration: none;
+}
+.navigation-menu .inner .side-menu ul li.contact {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  height: 44px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+.navigation-menu .inner .side-menu ul li.contact a.btn-contact {
+  padding: 10px 22px;
+  font-size: 14px;
+  line-height: 20px;
   font-weight: 600;
+  white-space: nowrap;
+  color: #fff;
+  background: rgb(1, 97, 239);
+  border: 1px solid rgb(1, 97, 239);
+  border-radius: 20px;
 }
 .navigation-menu .inner .sides {
   flex: 1;
@@ -540,6 +566,15 @@ button[type=submit]:hover i {
   text-decoration: underline;
 }
 
+@media (max-width: 768px) {
+  .navigation-menu .inner {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0 12px 104px;
+    align-content: flex-start;
+  }
+}
 /* REVEAL EFFECT */
 .reveal-effect {
   float: left;

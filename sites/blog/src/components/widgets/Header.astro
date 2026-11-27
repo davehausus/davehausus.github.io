@@ -51,7 +51,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
   <header
     class:list={[
       { sticky: isSticky, relative: !isSticky, dark: isDark },
-      'top-0 z-40 flex-none mx-auto w-full border-b border-gray-50/0 transition-[opacity] ease-in-out',
+      'top-0 z-40 flex-none mx-auto w-full border-b border-gray-50/0 transition-opacity ease-in-out',
     ]}
     {...isSticky ? { 'data-aw-sticky-header': true } : {}}
     {...id ? { id } : {}}
@@ -80,11 +80,11 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
         </div>
       </div>
       <nav
-        class="items-center w-full md:w-auto hidden md:flex md:mx-5 text-default overflow-y-auto overflow-x-hidden md:overflow-visible md:justify-self-center"
+        class="hidden items-center md:w-auto w-full md:flex md:justify-self-center md:mx-5 md:overflow-visible overflow-x-hidden overflow-y-auto text-default max-md:fixed max-md:inset-x-0 max-md:bottom-26 max-md:max-h-[calc(100dvh-11rem)] max-md:px-3"
         aria-label="Main navigation"
       >
         <ul
-          class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center"
+          class="flex flex-col font-medium md:flex-row md:justify-center md:self-center md:text-[0.9375rem] md:w-auto text-xl tracking-[0.01rem] w-full max-md:items-end max-md:gap-1.25 max-md:text-[9vw] max-md:leading-[1.2] max-md:font-semibold max-md:tracking-normal"
         >
           {
             links.map(({ text, href, links }) => (
@@ -101,7 +101,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
                         class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline"
                       />
                     </button>
-                    <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-[200px] drop-shadow-xl">
+                    <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-50 drop-shadow-xl">
                       {links.map(({ text: text2, href: href2 }) => (
                         <li>
                           <a
@@ -120,7 +120,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
                 ) : (
                   <a
                     class:list={[
-                      'hover:text-link dark:hover:text-white px-4 py-3 flex items-center whitespace-nowrap',
+                      'hover:text-link dark:hover:text-white max-md:p-0 md:px-4 md:py-3 flex items-center whitespace-nowrap',
                       { 'aw-link-active': href === currentPath },
                     ]}
                     href={href}
