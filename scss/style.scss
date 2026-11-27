@@ -832,10 +832,10 @@ button[type="submit"] {
 .header {
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
   .navbar {
     width: 100%;
+    align-self: center; // centers the capped navbar in the header
     margin-bottom: 0;
   }
   .page-title {
@@ -939,15 +939,29 @@ button[type="submit"] {
 
 /* NAVBAR */
 .navbar {
+  // Tailwind --spacing (0.25rem). Astro's root font-size goes 16px → 20px at 96rem,
+  // so the unit goes 4px → 5px and everything built on it scales too.
+  --nav-u: 4px;
+  --nav-max: 1280px; // max-w-7xl (80rem)
+
   width: 100%;
+  max-width: var(--nav-max);
   display: flex;
   flex-wrap: wrap;
-  padding: 12px 24px; // was: 30px 0 — Astro's header is ~73px tall, not ~108px
+  padding: calc(var(--nav-u) * 3); // py-3 px-3 (mobile)
   position: relative;
   font-family: var(--aw-font-sans);
   color: var(--aw-color-text-default);
   align-items: center;
   @include transition;
+
+  @media (min-width: 48rem) {
+    padding-inline: calc(var(--nav-u) * 6); // md:px-6
+  }
+  @media (min-width: 96rem) {
+    --nav-u: 5px;
+    --nav-max: 1600px;
+  }
 
   &.hide {
     transform: translateY(-100px);
@@ -955,7 +969,7 @@ button[type="submit"] {
   }
 
   .logo {
-    margin-left: 0;
+    margin-left: calc(var(--nav-u) * 2); // Astro's logo img has ml-2
     position: relative;
     z-index: 10000;
     a {
@@ -975,10 +989,12 @@ button[type="submit"] {
   .main-menu {
     margin-left: auto;
     ul {
+      display: flex; // no inline-block whitespace gaps
+      align-items: center;
       margin: 0;
       padding: 0;
+      list-style: none;
       li {
-        display: inline-block;
         margin: 0; // was: 0 18px — Astro uses padding on the link, not margin on the li
         padding: 0;
         a {
@@ -987,7 +1003,7 @@ button[type="submit"] {
           font-weight: 500; // was: 600
           font-size: 15px; // back to this
           letter-spacing: 0.01rem;
-          padding: 12px 16px;
+          padding: calc(var(--nav-u) * 3) calc(var(--nav-u) * 4); // py-3 px-4
           position: relative;
 
           @media (min-width: 96rem) {
@@ -1009,7 +1025,7 @@ button[type="submit"] {
 
   .hamburger-menu {
     margin-right: 0;
-    margin-left: 30px;
+    margin-left: auto; // sits at the right edge, like Astro's justify-between
     position: relative;
     z-index: 10000;
   }
@@ -1018,7 +1034,7 @@ button[type="submit"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: 8px;
+  margin-left: calc(var(--nav-u) * 2); // ml-2  (8px → 10px)
   border: 1px solid var(--aw-color-primary);
 
   background: var(--aw-color-primary);
@@ -1027,7 +1043,7 @@ button[type="submit"] {
 
   border-radius: 9999px;
   font-size: 14px;
-  padding: 10px 24px;
+  padding: calc(var(--nav-u) * 2.5) calc(var(--nav-u) * 6); // py-2.5 px-6 (10/24 → 12.5/30)
   font-weight: 600;
   letter-spacing: 0.01rem;
 
@@ -2756,9 +2772,6 @@ body.overflow .navbar .main-menu {
   .left-side {
     display: none;
   }
-  .navbar {
-    padding: 30px;
-  }
 
   .slider {
     width: 100%;
@@ -2915,9 +2928,6 @@ body.overflow .navbar .main-menu {
 /* RESPONSIVE MOBILE FIXES */
 @media only screen and (max-width: 767px),
   only screen and (max-device-width: 767px) {
-  .navbar {
-    padding: 30px 15px;
-  }
   .navbar .phone {
     display: none;
   }
