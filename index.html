@@ -881,7 +881,12 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
           if (isResizing2) return;
           isResizing2 = true;
 
-          const currentWidth = canvas2Parent ? canvas2Parent.clientWidth : canvas2.clientWidth;
+          const parentStyle2 = canvas2Parent ? getComputedStyle(canvas2Parent) : null;
+          const currentWidth = canvas2Parent
+            ? canvas2Parent.clientWidth
+              - parseFloat(parentStyle2.paddingLeft)
+              - parseFloat(parentStyle2.paddingRight)
+            : canvas2.clientWidth;
           const windowWidth = window.innerWidth;
 
           let aspectRatio;
