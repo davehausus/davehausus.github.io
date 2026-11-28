@@ -1101,6 +1101,23 @@ Portfolio of David de Jesús, a Senior Product Designer creating motion-driven p
   }
 </script>
 
+<script>
+  (() => {
+    const menu = document.querySelector('.navigation-menu');
+    const logo = document.querySelector('.navbar .logo img');
+    if (!menu || !logo) return;
+
+    const darkSrc = logo.getAttribute('src');                    // images/logo.svg
+    const lightSrc = darkSrc.replace('logo.svg', 'logo-light.svg');
+
+    new Image().src = lightSrc; // preload so the swap doesn't flash
+
+    new MutationObserver(() => {
+      logo.setAttribute('src', menu.classList.contains('active') ? lightSrc : darkSrc);
+    }).observe(menu, { attributes: true, attributeFilter: ['class'] });
+  })();
+</script>
+
 
 
 </body>

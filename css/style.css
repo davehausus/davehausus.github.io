@@ -517,10 +517,14 @@ button[type=submit]:hover i {
   line-height: 20px;
   font-weight: 600;
   white-space: nowrap;
+  letter-spacing: 0.03em;
   color: #fff;
-  background: rgb(1, 97, 239);
-  border: 1px solid rgb(1, 97, 239);
+  background: var(--aw-color-primary);
+  border: 1px solid var(--aw-color-primary);
   border-radius: 20px;
+}
+.navigation-menu .inner .side-menu ul li.contact a.btn-contact:hover {
+  background: var(--aw-color-secondary);
 }
 .navigation-menu .inner .sides {
   flex: 1;

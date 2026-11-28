@@ -78,7 +78,6 @@
 }
 
 $color-dark: rgb(3 6 32);
-$color-primary: rgb(1, 97, 239);
 
 // Mobile menu — keep in sync with the Astro header
 $menu-inset-x: 12px; // Astro p-3 / px-3
@@ -592,10 +591,14 @@ button[type="submit"] {
               line-height: 20px;
               font-weight: 600; // font-semibold
               white-space: nowrap;
+              letter-spacing: 0.03em;
               color: #fff;
-              background: $color-primary;
-              border: 1px solid $color-primary;
+              background: var(--aw-color-primary);
+              border: 1px solid var(--aw-color-primary);
               border-radius: 20px;
+              &:hover {
+                background: var(--aw-color-secondary);
+              }
             }
           }
         }
