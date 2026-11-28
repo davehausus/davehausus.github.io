@@ -1086,11 +1086,11 @@ button[type="submit"] {
   color: #fff;
   font-family: var(--aw-font-sans);
 
-  border-radius: 9999px;
+  border-radius: 999px;
   font-size: 14px;
   padding: calc(var(--nav-u) * 2.5) calc(var(--nav-u) * 6); // py-2.5 px-6 (10/24 → 12.5/30)
   font-weight: 600;
-  letter-spacing: 0.01rem;
+  letter-spacing: 0.03rem;
 
   @media (min-width: 96rem) {
     font-size: 18.75px;
